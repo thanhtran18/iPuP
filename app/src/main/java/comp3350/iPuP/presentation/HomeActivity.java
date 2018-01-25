@@ -24,7 +24,7 @@ public class HomeActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
 
-        Main.shutDown();
+        //Main.shutDown();
     }
 
     @Override
@@ -44,13 +44,13 @@ public class HomeActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void buttonStudentsOnClick(View v) {
-        Intent studentsIntent = new Intent(HomeActivity.this, StudentsActivity.class);
-        HomeActivity.this.startActivity(studentsIntent);
+    public void buttonParkerOnClick(View v) {
+        //Intent parkerIntent = new Intent(HomeActivity.this, StudentsActivity.class);
+        //HomeActivity.this.startActivity(studentsIntent);
     }
 
-    public void buttonCoursesOnClick(View v) {
-        Intent coursesIntent = new Intent(HomeActivity.this, CoursesActivity.class);
-        HomeActivity.this.startActivity(coursesIntent);
+    public void buttonHostOnClick(View v) {
+        Intent hostIntent = new Intent(HomeActivity.this, HostActivity.class);
+        HomeActivity.this.startActivity(hostIntent);
     }
 }

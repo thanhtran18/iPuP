@@ -1,5 +1,17 @@
 <resources>
-    <string name="app_name">SRSYS</string>
+    <string name="app_name">iPuP</string>
+
+    <string name="home_parker">I am looking for parking</string>
+    <string name="home_host">I have available parking to advertise</string>
+    <string name="host_address">Address</string>
+    <string name="host_phone">Phone Number</string>
+    <string name="host_email">Email Address</string>
+    <string name="host_name">Name</string>
+    <string name="host_date">Select the date</string>
+    <string name="host_time">Select the time that you would like the parking to be available</string>
+    <string name="next">Next</string>
+    <string name="confirm">Confirm</string>
+
 
     <string name="action_settings">Settings</string>
     <string name="student_records_system">Student Records System</string>

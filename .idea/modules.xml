@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://D:\Dropbox\U of M\2017 - 2018\Winter\COMP 3350\Group Project\iPuP\SRSYS.iml" filepath="D:\Dropbox\U of M\2017 - 2018\Winter\COMP 3350\Group Project\iPuP\SRSYS.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\Dropbox\U of M\2017 - 2018\Winter\COMP 3350\Group Project\iPuP\app\app.iml" filepath="D:\Dropbox\U of M\2017 - 2018\Winter\COMP 3350\Group Project\iPuP\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/iPuP.iml" filepath="$PROJECT_DIR$/iPuP.iml" />
     </modules>
   </component>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="comp3350.iPuP">
+<manifest package="comp3350.iPuP"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
@@ -12,9 +12,9 @@
             android:name=".presentation.HomeActivity"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
@@ -22,28 +22,37 @@
             android:label="@string/title_activity_students">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="comp3350.iPuP.presentation.HomeActivity" />
+                android:value="comp3350.iPuP.presentation.HomeActivity"/>
         </activity>
         <activity
             android:name=".presentation.StudentCoursesActivity"
             android:label="@string/title_activity_student_courses">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="comp3350.iPuP.presentation.StudentsActivity" />
+                android:value="comp3350.iPuP.presentation.StudentsActivity"/>
         </activity>
         <activity
             android:name=".presentation.HostActivity"
             android:label="@string/title_activity_courses">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="comp3350.iPuP.presentation.HomeActivity" />
+                android:value="comp3350.iPuP.presentation.HomeActivity"/>
         </activity>
         <activity
             android:name=".presentation.CourseStudentsActivity"
             android:label="@string/title_activity_course_students">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="comp3350.iPuP.presentation.HostActivity" />
+                android:value="comp3350.iPuP.presentation.HostActivity"/>
+        </activity>
+        <activity
+            android:name=".presentation.AvailableParkingSpots"
+            android:label="@string/title_activity_available_parking_spots"
+            android:parentActivityName=".presentation.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="comp3350.iPuP.presentation.HomeActivity"/>
         </activity>
     </application>
 

@@ -7,6 +7,7 @@
     android:fitsSystemWindows="true"
     tools:context="comp3350.iPuP.presentation.ParkingSpotInfoActivity">
 
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -34,7 +35,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_parking_spot_info" />
-
+    
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

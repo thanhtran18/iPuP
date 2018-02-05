@@ -47,12 +47,15 @@ public class ParkingSpot
 
     public ParkingSpot(LocalDateTime startTime, LocalDateTime endTime, String address, String name, String phone, String email, double rate)
     {
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.address = address;
-        this.name = name;
+        this.startTime = startTime;// required
+        this.endTime = endTime;// required
+        this.address = address;// required
+        this.name = name;// required
+
+        // either phone or email required
         this.phone = phone;
         this.email = email;
-        this.rate = rate;
+
+        this.rate = rate;// required
     }
 }

@@ -18,6 +18,7 @@ import java.util.Date;
 import comp3350.iPuP.R;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.business.AccessParkingSpots;
+import comp3350.iPuP.objects.ReservationTime;
 
 public class HostActivity extends Activity
 {
@@ -48,15 +49,14 @@ public class HostActivity extends Activity
         int month = datePicker.getMonth();
         int year =  datePicker.getYear();
         TimePicker timePickerStart =  (TimePicker) findViewById(R.id.timePickerStart);
-        int hour = timePickerStart.getHour();
-        int minute = timePickerStart.getMinute();
-        LocalDateTime start = LocalDateTime.of(year, month+1, day+1, hour, minute);
+        int startHour = timePickerStart.getHour();
+        int startMinute = timePickerStart.getMinute();
         TimePicker timePickerEnd =  (TimePicker) findViewById(R.id.timePickerEnd);
-        hour = timePickerEnd.getHour();
-        minute = timePickerEnd.getMinute();
-        LocalDateTime end = LocalDateTime.of(year, month+1, day+1, hour, minute);
+        int endHour = timePickerEnd.getHour();
+        int endMinute = timePickerEnd.getMinute();
+        ReservationTime reservationTime = new ReservationTime(year,month,day,startHour,startMinute,endHour,endMinute);
 
-        ParkingSpot newParkingSpot = new ParkingSpot(start,end,address,name,phone,email,rate);
+        ParkingSpot newParkingSpot = new ParkingSpot(reservationTime,address,name,phone,email,rate);
         String rtn = accessParkingSpots.insertParkingSpot(newParkingSpot);
 
         if (rtn == null)

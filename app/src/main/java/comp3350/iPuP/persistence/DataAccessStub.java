@@ -1,5 +1,6 @@
 package comp3350.iPuP.persistence;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,124 @@ public class DataAccessStub
 	public void open()
 	{
 		parkingSpots = new ArrayList<ParkingSpot>();
+		ParkingSpot tempSpot;
+		LocalDateTime start;
+		LocalDateTime end;
+		String address;
+		String name;
+		String phone;
+		String email;
+		double rate;
+
+		start = LocalDateTime.of(2018, 6, 11, 10, 30);
+		end = LocalDateTime.of(2018, 01, 01, 1, 1);
+		address = "20 place ave";
+		name="this dude";
+		phone="the number";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(start, end, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		start = LocalDateTime.of(2018, 6, 11, 10, 30);
+		end = LocalDateTime.of(2018, 01, 01, 1, 1);
+		address = "21 place ave";
+		name="this dude 1";
+		phone="the number 1";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(start, end, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		start = LocalDateTime.of(2018, 6, 11, 10, 30);
+		end = LocalDateTime.of(2018, 01, 01, 1, 1);
+		address = "22 place ave";
+		name="this dude 2";
+		phone="the number 2";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(start, end, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		start = LocalDateTime.of(2018, 6, 11, 10, 30);
+		end = LocalDateTime.of(2018, 01, 01, 1, 1);
+		address = "23 place ave";
+		name="this dude 3";
+		phone="the number 3";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(start, end, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		start = LocalDateTime.of(2018, 6, 11, 10, 30);
+		end = LocalDateTime.of(2018, 01, 01, 1, 1);
+		address = "24 place ave";
+		name="this dude 4";
+		phone="the number 4";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(start, end, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		start = LocalDateTime.of(2018, 6, 11, 10, 30);
+		end = LocalDateTime.of(2018, 01, 01, 1, 1);
+		address = "25 place ave";
+		name="this dude 5";
+		phone="the number 5";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(start, end, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		start = LocalDateTime.of(2018, 6, 11, 10, 30);
+		end = LocalDateTime.of(2018, 01, 01, 1, 1);
+		address = "26 place ave";
+		name="this dude 6";
+		phone="the number 6";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(start, end, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		start = LocalDateTime.of(2018, 6, 11, 10, 30);
+		end = LocalDateTime.of(2018, 01, 01, 1, 1);
+		address = "27 place ave";
+		name="this dude 7";
+		phone="the number 7";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(start, end, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		start = LocalDateTime.of(2018, 6, 11, 10, 30);
+		end = LocalDateTime.of(2018, 01, 01, 1, 1);
+		address = "28 place ave";
+		name="this dude 8";
+		phone="the number 8";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(start, end, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		start = LocalDateTime.of(2018, 6, 11, 10, 30);
+		end = LocalDateTime.of(2018, 01, 01, 1, 1);
+		address = "29 place ave";
+		name="this dude 9";
+		phone="the number 9";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(start, end, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		start = LocalDateTime.of(2018, 6, 11, 10, 30);
+		end = LocalDateTime.of(2018, 01, 01, 1, 1);
+		address = "30 place ave";
+		name="this dude 10";
+		phone="the number 10";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(start, end, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
 
 		System.out.println("Initialized the array of ParkingSpot object!");
 	}

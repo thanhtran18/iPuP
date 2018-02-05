@@ -7,6 +7,7 @@
     <string name="host_phone">Phone Number</string>
     <string name="host_email">Email Address</string>
     <string name="host_name">Name</string>
+    <string name="host_rate">Rate ($/h)</string>
     <string name="host_date">Select the date</string>
     <string name="host_time">Select the time that you would like the parking to be available</string>
     <string name="next">Next</string>

@@ -16,7 +16,7 @@ public class AccessCourses
 
 	public AccessCourses()
 	{
-		dataAccess = (DataAccessStub) Services.getDataAccess(Main.dbName);
+		//dataAccess = (DataAccessStub) Services.getDataAccess(Main.dbName);
 		courses = null;
 		course = null;
 		currentCourse = 0;
@@ -25,7 +25,7 @@ public class AccessCourses
     public String getCourses(List<Course> courses)
     {
         courses.clear();
-        return dataAccess.getCourseSequential(courses);
+        return null;// dataAccess.getCourseSequential(courses);
     }
 
 	public Course getSequential()
@@ -33,7 +33,7 @@ public class AccessCourses
 		String result = null;
 		if (courses == null)
 		{
-            result = dataAccess.getCourseSequential(courses);
+            //result = dataAccess.getCourseSequential(courses);
 			currentCourse = 0;
 		}
 		if (currentCourse < courses.size())
@@ -52,7 +52,7 @@ public class AccessCourses
 
 	public Course getRandom(String courseID)
 	{
-		courses = dataAccess.getCourseRandom(new Course(courseID));
+		//courses = dataAccess.getCourseRandom(new Course(courseID));
 		currentCourse = 0;
 		if (currentCourse < courses.size())
 		{
@@ -70,16 +70,16 @@ public class AccessCourses
 
 	public String insertCourse(Course currentCourse)
 	{
-		return dataAccess.insertCourse(currentCourse);
+		return null;// dataAccess.insertCourse(currentCourse);
 	}
 
 	public String updateCourse(Course currentCourse)
 	{
-		return dataAccess.updateCourse(currentCourse);
+		return null;//  dataAccess.updateCourse(currentCourse);
 	}
 
 	public String deleteCourse(Course currentCourse)
 	{
-		return dataAccess.deleteCourse(currentCourse);
+		return null;//  dataAccess.deleteCourse(currentCourse);
 	}
 }

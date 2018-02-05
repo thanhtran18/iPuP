@@ -16,6 +16,7 @@ public class ReservationTime
     private Date end;
     private SimpleDateFormat date;
     private SimpleDateFormat time;
+
     public ReservationTime(int year, int month, int day, int startHour, int startMinute, int endHour, int endMinute)
     {
         Calendar c = new GregorianCalendar(year, month, day, startHour, startMinute);
@@ -30,5 +31,14 @@ public class ReservationTime
     public String toString()
     {
         return date.format(start) + ", " + time.format(start) + " - " + time.format(end);
+    }
+
+    public Date getStart()
+    {
+        return start;
+    }
+    public Date getEnd()
+    {
+        return end;
     }
 }

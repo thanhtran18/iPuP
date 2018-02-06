@@ -1,5 +1,6 @@
 package comp3350.iPuP.presentation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -27,5 +28,11 @@ public class AvailableParkingSpots extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void buttonToSpotInfo(View v) {
+        //Go the Parker screen
+        Intent toSpotInfo = new Intent(AvailableParkingSpots.this, ParkingSpotInfoActivity.class);
+        AvailableParkingSpots.this.startActivity(toSpotInfo);
     }
 }

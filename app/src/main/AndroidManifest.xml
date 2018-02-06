@@ -54,6 +54,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="comp3350.iPuP.presentation.HomeActivity"/>
         </activity>
+        <activity
+            android:name=".presentation.ParkingSpotInfoActivity"
+            android:label="@string/title_activity_parking_spot_info"
+            android:parentActivityName=".presentation.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="comp3350.iPuP.presentation.AvailableParkingSpots"/>
+        </activity>
     </application>
 
 </manifest>

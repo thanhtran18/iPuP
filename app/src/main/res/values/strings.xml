@@ -41,4 +41,5 @@
 
         "We're gonna put the list of parking spots here.\n\n"
     </string>
+    <string name="book_this_spot">Book this spot</string>
 </resources>

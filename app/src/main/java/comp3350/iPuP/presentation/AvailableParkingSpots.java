@@ -1,20 +1,34 @@
 package comp3350.iPuP.presentation;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.ReservationTime;
 
 public class AvailableParkingSpots extends ListActivity {
-
+    //**** constants added by Kev
+    public static final String KEY_RESERVATION="spot_reservation";
+    public static final String KEY_ADDRESS="spot_address";
+    public static final String KEY_NAME = "host_name";
+    public static final String KEY_PHONE = "host_phone";
+    public static final String KEY_EMAIL = "host_email";
+    public static final String KEY_RATE = "spot_rate";
+    ////
     private ArrayList<ParkingSpot>fakeSpots=new ArrayList<ParkingSpot>();
-
+    ArrayAdapter<ParkingSpot> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +36,30 @@ public class AvailableParkingSpots extends ListActivity {
         setContentView(R.layout.activity_available_parking_spots);
         fakeSpots=returnDataStub();
         //ParkingSpot=new ParkingSpot(reservationTime, );
-        ArrayAdapter<ParkingSpot> adapter=new ArrayAdapter<ParkingSpot>(this,
+        adapter=new ArrayAdapter<ParkingSpot>(this,
                 android.R.layout.simple_list_item_1,
-                fakeSpots);
+                fakeSpots); //Changed by Kev, make the adapter a global variable
         setListAdapter(adapter);
+
+        //***ADDED BY KEV
+        ListView spotList = (ListView) findViewById(android.R.id.list);
+        spotList.setAdapter(adapter);
+        spotList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long offset) {
+                ParkingSpot item = (ParkingSpot) adapter.getItem(position);
+                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                Intent intent = new Intent(getApplicationContext(), ParkingSpotInfoActivity.class);
+                intent.putExtra(KEY_RESERVATION, df.format(item.getStartTime().getStart()) + df.format(item.getStartTime().getEnd()));
+                intent.putExtra(KEY_NAME, item.getName());
+                intent.putExtra(KEY_ADDRESS, item.getAddress());
+                intent.putExtra(KEY_PHONE, item.getPhone());
+                intent.putExtra(KEY_EMAIL, item.getEmail());
+                intent.putExtra(KEY_RATE, item.getRate());
+
+                startActivity(intent);
+            }
+        });
     }
 
     private ArrayList<ParkingSpot> returnDataStub(){

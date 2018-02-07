@@ -107,3 +107,8 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
         fakeParkingSpots.add(tempSpot);
     }
 }
+
+
+
+
+

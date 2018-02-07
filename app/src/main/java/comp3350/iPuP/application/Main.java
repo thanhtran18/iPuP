@@ -4,7 +4,7 @@ import comp3350.iPuP.presentation.CLI;
 
 public class Main
 {
-//	public static final String dbName="SC";
+	public static final String dbName="SC";
 
 	public static void main(String[] args)
 	{

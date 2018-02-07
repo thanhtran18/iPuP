@@ -2,10 +2,12 @@ package comp3350.iPuP.tests;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import comp3350.iPuP.tests.objects.CourseTest;
-import comp3350.iPuP.tests.objects.SCTest;
-import comp3350.iPuP.tests.objects.StudentTest;
-import comp3350.iPuP.tests.business.CalculateGPATest;
+//import comp3350.iPuP.tests.objects.CourseTest;
+import comp3350.iPuP.tests.business.AccessParkingSpotsTest;
+import comp3350.iPuP.tests.objects.ParkingSpotTest;
+//import comp3350.iPuP.tests.objects.SCTest;
+//import comp3350.iPuP.tests.objects.StudentTest;
+//import comp3350.iPuP.tests.business.CalculateGPATest;
 
 public class AllTests
 {
@@ -21,13 +23,15 @@ public class AllTests
 
     private static void testObjects()
     {
-        suite.addTestSuite(StudentTest.class);
-        suite.addTestSuite(CourseTest.class);
-        suite.addTestSuite(SCTest.class);
+        suite.addTestSuite(ParkingSpotTest.class);
+//        suite.addTestSuite(StudentTest.class);
+//        suite.addTestSuite(CourseTest.class);
+//        suite.addTestSuite(SCTest.class);
     }
 
     private static void testBusiness()
     {
-        suite.addTestSuite(CalculateGPATest.class);
+        suite.addTestSuite(AccessParkingSpotsTest.class);
+//        suite.addTestSuite(CalculateGPATest.class);
     }
 }

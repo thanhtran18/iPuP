@@ -1,5 +1,6 @@
 package comp3350.iPuP.persistence;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import comp3350.iPuP.application.Main;
 //import comp3350.iPuP.objects.Course;
 //import comp3350.iPuP.objects.SC;
 import comp3350.iPuP.objects.ParkingSpot;
+import comp3350.iPuP.objects.ReservationTime;
 
 public class DataAccessStub
 {
@@ -22,7 +24,7 @@ public class DataAccessStub
 
 	public DataAccessStub()
 	{
-        //nothing yet
+		//nothing yet
 	}
 
 //	public DataAccessStub(String dbName)
@@ -38,6 +40,112 @@ public class DataAccessStub
 	public void open()
 	{
 		parkingSpots = new ArrayList<ParkingSpot>();
+		ParkingSpot tempSpot;
+        ReservationTime time;
+		String address;
+		String name;
+		String phone;
+		String email;
+		double rate;
+
+		time = new ReservationTime(2018, 6, 11, 10, 30, 12, 30);
+		address = "20 place ave";
+		name="this dude";
+		phone="the number";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(time, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		time = new ReservationTime(2018, 6, 11, 10, 30, 14, 45);
+		address = "21 place ave";
+		name="this dude 1";
+		phone="the number 1";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(time,address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		time = new ReservationTime(2018, 6, 11, 10, 30, 11, 20);
+		address = "22 place ave";
+		name="this dude 2";
+		phone="the number 2";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(time,address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		time = new ReservationTime(2018, 6, 11, 10, 30, 11, 0);
+		address = "23 place ave";
+		name="this dude 3";
+		phone="the number 3";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(time , address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		time = new ReservationTime(2018, 6, 11, 10, 30, 16, 45);
+		address = "24 place ave";
+		name="this dude 4";
+		phone="the number 4";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(time, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		time = new ReservationTime(2018, 6, 11, 10, 30, 20, 0);
+		address = "25 place ave";
+		name="this dude 5";
+		phone="the number 5";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(time,address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		time = new ReservationTime(2018, 6, 11, 10, 30, 13,30);
+		address = "26 place ave";
+		name="this dude 6";
+		phone="the number 6";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(time, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		time = new ReservationTime(2018, 6, 11, 10, 30, 15, 0);
+		address = "27 place ave";
+		name="this dude 7";
+		phone="the number 7";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(time, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		time = new ReservationTime(2018, 6, 11, 10, 30, 14, 30);
+		address = "28 place ave";
+		name="this dude 8";
+		phone="the number 8";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(time, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		time = new ReservationTime(2018, 6, 11, 10, 30, 16, 0);
+		address = "29 place ave";
+		name="this dude 9";
+		phone="the number 9";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(time, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
+
+		time = new ReservationTime(2018, 6, 11, 10, 30, 16, 0);
+		address = "30 place ave";
+		name="this dude 10";
+		phone="the number 10";
+		email="theguy@host.com";
+		rate=0.10;
+		tempSpot= new ParkingSpot(time, address, name, phone, email,rate);
+		parkingSpots.add(tempSpot);
 
 		System.out.println("Initialized the array of ParkingSpot object!");
 	}
@@ -85,10 +193,10 @@ public class DataAccessStub
 //		System.out.println("Opened " +dbType +" database " +dbName);
 //	}
 //
-//	public void close()
-//	{
-//		System.out.println("Closed " +dbType +" database " +dbName);
-//	}
+	public void close()
+	{
+		System.out.println("closed array of ParkingSpot object!");
+	}
 //
 //	public String getStudentSequential(List<Student> studentResult)
 //	{
@@ -110,12 +218,12 @@ public class DataAccessStub
 //		return newStudents;
 //	}
 
-    public String insertParkingSpot(ParkingSpot currentParkingSpot)
-    {
-        // not checking for duplicates yet
-        parkingSpots.add(currentParkingSpot);
-        return null;
-    }
+	public String insertParkingSpot(ParkingSpot currentParkingSpot)
+	{
+		// not checking for duplicates yet
+		parkingSpots.add(currentParkingSpot);
+		return null;
+	}
 //	public String insertStudent(Student currentStudent)
 //	{
 //		// don't bother checking for duplicates

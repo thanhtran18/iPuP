@@ -7,6 +7,7 @@
     <string name="host_phone">Phone Number</string>
     <string name="host_email">Email Address</string>
     <string name="host_name">Name</string>
+    <string name="host_rate">Rate ($/h)</string>
     <string name="host_date">Select the date</string>
     <string name="host_time">Select the time that you would like the parking to be available</string>
     <string name="next">Next</string>
@@ -32,4 +33,8 @@
     <string name="gpa">GPA</string>
     <string name="fatalError">Fatal error</string>
     <string name="warning">Warning</string>
+    <string name="title_activity_available_parking_spots">AvailableParkingSpots</string>
+    <string name="large_text">
+        "We're gonna put the list of parking spots here.\n\n"
+    </string>
 </resources>

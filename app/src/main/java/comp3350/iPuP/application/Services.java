@@ -19,8 +19,8 @@ public class Services
 //	{
 //		if (dataAccessService == null)
 //		{
-//			dataAccessService = new DataAccessStub(dbName);
-//			dataAccessService.open(Main.dbName);
+//			dataAccessService = new DataAccessStub();
+//			dataAccessService.open();
 //		}
 //		return dataAccessService;
 //	}
@@ -35,22 +35,22 @@ public class Services
         return dataAccessService;
     }
 
-//	public static DataAccessStub getDataAccess(String dbName)
-//	{
-//		if (dataAccessService == null)
-//		{
-//			System.out.println("Connection to data access has not been established.");
-//			System.exit(1);
-//		}
-//		return dataAccessService;
-//	}
+	public static DataAccessStub getDataAccess(String dbName)
+	{
+		if (dataAccessService == null)
+		{
+			System.out.println("Connection to data access has not been established.");
+			System.exit(1);
+		}
+		return dataAccessService;
+	}
 
-//	public static void closeDataAccess()
-//	{
-//		if (dataAccessService != null)
-//		{
-//			dataAccessService.close();
-//		}
-//		dataAccessService = null;
-//	}
+	public static void closeDataAccess()
+	{
+		if (dataAccessService != null)
+		{
+			dataAccessService.close();
+		}
+		dataAccessService = null;
+	}
 }

@@ -31,12 +31,6 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
-            <Button
-                android:id="@+id/buttonToParkingInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="To Info" />
-
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 

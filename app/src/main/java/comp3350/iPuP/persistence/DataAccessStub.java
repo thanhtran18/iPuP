@@ -37,7 +37,7 @@ public class DataAccessStub
 //		this(Main.dbName);
 //	}
 
-	public void open()
+	public List<ParkingSpot>  open()
 	{
 		parkingSpots = new ArrayList<ParkingSpot>();
 		ParkingSpot tempSpot;
@@ -148,6 +148,7 @@ public class DataAccessStub
 		parkingSpots.add(tempSpot);
 
 		System.out.println("Initialized the array of ParkingSpot object!");
+		return parkingSpots;
 	}
 
 //	public void open(String dbName)

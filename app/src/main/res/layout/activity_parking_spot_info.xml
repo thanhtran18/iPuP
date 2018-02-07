@@ -11,54 +11,72 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="comp3350.iPuP.presentation.ParkingSpotInfoActivity">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="156dp"
-        android:id="@+id/editText"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:hint="Item Name"/>
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_below="@+id/editText"
-        android:layout_marginTop="33dp"
-        android:id="@+id/editText2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:hint="Description"/>
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:ems="10"
-        android:layout_below="@+id/editText2"
-        android:layout_alignRight="@+id/editText"
-        android:layout_alignEnd="@+id/editText"
-        android:layout_marginTop="59dp"
-        android:id="@+id/editText3"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:hint="Weight (%)"/>
-
-    <Button
-        android:text="Add"
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/buttonBookThisSpot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="18dp"
-        android:id="@+id/button"
         android:layout_alignParentBottom="true"
-        />
+        android:layout_marginBottom="18dp"
+        android:text="Book this spot" />
+
+    <TextView
+        android:id="@+id/hostNameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/spotRate"
+        android:layout_marginTop="28dp"
+        android:text="Host's name" />
+
+    <TextView
+        android:id="@+id/hostPhoneText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/hostNameText"
+        android:layout_marginTop="34dp"
+        android:text="Phone" />
+
+    <TextView
+        android:id="@+id/hostEmailText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/hostPhoneText"
+        android:layout_marginTop="33dp"
+        android:text="Email" />
+
+    <TextView
+        android:id="@+id/numOfSpotsText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/hostEmailText"
+        android:layout_marginTop="31dp"
+        android:text="Number of spots" />
+
+    <TextView
+        android:id="@+id/spotRateText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/numOfSpotsText"
+        android:layout_marginTop="33dp"
+        android:text="Rate per hour" />
+
+    <TextView
+        android:id="@+id/addressText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/spotRateText"
+        android:layout_marginTop="30dp"
+        android:text="Address" />
+
 </RelativeLayout>

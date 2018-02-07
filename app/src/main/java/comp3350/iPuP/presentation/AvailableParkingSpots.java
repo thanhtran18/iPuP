@@ -20,7 +20,7 @@ public class AvailableParkingSpots extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_available_parking_spots);
-        //fakeSpots=returnDataStub();
+        fakeSpots=returnDataStub();
         //ParkingSpot=new ParkingSpot(reservationTime, );
         ArrayAdapter<ParkingSpot> adapter=new ArrayAdapter<ParkingSpot>(this,
                 android.R.layout.simple_list_item_1,

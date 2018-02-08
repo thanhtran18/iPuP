@@ -33,6 +33,7 @@
     <string name="gpa">GPA</string>
     <string name="fatalError">Fatal error</string>
     <string name="warning">Warning</string>
+    <string name="no_available_parking_spots">There are no available spots to display</string>
     <string name="title_activity_available_parking_spots">AvailableParkingSpots</string>
     <string name="large_text">
 

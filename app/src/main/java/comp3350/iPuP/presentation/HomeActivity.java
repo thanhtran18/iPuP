@@ -45,7 +45,6 @@ public class HomeActivity extends Activity {
     }
 
     public void buttonParkerOnClick(View v) {
-        //Go the Parker screen
         Intent parkerIntent = new Intent(HomeActivity.this, AvailableParkingSpots.class);
         HomeActivity.this.startActivity(parkerIntent);
     }
@@ -54,5 +53,4 @@ public class HomeActivity extends Activity {
         Intent hostIntent = new Intent(HomeActivity.this, HostActivity.class);
         HomeActivity.this.startActivity(hostIntent);
     }
-
 }

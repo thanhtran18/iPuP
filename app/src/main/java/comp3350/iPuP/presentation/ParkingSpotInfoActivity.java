@@ -25,7 +25,8 @@ import comp3350.iPuP.objects.ReservationTime;
 import static comp3350.iPuP.presentation.AvailableParkingSpots.KEY_ADDRESS;
 import static comp3350.iPuP.presentation.AvailableParkingSpots.KEY_EMAIL;
 import static comp3350.iPuP.presentation.AvailableParkingSpots.KEY_NAME;
-import static comp3350.iPuP.presentation.AvailableParkingSpots.KEY_RESERVATION;
+import static comp3350.iPuP.presentation.AvailableParkingSpots.KEY_RESERVATION_START;
+import static comp3350.iPuP.presentation.AvailableParkingSpots.KEY_RESERVATION_END;
 import static comp3350.iPuP.presentation.AvailableParkingSpots.KEY_PHONE;
 import static comp3350.iPuP.presentation.AvailableParkingSpots.KEY_RATE;
 
@@ -50,7 +51,8 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
 
         //**** load info
         String hostName = "";
-        String reservation = "";
+        String reservationStart = "";
+        String reservationEnd = "";
         String hostPhone = "";
         String hostEmail = "";
         String hostAddress = "";
@@ -58,7 +60,8 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (null != intent) {
             hostName = intent.getStringExtra(KEY_NAME);
-            reservation = intent.getStringExtra(KEY_RESERVATION);
+            reservationStart = intent.getStringExtra(KEY_RESERVATION_START);
+            reservationEnd = intent.getStringExtra(KEY_RESERVATION_END);
             hostPhone = intent.getStringExtra(KEY_PHONE);
             hostEmail = intent.getStringExtra(KEY_EMAIL);
             hostAddress = intent.getStringExtra(KEY_ADDRESS);
@@ -71,8 +74,11 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
         TextView hostPhoneTxt = (TextView) findViewById(R.id.hostPhoneText);
         hostPhoneTxt.setText(hostPhone);
 
-        TextView reservationTxt = (TextView) findViewById(R.id.startTimeText);
-        reservationTxt.setText(reservation);
+        TextView reservationStartTxt = (TextView) findViewById(R.id.startTimeText);
+        reservationStartTxt.setText(reservationStart);
+
+        TextView reservationEndTxt = (TextView) findViewById(R.id.endTimeText);
+        reservationEndTxt.setText(reservationEnd);
 
         TextView hostEmailTxt = (TextView) findViewById(R.id.hostEmailText);
         hostEmailTxt.setText(hostEmail);
@@ -80,8 +86,9 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
         TextView hostAddressTxt = (TextView) findViewById(R.id.addressText);
         hostAddressTxt.setText(hostAddress);
 
-        TextView spotRateTxt = (TextView) findViewById(R.id.endTimeText);
+        TextView spotRateTxt = (TextView) findViewById(R.id.spotRateText);
         spotRateTxt.setText(spotRate);
+
 
     }
 

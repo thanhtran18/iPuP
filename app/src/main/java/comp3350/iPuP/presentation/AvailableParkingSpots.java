@@ -20,8 +20,9 @@ import comp3350.iPuP.objects.ReservationTime;
 
 public class AvailableParkingSpots extends ListActivity {
     //**** constants added by Kev
-    public static final String KEY_RESERVATION="spot_reservation";
-    public static final String KEY_ADDRESS="spot_address";
+    public static final String KEY_RESERVATION_START = "spot_reservation_start";
+    public static final String KEY_RESERVATION_END = "spot_reservation_end";
+    public static final String KEY_ADDRESS = "spot_address";
     public static final String KEY_NAME = "host_name";
     public static final String KEY_PHONE = "host_phone";
     public static final String KEY_EMAIL = "host_email";
@@ -50,19 +51,20 @@ public class AvailableParkingSpots extends ListActivity {
                 ParkingSpot item = (ParkingSpot) adapter.getItem(position);
                 DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 Intent intent = new Intent(getApplicationContext(), ParkingSpotInfoActivity.class);
-                intent.putExtra(KEY_RESERVATION, df.format(item.getStartTime().getStart()) + df.format(item.getStartTime().getEnd()));
+                intent.putExtra(KEY_RESERVATION_START, item.getStartTime());
+                intent.putExtra(KEY_RESERVATION_END, item.getEndTime());
                 intent.putExtra(KEY_NAME, item.getName());
                 intent.putExtra(KEY_ADDRESS, item.getAddress());
                 intent.putExtra(KEY_PHONE, item.getPhone());
                 intent.putExtra(KEY_EMAIL, item.getEmail());
-                intent.putExtra(KEY_RATE, item.getRate());
+                intent.putExtra(KEY_RATE, "$" + Double.toString(item.getRate()));
 
                 startActivity(intent);
             }
         });
     }
 
-    private ArrayList<ParkingSpot> returnDataStub(){
+    private ArrayList<ParkingSpot> returnDataStub() {
         ArrayList<ParkingSpot>fakeSpots=new ArrayList<ParkingSpot>();
         ParkingSpot tempSpot;
         ReservationTime time;

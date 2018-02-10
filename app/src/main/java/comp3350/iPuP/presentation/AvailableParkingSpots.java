@@ -2,8 +2,10 @@ package comp3350.iPuP.presentation;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -15,13 +17,11 @@ public class AvailableParkingSpots extends ListActivity {
 
     private ArrayList<ParkingSpot>fakeSpots=new ArrayList<ParkingSpot>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_available_parking_spots);
         fakeSpots=returnDataStub();
-        //ParkingSpot=new ParkingSpot(reservationTime, );
         ArrayAdapter<ParkingSpot> adapter=new ArrayAdapter<ParkingSpot>(this,
                 android.R.layout.simple_list_item_1,
                 fakeSpots);
@@ -139,5 +139,20 @@ public class AvailableParkingSpots extends ListActivity {
         return fakeSpots;
     }
 
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
 
+        String nameOfTheParkingHost=fakeSpots.get(position).getName();
+        String addressOfTheSpot=fakeSpots.get(position).getAddress();
+        String emailOfTheHost=fakeSpots.get(position).getEmail();
+        String phoneNumberOfTheHost=fakeSpots.get(position).getPhone();
+        String rateDescription="$"+fakeSpots.get(position).getRate()+"/hr";
+        String reservationTime=fakeSpots.get(position).getStartTime().toString();
+        String message=nameOfTheParkingHost+" with email: "+emailOfTheHost+
+                " and phone number: "+phoneNumberOfTheHost+
+                " is offering "+addressOfTheSpot+" at "+rateDescription+
+                " at "+reservationTime;
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 }

@@ -39,6 +39,8 @@ public class ParkingSpot
     private String phone;
     private String email;
     private double rate;
+    //Rodney added
+    private boolean booked;
 
     public ParkingSpot(ReservationTime reservation, String address, String name, String phone, String email, double rate)
     {
@@ -51,5 +53,12 @@ public class ParkingSpot
         this.email = email;
 
         this.rate = rate;// required
+        //Rodney added.
+        booked=false;
+    }
+
+    @Override
+    public String toString() {
+        return this.address + "\n" + this.reservation.toString();
     }
 }

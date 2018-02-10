@@ -12,6 +12,36 @@
     tools:context="comp3350.iPuP.presentation.ParkingSpotInfoActivity">
 
     <TextView
+        android:id="@+id/hostNameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/hostNameLabel"
+        android:layout_alignBottom="@+id/hostNameLabel"
+        android:layout_toEndOf="@+id/rateLabel"
+        android:layout_toRightOf="@+id/rateLabel"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/hostPhoneText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/hostEmailText"
+        android:layout_alignLeft="@+id/hostNameText"
+        android:layout_alignStart="@+id/hostNameText"
+        android:layout_marginBottom="34dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/hostEmailText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/addressText"
+        android:layout_alignLeft="@+id/hostPhoneText"
+        android:layout_alignStart="@+id/hostPhoneText"
+        android:layout_marginBottom="37dp"
+        android:text="TextView" />
+
+    <TextView
         android:id="@+id/rateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,7 +89,8 @@
         android:id="@+id/phoneTextLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/hostEmailText"
+        android:layout_alignBaseline="@+id/hostPhoneText"
+        android:layout_alignBottom="@+id/hostPhoneText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:paddingRight="15dp"
@@ -72,36 +103,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="18dp"
         android:text="@string/book_this_spot" />
-
-    <TextView
-        android:id="@+id/hostNameText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="36dp"
-        android:layout_toEndOf="@+id/hostNameLabel"
-        android:layout_toRightOf="@+id/hostNameLabel"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/hostPhoneText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/hostNameText"
-        android:layout_marginTop="35dp"
-        android:layout_toEndOf="@+id/hostNameLabel"
-        android:layout_toRightOf="@+id/hostNameLabel"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/hostEmailText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/hostPhoneText"
-        android:layout_alignStart="@+id/hostPhoneText"
-        android:layout_below="@+id/hostPhoneText"
-        android:layout_marginTop="37dp"
-        android:text="TextView" />
 
     <TextView
         android:id="@+id/addressText"
@@ -156,11 +157,12 @@
         android:id="@+id/hostNameLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/hostPhoneText"
+        android:layout_above="@+id/phoneTextLabel"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:text="Host's name: "
+        android:layout_marginBottom="25dp"
         android:paddingRight="15dp"
+        android:text="Host's name: "
         tools:text="Host's name: " />
 
 

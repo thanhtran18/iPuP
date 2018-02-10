@@ -46,6 +46,7 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showBookingResult();
+
             }
         });
 
@@ -110,7 +111,7 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
         String phone="the number";
         String email="theguy@host.com";
         double rate = 0.10;
-        tempSpot= new ParkingSpot(newReservationTime, address, name, phone, email,rate);
+        tempSpot= new ParkingSpot(newReservationTime, address, name, phone, email,rate, false);
         fakeParkingSpots.add(tempSpot);
     }
 }

@@ -56,7 +56,7 @@ public class HostActivity extends Activity
         int endMinute = timePickerEnd.getMinute();
         ReservationTime reservationTime = new ReservationTime(year,month,day,startHour,startMinute,endHour,endMinute);
 
-        ParkingSpot newParkingSpot = new ParkingSpot(reservationTime,address,name,phone,email,rate);
+        ParkingSpot newParkingSpot = new ParkingSpot(reservationTime,address,name,phone,email,rate, false);
         String rtn = accessParkingSpots.insertParkingSpot(newParkingSpot);
 
         if (rtn == null)

@@ -9,6 +9,30 @@ import java.util.Date;
 
 public class ParkingSpot
 {
+    private ReservationTime reservation;
+    private String address;
+    private String name;
+    private String phone;
+    private String email;
+    private double rate;
+    private boolean isBooked; //added by Kev
+
+    public ParkingSpot(ReservationTime reservation, String address, String name, String phone, String email, double rate, boolean isBooked)
+    {
+        this.reservation = reservation; //required
+        this.address = address;// required
+        this.name = name;// required
+
+        // either phone or email required
+        this.phone = phone;
+        this.email = email;
+
+        this.rate = rate;// required
+        this.isBooked = false;
+    }
+
+
+
     /*public Date getStartTime() {
         return reservation.getStart();
     }
@@ -45,23 +69,11 @@ public class ParkingSpot
         return rate;
     }
 
-    private ReservationTime reservation;
-    private String address;
-    private String name;
-    private String phone;
-    private String email;
-    private double rate;
+    public boolean getIsBooked() {
+        return isBooked;
+    }
 
-    public ParkingSpot(ReservationTime reservation, String address, String name, String phone, String email, double rate)
-    {
-        this.reservation = reservation; //required
-        this.address = address;// required
-        this.name = name;// required
-
-        // either phone or email required
-        this.phone = phone;
-        this.email = email;
-
-        this.rate = rate;// required
+    public void setIsBooked(boolean booked) {
+        this.isBooked = booked;
     }
 }

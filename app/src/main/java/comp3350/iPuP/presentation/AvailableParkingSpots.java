@@ -80,7 +80,7 @@ public class AvailableParkingSpots extends ListActivity {
         phone="the number";
         email="theguy@host.com";
         rate=0.10;
-        tempSpot= new ParkingSpot(time, address, name, phone, email,rate);
+        tempSpot= new ParkingSpot(time, address, name, phone, email,rate, false);
         fakeSpots.add(tempSpot);
 
         time = new ReservationTime(2018, 6, 11, 10, 30, 14, 45);
@@ -89,7 +89,7 @@ public class AvailableParkingSpots extends ListActivity {
         phone="the number 1";
         email="theguy@host.com";
         rate=0.10;
-        tempSpot= new ParkingSpot(time,address, name, phone, email,rate);
+        tempSpot= new ParkingSpot(time,address, name, phone, email,rate, false);
         fakeSpots.add(tempSpot);
 
         time = new ReservationTime(2018, 6, 11, 10, 30, 11, 20);
@@ -98,7 +98,7 @@ public class AvailableParkingSpots extends ListActivity {
         phone="the number 2";
         email="theguy@host.com";
         rate=0.10;
-        tempSpot= new ParkingSpot(time,address, name, phone, email,rate);
+        tempSpot= new ParkingSpot(time,address, name, phone, email,rate, false);
         fakeSpots.add(tempSpot);
 
         time = new ReservationTime(2018, 6, 11, 10, 30, 11, 0);
@@ -107,7 +107,7 @@ public class AvailableParkingSpots extends ListActivity {
         phone="the number 3";
         email="theguy@host.com";
         rate=0.10;
-        tempSpot= new ParkingSpot(time , address, name, phone, email,rate);
+        tempSpot= new ParkingSpot(time , address, name, phone, email,rate, false);
         fakeSpots.add(tempSpot);
 
         time = new ReservationTime(2018, 6, 11, 10, 30, 16, 45);
@@ -116,7 +116,7 @@ public class AvailableParkingSpots extends ListActivity {
         phone="the number 4";
         email="theguy@host.com";
         rate=0.10;
-        tempSpot= new ParkingSpot(time, address, name, phone, email,rate);
+        tempSpot= new ParkingSpot(time, address, name, phone, email,rate, false);
         fakeSpots.add(tempSpot);
 
         time = new ReservationTime(2018, 6, 11, 10, 30, 20, 0);
@@ -125,7 +125,7 @@ public class AvailableParkingSpots extends ListActivity {
         phone="the number 5";
         email="theguy@host.com";
         rate=0.10;
-        tempSpot= new ParkingSpot(time,address, name, phone, email,rate);
+        tempSpot= new ParkingSpot(time,address, name, phone, email,rate, false);
         fakeSpots.add(tempSpot);
 
         time = new ReservationTime(2018, 6, 11, 10, 30, 13,30);
@@ -134,7 +134,7 @@ public class AvailableParkingSpots extends ListActivity {
         phone="the number 6";
         email="theguy@host.com";
         rate=0.10;
-        tempSpot= new ParkingSpot(time, address, name, phone, email,rate);
+        tempSpot= new ParkingSpot(time, address, name, phone, email,rate, false);
         fakeSpots.add(tempSpot);
 
         time = new ReservationTime(2018, 6, 11, 10, 30, 15, 0);
@@ -143,7 +143,7 @@ public class AvailableParkingSpots extends ListActivity {
         phone="the number 7";
         email="theguy@host.com";
         rate=0.10;
-        tempSpot= new ParkingSpot(time, address, name, phone, email,rate);
+        tempSpot= new ParkingSpot(time, address, name, phone, email,rate, false);
         fakeSpots.add(tempSpot);
 
         time = new ReservationTime(2018, 6, 11, 10, 30, 14, 30);
@@ -152,7 +152,7 @@ public class AvailableParkingSpots extends ListActivity {
         phone="the number 8";
         email="theguy@host.com";
         rate=0.10;
-        tempSpot= new ParkingSpot(time, address, name, phone, email,rate);
+        tempSpot= new ParkingSpot(time, address, name, phone, email,rate, false);
         fakeSpots.add(tempSpot);
 
         time = new ReservationTime(2018, 6, 11, 10, 30, 16, 0);
@@ -161,7 +161,7 @@ public class AvailableParkingSpots extends ListActivity {
         phone="the number 9";
         email="theguy@host.com";
         rate=0.10;
-        tempSpot= new ParkingSpot(time, address, name, phone, email,rate);
+        tempSpot= new ParkingSpot(time, address, name, phone, email,rate, false);
         fakeSpots.add(tempSpot);
 
         time = new ReservationTime(2018, 6, 11, 10, 30, 16, 0);
@@ -170,7 +170,7 @@ public class AvailableParkingSpots extends ListActivity {
         phone="the number 10";
         email="theguy@host.com";
         rate=0.10;
-        tempSpot= new ParkingSpot(time, address, name, phone, email,rate);
+        tempSpot= new ParkingSpot(time, address, name, phone, email,rate, false);
         fakeSpots.add(tempSpot);
         return fakeSpots;
     }

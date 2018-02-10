@@ -24,7 +24,7 @@ public class ReservationTime
         Calendar c = new GregorianCalendar(year, month, day, startHour, startMinute);
         Date start = new Date(year, month, day, startHour, startMinute);
         //date = new SimpleDateFormat("EEE, d MMM yyyy");
-        date = new SimpleDateFormat("E yyyy.MM.dd 'at' hh:mm:ss a zzz");
+        date = new SimpleDateFormat("E MM/dd/yy 'at' hh:mm:ss a zzz");
         //time = new SimpleDateFormat("h:mm");
         //start =  c.getTime();
         startTime = date.format(start);

@@ -12,6 +12,7 @@ import android.widget.ListView;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import comp3350.iPuP.R;
@@ -30,6 +31,8 @@ public class AvailableParkingSpots extends ListActivity {
     ////
     private ArrayList<ParkingSpot>fakeSpots=new ArrayList<ParkingSpot>();
     ArrayAdapter<ParkingSpot> adapter;
+    private SimpleDateFormat date;
+    private SimpleDateFormat time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class AvailableParkingSpots extends ListActivity {
         setListAdapter(adapter);
 
         //***ADDED BY KEV
+        date = new SimpleDateFormat("EEE, d MMM yyyy");
         ListView spotList = (ListView) findViewById(android.R.id.list);
         spotList.setAdapter(adapter);
         spotList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -51,8 +55,9 @@ public class AvailableParkingSpots extends ListActivity {
                 ParkingSpot item = (ParkingSpot) adapter.getItem(position);
                 DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 Intent intent = new Intent(getApplicationContext(), ParkingSpotInfoActivity.class);
-                intent.putExtra(KEY_RESERVATION_START, item.getStartTime());
-                intent.putExtra(KEY_RESERVATION_END, item.getEndTime());
+                intent.putExtra(KEY_RESERVATION_START, item.getStartTime().toString());
+                //intent.putExtra(KEY_RESERVATION_END, item.getEndTime());
+                intent.putExtra(KEY_RESERVATION_END, item.getEndTime().toString());
                 intent.putExtra(KEY_NAME, item.getName());
                 intent.putExtra(KEY_ADDRESS, item.getAddress());
                 intent.putExtra(KEY_PHONE, item.getPhone());

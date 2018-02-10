@@ -33,20 +33,20 @@ public class ParkingSpot
 
 
 
-    /*public Date getStartTime() {
+    public Date getStartTime() {
         return reservation.getStart();
     }
 
     public Date getEndTime() {
         return reservation.getEnd();
-    }*/
-    public String getStartTime() {
+    }
+    /*public String getStartTime() {
         return reservation.getStart();
     }
 
     public String getEndTime() {
         return reservation.getEnd();
-    }
+    }*/
 
     public String getName() {
         return name;

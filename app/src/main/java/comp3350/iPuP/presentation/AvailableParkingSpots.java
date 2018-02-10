@@ -181,6 +181,7 @@ public class AvailableParkingSpots extends ListActivity {
         return fakeSpots;
     }
 
+    //make clicking on one item work
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);

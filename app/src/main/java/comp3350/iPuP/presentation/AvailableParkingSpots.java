@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -30,7 +31,7 @@ public class AvailableParkingSpots extends ListActivity {
     public static final String KEY_RATE = "spot_rate";
     ////
     private ArrayList<ParkingSpot>fakeSpots=new ArrayList<ParkingSpot>();
-    ArrayAdapter<ParkingSpot> adapter;
+    //ArrayAdapter<ParkingSpot> adapter;
     private SimpleDateFormat date;
     private SimpleDateFormat time;
 
@@ -38,26 +39,24 @@ public class AvailableParkingSpots extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_available_parking_spots);
-        fakeSpots=returnDataStub();
-        //ParkingSpot=new ParkingSpot(reservationTime, );
-        adapter=new ArrayAdapter<ParkingSpot>(this,
+        fakeSpots = returnDataStub();
+        ArrayAdapter<ParkingSpot> adapter = new ArrayAdapter<ParkingSpot>(this,
                 android.R.layout.simple_list_item_1,
-                fakeSpots); //Changed by Kev, make the adapter a global variable
+                fakeSpots);
         setListAdapter(adapter);
+    }
 
-        //***ADDED BY KEV
-        date = new SimpleDateFormat("EEE, d MMM yyyy");
-        ListView spotList = (ListView) findViewById(android.R.id.list);
-        spotList.setAdapter(adapter);
-        spotList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
+    //***ADDED BY KEV
+    //ListView spotList = (ListView) findViewById(android.R.id.list);
+    //spotList.setAdapter(adapter);
+    //spotList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /*@Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long offset) {
                 ParkingSpot item = (ParkingSpot) adapter.getItem(position);
                 DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 Intent intent = new Intent(getApplicationContext(), ParkingSpotInfoActivity.class);
-                intent.putExtra(KEY_RESERVATION_START, item.getStartTime().toString());
-                //intent.putExtra(KEY_RESERVATION_END, item.getEndTime());
-                intent.putExtra(KEY_RESERVATION_END, item.getEndTime().toString());
+                intent.putExtra(KEY_RESERVATION_START, item.getStartTime());
+                intent.putExtra(KEY_RESERVATION_END, item.getEndTime());
                 intent.putExtra(KEY_NAME, item.getName());
                 intent.putExtra(KEY_ADDRESS, item.getAddress());
                 intent.putExtra(KEY_PHONE, item.getPhone());
@@ -67,7 +66,9 @@ public class AvailableParkingSpots extends ListActivity {
                 startActivity(intent);
             }
         });
-    }
+    }*/
+
+
 
     private ArrayList<ParkingSpot> returnDataStub() {
         ArrayList<ParkingSpot>fakeSpots=new ArrayList<ParkingSpot>();
@@ -178,6 +179,38 @@ public class AvailableParkingSpots extends ListActivity {
         tempSpot= new ParkingSpot(time, address, name, phone, email,rate, false);
         fakeSpots.add(tempSpot);
         return fakeSpots;
+    }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+        String nameOfTheParkingHost=fakeSpots.get(position).getName();
+        String addressOfTheSpot=fakeSpots.get(position).getAddress();
+        String emailOfTheHost=fakeSpots.get(position).getEmail();
+        String phoneNumberOfTheHost=fakeSpots.get(position).getPhone();
+        String rateDescription="$"+fakeSpots.get(position).getRate()+"/hr";
+        String reservationTime=fakeSpots.get(position).getStartTime().toString();
+        String message=nameOfTheParkingHost+" with email: "+emailOfTheHost+
+                " and phone number: "+phoneNumberOfTheHost+
+                " is offering "+addressOfTheSpot+" at "+rateDescription+
+                " at "+reservationTime;
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+
+        date = new SimpleDateFormat("EEE, d MMM yyyy");
+        ParkingSpot item = (ParkingSpot) fakeSpots.get(position);
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        Intent intent = new Intent(getApplicationContext(), ParkingSpotInfoActivity.class);
+        intent.putExtra(KEY_RESERVATION_START, item.getStartTime().toString());
+        //intent.putExtra(KEY_RESERVATION_END, item.getEndTime());
+        intent.putExtra(KEY_RESERVATION_END, item.getEndTime().toString());
+        intent.putExtra(KEY_NAME, item.getName());
+        intent.putExtra(KEY_ADDRESS, item.getAddress());
+        intent.putExtra(KEY_PHONE, item.getPhone());
+        intent.putExtra(KEY_EMAIL, item.getEmail());
+        intent.putExtra(KEY_RATE, "$" + Double.toString(item.getRate()));
+
+        startActivity(intent);
     }
 
 

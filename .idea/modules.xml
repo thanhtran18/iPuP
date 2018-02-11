@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://C:\Users\Rodney\AndroidStudioProjects\iPuP(3350 Project)\SRSYS.iml" filepath="C:\Users\Rodney\AndroidStudioProjects\iPuP(3350 Project)\SRSYS.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\Rodney\AndroidStudioProjects\iPuP(3350 Project)\iPuP.iml" filepath="C:\Users\Rodney\AndroidStudioProjects\iPuP(3350 Project)\iPuP.iml" />
       <module fileurl="file://$PROJECT_DIR$/iPuP(3350 Project).iml" filepath="$PROJECT_DIR$/iPuP(3350 Project).iml" />
     </modules>
   </component>

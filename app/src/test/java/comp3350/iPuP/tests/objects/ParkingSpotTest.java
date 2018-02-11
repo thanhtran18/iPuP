@@ -14,7 +14,8 @@ public class ParkingSpotTest extends TestCase {
     {
         super(arg0);
     }
-    public void testReservationTimes()
+
+    public void testParkingSpots()
     {
         ReservationTime time = new ReservationTime(2017,3, 4, 8,30,9,30);
         assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getTime(), time);

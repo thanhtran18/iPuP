@@ -52,4 +52,18 @@ public class ParkingSpot
 
         this.rate = rate;// required
     }
+
+    @Override
+    public boolean equals(Object other)
+    {
+        if (other != null && other.getClass() == ParkingSpot.class)
+        {
+            ParkingSpot otherSpot = (ParkingSpot) other;
+            if (this.name.equals(otherSpot.name) && this.address.equals(otherSpot.address) &&
+                    this.phone.equals(otherSpot.phone) && this.email.equals(otherSpot.email) &&
+                    this.rate == otherSpot.rate && this.reservation.equals(otherSpot.reservation))
+                return true;
+        }
+        return false;
+    }
 }

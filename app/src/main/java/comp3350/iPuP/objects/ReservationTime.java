@@ -17,20 +17,25 @@ public class ReservationTime
     private SimpleDateFormat date;
     private SimpleDateFormat time;
 
-    public ReservationTime(int year, int month, int day, int startHour, int startMinute, int endHour, int endMinute)
-    {
-        Calendar c = new GregorianCalendar(year, month, day, startHour, startMinute);
-        date = new SimpleDateFormat("EEE, d MMM yyyy");
-        time = new SimpleDateFormat("h:mm");
-        start =  c.getTime();
-        c.set(year, month, day, endHour, endMinute);
-        end = c.getTime();
+    public ReservationTime(int year, int month, int day, int startHour, int startMinute, int endHour, int endMinute) {
+        if (year > 2000)
+        {
+            Calendar c = new GregorianCalendar(year, month, day, startHour, startMinute);
+            date = new SimpleDateFormat("EEE, d MMM yyyy");
+            time = new SimpleDateFormat("h:mm");
+            start = c.getTime();
+            c.set(year, month, day, endHour, endMinute);
+            end = c.getTime();
+        }
     }
 
     @Override
     public String toString()
     {
-        return date.format(start) + ", " + time.format(start) + " - " + time.format(end);
+        if (start != null && end != null)
+            return date.format(start) + ", " + time.format(start) + " - " + time.format(end);
+        else
+            return "Invalid date";
     }
 
     public Date getStart()
@@ -40,5 +45,18 @@ public class ReservationTime
     public Date getEnd()
     {
         return end;
+    }
+
+    @Override
+    public boolean equals(Object other)
+    {
+
+        if (other != null && other.getClass() == ReservationTime.class)
+        {
+            ReservationTime otherTime = (ReservationTime) other;
+            if (this.start.equals(otherTime.start) && this.end.equals(otherTime.end))
+                return true;
+        }
+        return false;
     }
 }

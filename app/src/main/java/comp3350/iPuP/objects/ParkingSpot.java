@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 public class ParkingSpot
 {
-    public ReservationTime getStartTime() {
+    public ReservationTime getTime() {
         return reservation;
     }
 

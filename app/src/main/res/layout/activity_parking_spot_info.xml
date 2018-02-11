@@ -19,7 +19,8 @@
         android:layout_alignBottom="@+id/hostNameLabel"
         android:layout_toEndOf="@+id/rateLabel"
         android:layout_toRightOf="@+id/rateLabel"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
         android:id="@+id/hostPhoneText"
@@ -29,7 +30,8 @@
         android:layout_alignLeft="@+id/hostNameText"
         android:layout_alignStart="@+id/hostNameText"
         android:layout_marginBottom="34dp"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/hostEmailText"
@@ -39,7 +41,8 @@
         android:layout_alignLeft="@+id/hostPhoneText"
         android:layout_alignStart="@+id/hostPhoneText"
         android:layout_marginBottom="37dp"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
         android:id="@+id/rateLabel"
@@ -50,7 +53,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:paddingRight="15dp"
-        android:text="Rate per hour: " />
+        android:text="Rate per hour: "
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
         android:id="@+id/startTimeLabel"
@@ -61,7 +65,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:paddingRight="15dp"
-        android:text="From: " />
+        android:text="From: "
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
         android:id="@+id/addressLabel"
@@ -72,7 +77,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:paddingRight="15dp"
-        android:text="Address: " />
+        android:text="Address: "
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
         android:id="@+id/emailLabel"
@@ -83,7 +89,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:paddingRight="15dp"
-        android:text="Email:" />
+        android:text="Email:"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
         android:id="@+id/phoneTextLabel"
@@ -94,7 +101,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:paddingRight="15dp"
-        android:text="Phone:" />
+        android:text="Phone:"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/buttonBookThisSpot"
@@ -102,7 +110,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="18dp"
-        android:text="@string/book_this_spot" />
+        android:text="@string/book_this_spot"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
         android:id="@+id/addressText"
@@ -112,7 +121,8 @@
         android:layout_alignLeft="@+id/hostEmailText"
         android:layout_alignStart="@+id/hostEmailText"
         android:layout_marginBottom="37dp"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
         android:id="@+id/startTimeText"
@@ -121,7 +131,8 @@
         android:layout_alignLeft="@+id/addressText"
         android:layout_alignStart="@+id/addressText"
         android:layout_centerVertical="true"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
         android:id="@+id/endTimeText"
@@ -131,7 +142,8 @@
         android:layout_alignStart="@+id/startTimeText"
         android:layout_below="@+id/startTimeText"
         android:layout_marginTop="31dp"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
         android:id="@+id/endTimeLabel"
@@ -141,7 +153,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:paddingRight="15dp"
-        android:text="To: " />
+        android:text="To: "
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
         android:id="@+id/spotRateText"
@@ -151,7 +164,8 @@
         android:layout_alignStart="@+id/endTimeText"
         android:layout_below="@+id/endTimeText"
         android:layout_marginTop="27dp"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
         android:id="@+id/hostNameLabel"
@@ -163,7 +177,8 @@
         android:layout_marginBottom="25dp"
         android:paddingRight="15dp"
         android:text="Host's name: "
-        tools:text="Host's name: " />
+        tools:text="Host's name: "
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 
 </RelativeLayout>

@@ -35,6 +35,9 @@ public class HostActivity extends Activity
     @TargetApi(Build.VERSION_CODES.O)
     public void buttonConfirmOnClick(View v)
     {
+        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+        int startHour,startMinute,endHour,endMinute;
+
         EditText edit =  (EditText) findViewById(R.id.editName);
         String name = edit.getText().toString();
         edit =  (EditText) findViewById(R.id.editAddress);
@@ -43,17 +46,31 @@ public class HostActivity extends Activity
         String email = edit.getText().toString();
         edit =  (EditText) findViewById(R.id.editPhone);
         String phone = edit.getText().toString();
-        Double rate = 0.0;
+        edit = (EditText) findViewById(R.id.editRate);
+        Double rate = Double.parseDouble(edit.getText().toString());
+
         DatePicker datePicker =  (DatePicker) findViewById(R.id.datePickerDate);
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();
         int year =  datePicker.getYear();
+
         TimePicker timePickerStart =  (TimePicker) findViewById(R.id.timePickerStart);
-        int startHour = timePickerStart.getHour();
-        int startMinute = timePickerStart.getMinute();
         TimePicker timePickerEnd =  (TimePicker) findViewById(R.id.timePickerEnd);
-        int endHour = timePickerEnd.getHour();
-        int endMinute = timePickerEnd.getMinute();
+
+        if (currentApiVersion > android.os.Build.VERSION_CODES.LOLLIPOP_MR1)
+        {
+            startHour = timePickerStart.getHour();
+            startMinute = timePickerStart.getMinute();
+            endHour = timePickerEnd.getHour();
+            endMinute = timePickerEnd.getMinute();
+        } else
+        {
+            startHour = timePickerStart.getCurrentHour();
+            startMinute = timePickerStart.getCurrentMinute();
+            endHour = timePickerEnd.getCurrentHour();
+            endMinute = timePickerEnd.getCurrentMinute();
+        }
+
         ReservationTime reservationTime = new ReservationTime(year,month,day,startHour,startMinute,endHour,endMinute);
 
         ParkingSpot newParkingSpot = new ParkingSpot(reservationTime,address,name,phone,email,rate);

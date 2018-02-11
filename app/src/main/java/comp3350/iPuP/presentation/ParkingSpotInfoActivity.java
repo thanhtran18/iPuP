@@ -18,8 +18,8 @@ import java.util.ArrayList;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.application.Main;
+import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.objects.ParkingSpot;
-import comp3350.iPuP.objects.ReservationTime;
 
 
 import static comp3350.iPuP.presentation.AvailableParkingSpots.KEY_ADDRESS;
@@ -29,10 +29,15 @@ import static comp3350.iPuP.presentation.AvailableParkingSpots.KEY_RESERVATION_S
 import static comp3350.iPuP.presentation.AvailableParkingSpots.KEY_RESERVATION_END;
 import static comp3350.iPuP.presentation.AvailableParkingSpots.KEY_PHONE;
 import static comp3350.iPuP.presentation.AvailableParkingSpots.KEY_RATE;
+import static comp3350.iPuP.presentation.AvailableParkingSpots.ID_OF_SPOT;
 
 public class ParkingSpotInfoActivity extends AppCompatActivity {
     public ArrayList<ParkingSpot> fakeParkingSpots = new ArrayList<>();
     Button bookThisSpot;
+
+
+    private AccessParkingSpots accessParkingSpots;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,13 +47,14 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_parking_spot_info);
 
         bookThisSpot = (Button) findViewById(R.id.buttonBookThisSpot);
-        bookThisSpot.setOnClickListener(new View.OnClickListener() {
+        accessParkingSpots=new AccessParkingSpots();
+        /*bookThisSpot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showBookingResult();
 
             }
-        });
+        });*/
 
         //**** load info
         String hostName = "";
@@ -58,7 +64,7 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
         String hostEmail = "";
         String hostAddress = "";
         String spotRate = "";
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         if (null != intent) {
             hostName = intent.getStringExtra(KEY_NAME);
             reservationStart = intent.getStringExtra(KEY_RESERVATION_START);
@@ -89,6 +95,16 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
 
         TextView spotRateTxt = (TextView) findViewById(R.id.spotRateText);
         spotRateTxt.setText(spotRate);
+
+        bookThisSpot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showBookingResult();
+                String spotId=intent.getStringExtra(ID_OF_SPOT);
+                accessParkingSpots.bookSpot(spotId);
+                finish();
+            }
+        });
 
 
     }

@@ -1,6 +1,5 @@
 package comp3350.iPuP.objects;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -49,9 +48,18 @@ public class ParkingSpot
     private String name;
     private String phone;
     private String email;
+    private String id;
     private double rate;
     //Rodney added
-    private boolean booked;
+    private boolean isBooked;
+
+    public boolean isBooked() {
+        return isBooked;
+    }
+
+    public void setBooked(boolean booked) {
+        isBooked = booked;
+    }
 
     public ParkingSpot(ReservationTime reservation, String address, String name, String phone, String email, double rate)
     {
@@ -65,11 +73,17 @@ public class ParkingSpot
 
         this.rate = rate;// required
         //Rodney added.
-        booked=false;
+        id=address+name+phone+email;
+        isBooked =false;
+
+    }
+
+    public String getId() {
+        return id;
     }
 
     @Override
     public String toString() {
-        return this.address + "\n" + this.reservation.toString();
+        return this.id+"\n"+this.address + "\n" + this.reservation.toString();
     }
 }

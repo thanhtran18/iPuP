@@ -15,15 +15,15 @@ public class Services
 		}
 		return dataAccessService;
 	}
-//	public static DataAccessStub createDataAccess(String dbName)
-//	{
-//		if (dataAccessService == null)
-//		{
-//			dataAccessService = new DataAccessStub();
-//			dataAccessService.open();
-//		}
-//		return dataAccessService;
-//	}
+	/*public static DataAccessStub createDataAccess(String dbName)
+	{
+		if (dataAccessService == null)
+		{
+			dataAccessService = new DataAccessStub(dbName);
+			dataAccessService.open(Main.dbName);
+		}
+		return dataAccessService;
+	}*/
 
     public static DataAccessStub getDataAccess()
     {

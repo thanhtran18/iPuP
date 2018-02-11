@@ -103,6 +103,7 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
         toast.setGravity(Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
+    /*public void addFakeSpots() {
     public void addFakeSpots() {
         ReservationTime newReservationTime = new ReservationTime(2018, 02, 18, 8, 00, 05, 00);
         ParkingSpot tempSpot;
@@ -113,10 +114,6 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
         double rate = 0.10;
         tempSpot= new ParkingSpot(newReservationTime, address, name, phone, email,rate, false);
         fakeParkingSpots.add(tempSpot);
-    }
+    }*/
 }
-
-
-
-
 

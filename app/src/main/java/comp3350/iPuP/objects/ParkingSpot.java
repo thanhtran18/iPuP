@@ -1,6 +1,6 @@
 package comp3350.iPuP.objects;
 
-
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -9,30 +9,6 @@ import java.util.Date;
 
 public class ParkingSpot
 {
-    private ReservationTime reservation;
-    private String address;
-    private String name;
-    private String phone;
-    private String email;
-    private double rate;
-    private boolean isBooked; //added by Kev
-
-    public ParkingSpot(ReservationTime reservation, String address, String name, String phone, String email, double rate, boolean isBooked)
-    {
-        this.reservation = reservation; //required
-        this.address = address;// required
-        this.name = name;// required
-
-        // either phone or email required
-        this.phone = phone;
-        this.email = email;
-
-        this.rate = rate;// required
-        this.isBooked = false;
-    }
-
-
-
     public Date getStartTime() {
         return reservation.getStart();
     }
@@ -43,7 +19,6 @@ public class ParkingSpot
     /*public String getStartTime() {
         return reservation.getStart();
     }
-
     public String getEndTime() {
         return reservation.getEnd();
     }*/
@@ -69,11 +44,32 @@ public class ParkingSpot
         return rate;
     }
 
-    public boolean getIsBooked() {
-        return isBooked;
+    private ReservationTime reservation;
+    private String address;
+    private String name;
+    private String phone;
+    private String email;
+    private double rate;
+    //Rodney added
+    private boolean booked;
+
+    public ParkingSpot(ReservationTime reservation, String address, String name, String phone, String email, double rate)
+    {
+        this.reservation = reservation; //required
+        this.address = address;// required
+        this.name = name;// required
+
+        // either phone or email required
+        this.phone = phone;
+        this.email = email;
+
+        this.rate = rate;// required
+        //Rodney added.
+        booked=false;
     }
 
-    public void setIsBooked(boolean booked) {
-        this.isBooked = booked;
+    @Override
+    public String toString() {
+        return this.address + "\n" + this.reservation.toString();
     }
 }

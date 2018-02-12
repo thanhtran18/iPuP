@@ -4,19 +4,16 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import comp3350.iPuP.R;
+import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.ReservationTime;
 
@@ -29,46 +26,26 @@ public class AvailableParkingSpots extends ListActivity {
     public static final String KEY_PHONE = "host_phone";
     public static final String KEY_EMAIL = "host_email";
     public static final String KEY_RATE = "spot_rate";
+    public static final String ID_OF_SPOT = "spot_id";
     ////
     private ArrayList<ParkingSpot>fakeSpots=new ArrayList<ParkingSpot>();
-    //ArrayAdapter<ParkingSpot> adapter;
     private SimpleDateFormat date;
     private SimpleDateFormat time;
 
+    private AccessParkingSpots accessParkingSpots;
+
+    ArrayAdapter<ParkingSpot> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_available_parking_spots);
-        fakeSpots = returnDataStub();
-        ArrayAdapter<ParkingSpot> adapter = new ArrayAdapter<ParkingSpot>(this,
+        accessParkingSpots=new AccessParkingSpots();
+        fakeSpots = accessParkingSpots.getAvailableSpots();
+        /*ArrayAdapter<ParkingSpot>*/ adapter = new ArrayAdapter<ParkingSpot>(this,
                 android.R.layout.simple_list_item_1,
                 fakeSpots);
         setListAdapter(adapter);
     }
-
-    //***ADDED BY KEV
-    //ListView spotList = (ListView) findViewById(android.R.id.list);
-    //spotList.setAdapter(adapter);
-    //spotList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            /*@Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long offset) {
-                ParkingSpot item = (ParkingSpot) adapter.getItem(position);
-                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-                Intent intent = new Intent(getApplicationContext(), ParkingSpotInfoActivity.class);
-                intent.putExtra(KEY_RESERVATION_START, item.getStartTime());
-                intent.putExtra(KEY_RESERVATION_END, item.getEndTime());
-                intent.putExtra(KEY_NAME, item.getName());
-                intent.putExtra(KEY_ADDRESS, item.getAddress());
-                intent.putExtra(KEY_PHONE, item.getPhone());
-                intent.putExtra(KEY_EMAIL, item.getEmail());
-                intent.putExtra(KEY_RATE, "$" + Double.toString(item.getRate()));
-
-                startActivity(intent);
-            }
-        });
-    }*/
-
-
 
     private ArrayList<ParkingSpot> returnDataStub() {
         ArrayList<ParkingSpot>fakeSpots=new ArrayList<ParkingSpot>();
@@ -202,7 +179,6 @@ public class AvailableParkingSpots extends ListActivity {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         Intent intent = new Intent(getApplicationContext(), ParkingSpotInfoActivity.class);
         intent.putExtra(KEY_RESERVATION_START, item.getStartTime().toString());
-        //intent.putExtra(KEY_RESERVATION_END, item.getEndTime());
         intent.putExtra(KEY_RESERVATION_END, item.getEndTime().toString());
         intent.putExtra(KEY_NAME, item.getName());
         intent.putExtra(KEY_ADDRESS, item.getAddress());
@@ -210,6 +186,19 @@ public class AvailableParkingSpots extends ListActivity {
         intent.putExtra(KEY_EMAIL, item.getEmail());
         intent.putExtra(KEY_RATE, "$" + Double.toString(item.getRate()));
 
+        intent.putExtra(ID_OF_SPOT, item.getId());
+
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.clear();
+        fakeSpots = accessParkingSpots.getAvailableSpots();
+        /*ArrayAdapter<ParkingSpot>*/ adapter = new ArrayAdapter<ParkingSpot>(this,
+                android.R.layout.simple_list_item_1,
+                fakeSpots);
+        setListAdapter(adapter);
     }
 }

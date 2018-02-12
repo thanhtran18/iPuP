@@ -151,9 +151,10 @@
         </LinearLayout>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="buttonConfirmOnClick"
-            android:text="@string/confirm" />
+            android:text="@string/confirm"
+            android:layout_marginTop="20dp"/>
     </LinearLayout>
 </ScrollView>

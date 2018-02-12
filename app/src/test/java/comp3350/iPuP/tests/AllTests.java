@@ -4,7 +4,6 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 //import comp3350.iPuP.tests.objects.CourseTest;
 import comp3350.iPuP.objects.ReservationTime;
-import comp3350.iPuP.tests.business.AccessParkingSpotsTest;
 import comp3350.iPuP.tests.objects.ParkingSpotTest;
 import comp3350.iPuP.tests.objects.ReservationTimeTest;
 //import comp3350.iPuP.tests.objects.SCTest;
@@ -33,7 +32,6 @@ public class AllTests
 
     private static void testBusiness()
     {
-        suite.addTestSuite(AccessParkingSpotsTest.class);
 //        suite.addTestSuite(CalculateGPATest.class);
     }
 }

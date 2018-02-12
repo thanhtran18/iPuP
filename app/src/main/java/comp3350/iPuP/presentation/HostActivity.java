@@ -43,17 +43,23 @@ public class HostActivity extends Activity
         String email = edit.getText().toString();
         edit =  (EditText) findViewById(R.id.editPhone);
         String phone = edit.getText().toString();
-        Double rate = 0.0;
+        edit = (EditText) findViewById(R.id.editRate);
+        String rateStr = edit.getText().toString();
+        Double rate = Double.parseDouble(rateStr.equals("") ? "0": rateStr);
+
         DatePicker datePicker =  (DatePicker) findViewById(R.id.datePickerDate);
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();
         int year =  datePicker.getYear();
+
         TimePicker timePickerStart =  (TimePicker) findViewById(R.id.timePickerStart);
         int startHour = timePickerStart.getHour();
         int startMinute = timePickerStart.getMinute();
+
         TimePicker timePickerEnd =  (TimePicker) findViewById(R.id.timePickerEnd);
         int endHour = timePickerEnd.getHour();
         int endMinute = timePickerEnd.getMinute();
+
         ReservationTime reservationTime = new ReservationTime(year,month,day,startHour,startMinute,endHour,endMinute);
 
         ParkingSpot newParkingSpot = new ParkingSpot(reservationTime,address,name,phone,email,rate);

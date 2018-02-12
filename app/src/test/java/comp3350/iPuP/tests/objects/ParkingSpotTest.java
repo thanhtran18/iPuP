@@ -18,7 +18,8 @@ public class ParkingSpotTest extends TestCase {
     public void testParkingSpots()
     {
         ReservationTime time = new ReservationTime(2017,3, 4, 8,30,9,30);
-        assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getTime(), time);
+        assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getStartTime(), time.getStart());
+        assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getEndTime(), time.getEnd());
         assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getAddress(), "34 software drive");
         assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getName(), "Braico");
         assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getPhone(), "5555555");

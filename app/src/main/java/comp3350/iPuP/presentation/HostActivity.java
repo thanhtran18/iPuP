@@ -43,7 +43,9 @@ public class HostActivity extends Activity
         String email = edit.getText().toString();
         edit =  (EditText) findViewById(R.id.editPhone);
         String phone = edit.getText().toString();
-        Double rate = 0.0;
+        //Double rate = 0.0;
+        edit = (EditText) findViewById(R.id.editRate);
+        Double rate = Double.parseDouble(edit.getText().toString());
         DatePicker datePicker =  (DatePicker) findViewById(R.id.datePickerDate);
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();
@@ -56,7 +58,7 @@ public class HostActivity extends Activity
         int endMinute = timePickerEnd.getMinute();
         ReservationTime reservationTime = new ReservationTime(year,month,day,startHour,startMinute,endHour,endMinute);
 
-        ParkingSpot newParkingSpot = new ParkingSpot(reservationTime,address,name,phone,email,rate, false);
+        ParkingSpot newParkingSpot = new ParkingSpot(reservationTime,address,name,phone,email,rate);
         String rtn = accessParkingSpots.insertParkingSpot(newParkingSpot);
 
         if (rtn == null)

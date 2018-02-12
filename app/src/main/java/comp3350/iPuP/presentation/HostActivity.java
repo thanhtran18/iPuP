@@ -10,11 +10,6 @@ import android.widget.TimePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
-
 import comp3350.iPuP.R;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.business.AccessParkingSpots;
@@ -35,9 +30,6 @@ public class HostActivity extends Activity
     @TargetApi(Build.VERSION_CODES.O)
     public void buttonConfirmOnClick(View v)
     {
-        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-        int startHour,startMinute,endHour,endMinute;
-
         EditText edit =  (EditText) findViewById(R.id.editName);
         String name = edit.getText().toString();
         edit =  (EditText) findViewById(R.id.editAddress);
@@ -47,7 +39,8 @@ public class HostActivity extends Activity
         edit =  (EditText) findViewById(R.id.editPhone);
         String phone = edit.getText().toString();
         edit = (EditText) findViewById(R.id.editRate);
-        Double rate = Double.parseDouble(edit.getText().toString());
+        String rateStr = edit.getText().toString();
+        Double rate = Double.parseDouble(rateStr.equals("") ? "0": rateStr);
 
         DatePicker datePicker =  (DatePicker) findViewById(R.id.datePickerDate);
         int day = datePicker.getDayOfMonth();
@@ -55,21 +48,12 @@ public class HostActivity extends Activity
         int year =  datePicker.getYear();
 
         TimePicker timePickerStart =  (TimePicker) findViewById(R.id.timePickerStart);
-        TimePicker timePickerEnd =  (TimePicker) findViewById(R.id.timePickerEnd);
+        int startHour = timePickerStart.getHour();
+        int startMinute = timePickerStart.getMinute();
 
-        if (currentApiVersion > android.os.Build.VERSION_CODES.LOLLIPOP_MR1)
-        {
-            startHour = timePickerStart.getHour();
-            startMinute = timePickerStart.getMinute();
-            endHour = timePickerEnd.getHour();
-            endMinute = timePickerEnd.getMinute();
-        } else
-        {
-            startHour = timePickerStart.getCurrentHour();
-            startMinute = timePickerStart.getCurrentMinute();
-            endHour = timePickerEnd.getCurrentHour();
-            endMinute = timePickerEnd.getCurrentMinute();
-        }
+        TimePicker timePickerEnd =  (TimePicker) findViewById(R.id.timePickerEnd);
+        int endHour = timePickerEnd.getHour();
+        int endMinute = timePickerEnd.getMinute();
 
         ReservationTime reservationTime = new ReservationTime(year,month,day,startHour,startMinute,endHour,endMinute);
 

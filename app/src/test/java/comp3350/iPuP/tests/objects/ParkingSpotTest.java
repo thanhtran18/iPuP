@@ -23,6 +23,6 @@ public class ParkingSpotTest extends TestCase {
         assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getName(), "Braico");
         assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getPhone(), "5555555");
         assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getEmail(), "m@m.m");
-        assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getRate(), 34);
+        assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getRate(), 34.0);
     }
 }

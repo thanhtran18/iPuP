@@ -15,7 +15,7 @@ public class Services
 		}
 		return dataAccessService;
 	}
-	public static DataAccessStub createDataAccess(String dbName)
+	/*public static DataAccessStub createDataAccess(String dbName)
 	{
 		if (dataAccessService == null)
 		{
@@ -23,7 +23,7 @@ public class Services
 			dataAccessService.open(Main.dbName);
 		}
 		return dataAccessService;
-	}
+	}*/
 
     public static DataAccessStub getDataAccess()
     {

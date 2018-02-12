@@ -21,7 +21,7 @@ public class AccessSC
 
 	public AccessSC()
 	{
-		dataAccess = (DataAccessStub) Services.getDataAccess(Main.dbName);
+		//dataAccess = (DataAccessStub) Services.getDataAccess(Main.dbName);
 		elements = null;
 		currentSC = 0;
 		currentCS = 0;
@@ -31,7 +31,7 @@ public class AccessSC
 	{
 		if (elements == null)
 		{
-			elements = dataAccess.getSC(new SC(studentID, null));
+			//elements = dataAccess.getSC(new SC(studentID, null));
 			gpa = Calculate.gpa(elements);
 			currentSC = 0;
 		}
@@ -53,7 +53,7 @@ public class AccessSC
 	{
 		if (elements == null)
 		{
-			elements = dataAccess.getCS(new SC(null, courseID));
+			//elements = dataAccess.getCS(new SC(null, courseID));
 			gpa = Calculate.gpa(elements);
 			currentCS = 0;
 		}

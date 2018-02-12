@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:ems="12"
                 android:enabled="true"
-                android:inputType="textNoSuggestions" />
+                android:inputType="textPersonName" />
 
             <TextView
                 android:id="@+id/textAddress"
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:ems="12"
                 android:enabled="true"
-                android:inputType="textNoSuggestions" />
+                android:inputType="textPostalAddress" />
 
             <TextView
                 android:id="@+id/textPhone"
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:ems="12"
                 android:enabled="true"
-                android:inputType="textNoSuggestions" />
+                android:inputType="phone" />
 
             <TextView
                 android:id="@+id/textEmail"
@@ -86,7 +86,24 @@
                 android:layout_height="wrap_content"
                 android:ems="12"
                 android:enabled="true"
-                android:inputType="textNoSuggestions" />
+                android:inputType="textEmailAddress" />
+
+            <TextView
+                android:id="@+id/textRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="60dp"
+                android:layout_marginRight="60dp"
+                android:text="@string/host_rate"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <EditText
+                android:id="@+id/editRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="12"
+                android:enabled="true"
+                android:inputType="numberDecimal"/>
 
         </GridLayout>
 
@@ -134,9 +151,10 @@
         </LinearLayout>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="buttonConfirmOnClick"
-            android:text="@string/confirm" />
+            android:text="@string/confirm"
+            android:layout_marginTop="20dp"/>
     </LinearLayout>
 </ScrollView>

@@ -17,7 +17,7 @@ public class AccessStudents
 
 	public AccessStudents()
 	{
-		dataAccess = (DataAccessStub) Services.getDataAccess(Main.dbName);
+		//dataAccess = (DataAccessStub) Services.getDataAccess(Main.dbName);
 		students = null;
 		student = null;
 		currentStudent = 0;
@@ -26,7 +26,7 @@ public class AccessStudents
     public String getStudents(List<Student> students)
     {
         students.clear();
-        return dataAccess.getStudentSequential(students);
+		return null;//  dataAccess.getStudentSequential(students);
     }
 
     public Student getSequential()
@@ -35,7 +35,7 @@ public class AccessStudents
         if (students == null)
         {
             students = new ArrayList<Student>();
-            result = dataAccess.getStudentSequential(students);
+            //result = dataAccess.getStudentSequential(students);
             currentStudent = 0;
         }
         if (currentStudent < students.size())
@@ -61,7 +61,7 @@ public class AccessStudents
 		}
 		else
 		{
-			students = dataAccess.getStudentRandom(new Student(studentID));
+			//students = dataAccess.getStudentRandom(new Student(studentID));
 			if (students.size()==1)
 			{
 				student = (Student) students.get(0);
@@ -72,16 +72,16 @@ public class AccessStudents
 
 	public String insertStudent(Student currentStudent)
 	{
-		return dataAccess.insertStudent(currentStudent);
+		return null;//  dataAccess.insertStudent(currentStudent);
 	}
 
 	public String updateStudent(Student currentStudent)
 	{
-		return dataAccess.updateStudent(currentStudent);
+		return null;//  dataAccess.updateStudent(currentStudent);
 	}
 
 	public String deleteStudent(Student currentStudent)
 	{
-		return dataAccess.deleteStudent(currentStudent);
+		return null;//  dataAccess.deleteStudent(currentStudent);
 	}
 }

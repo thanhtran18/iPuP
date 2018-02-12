@@ -328,6 +328,20 @@ public class DataAccessStub
 		parkingSpots.add(currentParkingSpot);
 		return null;
 	}
+
+	public List<ParkingSpot> getParkingSpots(){
+		return parkingSpots;
+	}
+
+	public void setSpotToBooked(String id){
+	    for(int i=0; i<parkingSpots.size(); i++) {
+            if (parkingSpots.get(i).getId().equals(id)) {
+                parkingSpots.get(i).setBooked(true);
+                break;
+            }
+        }
+	}
+
 //	public String insertStudent(Student currentStudent)
 //	{
 //		// don't bother checking for duplicates

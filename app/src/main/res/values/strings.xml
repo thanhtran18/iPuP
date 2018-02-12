@@ -35,9 +35,11 @@
     <string name="warning">Warning</string>
     <string name="no_available_parking_spots">There are no available spots to display</string>
     <string name="title_activity_available_parking_spots">AvailableParkingSpots</string>
+    <string name="title_activity_parking_spot_info">ParkingSpotInfoActivity</string>
     <string name="large_text">
 
 
         "We're gonna put the list of parking spots here.\n\n"
     </string>
+    <string name="book_this_spot">Book this spot</string>
 </resources>

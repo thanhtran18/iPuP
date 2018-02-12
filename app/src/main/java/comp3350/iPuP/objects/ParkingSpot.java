@@ -1,6 +1,6 @@
 package comp3350.iPuP.objects;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Created by Mark Van Egmond on 1/23/2018.
@@ -8,9 +8,19 @@ import java.time.LocalDateTime;
 
 public class ParkingSpot
 {
-    public ReservationTime getStartTime() {
-        return reservation;
+    public Date getStartTime() {
+        return reservation.getStart();
     }
+
+    public Date getEndTime() {
+        return reservation.getEnd();
+    }
+    /*public String getStartTime() {
+        return reservation.getStart();
+    }
+    public String getEndTime() {
+        return reservation.getEnd();
+    }*/
 
     public String getName() {
         return name;
@@ -38,7 +48,18 @@ public class ParkingSpot
     private String name;
     private String phone;
     private String email;
+    private String id;
     private double rate;
+    //Rodney added
+    private boolean isBooked;
+
+    public boolean isBooked() {
+        return isBooked;
+    }
+
+    public void setBooked(boolean booked) {
+        isBooked = booked;
+    }
 
     public ParkingSpot(ReservationTime reservation, String address, String name, String phone, String email, double rate)
     {
@@ -51,5 +72,18 @@ public class ParkingSpot
         this.email = email;
 
         this.rate = rate;// required
+        //Rodney added.
+        id=address+name+phone+email;
+        isBooked =false;
+
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return this.address + "\n" + this.reservation.toString();
     }
 }

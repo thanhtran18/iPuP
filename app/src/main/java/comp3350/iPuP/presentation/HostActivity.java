@@ -43,7 +43,9 @@ public class HostActivity extends Activity
         String email = edit.getText().toString();
         edit =  (EditText) findViewById(R.id.editPhone);
         String phone = edit.getText().toString();
-        Double rate = 0.0;
+        //Double rate = 0.0;
+        edit = (EditText) findViewById(R.id.editRate);
+        Double rate = Double.parseDouble(edit.getText().toString());
         DatePicker datePicker =  (DatePicker) findViewById(R.id.datePickerDate);
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();

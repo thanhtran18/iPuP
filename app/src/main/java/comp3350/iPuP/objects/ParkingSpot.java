@@ -84,6 +84,6 @@ public class ParkingSpot
 
     @Override
     public String toString() {
-        return this.id+"\n"+this.address + "\n" + this.reservation.toString();
+        return this.address + "\n" + this.reservation.toString();
     }
 }

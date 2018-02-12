@@ -20,11 +20,17 @@ public class DataAccessStub
 //	private ArrayList<Course> courses;
 //	private ArrayList<SC> scs;
 
+//	private ArrayList<Student> students;
+//	private ArrayList<Course> courses;
+//	private ArrayList<SC> scs;
+
+/*
+* This part is for our use*/
 	private List<ParkingSpot> parkingSpots;
 
 	public DataAccessStub()
 	{
-		//nothing yet
+        parkingSpots = new ArrayList<ParkingSpot>();
 	}
 
 //	public DataAccessStub(String dbName)
@@ -298,16 +304,21 @@ public class DataAccessStub
 //	}
 //
 	public void close()
-	{
-		System.out.println("closed array of ParkingSpot object!");
-	}
-//
+    {
+        System.out.println("Closed parkingSpots arraylist!");
+    }
+
+//	public void close()
+//	{
+//		System.out.println("Closed " +dbType +" database " +dbName);
+//	}
+
 //	public String getStudentSequential(List<Student> studentResult)
 //	{
 //        studentResult.addAll(students);
 //		return null;
 //	}
-//
+
 //	public ArrayList<Student> getStudentRandom(Student currentStudent)
 //	{
 //		ArrayList<Student> newStudents;
@@ -322,33 +333,20 @@ public class DataAccessStub
 //		return newStudents;
 //	}
 
-	public String insertParkingSpot(ParkingSpot currentParkingSpot)
-	{
-		// not checking for duplicates yet
-		parkingSpots.add(currentParkingSpot);
-		return null;
-	}
-
-	public List<ParkingSpot> getParkingSpots(){
-		return parkingSpots;
-	}
-
-	public void setSpotToBooked(String id){
-	    for(int i=0; i<parkingSpots.size(); i++) {
-            if (parkingSpots.get(i).getId().equals(id)) {
-                parkingSpots.get(i).setBooked(true);
-                break;
-            }
-        }
-	}
+    public String insertParkingSpot(ParkingSpot currentParkingSpot)
+    {
+        // not checking for duplicates yet
+        parkingSpots.add(currentParkingSpot);
+        return null;
+    }
 
 //	public String insertStudent(Student currentStudent)
 //	{
-//		// don't bother checking for duplicates
+//		 //don't bother checking for duplicates
 //		students.add(currentStudent);
 //		return null;
 //	}
-//
+
 //	public String updateStudent(Student currentStudent)
 //	{
 //		int index;
@@ -360,7 +358,7 @@ public class DataAccessStub
 //		}
 //		return null;
 //	}
-//
+
 //	public String deleteStudent(Student currentStudent)
 //	{
 //		int index;
@@ -372,13 +370,16 @@ public class DataAccessStub
 //		}
 //		return null;
 //	}
-//
+	public List<ParkingSpot> getParkingSpots(){
+		return parkingSpots;
+	}
+
 //	public String getCourseSequential(List<Course> courseResult)
 //	{
 //        courseResult.addAll(courses);
 //		return null;
 //	}
-//
+
 //	public ArrayList<Course> getCourseRandom(Course currentCourse)
 //	{
 //		ArrayList<Course> newCourses;
@@ -392,14 +393,22 @@ public class DataAccessStub
 //		}
 //		return newCourses;
 //	}
-//
+
 //	public String insertCourse(Course currentCourse)
 //	{
-//		// don't bother checking for duplicates
+//		 //don't bother checking for duplicates
 //		courses.add(currentCourse);
 //		return null;
 //	}
-//
+	public void setSpotToBooked(String id){
+	    for(int i=0; i<parkingSpots.size(); i++) {
+            if (parkingSpots.get(i).getId().equals(id)) {
+                parkingSpots.get(i).setBooked(true);
+                break;
+            }
+        }
+	}
+
 //	public String updateCourse(Course currentCourse)
 //	{
 //		int index;
@@ -411,7 +420,7 @@ public class DataAccessStub
 //		}
 //		return null;
 //	}
-//
+
 //	public String deleteCourse(Course currentCourse)
 //	{
 //		int index;
@@ -423,14 +432,14 @@ public class DataAccessStub
 //		}
 //		return null;
 //	}
-//
+
 //	public ArrayList<SC> getSC(SC currentSC)
 //	{
 //		ArrayList<SC> newSCs;
 //		SC sc;
 //		int counter;
 //
-//		// get the SC objects with the same studentID as currentSC
+//		 //get the SC objects with the same studentID as currentSC
 //		newSCs = new ArrayList<SC>();
 //		for (counter=0; counter<scs.size(); counter++)
 //		{
@@ -442,7 +451,7 @@ public class DataAccessStub
 //		}
 //		return newSCs;
 //	}
-//
+
 //	public ArrayList<SC> getCS(SC currentSC)
 //	{
 //		ArrayList<SC> newSCs;

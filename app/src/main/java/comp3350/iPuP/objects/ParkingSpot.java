@@ -2,47 +2,9 @@ package comp3350.iPuP.objects;
 
 import java.util.Date;
 
-/**
- * Created by Mark Van Egmond on 1/23/2018.
- */
 
 public class ParkingSpot
 {
-    public Date getStartTime() {
-        return reservation.getStart();
-    }
-
-    public Date getEndTime() {
-        return reservation.getEnd();
-    }
-    /*public String getStartTime() {
-        return reservation.getStart();
-    }
-    public String getEndTime() {
-        return reservation.getEnd();
-    }*/
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public double getRate()
-    {
-        return rate;
-    }
-
     private ReservationTime reservation;
     private String address;
     private String name;
@@ -50,16 +12,7 @@ public class ParkingSpot
     private String email;
     private String id;
     private double rate;
-    //Rodney added
     private boolean isBooked;
-
-    public boolean isBooked() {
-        return isBooked;
-    }
-
-    public void setBooked(boolean booked) {
-        isBooked = booked;
-    }
 
     public ParkingSpot(ReservationTime reservation, String address, String name, String phone, String email, double rate)
     {
@@ -72,18 +25,66 @@ public class ParkingSpot
         this.email = email;
 
         this.rate = rate;// required
-        //Rodney added.
-        id=address+name+phone+email;
-        isBooked =false;
+        id = address+name+phone+email;
+        isBooked = false;
 
     }
 
-    public String getId() {
+    public Date getStartTime()
+    {
+        return reservation.getStart();
+    }
+
+    public Date getEndTime()
+    {
+        return reservation.getEnd();
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public String getPhone()
+    {
+        return phone;
+    }
+
+    public String getAddress()
+    {
+        return address;
+    }
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public double getRate()
+    {
+        return rate;
+    }
+
+    public boolean isBooked()
+    {
+        return isBooked;
+    }
+
+    public void setBooked(boolean booked)
+    {
+        isBooked = booked;
+    }
+
+
+
+    public String getId()
+    {
         return id;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return this.address + "\n" + this.reservation.toString();
     }
 

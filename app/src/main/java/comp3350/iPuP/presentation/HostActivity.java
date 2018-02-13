@@ -77,6 +77,7 @@ public class HostActivity extends Activity
             TextView text = findViewById(R.id.textAddress);
             text.setTextColor(Color.BLACK);
         }
+
         if (name.equals(""))
         {
             valid = false;
@@ -88,6 +89,7 @@ public class HostActivity extends Activity
             TextView text = findViewById(R.id.textName);
             text.setTextColor(Color.BLACK);
         }
+
         if (rate == 0)
         {
             valid = false;
@@ -99,6 +101,7 @@ public class HostActivity extends Activity
             TextView text = findViewById(R.id.textRate);
             text.setTextColor(Color.BLACK);
         }
+
         if (email.equals("") && phone.equals(""))
         {
             valid = false;
@@ -108,6 +111,7 @@ public class HostActivity extends Activity
             text = findViewById(R.id.textEmail);
             text.setTextColor(Color.RED);
         }
+
         if (reservationTime.getStart().compareTo(reservationTime.getEnd()) >= 0)
         {
             valid = false;
@@ -126,9 +130,12 @@ public class HostActivity extends Activity
             ParkingSpot newParkingSpot = new ParkingSpot(reservationTime, address, name, phone, email, rate);
             String rtn = accessParkingSpots.insertParkingSpot(newParkingSpot);
 
-            if (rtn == null) {
+            if (rtn == null)
+            {
                 Toast.makeText(this, "New advertisement created!", Toast.LENGTH_LONG).show();
-            } else {
+            }
+            else
+            {
                 Toast.makeText(this, "Failed to create new advertisement!", Toast.LENGTH_LONG).show();
             }
 

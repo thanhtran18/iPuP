@@ -12,6 +12,7 @@
     <string name="host_time">Select the time that you would like the parking to be available</string>
     <string name="next">Next</string>
     <string name="confirm">Confirm</string>
+    <string name="title">iPuP - Parking for u</string>
 
 
     <string name="action_settings">Settings</string>

@@ -2,10 +2,13 @@ package comp3350.iPuP.presentation;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -62,17 +65,74 @@ public class HostActivity extends Activity
 
         ReservationTime reservationTime = new ReservationTime(year,month,day,startHour,startMinute,endHour,endMinute);
 
-        ParkingSpot newParkingSpot = new ParkingSpot(reservationTime,address,name,phone,email,rate);
-        String rtn = accessParkingSpots.insertParkingSpot(newParkingSpot);
-
-        if (rtn == null)
+        boolean valid = true;
+        if (address.equals(""))
         {
-            Toast.makeText(this, "New advertisement created!", Toast.LENGTH_LONG).show();
-        } else
+            valid = false;
+            TextView text = findViewById(R.id.textAddress);
+            text.setTextColor(Color.RED);
+        }
+        else
         {
-            Toast.makeText(this, "Failed to create new advertisement!", Toast.LENGTH_LONG).show();
+            TextView text = findViewById(R.id.textAddress);
+            text.setTextColor(Color.BLACK);
+        }
+        if (name.equals(""))
+        {
+            valid = false;
+            TextView text = findViewById(R.id.textName);
+            text.setTextColor(Color.RED);
+        }
+        else
+        {
+            TextView text = findViewById(R.id.textName);
+            text.setTextColor(Color.BLACK);
+        }
+        if (rate == 0)
+        {
+            valid = false;
+            TextView text = findViewById(R.id.textRate);
+            text.setTextColor(Color.RED);
+        }
+        else
+        {
+            TextView text = findViewById(R.id.textRate);
+            text.setTextColor(Color.BLACK);
+        }
+        if (email.equals("") && phone.equals(""))
+        {
+            valid = false;
+            TextView text = findViewById(R.id.textPhone);
+            text.setTextColor(Color.RED);
+            text.setText("" + text.getText() + "\nYou must enter either phone or email");
+            text = findViewById(R.id.textEmail);
+            text.setTextColor(Color.RED);
+        }
+        if (reservationTime.getStart().compareTo(reservationTime.getEnd()) >= 0)
+        {
+            valid = false;
+            TextView text = findViewById(R.id.textTime);
+            text.setTextColor(Color.RED);
+            text.setText("" + text.getText() + ".\nYour ending time must be after your starting time");
+        }
+        else
+        {
+            TextView text = findViewById(R.id.textTime);
+            text.setTextColor(Color.BLACK);
         }
 
-        finish();
+        if (valid)
+        {
+            ParkingSpot newParkingSpot = new ParkingSpot(reservationTime, address, name, phone, email, rate);
+            String rtn = accessParkingSpots.insertParkingSpot(newParkingSpot);
+
+            if (rtn == null) {
+                Toast.makeText(this, "New advertisement created!", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Failed to create new advertisement!", Toast.LENGTH_LONG).show();
+            }
+
+            finish();
+        }
     }
 }

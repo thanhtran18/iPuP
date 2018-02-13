@@ -27,6 +27,13 @@ public class AccessParkingSpots {
         return dataAccess.insertParkingSpot(currentParkingSpot);
     }
 
+    public ArrayList<ParkingSpot> getAllSpots(){
+        ArrayList<ParkingSpot> returnList=new ArrayList<ParkingSpot>();
+        returnList.addAll(dataAccess.getParkingSpots());
+        return returnList;
+    }
+
+
     public ArrayList<ParkingSpot> getAvailableSpots(){
         List<ParkingSpot> temp=dataAccess.getParkingSpots();
         for (int i=0; i<temp.size(); i++){

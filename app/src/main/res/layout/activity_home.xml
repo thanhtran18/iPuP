@@ -19,10 +19,11 @@
             android:id="@+id/textViewTitle"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
+            android:layout_weight="45"
             android:text="@string/title"
             android:textAppearance="@android:style/TextAppearance.Large"
-            android:layout_weight="45"
-            android:textSize="32sp" />
+            android:textSize="32sp"
+            android:gravity="center_horizontal" />
 
         <Button
             android:id="@+id/buttonParker"

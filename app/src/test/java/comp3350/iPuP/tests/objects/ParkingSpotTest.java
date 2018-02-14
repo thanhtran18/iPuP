@@ -4,11 +4,9 @@ import junit.framework.TestCase;
 
 import comp3350.iPuP.objects.ReservationTime;
 import comp3350.iPuP.objects.ParkingSpot;
-/**
- * Created by Amanjyot on 2018-02-05.
- */
 
-public class ParkingSpotTest extends TestCase {
+public class ParkingSpotTest extends TestCase
+{
 
     public ParkingSpotTest(String arg0)
     {

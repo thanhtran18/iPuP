@@ -8,9 +8,6 @@ import java.util.GregorianCalendar;
 
 import comp3350.iPuP.objects.ReservationTime;
 
-/**
- * Created by kram1 on 2/6/2018.
- */
 
 public class ReservationTimeTest extends TestCase
 {

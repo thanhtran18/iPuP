@@ -69,7 +69,9 @@ public class AvailableParkingSpots extends ListActivity
         date = new SimpleDateFormat("EEE, d MMM yyyy");
         ParkingSpot item = (ParkingSpot) fakeSpots.get(position);
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
         Intent intent = new Intent(getApplicationContext(), ParkingSpotInfoActivity.class);
+
         intent.putExtra(KEY_RESERVATION_START, item.getStartTime().toString());
         intent.putExtra(KEY_RESERVATION_END, item.getEndTime().toString());
         intent.putExtra(KEY_NAME, item.getName());

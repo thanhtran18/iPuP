@@ -39,7 +39,7 @@ public class AccessParkingSpots
         availableSpots = new ArrayList<ParkingSpot>();
         for (int i = 0; i < temp.size(); i++)
         {
-            if(!(temp.get(i).isBooked()))
+            if (!(temp.get(i).isBooked()))
             {
                 availableSpots.add(temp.get(i));
             }

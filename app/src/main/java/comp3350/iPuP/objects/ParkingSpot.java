@@ -75,8 +75,6 @@ public class ParkingSpot
         isBooked = booked;
     }
 
-
-
     public String getId()
     {
         return id;

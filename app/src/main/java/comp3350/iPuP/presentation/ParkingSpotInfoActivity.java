@@ -1,9 +1,5 @@
 package comp3350.iPuP.presentation;
 
-/**
- * Created by ThanhTran on 2018-01-30.
- */
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,11 +31,11 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
     public ArrayList<ParkingSpot> fakeParkingSpots = new ArrayList<>();
     Button bookThisSpot;
 
-
     private AccessParkingSpots accessParkingSpots;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         Main.startUp();
@@ -48,13 +44,6 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
 
         bookThisSpot = (Button) findViewById(R.id.buttonBookThisSpot);
         accessParkingSpots=new AccessParkingSpots();
-        /*bookThisSpot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showBookingResult();
-
-            }
-        });*/
 
         //**** load info
         String hostName = "";
@@ -65,7 +54,8 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
         String hostAddress = "";
         String spotRate = "";
         final Intent intent = getIntent();
-        if (null != intent) {
+        if (null != intent)
+        {
             hostName = intent.getStringExtra(KEY_NAME);
             reservationStart = intent.getStringExtra(KEY_RESERVATION_START);
             reservationEnd = intent.getStringExtra(KEY_RESERVATION_END);
@@ -96,9 +86,11 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
         TextView spotRateTxt = (TextView) findViewById(R.id.spotRateText);
         spotRateTxt.setText(spotRate);
 
-        bookThisSpot.setOnClickListener(new View.OnClickListener() {
+        bookThisSpot.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 showBookingResult();
                 String spotId=intent.getStringExtra(ID_OF_SPOT);
                 accessParkingSpots.bookSpot(spotId);
@@ -109,7 +101,8 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
 
     }
 
-    public void showBookingResult() {
+    public void showBookingResult()
+    {
         Context context = getApplicationContext();
         CharSequence text = "Booked successfully!";
         int duration = Toast.LENGTH_SHORT;
@@ -119,22 +112,10 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
         toast.setGravity(Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
-    public void buttonBackToMain(View v) {
+    public void buttonBackToMain(View v)
+    {
         Intent backIntent = new Intent(ParkingSpotInfoActivity.this, HomeActivity.class);
         ParkingSpotInfoActivity.this.startActivity(backIntent);
     }
-
-    /*public void addFakeSpots() {
-    public void addFakeSpots() {
-        ReservationTime newReservationTime = new ReservationTime(2018, 02, 18, 8, 00, 05, 00);
-        ParkingSpot tempSpot;
-        String address = "20 place ave";
-        String name="this dude";
-        String phone="the number";
-        String email="theguy@host.com";
-        double rate = 0.10;
-        tempSpot= new ParkingSpot(newReservationTime, address, name, phone, email,rate, false);
-        fakeParkingSpots.add(tempSpot);
-    }*/
 }
 

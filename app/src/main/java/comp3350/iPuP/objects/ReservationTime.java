@@ -6,9 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-/**
- * Created by Mark Van Egmond on 2/5/2018.
- */
+
 
 public class ReservationTime
 {
@@ -17,7 +15,8 @@ public class ReservationTime
     private SimpleDateFormat date;
     private SimpleDateFormat time;
 
-    public ReservationTime(int year, int month, int day, int startHour, int startMinute, int endHour, int endMinute) {
+    public ReservationTime(int year, int month, int day, int startHour, int startMinute, int endHour, int endMinute)
+    {
         if (year > 2000)
         {
             Calendar c = new GregorianCalendar(year, month, day, startHour, startMinute);
@@ -42,6 +41,7 @@ public class ReservationTime
     {
         return start;
     }
+
     public Date getEnd()
     {
         return end;
@@ -50,7 +50,6 @@ public class ReservationTime
     @Override
     public boolean equals(Object other)
     {
-
         if (other != null && other.getClass() == ReservationTime.class)
         {
             ReservationTime otherTime = (ReservationTime) other;

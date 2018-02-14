@@ -400,13 +400,24 @@ public class DataAccessStub
 //		courses.add(currentCourse);
 //		return null;
 //	}
-	public void setSpotToBooked(String id){
+	public String setSpotToBooked(String id){
+		String bookMessage="Not Booked";
 	    for(int i=0; i<parkingSpots.size(); i++) {
             if (parkingSpots.get(i).getId().equals(id)) {
-                parkingSpots.get(i).setBooked(true);
+            	if(parkingSpots.get(i).isBooked()){
+            		bookMessage="Already Booked";
+				}else {
+					parkingSpots.get(i).setBooked(true);
+					bookMessage="Booked";
+				}
                 break;
             }
         }
+        return bookMessage;
+	}
+
+	public void clearSpotList(){
+		parkingSpots.clear();
 	}
 
 //	public String updateCourse(Course currentCourse)

@@ -36,6 +36,7 @@ public class AccessParkingSpots {
 
     public ArrayList<ParkingSpot> getAvailableSpots(){
         List<ParkingSpot> temp=dataAccess.getParkingSpots();
+        availableSpots=new ArrayList<ParkingSpot>();
         for (int i=0; i<temp.size(); i++){
             if(!(temp.get(i).isBooked())){
                 availableSpots.add(temp.get(i));
@@ -44,7 +45,11 @@ public class AccessParkingSpots {
         return availableSpots;
     }
 
-    public void bookSpot(String id){
-        dataAccess.setSpotToBooked(id);
+    public String bookSpot(String id){
+        return dataAccess.setSpotToBooked(id);
+    }
+
+    public void clearSpots(){
+        dataAccess.clearSpotList();
     }
 }

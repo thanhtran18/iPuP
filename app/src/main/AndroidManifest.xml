@@ -10,7 +10,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".presentation.HomeActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,40 +19,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.StudentsActivity"
-            android:label="@string/title_activity_students">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="comp3350.iPuP.presentation.HomeActivity" />
-        </activity>
-        <activity
-            android:name=".presentation.StudentCoursesActivity"
-            android:label="@string/title_activity_student_courses">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="comp3350.iPuP.presentation.StudentsActivity" />
-        </activity>
-        <activity
             android:name=".presentation.HostActivity"
-            android:label="@string/title_activity_courses">
+            android:label="@string/title_activity_host"
+            android:configChanges="orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="comp3350.iPuP.presentation.HomeActivity" />
         </activity>
         <activity
-            android:name=".presentation.CourseStudentsActivity"
-            android:label="@string/title_activity_course_students">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="comp3350.iPuP.presentation.HostActivity"/>
-        </activity>
-        <activity android:name=".presentation.AvailableParkingSpots">
+            android:name=".presentation.AvailableParkingSpots"
+            android:configChanges="orientation|screenSize">
         </activity>
         <activity
             android:name=".presentation.ParkingSpotInfoActivity"
             android:label="@string/title_activity_parking_spot_info"
             android:parentActivityName=".presentation.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="comp3350.iPuP.presentation.AvailableParkingSpots"/>

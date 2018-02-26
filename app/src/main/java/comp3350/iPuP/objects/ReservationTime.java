@@ -1,6 +1,7 @@
 package comp3350.iPuP.objects;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,25 +15,47 @@ public class ReservationTime
     private Date end;
     private SimpleDateFormat date;
     private SimpleDateFormat time;
+    private boolean repeat;
 
-    public ReservationTime(int year, int month, int day, int startHour, int startMinute, int endHour, int endMinute)
+    public ReservationTime(int startYear, int startMonth, int startDay, int startHour, int startMinute, int endYear, int endMonth, int endDay, int endHour, int endMinute, boolean repeat)
     {
-        if (year > 2000)
+        date = new SimpleDateFormat("EEE, d MMM yyyy");
+        time = new SimpleDateFormat("h:mm a");
+
+        Calendar c = new GregorianCalendar(startYear, startMonth, startDay, startHour, startMinute);
+        start = c.getTime();
+        c.set(endYear, endMonth, endDay, endHour, endMinute);
+        end = c.getTime();
+        this.repeat = repeat;
+    }
+
+    public ReservationTime(Date newStart, Date newEnd, boolean repeat)
+    {
+        date = new SimpleDateFormat("EEE, d MMM yyyy");
+        time = new SimpleDateFormat("h:mm a");
+
+        start = newStart;
+        end = newEnd;
+        this.repeat = repeat;
+    }
+
+    public static ReservationTime parseString(String s, boolean repeat) throws ParseException
+    {
+        if (s.split("-").length == 2)
         {
-            Calendar c = new GregorianCalendar(year, month, day, startHour, startMinute);
-            date = new SimpleDateFormat("EEE, d MMM yyyy");
-            time = new SimpleDateFormat("h:mm");
-            start = c.getTime();
-            c.set(year, month, day, endHour, endMinute);
-            end = c.getTime();
+            String start = s.split("-")[0].trim();
+            String end = s.split("-")[1].trim();
+            SimpleDateFormat datetime = new SimpleDateFormat("EEE, d MMM yyyy, h:mm a");
+            return new ReservationTime(datetime.parse(start), datetime.parse(end), repeat);
         }
+        else throw new ParseException("There is not two dates separated by \" -\"",0);
     }
 
     @Override
     public String toString()
     {
         if (start != null && end != null)
-            return date.format(start) + ", " + time.format(start) + " - " + time.format(end);
+            return date.format(start) + ", " + time.format(start) + " - " + date.format(start) + ", " + time.format(end);
         else
             return "Invalid date";
     }

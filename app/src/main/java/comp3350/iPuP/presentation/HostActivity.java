@@ -12,11 +12,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.app.DialogFragment;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.GregorianCalendar;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.objects.ParkingSpot;
@@ -33,6 +33,47 @@ public class HostActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host);
         accessParkingSpots = new AccessParkingSpots();
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat date = new SimpleDateFormat("EEE, d MMM yyyy");
+        SimpleDateFormat time = new SimpleDateFormat("h:mm a");
+
+        TextView tv = (TextView)findViewById(R.id.editFromDate);
+        tv.setText(date.format(c.getTime()));
+
+        tv = (TextView)findViewById(R.id.editFromTime);
+        tv.setText(time.format(c.getTime()));
+
+        c.add(Calendar.HOUR_OF_DAY,1);
+        tv = (TextView)findViewById(R.id.editToDate);
+        tv.setText(date.format(c.getTime()));
+
+        tv = (TextView)findViewById(R.id.editToTime);
+        tv.setText(time.format(c.getTime()));
+    }
+
+    public void onFromDateClick(View v)
+    {
+        DialogFragment dateFragment = DatePickerFragment.newInstance(R.id.editFromDate);
+        dateFragment.show(getFragmentManager(),"DatePicker");
+    }
+
+    public void onToDateClick(View v)
+    {
+        DialogFragment dateFragment = DatePickerFragment.newInstance(R.id.editToDate);
+        dateFragment.show(getFragmentManager(),"DatePicker");
+    }
+
+    public void onFromTimeClick(View v)
+    {
+        DialogFragment timeFragment = TimePickerFragment.newInstance(R.id.editFromTime);
+        timeFragment.show(getFragmentManager(),"TimePicker");
+    }
+
+    public void onToTimeClick(View v)
+    {
+        DialogFragment timeFragment = TimePickerFragment.newInstance(R.id.editToTime);
+        timeFragment.show(getFragmentManager(),"TimePicker");
     }
 
     @TargetApi(Build.VERSION_CODES.O)
@@ -50,7 +91,7 @@ public class HostActivity extends Activity
         String rateStr = edit.getText().toString();
         Double rate = Double.parseDouble(rateStr.equals("") ? "0": rateStr);
 
-        DatePicker datePicker =  (DatePicker) findViewById(R.id.datePickerDate);
+        /*DatePicker datePicker =  (DatePicker) findViewById(R.id.datePickerDate);
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();
         int year =  datePicker.getYear();
@@ -64,7 +105,7 @@ public class HostActivity extends Activity
         int endMinute = timePickerEnd.getMinute();
 
         ReservationTime reservationTime = new ReservationTime(year,month,day,startHour,startMinute,endHour,endMinute);
-
+*/
         boolean valid = true;
         if (address.equals(""))
         {
@@ -111,7 +152,7 @@ public class HostActivity extends Activity
             text = findViewById(R.id.textEmail);
             text.setTextColor(Color.RED);
         }
-
+/*
         if (reservationTime.getStart().compareTo(reservationTime.getEnd()) >= 0)
         {
             valid = false;
@@ -124,10 +165,10 @@ public class HostActivity extends Activity
             TextView text = findViewById(R.id.textTime);
             text.setTextColor(Color.BLACK);
         }
-
+*/
         if (valid)
         {
-            ParkingSpot newParkingSpot = new ParkingSpot(reservationTime, address, name, phone, email, rate);
+            ParkingSpot newParkingSpot = new ParkingSpot(null/*reservationTime*/, address, name, phone, email, rate);
             String rtn = accessParkingSpots.insertParkingSpot(newParkingSpot);
 
             if (rtn == null)

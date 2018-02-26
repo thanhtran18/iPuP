@@ -54,7 +54,7 @@ public class HomeActivity extends Activity {
 
     public void buttonHostOnClick(View v)
     {
-        Intent hostIntent = new Intent(HomeActivity.this, HostActivity.class);
-        HomeActivity.this.startActivity(hostIntent);
+        Intent hostMenuIntent = new Intent(HomeActivity.this, HostMenuActivity.class);
+        HomeActivity.this.startActivity(hostMenuIntent);
     }
 }

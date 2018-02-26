@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="0dp"
+    android:paddingBottom="0dp"
+    tools:context="comp3350.iPuP.presentation.HostMenuActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:weightSum="2"
+        android:layout_margin="0dp">
+
+        <Button
+            android:id="@+id/buttonParker"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:padding="40dp"
+            android:background="@color/colorButtonBack1"
+            android:drawableLeft="@drawable/ic_icon_plus"
+            android:onClick="buttonCreateOnClick"
+            android:text="@string/host_menu_create"
+            android:textColor="@color/colorButtonText"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/buttonHost"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:padding="40dp"
+            android:background="@color/colorButtonBack2"
+            android:drawableLeft="@drawable/ic_icon_list"
+            android:onClick="buttonViewOnClick"
+            android:text="@string/host_menu_view"
+            android:textColor="@color/colorButtonText"
+            android:textSize="30sp" />
+    </LinearLayout>
+
+
+</RelativeLayout>

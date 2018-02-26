@@ -31,6 +31,10 @@
             android:configChanges="orientation|screenSize">
         </activity>
         <activity
+            android:name=".presentation.HostMenuActivity"
+            android:configChanges="orientation|screenSize">
+        </activity>
+        <activity
             android:name=".presentation.ParkingSpotInfoActivity"
             android:label="@string/title_activity_parking_spot_info"
             android:parentActivityName=".presentation.HomeActivity"

@@ -28,7 +28,7 @@ public class DataAccessStub
 		String email;
 		double rate;
 
-
+/*
 		time = new ReservationTime(2018, 6, 11, 10, 30, 12, 30);
 		address = "88 plaza dive";
 		name = "Rodney N-chris";
@@ -226,7 +226,7 @@ public class DataAccessStub
 		email = "iAmAlsoAsnake10@hotmail.ca";
 		rate = 0.20;
 		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
+		parkingSpots.add(tempSpot);*/
 
 		System.out.println("Initialized the array of ParkingSpot object!");
 		return parkingSpots;

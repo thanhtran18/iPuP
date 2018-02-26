@@ -106,50 +106,66 @@
                 android:enabled="true"
                 android:inputType="numberDecimal"/>
 
+
         </GridLayout>
 
-        <TextView
-            android:id="@+id/textDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:layout_marginRight="60dp"
-            android:text="@string/host_date"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <DatePicker
-            android:id="@+id/datePickerDate"
+        <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"></DatePicker>
-
-        <TextView
-            android:id="@+id/textTime"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:layout_marginRight="60dp"
-            android:text="@string/host_time"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:orientation="horizontal">
+            android:columnCount="3">
+            <TextView
+                android:id="@+id/textFrom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_marginBottom="60dp"
+                android:layout_marginRight="60dp"
+                android:text="@string/host_from"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                android:id="@+id/editFromDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:ems="10"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:onClick="onFromDateClick"/>
+            <TextView
+                android:id="@+id/editFromTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:ems="10"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:onClick="onFromTimeClick"/>
+            <TextView
+                android:id="@+id/textTo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_marginBottom="60dp"
+                android:layout_marginRight="60dp"
+                android:text="@string/host_to"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                android:id="@+id/editToDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:ems="10"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:onClick="onToDateClick"/>
+            <TextView
+                android:id="@+id/editToTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:ems="10"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:onClick="onToTimeClick"/>
 
+        </GridLayout>
 
-            <TimePicker
-                android:id="@+id/timePickerStart"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"></TimePicker>
-            <TimePicker
-                android:id="@+id/timePickerEnd"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"></TimePicker>
-
-        </LinearLayout>
 
         <Button
             android:layout_width="match_parent"
@@ -158,4 +174,5 @@
             android:text="@string/confirm"
             android:layout_marginTop="20dp"/>
     </LinearLayout>
+
 </ScrollView>

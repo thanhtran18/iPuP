@@ -27,7 +27,16 @@ public class ParkingSpot
         this.rate = rate;// required
         id = address+name+phone+email;
         isBooked = false;
+    }
 
+    public ParkingSpot(String id, ReservationTime reservation, String address, String name, String phone, String email, double rate, boolean isBooked) throws Exception
+    {
+        this(reservation, address, name, phone, email, rate);
+        this.isBooked = isBooked;
+
+        if (!this.id.equals(id)) {
+            throw new Exception("Passed in ID (" + id + ") does not match generated ID (" + this.id + ") !");
+        }
     }
 
     public Date getStartTime()
@@ -39,6 +48,16 @@ public class ParkingSpot
     {
         return reservation.getEnd();
     }
+
+    public String getSqlStartDateTime() { return reservation.getSqlStartDateTime(); }
+
+    public String getSqlEndDateTime() { return reservation.getSqlEndDateTime(); }
+
+    public String getSqlStartTime() { return reservation.getSqlStartTime(); }
+
+    public String getSqlEndTime() { return reservation.getSqlEndTime(); }
+
+    public String getSqlDate() { return reservation.getSqlDate(); }
 
     public String getName()
     {

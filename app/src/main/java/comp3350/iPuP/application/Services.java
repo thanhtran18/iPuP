@@ -1,23 +1,24 @@
 package comp3350.iPuP.application;
 
-import comp3350.iPuP.persistence.DataAccessStub;
+import comp3350.iPuP.persistence.DataAccess;
+import comp3350.iPuP.persistence.DataAccessObject;
 
 public class Services
 {
-	private static DataAccessStub dataAccessService = null;
+	private static DataAccess dataAccessService = null;
 
-	public static DataAccessStub createDataAccess()
+	public static DataAccess createDataAccess(String dbName)
 	{
 		if (dataAccessService == null)
 		{
-			dataAccessService = new DataAccessStub();
-			dataAccessService.open();
+			dataAccessService = new DataAccessObject(dbName);
+			dataAccessService.open(Main.getDBPathName());
 		}
 		return dataAccessService;
 	}
 
 
-    public static DataAccessStub getDataAccess()
+    public static DataAccess getDataAccess()
     {
         if (dataAccessService == null)
         {

@@ -1,27 +1,20 @@
 package comp3350.iPuP.objects;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
-
 
 public class ReservationTime
 {
     private Date start;
     private Date end;
-    private SimpleDateFormat date;
-    private SimpleDateFormat time;
+    private DateFormater df = new DateFormater();
 
     public ReservationTime(int year, int month, int day, int startHour, int startMinute, int endHour, int endMinute)
     {
         if (year > 2000)
         {
             Calendar c = new GregorianCalendar(year, month, day, startHour, startMinute);
-            date = new SimpleDateFormat("EEE, d MMM yyyy");
-            time = new SimpleDateFormat("h:mm");
             start = c.getTime();
             c.set(year, month, day, endHour, endMinute);
             end = c.getTime();
@@ -32,7 +25,9 @@ public class ReservationTime
     public String toString()
     {
         if (start != null && end != null)
-            return date.format(start) + ", " + time.format(start) + " - " + time.format(end);
+            return df.getDateFormat().format(start) + ", " +
+                    df.getSqlTimeFormat().format(start) + " - " +
+                    df.getSqlTimeFormat().format(end);
         else
             return "Invalid date";
     }
@@ -45,6 +40,25 @@ public class ReservationTime
     public Date getEnd()
     {
         return end;
+    }
+
+    public String getSqlStartDateTime() { return df.getSqlDateTimeFormat().format(start); }
+
+    public String getSqlEndDateTime()
+    {
+        return df.getSqlDateTimeFormat().format(end);
+    }
+
+    public String getSqlStartTime() { return df.getSqlTimeFormat().format(start); }
+
+    public String getSqlEndTime()
+    {
+        return df.getSqlTimeFormat().format(end);
+    }
+
+    public String getSqlDate()
+    {
+        return df.getSqlDateFormat().format(start);
     }
 
     @Override

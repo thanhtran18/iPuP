@@ -1,0 +1,28 @@
+CREATE SCHEMA PUBLIC AUTHORIZATION DBA
+CREATE MEMORY TABLE PARKINGSPOTS( PS_ID VARCHAR(330) NOT NULL PRIMARY KEY, NAME VARCHAR(100) NOT NULL, ADDRESS VARCHAR(100) NOT NULL, PHONE VARCHAR(30), EMAIL VARCHAR(100), RATE REAL NOT NULL, IS_BOOKED BOOLEAN NOT NULL, STARTDATETIME DATETIME NOT NULL, ENDDATETIME DATETIME NOT NULL, CHECK (PHONE IS NOT NULL OR EMAIL IS NOT NULL))
+CREATE USER iPuP PASSWORD "iPuP"
+GRANT DBA TO iPuP
+SET WRITE_DELAY 20
+SET SCHEMA PUBLIC
+INSERT INTO PARKINGSPOTS VALUES('88 plaza driveRodney N-chris204-855-2342poor&Homeless@gmail.com', 'Rodney N-chris', '88 plaza drive', '204-855-2342', 'poor&Homeless@gmail.com', 2, FALSE, '2018-06-11 10:30:00', '2018-06-11 12:30:00')
+INSERT INTO PARKINGSPOTS VALUES('2 chancellor driveScott Gordon204-122-1234scottfils@hotmail.ca', 'Scott Gordon', '2 chancellor drive', '204-122-1234', 'scottfils@hotmail.ca', 4.50, FALSE, '2018-06-11 10:30:00', '2018-06-11 14:45:00')
+INSERT INTO PARKINGSPOTS VALUES('30 chancellor driveRoberto Nesta Marley204-577-3422rastaLikebob@gmail.com', 'Roberto Nesta Marley', '30 chancellor drive', '204-577-3422', 'rastaLikebob@gmail.com', 0.10, FALSE, '2018-06-11 10:30:00', '2018-06-11 11:20:00')
+INSERT INTO PARKINGSPOTS VALUES('60 main streetAvocado Stevenson601-122-1211avocadoisgood@gmail.com', 'Avocado Stevenson', '60 main street', '601-122-1211', 'avocadoisgood@gmail.com', 5.25, FALSE, '2018-06-11 10:30:00', '2018-06-11 11:00:00')
+INSERT INTO PARKINGSPOTS VALUES('566 Pasedina avenueBrian Cambell204-419-8819Brian1989@gmail.com', 'Brian Cambell', '566 Pasedina avenue', '204-419-8819', 'Brian1989@gmail.com', 4, FALSE, '2018-06-11 10:30:00', '2018-06-11 16:45:00')
+INSERT INTO PARKINGSPOTS VALUES('1 kings driveJenifer Aniston604-253-1111JeniferAniston@hotmail.ca', 'Jenifer Aniston', '1 kings drive', '604-253-1111', 'JeniferAniston@hotmail.ca', 7, FALSE, '2018-06-11 10:30:00', '2018-06-11 20:00:00')
+INSERT INTO PARKINGSPOTS VALUES('20 silverston avenueChristopher Turk204-236-2322chrisTurk27@gmail.com', 'Christopher Turk', '20 silverston avenue', '204-236-2322', 'chrisTurk27@gmail.com', 5, FALSE, '2018-06-11 10:30:00', '2018-06-11 13:30:00')
+INSERT INTO PARKINGSPOTS VALUES('20 kings driveTom Brady877-377-4234theGoat@gmail.com', 'Tom Brady', '20 kings drive', '877-377-4234', 'theGoat@gmail.com', 10, FALSE, '2018-06-11 10:30:00', '2018-06-11 15:00:00')
+INSERT INTO PARKINGSPOTS VALUES('1 pembina hwyGeorge H. Bush204-927-9277myFamilyLikesWar@gmail.com', 'George H. Bush', '1 pembina hwy', '204-927-9277', 'myFamilyLikesWar@gmail.com', 10, FALSE, '2018-06-11 10:30:00', '2018-06-11 14:30:00')
+INSERT INTO PARKINGSPOTS VALUES('100 st. mary''s rdWatson k. Smith204-245-3433watsonK@gmail.com', 'Watson k. Smith', '100 st. mary''s rd', '204-245-3433', 'watsonK@gmail.com', 7, FALSE, '2018-06-11 10:30:00', '2018-06-11 16:00:00')
+INSERT INTO PARKINGSPOTS VALUES('1691 pemina hwyVictory Iyakoregha204-888-9292Ivic565@gmail.com', 'Victory Iyakoregha', '1691 pemina hwy', '204-888-9292', 'Ivic565@gmail.com', 5, FALSE, '2018-06-11 10:30:00', '2018-06-11 12:30:00')
+INSERT INTO PARKINGSPOTS VALUES('1338 chancellor driveMicheal Douglas204-123-1234theblondegirl22@hotmail.ca', 'Micheal Douglas', '1338 chancellor drive', '204-123-1234', 'theblondegirl22@hotmail.ca', 4.50, FALSE, '2018-06-11 10:30:00', '2018-06-11 14:45:00')
+INSERT INTO PARKINGSPOTS VALUES('1122 chancellor driveKelly Cook204-566-7122cookk@gmail.com', 'Kelly Cook', '1122 chancellor drive', '204-566-7122', 'cookk@gmail.com', 4, FALSE, '2018-06-11 10:30:00', '2018-06-11 11:20:00')
+INSERT INTO PARKINGSPOTS VALUES('91 Dalhousie driveMadison Fishburne204-345-4353madifish101@gmail.com', 'Madison Fishburne', '91 Dalhousie drive', '204-345-4353', 'madifish101@gmail.com', 5.25, FALSE, '2018-06-11 10:30:00', '2018-06-11 11:00:00')
+INSERT INTO PARKINGSPOTS VALUES('565 Pasedina avenueRonald Regan204-419-1419theDevil666@gmail.com', 'Ronald Regan', '565 Pasedina avenue', '204-419-1419', 'theDevil666@gmail.com', 100, FALSE, '2018-06-11 10:30:00', '2018-06-11 16:45:00')
+INSERT INTO PARKINGSPOTS VALUES('1334 Pembina HwyMarilyn Monroe604-253-3424iammonroe@hotmail.ca', 'Marilyn Monroe', '1334 Pembina Hwy', '604-253-3424', 'iammonroe@hotmail.ca', 7, FALSE, '2018-06-11 10:30:00', '2018-06-11 20:00:00')
+INSERT INTO PARKINGSPOTS VALUES('200 pasedina avenueNelson Mandela204-234-2555Nelson27@gmail.com', 'Nelson Mandela', '200 pasedina avenue', '204-234-2555', 'Nelson27@gmail.com', 5, FALSE, '2018-06-11 10:30:00', '2018-06-11 13:30:00')
+INSERT INTO PARKINGSPOTS VALUES('Brady road landfillDonald Trump877-311-4974lolattheUSA@gmail.com', 'Donald Trump', 'Brady road landfill', '877-311-4974', 'lolattheUSA@gmail.com', 100, FALSE, '2018-06-11 10:30:00', '2018-06-11 15:00:00')
+INSERT INTO PARKINGSPOTS VALUES('1 pembina hwyGeorge W. Bush204-927-9277myFamilyLikesWar@gmail.com', 'George W. Bush', '1 pembina hwy', '204-927-9277', 'myFamilyLikesWar@gmail.com', 10, FALSE, '2018-06-11 10:30:00', '2018-06-11 14:30:00')
+INSERT INTO PARKINGSPOTS VALUES('29 st. mary''s rdMary Watson204-242-2255sherlock101@gmail.com', 'Mary Watson', '29 st. mary''s rd', '204-242-2255', 'sherlock101@gmail.com', 4.50, FALSE, '2018-06-11 20:30:00', '2018-06-11 22:00:00')
+INSERT INTO PARKINGSPOTS VALUES('1000 st. Mary''s rdPhilipe Coutinho204-124-2222iAmAsnake10@hotmail.ca', 'Philipe Coutinho', '1000 st. Mary''s rd', '204-124-2222', 'iAmAsnake10@hotmail.ca', 0.10, FALSE, '2018-06-11 10:30:00', '2018-06-11 16:00:00')
+INSERT INTO PARKINGSPOTS VALUES('1000 st. Mary''s rdAnne Coutinho204-124-2222iAmAlsoAsnake10@hotmail.ca', 'Anne Coutinho', '1000 st. Mary''s rd', '204-124-2222', 'iAmAlsoAsnake10@hotmail.ca', 0.20, FALSE, '2018-06-11 17:30:00', '2018-06-11 19:00:00')

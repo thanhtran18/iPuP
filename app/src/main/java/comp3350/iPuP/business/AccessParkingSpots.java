@@ -6,12 +6,12 @@ import java.util.List;
 import comp3350.iPuP.application.Main;
 import comp3350.iPuP.application.Services;
 import comp3350.iPuP.objects.ParkingSpot;
-import comp3350.iPuP.persistence.DataAccessStub;
+import comp3350.iPuP.persistence.DataAccess;
 
 
 public class AccessParkingSpots
 {
-    private DataAccessStub dataAccess;
+    private DataAccess dataAccess;
     private ArrayList<ParkingSpot> availableSpots;
 
     public AccessParkingSpots()

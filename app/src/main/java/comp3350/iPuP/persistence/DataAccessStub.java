@@ -8,16 +8,19 @@ import comp3350.iPuP.application.Main;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.ReservationTime;
 
-public class DataAccessStub
+public class DataAccessStub implements DataAccess
 {
-	private List<ParkingSpot> parkingSpots;
+	private String dbName;
+	private String dbType = "stub";
 
-	public DataAccessStub()
+    private ArrayList<ParkingSpot> parkingSpots;
+
+	public DataAccessStub(String dbName)
 	{
-        parkingSpots = new ArrayList<ParkingSpot>();
+        this.dbName = dbName;
 	}
 
-	public List<ParkingSpot> open()
+	public void open(String dbPath)
 	{
 		parkingSpots = new ArrayList<ParkingSpot>();
 		ParkingSpot tempSpot;
@@ -30,7 +33,7 @@ public class DataAccessStub
 
 /*
 		time = new ReservationTime(2018, 6, 11, 10, 30, 12, 30);
-		address = "88 plaza dive";
+		address = "88 plaza drive";
 		name = "Rodney N-chris";
 		phone = "204-855-2342";
 		email = "poor&Homeless@gmail.com";
@@ -75,8 +78,8 @@ public class DataAccessStub
 		parkingSpots.add(tempSpot);
 
 		time = new ReservationTime(2018, 6, 11, 10, 30, 20, 0);
-		address = "Jenifer Aniston";
-		name = "1 kings drive";
+		address = "1 kings drive";
+		name = "Jenifer Aniston";
 		phone = "604-253-1111";
 		email = "JeniferAniston@hotmail.ca";
 		rate = 7;
@@ -118,7 +121,6 @@ public class DataAccessStub
 		rate = 7;
 		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
 		parkingSpots.add(tempSpot);
-
 
 		time = new ReservationTime(2018, 6, 11, 10, 30, 12, 30);
 		address = "1691 pemina hwy";
@@ -166,8 +168,8 @@ public class DataAccessStub
 		parkingSpots.add(tempSpot);
 
 		time = new ReservationTime(2018, 6, 11, 10, 30, 20, 0);
-		address = "Marilyn Monroe";
-		name = "1334 Pembina Hwy";
+		address = "1334 Pembina Hwy";
+		name = "Marilyn Monroe";
 		phone = "604-253-3424";
 		email = "iammonroe@hotmail.ca";
 		rate = 7;
@@ -228,16 +230,14 @@ public class DataAccessStub
 		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
 		parkingSpots.add(tempSpot);*/
 
-		System.out.println("Initialized the array of ParkingSpot object!");
-		return parkingSpots;
+        System.out.println("Opened " +dbType +" database " +dbName);
 	}
 
 
 	public void close()
     {
-        System.out.println("Closed parkingSpots arraylist!");
+        System.out.println("Closed " +dbType +" database " +dbName);
     }
-
 
 
     public String insertParkingSpot(ParkingSpot currentParkingSpot)
@@ -248,7 +248,7 @@ public class DataAccessStub
     }
 
 
-	public List<ParkingSpot> getParkingSpots()
+	public ArrayList<ParkingSpot> getParkingSpots()
 	{
 		return parkingSpots;
 	}

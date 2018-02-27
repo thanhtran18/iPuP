@@ -7,12 +7,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-
-
 public class ReservationTime
 {
     private Date start;
     private Date end;
+    private DateFormater df = new DateFormater();
     private SimpleDateFormat date;
     private SimpleDateFormat time;
     private boolean repeat;
@@ -55,7 +54,9 @@ public class ReservationTime
     public String toString()
     {
         if (start != null && end != null)
-            return date.format(start) + ", " + time.format(start) + " - " + date.format(start) + ", " + time.format(end);
+            return df.getDateFormat().format(start) + ", " +
+                    df.getSqlTimeFormat().format(start) + " - " +
+                    df.getSqlTimeFormat().format(end);
         else
             return "Invalid date";
     }
@@ -68,6 +69,25 @@ public class ReservationTime
     public Date getEnd()
     {
         return end;
+    }
+
+    public String getSqlStartDateTime() { return df.getSqlDateTimeFormat().format(start); }
+
+    public String getSqlEndDateTime()
+    {
+        return df.getSqlDateTimeFormat().format(end);
+    }
+
+    public String getSqlStartTime() { return df.getSqlTimeFormat().format(start); }
+
+    public String getSqlEndTime()
+    {
+        return df.getSqlTimeFormat().format(end);
+    }
+
+    public String getSqlDate()
+    {
+        return df.getSqlDateFormat().format(start);
     }
 
     @Override

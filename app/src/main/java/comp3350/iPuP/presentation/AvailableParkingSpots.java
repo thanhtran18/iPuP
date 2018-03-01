@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import comp3350.iPuP.R;
 import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.objects.ParkingSpot;
-import comp3350.iPuP.objects.ReservationTime;
 
 public class AvailableParkingSpots extends ListActivity
 {
@@ -28,6 +27,7 @@ public class AvailableParkingSpots extends ListActivity
     public static final String KEY_EMAIL = "host_email";
     public static final String KEY_RATE = "spot_rate";
     public static final String ID_OF_SPOT = "spot_id";
+    public static final String ID_OF_SLOT = "slot_id";
 
     private ArrayList<ParkingSpot>fakeSpots=new ArrayList<ParkingSpot>();
     private SimpleDateFormat date;
@@ -80,7 +80,7 @@ public class AvailableParkingSpots extends ListActivity
         intent.putExtra(KEY_EMAIL, item.getEmail());
         intent.putExtra(KEY_RATE, "$" + Double.toString(item.getRate()));
 
-        intent.putExtra(ID_OF_SPOT, item.getId());
+        intent.putExtra(ID_OF_SPOT, item.getSpotID());
 
         startActivity(intent);
     }

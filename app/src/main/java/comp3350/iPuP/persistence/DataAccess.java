@@ -15,7 +15,7 @@ public interface DataAccess
 
 	ArrayList<ParkingSpot> getParkingSpots();
 
-	String setSpotToBooked(String string);
+	String setSpotToBooked(String spotID, int slotID);
 
 	void clearSpotList();
 }

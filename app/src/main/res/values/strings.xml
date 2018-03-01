@@ -11,13 +11,37 @@
     <string name="host_rate">Rate ($/h)</string>
     <string name="host_from">From</string>
     <string name="host_to">To</string>
+    <string name="host_repeat">Repeats</string>
+    <string name="host_repeat_default">None</string>
+
+    <string-array name="repeats_periods">
+        <item>Days</item>
+        <item>Weeks</item>
+        <item>Months</item>
+    </string-array>
 
     <string name="host_menu_create">Create a new parking spot</string>
     <string name="host_menu_view">View your parking spots</string>
 
     <string name="next">Next</string>
     <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
     <string name="title">iPuP - I Park U Park</string>
+
+    <string name="week_title">Repeats on</string>
+    <string name="period_text">Repeats every</string>
+    <string name="period_default">1</string>
+    <string name="reps_default">2</string>
+    <string name="repeats">Repeats</string>
+    <string name="times">times</string>
+    <string name="monthDate">Every month on the </string>
+    <string name="letter_sun">S</string>
+    <string name="letter_mon">M</string>
+    <string name="letter_tue">T</string>
+    <string name="letter_wed">W</string>
+    <string name="letter_thu">T</string>
+    <string name="letter_fri">F</string>
+    <string name="letter_sat">S</string>
 
 
     <string name="action_settings">Settings</string>

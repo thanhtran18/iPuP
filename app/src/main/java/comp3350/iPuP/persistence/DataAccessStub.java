@@ -1,12 +1,9 @@
 package comp3350.iPuP.persistence;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
-import comp3350.iPuP.application.Main;
 import comp3350.iPuP.objects.ParkingSpot;
-import comp3350.iPuP.objects.ReservationTime;
+import comp3350.iPuP.objects.TimeSlot;
 
 public class DataAccessStub implements DataAccess
 {
@@ -24,7 +21,7 @@ public class DataAccessStub implements DataAccess
 	{
 		parkingSpots = new ArrayList<ParkingSpot>();
 		ParkingSpot tempSpot;
-        ReservationTime time;
+        TimeSlot time;
 		String address;
 		String name;
 		String phone;
@@ -254,12 +251,12 @@ public class DataAccessStub implements DataAccess
 	}
 
 
-	public String setSpotToBooked(String id)
+	public String setSpotToBooked(String spotID, int slotID)
 	{
 		String bookMessage = "Not Booked";
 	    for (int i = 0; i < parkingSpots.size(); i++)
 	    {
-            if (parkingSpots.get(i).getId().equals(id))
+            if (parkingSpots.get(i).isSpot(spotID, slotID))
             {
             	if (parkingSpots.get(i).isBooked())
             	{

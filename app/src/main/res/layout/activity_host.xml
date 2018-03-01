@@ -109,6 +109,15 @@
 
         </GridLayout>
 
+        <TextView
+            android:id="@+id/textDateTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_marginBottom="60dp"
+            android:layout_marginRight="60dp"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceLarge" />
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -166,6 +175,13 @@
 
         </GridLayout>
 
+        <ToggleButton
+            android:id="@+id/toggleButtonRepeat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textOff="Does not repeat"
+            android:textOn="Repeats"
+            android:onClick="onRepeatClick"/>
 
         <Button
             android:layout_width="match_parent"

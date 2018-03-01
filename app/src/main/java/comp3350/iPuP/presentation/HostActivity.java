@@ -2,30 +2,30 @@ package comp3350.iPuP.presentation;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.res.ColorStateList;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.app.DialogFragment;
+import android.widget.ToggleButton;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.business.AccessParkingSpots;
-import comp3350.iPuP.objects.ReservationTime;
+import comp3350.iPuP.objects.TimeSlot;
 
 public class HostActivity extends Activity
 {
     private AccessParkingSpots accessParkingSpots;
+    private String repetitionInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,6 +33,7 @@ public class HostActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host);
         accessParkingSpots = new AccessParkingSpots();
+        repetitionInfo = "";
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat date = new SimpleDateFormat("EEE, d MMM yyyy");
@@ -76,6 +77,20 @@ public class HostActivity extends Activity
         timeFragment.show(getFragmentManager(),"TimePicker");
     }
 
+    public void onRepeatClick(View v)
+    {
+        if (((ToggleButton)v).isChecked()) {
+            Intent repeatIntent = new Intent(HostActivity.this, RepeatActivity.class);
+            TextView dateFrom = (TextView) findViewById(R.id.editFromDate);
+            repeatIntent.putExtra("date", dateFrom.getText());
+            HostActivity.this.startActivityForResult(repeatIntent, 0);
+        }
+        else
+        {
+            repetitionInfo = "";
+        }
+    }
+
     @TargetApi(Build.VERSION_CODES.O)
     public void buttonConfirmOnClick(View v)
     {
@@ -91,22 +106,27 @@ public class HostActivity extends Activity
         String rateStr = edit.getText().toString();
         Double rate = Double.parseDouble(rateStr.equals("") ? "0": rateStr);
 
-        /*DatePicker datePicker =  (DatePicker) findViewById(R.id.datePickerDate);
-        int day = datePicker.getDayOfMonth();
-        int month = datePicker.getMonth();
-        int year =  datePicker.getYear();
 
-        TimePicker timePickerStart =  (TimePicker) findViewById(R.id.timePickerStart);
-        int startHour = timePickerStart.getHour();
-        int startMinute = timePickerStart.getMinute();
-
-        TimePicker timePickerEnd =  (TimePicker) findViewById(R.id.timePickerEnd);
-        int endHour = timePickerEnd.getHour();
-        int endMinute = timePickerEnd.getMinute();
-
-        ReservationTime reservationTime = new ReservationTime(year,month,day,startHour,startMinute,endHour,endMinute);
-*/
         boolean valid = true;
+
+        TextView tv;
+        tv = (TextView) findViewById(R.id.editFromDate);
+        String fromStr = tv.getText().toString();
+        tv = (TextView) findViewById(R.id.editFromTime);
+        fromStr += ", " + tv.getText().toString();
+        tv = (TextView) findViewById(R.id.editToDate);
+        String toStr = tv.getText().toString();
+        tv = (TextView) findViewById(R.id.editToTime);
+        toStr += ", " + tv.getText().toString();
+        TimeSlot timeSlot = null;
+        try
+        {
+            timeSlot = TimeSlot.parseString(fromStr + " - " + toStr);
+        }
+        catch (ParseException e)
+        {
+            valid = false;
+        }
         if (address.equals(""))
         {
             valid = false;
@@ -152,24 +172,23 @@ public class HostActivity extends Activity
             text = findViewById(R.id.textEmail);
             text.setTextColor(Color.RED);
         }
-/*
-        if (reservationTime.getStart().compareTo(reservationTime.getEnd()) >= 0)
+
+        if (timeSlot.getStart().compareTo(timeSlot.getEnd()) >= 0)
         {
             valid = false;
-            TextView text = findViewById(R.id.textTime);
+            TextView text = findViewById(R.id.textDateTime);
             text.setTextColor(Color.RED);
-            text.setText("" + text.getText() + ".\nYour ending time must be after your starting time");
+            text.setText("Your ending time must be after your starting time");
         }
         else
         {
-            TextView text = findViewById(R.id.textTime);
+            TextView text = findViewById(R.id.textFrom);
             text.setTextColor(Color.BLACK);
         }
-*/
+
         if (valid)
         {
-            ParkingSpot newParkingSpot = new ParkingSpot(null/*reservationTime*/, address, name, phone, email, rate);
-            String rtn = accessParkingSpots.insertParkingSpot(newParkingSpot);
+            String rtn = accessParkingSpots.insertParkingSpots(timeSlot, repetitionInfo, address, name, phone, email, rate);
 
             if (rtn == null)
             {
@@ -181,6 +200,27 @@ public class HostActivity extends Activity
             }
 
             finish();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(requestCode)
+        {
+            case (0) :
+                {
+                if (resultCode == Activity.RESULT_OK)
+                    repetitionInfo = data.getStringExtra("repetitionInfo");
+                else
+                {
+                    repetitionInfo = "";
+                    ((ToggleButton)findViewById(R.id.toggleButtonRepeat)).setChecked(false);
+                }
+                break;
+            }
         }
     }
 }

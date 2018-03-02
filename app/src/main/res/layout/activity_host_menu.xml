@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="0dp"
     android:paddingBottom="0dp"
@@ -26,7 +27,7 @@
             android:background="@color/colorButtonBack1"
             android:drawableLeft="@drawable/ic_icon_plus"
             android:onClick="buttonCreateOnClick"
-            android:text="@string/host_menu_create"
+            android:text="CREATE A NEW PARKING SPOT"
             android:textColor="@color/colorButtonText"
             android:textSize="30sp" />
 

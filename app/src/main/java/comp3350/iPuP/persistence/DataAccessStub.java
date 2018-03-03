@@ -251,7 +251,7 @@ public class DataAccessStub implements DataAccess
 	}
 
 
-	public String setSpotToBooked(String spotID, int slotID)
+	public String setSpotToBooked(String spotID, String slotID)
 	{
 		String bookMessage = "Not Booked";
 	    for (int i = 0; i < parkingSpots.size(); i++)

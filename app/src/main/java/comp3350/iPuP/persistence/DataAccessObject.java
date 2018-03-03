@@ -194,9 +194,9 @@ public class DataAccessObject implements DataAccess
                 calStart.setTime(start);
                 calEnd.setTime(end);
 
-                timeSlot = new TimeSlot(calStart.getTime(), calEnd.getTime(), Integer.parseInt(id.split("_")[1]));
+                //timeSlot = new TimeSlot(calStart.getTime(), calEnd.getTime(), Integer.parseInt(id.split("_")[1]));
 
-                ps = new ParkingSpot(id.split("_")[0], timeSlot, addr, name, phone, email, rate, isBooked);
+                ps = new ParkingSpot(id.split("_")[0], addr, name, phone, email, rate, isBooked);
                 parkingSpots.add(ps);
             }
 
@@ -211,7 +211,7 @@ public class DataAccessObject implements DataAccess
     }
 
 
-    public String setSpotToBooked(String spotID, int slotID)
+    public String setSpotToBooked(String spotID, String slotID)
     {
         boolean isBooked;
         String bookMessage = "Not Booked";

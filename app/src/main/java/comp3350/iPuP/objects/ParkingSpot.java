@@ -1,5 +1,7 @@
 package comp3350.iPuP.objects;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -13,10 +15,10 @@ public class ParkingSpot
     private String spotID;
     private double rate;
     private boolean isBooked;
+    private ArrayList<DaySlot> daySlots;
 
-    public ParkingSpot(TimeSlot timeSlot, String address, String name, String phone, String email, double rate)
+    public ParkingSpot(String address, String name, String phone, String email, double rate)
     {
-        this.timeSlot = timeSlot; //required
         this.address = address;// required
         this.name = name;// required
 
@@ -28,18 +30,25 @@ public class ParkingSpot
 
         spotID = address+name;
         isBooked = false;
+
+        daySlots = new ArrayList<DaySlot>();
     }
 
-    public ParkingSpot(String id, TimeSlot timeSlot, String address, String name, String phone, String email, double rate, boolean isBooked) throws Exception
+    public ParkingSpot(String id, String address, String name, String phone, String email, double rate, boolean isBooked) throws Exception
     {
-        this(timeSlot, address, name, phone, email, rate);
+        this(address, name, phone, email, rate);
         spotID = id;
         this.isBooked = isBooked;
     }
 
-    public boolean isSpot(String spotID, int slotID)
+    public boolean isSpot(String spotID, String slotID)
     {
-        return this.spotID.equals(spotID) && timeSlot.getSlotID() == slotID;
+        return this.spotID.equals(spotID) && timeSlot.getSlotID().equals(slotID);
+    }
+
+    public void addDaySlot(DaySlot newSlot)
+    {
+        daySlots.add(newSlot);
     }
 
     public Date getStartTime()
@@ -91,7 +100,7 @@ public class ParkingSpot
     {
         return spotID;
     }
-    public int getSlotID()
+    public String getSlotID()
     {
         return timeSlot.getSlotID();
     }

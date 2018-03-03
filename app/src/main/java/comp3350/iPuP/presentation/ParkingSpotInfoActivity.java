@@ -94,7 +94,7 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
             {
                 showBookingResult();
                 String spotID=intent.getStringExtra(ID_OF_SPOT);
-                int slotID=intent.getIntExtra(ID_OF_SLOT, 0);
+                String slotID=intent.getStringExtra(ID_OF_SLOT);
                 accessParkingSpots.bookSpot(spotID, slotID);
                 finish();
             }

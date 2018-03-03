@@ -3,11 +3,13 @@ package comp3350.iPuP.business;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import comp3350.iPuP.application.Main;
 import comp3350.iPuP.application.Services;
+import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
 import comp3350.iPuP.persistence.DataAccess;
@@ -30,6 +32,9 @@ public class AccessParkingSpots
         Calendar end = new GregorianCalendar();
         start.setTime(timeSlot.getStart());
         end.setTime(timeSlot.getEnd());
+
+        ParkingSpot spot = new ParkingSpot(address, name, phone, email, rate);
+
         if (repetitionInfo != null && !repetitionInfo.equals(""))
         {
             String[] splits = repetitionInfo.split(" ");
@@ -37,11 +42,7 @@ public class AccessParkingSpots
             {
                 for (int j = 0; j < Integer.parseInt(splits[2]); j++)
                 {
-                    TimeSlot time = new TimeSlot(start.getTime(), end.getTime(), j);
-                    ParkingSpot newParkingSpot = new ParkingSpot(time, address, name, phone, email, rate);
-                    String ret = insertParkingSpot(newParkingSpot);
-                    if (ret != null)
-                        return ret;
+                    spot.addDaySlot(new DaySlot(start.getTime(), end.getTime()));
 
                     start.add(Calendar.DAY_OF_YEAR, Integer.parseInt(splits[1]));
                     end.add(Calendar.DAY_OF_YEAR, Integer.parseInt(splits[1]));
@@ -56,11 +57,7 @@ public class AccessParkingSpots
                     {
                         if (days[(start.get(Calendar.DAY_OF_WEEK) - 1) % 7])
                         {
-                            TimeSlot time = new TimeSlot(start.getTime(), end.getTime(), j * 7 + i);
-                            ParkingSpot newParkingSpot = new ParkingSpot(time, address, name, phone, email, rate);
-                            String ret = insertParkingSpot(newParkingSpot);
-                            if (ret != null)
-                                return ret;
+                            spot.addDaySlot(new DaySlot(start.getTime(), end.getTime()));
                         }
 
                         start.add(Calendar.DAY_OF_YEAR, 1);
@@ -76,12 +73,10 @@ public class AccessParkingSpots
         }
         else
         {
-            TimeSlot time = new TimeSlot(start.getTime(), end.getTime(), 0);
-            ParkingSpot newParkingSpot = new ParkingSpot(time, address, name, phone, email, rate);
-            String ret = insertParkingSpot(newParkingSpot);
-            if (ret != null)
-                return ret;
+            spot.addDaySlot(new DaySlot(start.getTime(), end.getTime()));
         }
+
+        insertParkingSpot(spot);
         return null;
     }
     public String insertParkingSpot(ParkingSpot newParkingSpot)
@@ -94,7 +89,6 @@ public class AccessParkingSpots
         returnList.addAll(dataAccess.getParkingSpots());
         return returnList;
     }
-
 
     public ArrayList<ParkingSpot> getAvailableSpots()
     {
@@ -110,7 +104,7 @@ public class AccessParkingSpots
         return availableSpots;
     }
 
-    public String bookSpot(String spotID, int slotID)
+    public String bookSpot(String spotID, String slotID)
     {
         return dataAccess.setSpotToBooked(spotID, slotID);
     }

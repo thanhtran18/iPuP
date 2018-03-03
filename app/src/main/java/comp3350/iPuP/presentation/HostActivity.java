@@ -39,6 +39,10 @@ public class HostActivity extends Activity
         SimpleDateFormat date = new SimpleDateFormat("EEE, d MMM yyyy");
         SimpleDateFormat time = new SimpleDateFormat("h:mm a");
 
+        if (c.get(Calendar.MINUTE) > 30)
+            c.set(Calendar.MINUTE, 30);
+        else c.set(Calendar.MINUTE, 0);
+
         TextView tv = (TextView)findViewById(R.id.editFromDate);
         tv.setText(date.format(c.getTime()));
 
@@ -67,14 +71,18 @@ public class HostActivity extends Activity
 
     public void onFromTimeClick(View v)
     {
-        DialogFragment timeFragment = TimePickerFragment.newInstance(R.id.editFromTime);
-        timeFragment.show(getFragmentManager(),"TimePicker");
+        //DialogFragment timeFragment = TimePickerFragment.newInstance(R.id.editFromTime);
+        //timeFragment.show(getFragmentManager(),"TimePicker");
+        Intent fromTimeIntent = new Intent(HostActivity.this, TimePickerActivity.class);
+        HostActivity.this.startActivityForResult(fromTimeIntent, 1);
     }
 
     public void onToTimeClick(View v)
     {
-        DialogFragment timeFragment = TimePickerFragment.newInstance(R.id.editToTime);
-        timeFragment.show(getFragmentManager(),"TimePicker");
+        //DialogFragment timeFragment = TimePickerFragment.newInstance(R.id.editToTime);
+        //timeFragment.show(getFragmentManager(),"TimePicker");
+        Intent toTimeIntent = new Intent(HostActivity.this, TimePickerActivity.class);
+        HostActivity.this.startActivityForResult(toTimeIntent, 2);
     }
 
     public void onRepeatClick(View v)
@@ -208,10 +216,10 @@ public class HostActivity extends Activity
     {
         super.onActivityResult(requestCode, resultCode, data);
 
+        String ret;
         switch(requestCode)
         {
             case (0) :
-                {
                 if (resultCode == Activity.RESULT_OK)
                     repetitionInfo = data.getStringExtra("repetitionInfo");
                 else
@@ -220,7 +228,14 @@ public class HostActivity extends Activity
                     ((ToggleButton)findViewById(R.id.toggleButtonRepeat)).setChecked(false);
                 }
                 break;
-            }
+            case(1):
+                ret = data.getStringExtra("time");
+                ((TextView)findViewById(R.id.editFromTime)).setText(ret);
+                break;
+            case(2):
+                ret = data.getStringExtra("time");
+                ((TextView)findViewById(R.id.editToTime)).setText(ret);
+                break;
         }
     }
 }

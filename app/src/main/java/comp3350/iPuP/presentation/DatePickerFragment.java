@@ -2,8 +2,6 @@ package comp3350.iPuP.presentation;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.app.Activity;
-import android.text.format.DateFormat;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.app.DialogFragment;
@@ -13,12 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import android.widget.TimePicker;
 import comp3350.iPuP.R;
-
-/**
- * Created by kram1 on 2/23/2018.
- */
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
 {

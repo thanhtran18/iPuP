@@ -1,22 +1,24 @@
 package comp3350.iPuP.objects;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
 
 
 public class ParkingSpot
 {
-    private ReservationTime reservation;
+    private TimeSlot timeSlot;
     private String address;
     private String name;
     private String phone;
     private String email;
-    private String id;
+    private String spotID;
     private double rate;
     private boolean isBooked;
+    private ArrayList<DaySlot> daySlots;
 
-    public ParkingSpot(ReservationTime reservation, String address, String name, String phone, String email, double rate)
+    public ParkingSpot(String address, String name, String phone, String email, double rate)
     {
-        this.reservation = reservation; //required
         this.address = address;// required
         this.name = name;// required
 
@@ -25,40 +27,42 @@ public class ParkingSpot
         this.email = email;
 
         this.rate = rate;// required
-        id = address+name;
+
+        spotID = address+name;
         isBooked = false;
+
+        daySlots = new ArrayList<DaySlot>();
     }
 
-    public ParkingSpot(String id, ReservationTime reservation, String address, String name, String phone, String email, double rate, boolean isBooked) throws Exception
-    {
-        this(reservation, address, name, phone, email, rate);
+    public ParkingSpot(String id, String address, String name, String phone, String email, double rate, boolean isBooked) throws Exception {
+        this(address, name, phone, email, rate);
+        spotID = id;
         this.isBooked = isBooked;
 
-        if (!this.id.equals(id)) {
+        if (!this.spotID.equals(id)) {
             throw new Exception("Passed in ID (" + id + ") does not match generated ID (" + this.id + ") !");
         }
     }
 
-    public ReservationTime getReservationTime() { return reservation; }
-//    public Date getStartTime()
-//    {
-//        return reservation.getStart();N
-//    }
-//
-//    public Date getEndTime()
-//    {
-//        return reservation.getEnd();
-//    }
-//
-//    public String getSqlStartDateTime() { return reservation.getSqlStartDateTime(); }
-//
-//    public String getSqlEndDateTime() { return reservation.getSqlEndDateTime(); }
-//
-//    public String getSqlStartTime() { return reservation.getSqlStartTime(); }
-//
-//    public String getSqlEndTime() { return reservation.getSqlEndTime(); }
-//
-//    public String getSqlDate() { return reservation.getSqlDate(); }
+    public boolean isSpot(String spotID, String slotID)
+    {
+        return this.spotID.equals(spotID) && timeSlot.getSlotID().equals(slotID);
+    }
+
+    public void addDaySlot(DaySlot newSlot)
+    {
+        daySlots.add(newSlot);
+    }
+
+    public Date getStartTime()
+    {
+        return timeSlot.getStart();
+    }
+
+    public Date getEndTime()
+    {
+        return timeSlot.getEnd();
+    }
 
     public String getName()
     {
@@ -95,15 +99,19 @@ public class ParkingSpot
         isBooked = booked;
     }
 
-    public String getId()
+    public String getSpotID()
     {
-        return id;
+        return spotID;
+    }
+    public String getSlotID()
+    {
+        return timeSlot.getSlotID();
     }
 
     @Override
     public String toString()
     {
-        return this.address + "\n" + this.reservation.toString();
+        return this.address + "\n" + this.timeSlot.toString();
     }
 
     @Override
@@ -114,7 +122,7 @@ public class ParkingSpot
             ParkingSpot otherSpot = (ParkingSpot) other;
             if (this.name.equals(otherSpot.name) && this.address.equals(otherSpot.address) &&
                     this.phone.equals(otherSpot.phone) && this.email.equals(otherSpot.email) &&
-                    this.rate == otherSpot.rate && this.reservation.equals(otherSpot.reservation))
+                    this.rate == otherSpot.rate && this.timeSlot.equals(otherSpot.timeSlot))
                 return true;
         }
         return false;

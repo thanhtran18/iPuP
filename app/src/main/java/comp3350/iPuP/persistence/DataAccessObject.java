@@ -12,7 +12,7 @@ import java.util.Date;
 
 import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.objects.ParkingSpot;
-import comp3350.iPuP.objects.ReservationTime;
+import comp3350.iPuP.objects.TimeSlot;
 
 public class DataAccessObject implements DataAccess
 {
@@ -120,19 +120,16 @@ public class DataAccessObject implements DataAccess
 
         try
         {
-            ReservationTime rt = currentParkingSpot.getReservationTime();
-
-            pstmt = con.prepareStatement("Insert into Parkingspots Values(?,?,?,?,?,?,?,?,?,?)");
-            pstmt.setString(1,currentParkingSpot.getId());
+            pstmt = con.prepareStatement("Insert into Parkingspots Values(?,?,?,?,?,?,?,?,?)");
+            pstmt.setString(1,currentParkingSpot.getSpotID() + "_" + currentParkingSpot.getSlotID());
             pstmt.setString(2,currentParkingSpot.getName());
             pstmt.setString(3,currentParkingSpot.getAddress());
             pstmt.setString(4,currentParkingSpot.getPhone());
             pstmt.setString(5,currentParkingSpot.getEmail());
             pstmt.setDouble(6,currentParkingSpot.getRate());
             pstmt.setBoolean(7,currentParkingSpot.isBooked());
-            pstmt.setString(8,rt.getSqlStartDateTime());
-            pstmt.setString(9,rt.getSqlEndDateTime());
-            pstmt.setBoolean(10, rt.isRepeat());
+            pstmt.setString(8,TimeSlot.df.getSqlDateTimeFormat().format(currentParkingSpot.getStartTime()));
+            pstmt.setString(9,TimeSlot.df.getSqlDateTimeFormat().format(currentParkingSpot.getEndTime()));
 
 //            values = "'" + currentParkingSpot.getId()
 //                    + "', '" + currentParkingSpot.getName()
@@ -162,13 +159,13 @@ public class DataAccessObject implements DataAccess
 
     public ArrayList<ParkingSpot> getParkingSpots()
     {
-        Boolean isBooked, repeat;
+        Boolean isBooked;
         Calendar calStart = Calendar.getInstance();
         Calendar calEnd = Calendar.getInstance();
         Date start, end;
         Double rate;
         ParkingSpot ps;
-        ReservationTime rt;
+        TimeSlot timeSlot;
         String id, name, addr, phone, email;
 
         parkingSpots = new ArrayList<ParkingSpot>();
@@ -197,13 +194,9 @@ public class DataAccessObject implements DataAccess
                 calStart.setTime(start);
                 calEnd.setTime(end);
 
-                rt = new ReservationTime(calStart.getTime(), calEnd.getTime());
-//                rt = new ReservationTime(calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH),
-//                        calStart.get(Calendar.DAY_OF_MONTH), calStart.get(Calendar.HOUR_OF_DAY),
-//                        calStart.get(Calendar.MINUTE), calEnd.get(Calendar.HOUR_OF_DAY),
-//                        calEnd.get(Calendar.MINUTE));
+                //timeSlot = new TimeSlot(calStart.getTime(), calEnd.getTime(), Integer.parseInt(id.split("_")[1]));
 
-                ps = new ParkingSpot(id, rt, addr, name, phone, email, rate, isBooked);
+                ps = new ParkingSpot(id.split("_")[0], addr, name, phone, email, rate, isBooked);
                 parkingSpots.add(ps);
             }
 
@@ -218,7 +211,7 @@ public class DataAccessObject implements DataAccess
     }
 
 
-    public String setSpotToBooked(String id)
+    public String setSpotToBooked(String spotID, String slotID)
     {
         boolean isBooked;
         String bookMessage = "Not Booked";
@@ -228,10 +221,10 @@ public class DataAccessObject implements DataAccess
 
         try
         {
-            cmdString = "Select * from ParkingSpots Where PS_ID=?";
+            cmdString = "SELECT * FROM ParkingSpots WHERE PS_ID=?";
 //            cmdString = "Select * from ParkingSpots Where PS_ID='" + id + "'";
             pstmt = con.prepareStatement(cmdString);
-            pstmt.setString(1, id);
+            pstmt.setString(1, spotID + "_" + slotID);
             rs = pstmt.executeQuery();
 //            rs = stmt.executeQuery(cmdString);
 
@@ -242,7 +235,8 @@ public class DataAccessObject implements DataAccess
                 if (isBooked)
                 {
                     bookMessage = "Already Booked";
-                } else
+                }
+                else
                 {
 //                    values = "Is_Booked=TRUE";
 //                    where = "where PS_ID='" + id + "'";
@@ -251,7 +245,7 @@ public class DataAccessObject implements DataAccess
                     cmdString = "Update ParkingSpots Set Is_Booked=? where PS_ID=?";
                     pstmt = con.prepareStatement(cmdString);
                     pstmt.setBoolean(1, true);
-                    pstmt.setString(2,id);
+                    pstmt.setString(2,spotID + "_" + slotID);
                     //System.out.println(cmdString);
                     updateCount = pstmt.executeUpdate();
 //                    updateCount = stmt.executeUpdate(cmdString);

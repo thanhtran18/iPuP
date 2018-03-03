@@ -18,6 +18,7 @@ import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.objects.ParkingSpot;
 
 
+import static comp3350.iPuP.presentation.AvailableParkingSpots.ID_OF_SLOT;
 import static comp3350.iPuP.presentation.AvailableParkingSpots.KEY_ADDRESS;
 import static comp3350.iPuP.presentation.AvailableParkingSpots.KEY_EMAIL;
 import static comp3350.iPuP.presentation.AvailableParkingSpots.KEY_NAME;
@@ -92,8 +93,9 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
             public void onClick(View view)
             {
                 showBookingResult();
-                String spotId=intent.getStringExtra(ID_OF_SPOT);
-                accessParkingSpots.bookSpot(spotId);
+                String spotID=intent.getStringExtra(ID_OF_SPOT);
+                String slotID=intent.getStringExtra(ID_OF_SLOT);
+                accessParkingSpots.bookSpot(spotID, slotID);
                 finish();
             }
         });

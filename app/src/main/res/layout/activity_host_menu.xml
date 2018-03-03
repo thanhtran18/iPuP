@@ -25,10 +25,10 @@
             android:padding="40dp"
             android:background="@color/colorButtonBack1"
             android:drawableLeft="@drawable/ic_icon_plus"
-            android:onClick="buttonCreateOnClick"
-            android:text="@string/host_menu_create"
             android:textColor="@color/colorButtonText"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:onClick="buttonCreateOnClick"
+            android:text="@string/host_menu_create"/>
 
         <Button
             android:id="@+id/buttonHost"

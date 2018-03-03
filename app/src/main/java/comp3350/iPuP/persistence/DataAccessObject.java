@@ -9,9 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
-import comp3350.iPuP.objects.DateFormater;
+import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.ReservationTime;
 
@@ -25,7 +24,7 @@ public class DataAccessObject implements DataAccess
 	private String dbName;
 	private String dbType;
 
-    private DateFormater df = new DateFormater();
+    private DateFormatter df = new DateFormatter();
 
 	private ArrayList<ParkingSpot> parkingSpots;
 
@@ -121,7 +120,9 @@ public class DataAccessObject implements DataAccess
 
         try
         {
-            pstmt = con.prepareStatement("Insert into Parkingspots Values(?,?,?,?,?,?,?,?,?)");
+            ReservationTime rt = currentParkingSpot.getReservationTime();
+
+            pstmt = con.prepareStatement("Insert into Parkingspots Values(?,?,?,?,?,?,?,?,?,?)");
             pstmt.setString(1,currentParkingSpot.getId());
             pstmt.setString(2,currentParkingSpot.getName());
             pstmt.setString(3,currentParkingSpot.getAddress());
@@ -129,8 +130,9 @@ public class DataAccessObject implements DataAccess
             pstmt.setString(5,currentParkingSpot.getEmail());
             pstmt.setDouble(6,currentParkingSpot.getRate());
             pstmt.setBoolean(7,currentParkingSpot.isBooked());
-            pstmt.setString(8,currentParkingSpot.getSqlStartDateTime());
-            pstmt.setString(9,currentParkingSpot.getSqlEndDateTime());
+            pstmt.setString(8,rt.getSqlStartDateTime());
+            pstmt.setString(9,rt.getSqlEndDateTime());
+            pstmt.setBoolean(10, rt.isRepeat());
 
 //            values = "'" + currentParkingSpot.getId()
 //                    + "', '" + currentParkingSpot.getName()
@@ -160,7 +162,7 @@ public class DataAccessObject implements DataAccess
 
     public ArrayList<ParkingSpot> getParkingSpots()
     {
-        Boolean isBooked;
+        Boolean isBooked, repeat;
         Calendar calStart = Calendar.getInstance();
         Calendar calEnd = Calendar.getInstance();
         Date start, end;
@@ -195,10 +197,11 @@ public class DataAccessObject implements DataAccess
                 calStart.setTime(start);
                 calEnd.setTime(end);
 
-                rt = new ReservationTime(calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH),
-                        calStart.get(Calendar.DAY_OF_MONTH), calStart.get(Calendar.HOUR_OF_DAY),
-                        calStart.get(Calendar.MINUTE), calEnd.get(Calendar.HOUR_OF_DAY),
-                        calEnd.get(Calendar.MINUTE));
+                rt = new ReservationTime(calStart.getTime(), calEnd.getTime());
+//                rt = new ReservationTime(calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH),
+//                        calStart.get(Calendar.DAY_OF_MONTH), calStart.get(Calendar.HOUR_OF_DAY),
+//                        calStart.get(Calendar.MINUTE), calEnd.get(Calendar.HOUR_OF_DAY),
+//                        calEnd.get(Calendar.MINUTE));
 
                 ps = new ParkingSpot(id, rt, addr, name, phone, email, rate, isBooked);
                 parkingSpots.add(ps);

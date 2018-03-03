@@ -30,8 +30,6 @@ public class AvailableParkingSpots extends ListActivity
     public static final String ID_OF_SPOT = "spot_id";
 
     private ArrayList<ParkingSpot>fakeSpots=new ArrayList<ParkingSpot>();
-    private SimpleDateFormat date;
-    private SimpleDateFormat time;
 
     private AccessParkingSpots accessParkingSpots;
 
@@ -54,26 +52,25 @@ public class AvailableParkingSpots extends ListActivity
     {
         super.onListItemClick(l, v, position, id);
 
-        String nameOfTheParkingHost = fakeSpots.get(position).getName();
-        String addressOfTheSpot = fakeSpots.get(position).getAddress();
-        String emailOfTheHost = fakeSpots.get(position).getEmail();
-        String phoneNumberOfTheHost = fakeSpots.get(position).getPhone();
-        String rateDescription = "$" + fakeSpots.get(position).getRate() + "/hr";
-        String reservationTime = fakeSpots.get(position).getStartTime().toString();
+        ParkingSpot item = fakeSpots.get(position);
+        ReservationTime rt = item.getReservationTime();
+
+        String nameOfTheParkingHost = item.getName();
+        String addressOfTheSpot = item.getAddress();
+        String emailOfTheHost = item.getEmail();
+        String phoneNumberOfTheHost = item.getPhone();
+        String rateDescription = "$" + item.getRate() + "/hr";
+        String reservationTime = rt.getStartTime().toString();
         String message = nameOfTheParkingHost + " with email: " + emailOfTheHost +
                 " and phone number: " + phoneNumberOfTheHost +
                 " is offering " + addressOfTheSpot + " at " + rateDescription+
                 " at " + reservationTime;
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
-        date = new SimpleDateFormat("EEE, d MMM yyyy");
-        ParkingSpot item = (ParkingSpot) fakeSpots.get(position);
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-
         Intent intent = new Intent(getApplicationContext(), ParkingSpotInfoActivity.class);
 
-        intent.putExtra(KEY_RESERVATION_START, item.getStartTime().toString());
-        intent.putExtra(KEY_RESERVATION_END, item.getEndTime().toString());
+        intent.putExtra(KEY_RESERVATION_START, rt.getStartTime().toString());
+        intent.putExtra(KEY_RESERVATION_END, rt.getEndTime().toString());
         intent.putExtra(KEY_NAME, item.getName());
         intent.putExtra(KEY_ADDRESS, item.getAddress());
         intent.putExtra(KEY_PHONE, item.getPhone());

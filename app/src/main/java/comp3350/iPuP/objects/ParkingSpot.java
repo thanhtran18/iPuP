@@ -25,7 +25,7 @@ public class ParkingSpot
         this.email = email;
 
         this.rate = rate;// required
-        id = address+name+phone+email;
+        id = address+name;
         isBooked = false;
     }
 
@@ -39,25 +39,26 @@ public class ParkingSpot
         }
     }
 
-    public Date getStartTime()
-    {
-        return reservation.getStart();
-    }
-
-    public Date getEndTime()
-    {
-        return reservation.getEnd();
-    }
-
-    public String getSqlStartDateTime() { return reservation.getSqlStartDateTime(); }
-
-    public String getSqlEndDateTime() { return reservation.getSqlEndDateTime(); }
-
-    public String getSqlStartTime() { return reservation.getSqlStartTime(); }
-
-    public String getSqlEndTime() { return reservation.getSqlEndTime(); }
-
-    public String getSqlDate() { return reservation.getSqlDate(); }
+    public ReservationTime getReservationTime() { return reservation; }
+//    public Date getStartTime()
+//    {
+//        return reservation.getStart();N
+//    }
+//
+//    public Date getEndTime()
+//    {
+//        return reservation.getEnd();
+//    }
+//
+//    public String getSqlStartDateTime() { return reservation.getSqlStartDateTime(); }
+//
+//    public String getSqlEndDateTime() { return reservation.getSqlEndDateTime(); }
+//
+//    public String getSqlStartTime() { return reservation.getSqlStartTime(); }
+//
+//    public String getSqlEndTime() { return reservation.getSqlEndTime(); }
+//
+//    public String getSqlDate() { return reservation.getSqlDate(); }
 
     public String getName()
     {

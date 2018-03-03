@@ -1,6 +1,5 @@
 package comp3350.iPuP.objects;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -11,16 +10,11 @@ public class ReservationTime
 {
     private Date start;
     private Date end;
-    private DateFormater df = new DateFormater();
-    private SimpleDateFormat date;
-    private SimpleDateFormat time;
+    private DateFormatter df = new DateFormatter();
     private boolean repeat;
 
     public ReservationTime(int startYear, int startMonth, int startDay, int startHour, int startMinute, int endYear, int endMonth, int endDay, int endHour, int endMinute, boolean repeat)
     {
-        date = new SimpleDateFormat("EEE, d MMM yyyy");
-        time = new SimpleDateFormat("h:mm a");
-
         Calendar c = new GregorianCalendar(startYear, startMonth, startDay, startHour, startMinute);
         start = c.getTime();
         c.set(endYear, endMonth, endDay, endHour, endMinute);
@@ -28,14 +22,11 @@ public class ReservationTime
         this.repeat = repeat;
     }
 
-    public ReservationTime(Date newStart, Date newEnd, boolean repeat)
+    public ReservationTime(Date newStart, Date newEnd)
     {
-        date = new SimpleDateFormat("EEE, d MMM yyyy");
-        time = new SimpleDateFormat("h:mm a");
-
         start = newStart;
         end = newEnd;
-        this.repeat = repeat;
+        this.repeat = false;
     }
 
     public static ReservationTime parseString(String s, boolean repeat) throws ParseException
@@ -45,7 +36,7 @@ public class ReservationTime
             String start = s.split("-")[0].trim();
             String end = s.split("-")[1].trim();
             SimpleDateFormat datetime = new SimpleDateFormat("EEE, d MMM yyyy, h:mm a");
-            return new ReservationTime(datetime.parse(start), datetime.parse(end), repeat);
+            return new ReservationTime(datetime.parse(start), datetime.parse(end));
         }
         else throw new ParseException("There is not two dates separated by \" -\"",0);
     }
@@ -55,18 +46,20 @@ public class ReservationTime
     {
         if (start != null && end != null)
             return df.getDateFormat().format(start) + ", " +
-                    df.getSqlTimeFormat().format(start) + " - " +
-                    df.getSqlTimeFormat().format(end);
+                    df.getTimeFormat().format(start) + " - " +
+                    df.getTimeFormat().format(end);
         else
             return "Invalid date";
     }
 
-    public Date getStart()
+    public boolean isRepeat() { return repeat; }
+
+    public Date getStartTime()
     {
         return start;
     }
 
-    public Date getEnd()
+    public Date getEndTime()
     {
         return end;
     }

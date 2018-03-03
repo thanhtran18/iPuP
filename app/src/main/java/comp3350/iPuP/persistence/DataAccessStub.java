@@ -41,7 +41,7 @@ public class DataAccessStub implements DataAccess
 		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
 		parkingSpots.add(tempSpot);
 
-		time = new ReservationTime(2018, 6, 11, 10, 30, 14, 45);
+		time = new ReservationTime(2018, 6, 11, 10, 30, 14, 30);
 		address = "2 chancellor drive";
 		name = "Scott Gordon";
 		phone = "204-122-1234";
@@ -68,7 +68,7 @@ public class DataAccessStub implements DataAccess
 		tempSpot = new ParkingSpot(time , address, name, phone, email,rate);
 		parkingSpots.add(tempSpot);
 
-		time = new ReservationTime(2018, 6, 11, 10, 30, 16, 45);
+		time = new ReservationTime(2018, 6, 11, 10, 30, 16, );
 		address = "566 Pasedina avenue";
 		name = "Brian Cambell";
 		phone = "204-419-8819";

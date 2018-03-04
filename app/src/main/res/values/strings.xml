@@ -22,6 +22,9 @@
 
     <string name="host_menu_create">Create a new parking spot</string>
     <string name="host_menu_view">View your parking spots</string>
+    <string name="parker_menu_search">Search available parking spots</string>
+    <string name="parker_menu_view">View your booked parking</string>
+
     <string name="search_message">Search</string>
 
     <string name="next">Next</string>

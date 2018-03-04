@@ -110,7 +110,7 @@ public class HomeActivity extends Activity {
 
     public void buttonParkerOnClick(View v)
     {
-        Intent parkerIntent = new Intent(HomeActivity.this, ParkerViewActivity.class);
+        Intent parkerIntent = new Intent(HomeActivity.this, ParkerMenuActivity.class);
         HomeActivity.this.startActivity(parkerIntent);
     }
 

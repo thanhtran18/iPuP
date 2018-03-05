@@ -168,19 +168,19 @@ public class HostActivity extends Activity
             valid = false;
             EditText text = findViewById(R.id.editPhone);
             text.setHint("Enter either phone");
-            text.setBackgroundColor(getResources().getColor(R.color.colorLightGrey));
-            text.setHint("or email");
+            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
             text = findViewById(R.id.editEmail);
-            text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+            text.setHint("or email");
+            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
         }
         else
         {
             EditText text = findViewById(R.id.editPhone);
             text.setHint(getResources().getString(R.string.host_phone));
-            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
-            text.setHint(getResources().getString(R.string.host_email));
+            text.setBackgroundColor(getResources().getColor(R.color.colorLightGrey));
             text = findViewById(R.id.editEmail);
-            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
+            text.setHint(getResources().getString(R.string.host_email));
+            text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         }
 
         if (timeSlot.getStart().compareTo(timeSlot.getEnd()) >= 0)
@@ -194,9 +194,9 @@ public class HostActivity extends Activity
         else
         {
             TextView text = findViewById(R.id.editFromTime);
-            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
+            text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
             text = findViewById(R.id.editFromDate);
-            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
+            text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         }
 
         if (valid)

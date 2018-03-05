@@ -52,6 +52,14 @@
         <activity
             android:name=".presentation.TimePickerActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".presentation.ParkerMenuActivity"
+            android:label="@string/title_activity_parker_menu"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".presentation.ParkerSearchActivity"
+            android:label="@string/title_activity_parker_search"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

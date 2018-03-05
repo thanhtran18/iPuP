@@ -18,43 +18,47 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import comp3350.iPuP.R;
+import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.objects.TimeSlot;
+import comp3350.iPuP.objects.User;
 
 public class HostActivity extends Activity
 {
     private AccessParkingSpots accessParkingSpots;
     private String repetitionInfo;
+    private DateFormatter df;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host);
+        user = getIntent().getParcelableExtra("parcel_user");
         accessParkingSpots = new AccessParkingSpots();
         repetitionInfo = "";
 
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat date = new SimpleDateFormat("EEE, d MMM yyyy");
-        SimpleDateFormat time = new SimpleDateFormat("h:mm a");
+        df = new DateFormatter();
 
         if (c.get(Calendar.MINUTE) > 30)
             c.set(Calendar.MINUTE, 30);
         else c.set(Calendar.MINUTE, 0);
 
         TextView tv = (TextView)findViewById(R.id.editFromDate);
-        tv.setText(date.format(c.getTime()));
+        tv.setText(df.getDateFormat().format(c.getTime()));
 
         tv = (TextView)findViewById(R.id.editFromTime);
-        tv.setText(time.format(c.getTime()));
+        tv.setText(df.getTimeFormat().format(c.getTime()));
 
         c.add(Calendar.HOUR_OF_DAY,1);
         tv = (TextView)findViewById(R.id.editToDate);
-        tv.setText(date.format(c.getTime()));
+        tv.setText(df.getDateFormat().format(c.getTime()));
 
         tv = (TextView)findViewById(R.id.editToTime);
-        tv.setText(time.format(c.getTime()));
+        tv.setText(df.getTimeFormat().format(c.getTime()));
     }
 
     public void onFromDateClick(View v)
@@ -196,7 +200,7 @@ public class HostActivity extends Activity
 
         if (valid)
         {
-            String rtn = accessParkingSpots.insertParkingSpots(timeSlot, repetitionInfo, address, name, phone, email, rate);
+            String rtn = accessParkingSpots.insertParkingSpots(user, timeSlot, repetitionInfo, address, name, phone, email, rate);
 
             if (rtn == null)
             {

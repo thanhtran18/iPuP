@@ -2,6 +2,9 @@ package comp3350.iPuP.presentation;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.application.Main;
+import comp3350.iPuP.business.AccessUsers;
+import comp3350.iPuP.objects.User;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +13,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -17,6 +22,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class HomeActivity extends Activity {
+
+    private AccessUsers accessUsers;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,6 +36,40 @@ public class HomeActivity extends Activity {
         Main.startUp();
 
         setContentView(R.layout.activity_home);
+
+        accessUsers = new AccessUsers();
+        user = null;
+
+        //TODO: Remove following get user code after username edittext added to main activity
+        user = accessUsers.createAndGetUser("Amanjyot");
+
+        //TODO: Uncomment following code after username edittext added to main activity
+        /*
+        EditText editTextUN = (EditText) findViewById(R.id.username);
+        final String username = editTextUN.getText().toString();
+
+        editTextUN.setOnFocusChangeListener(new View.OnFocusChangeListener()
+        {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus)
+            {
+                if (!hasFocus)
+                {
+                    // get new user if username not same on focus lost
+                    if (user == null || !username.equals(user.getUsername()))
+                    {
+                        user = accessUsers.getUser(username);
+                        Toast.makeText(this, "Loaded User: " + username + "!", Toast.LENGTH_LONG).show();
+                        if (user == null)
+                        {
+                            user = createAndGetUser(username);
+                            Toast.makeText(this, "Created User: " + username + "!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+            }
+        });
+        */
     }
 
     @Override
@@ -110,13 +152,32 @@ public class HomeActivity extends Activity {
 
     public void buttonParkerOnClick(View v)
     {
-        Intent parkerIntent = new Intent(HomeActivity.this, AvailableParkingSpots.class);
-        HomeActivity.this.startActivity(parkerIntent);
+        if (user == null)
+        {
+            highlightEmptyUsername();
+        } else {
+            Intent parkerIntent = new Intent(HomeActivity.this, AvailableParkingSpots.class);
+            parkerIntent.putExtra("parcel_user", user);
+            HomeActivity.this.startActivity(parkerIntent);
+        }
     }
 
     public void buttonHostOnClick(View v)
     {
-        Intent hostMenuIntent = new Intent(HomeActivity.this, HostMenuActivity.class);
-        HomeActivity.this.startActivity(hostMenuIntent);
+        if (user == null)
+        {
+            highlightEmptyUsername();
+        } else {
+            Intent hostMenuIntent = new Intent(HomeActivity.this, HostMenuActivity.class);
+            hostMenuIntent.putExtra("parcel_user", user);
+            HomeActivity.this.startActivity(hostMenuIntent);
+        }
     }
+
+    //TODO: Finish the following highlightEmptyUsername method
+    public void highlightEmptyUsername()
+    {
+        Toast.makeText(this, "NO USERNAME ENTERED!!!", Toast.LENGTH_LONG).show();
+    }
+
 }

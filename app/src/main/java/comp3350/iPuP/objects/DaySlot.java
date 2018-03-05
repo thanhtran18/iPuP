@@ -41,4 +41,9 @@ public class DaySlot extends TimeSlot
     {
         timeSlots.add(newSlot);
     }
+
+    public ArrayList<TimeSlot> getTimeSlots()
+    {
+        return this.timeSlots;
+    }
 }

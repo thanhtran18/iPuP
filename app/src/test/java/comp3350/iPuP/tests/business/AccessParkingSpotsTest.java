@@ -15,6 +15,11 @@ public class AccessParkingSpotsTest extends TestCase
     ArrayList<ParkingSpot> spots;
     ArrayList<ParkingSpot> allSpots;
 
+    public AccessParkingSpotsTest(String arg0)
+    {
+        super(arg0);
+    }
+
     public void testEmptyList()
     {
         Main.startUp();

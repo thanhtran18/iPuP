@@ -12,6 +12,7 @@ import comp3350.iPuP.application.Services;
 import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
+import comp3350.iPuP.objects.User;
 import comp3350.iPuP.persistence.DataAccess;
 
 
@@ -23,17 +24,17 @@ public class AccessParkingSpots
     public AccessParkingSpots()
     {
         dataAccess = Services.getDataAccess();
-        availableSpots=new ArrayList<ParkingSpot>();
+        availableSpots = new ArrayList<ParkingSpot>();
     }
 
-    public String insertParkingSpots(TimeSlot timeSlot, String repetitionInfo, String address, String name, String phone, String email, double rate)
+    public String insertParkingSpots(User user, TimeSlot timeSlot, String repetitionInfo, String address, String name, String phone, String email, double rate)
     {
         Calendar start = new GregorianCalendar();
         Calendar end = new GregorianCalendar();
         start.setTime(timeSlot.getStart());
         end.setTime(timeSlot.getEnd());
 
-        ParkingSpot spot = new ParkingSpot(address, name, phone, email, rate);
+        ParkingSpot spot = new ParkingSpot(address, name, phone, email, rate, timeSlot);
 
         if (repetitionInfo != null && !repetitionInfo.equals(""))
         {
@@ -76,12 +77,12 @@ public class AccessParkingSpots
             spot.addDaySlot(new DaySlot(start.getTime(), end.getTime()));
         }
 
-        insertParkingSpot(spot);
+        insertParkingSpot(user, spot);
         return null;
     }
-    public String insertParkingSpot(ParkingSpot newParkingSpot)
+    public String insertParkingSpot(User user, ParkingSpot newParkingSpot)
     {
-        return dataAccess.insertParkingSpot(newParkingSpot);
+        return dataAccess.insertParkingSpot(user, newParkingSpot);
     }
     public ArrayList<ParkingSpot> getAllSpots()
     {

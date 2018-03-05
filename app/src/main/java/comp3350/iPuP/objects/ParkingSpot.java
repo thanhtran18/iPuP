@@ -17,7 +17,7 @@ public class ParkingSpot
     private boolean isBooked;
     private ArrayList<DaySlot> daySlots;
 
-    public ParkingSpot(String address, String name, String phone, String email, double rate)
+    public ParkingSpot(String address, String name, String phone, String email, double rate, TimeSlot timeSlot)
     {
         this.address = address;// required
         this.name = name;// required
@@ -28,19 +28,21 @@ public class ParkingSpot
 
         this.rate = rate;// required
 
-        spotID = address+name;
-        isBooked = false;
+        this.spotID = address+name;
+        this.isBooked = false;
 
-        daySlots = new ArrayList<DaySlot>();
+        this.timeSlot = timeSlot;
+
+        this.daySlots = new ArrayList<DaySlot>();
     }
 
-    public ParkingSpot(String id, String address, String name, String phone, String email, double rate, boolean isBooked) throws Exception {
-        this(address, name, phone, email, rate);
-        spotID = id;
+    public ParkingSpot(String id, String address, String name, String phone, String email, double rate, TimeSlot timeSlot, boolean isBooked) throws Exception {
+        this(address, name, phone, email, rate, timeSlot);
+//        this.spotID = id;
         this.isBooked = isBooked;
 
         if (!this.spotID.equals(id)) {
-            throw new Exception("Passed in ID (" + id + ") does not match generated ID (" + this.id + ") !");
+            throw new Exception("Passed in ID (" + id + ") does not match generated ID (" + this.spotID + ") !");
         }
     }
 
@@ -92,6 +94,11 @@ public class ParkingSpot
     public boolean isBooked()
     {
         return isBooked;
+    }
+
+    public ArrayList<DaySlot> getDaySlots()
+    {
+        return this.daySlots;
     }
 
     public void setBooked(boolean booked)

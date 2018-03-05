@@ -1,25 +1,30 @@
 package comp3350.iPuP.persistence;
 
+import org.hsqldb.Types;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLWarning;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import comp3350.iPuP.objects.DateFormatter;
+import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
+import comp3350.iPuP.objects.User;
 
 public class DataAccessObject implements DataAccess
 {
-	private PreparedStatement pstmt;
-//	private Statement stmt;
+	private PreparedStatement pstmt, pstmt2, pstmt3;
+	private Statement stmt;
 	private Connection con;
-	private ResultSet rs;
+	private ResultSet rss, rsp, rsp2, rsp3, genkey;
 
 	private String dbName;
 	private String dbType;
@@ -50,42 +55,7 @@ public class DataAccessObject implements DataAccess
 			Class.forName("org.hsqldb.jdbcDriver").newInstance();
 			url = "jdbc:hsqldb:file:" + dbPath; // stored on disk mode
 			con = DriverManager.getConnection(url, "iPuP", "iPuP");
-//			stmt = con.createStatement();
-
-			/*** Alternate setups for different DB engines, just given as examples. Don't use them. ***/
-			
-			/*
-			 * // Setup for SQLite. Note that this is undocumented and is not guaranteed to work.
-			 * // See also: https://github.com/SQLDroid/SQLDroid
-			 * dbType = "SQLite";
-			 * Class.forName("SQLite.JDBCDriver").newInstance();
-			 * url = "jdbc:sqlite:" + dbPath;
-			 * c1 = DriverManager.getConnection(url);     
-			 * 
-			 * ... create statements
-			 */
-
-			/*** The following two work on desktop builds: ***/
-
-			/*
-			 * // Setup for Access
-			 * dbType = "Access";
-			 * Class.forName("sun.jdbc.odbc.JdbcOdbcDriver").newInstance();
-			 * url = "jdbc:odbc:SC";
-			 * c1 = DriverManager.getConnection(url,"userid","userpassword");
-			 * 
-			 * ... create statements
-			 */
-
-			/*
-			 * //Setup for MySQL
-			 * dbType = "MySQL";
-			 * Class.forName("com.mysql.jdbc.Driver");
-			 * url = "jdbc:mysql://localhost/database01";
-			 * c1 = DriverManager.getConnection(url, "root", "");
-			 * 
-			 * ... create statements
-			 */
+			stmt = con.createStatement();
 		}
 		catch (Exception e)
 		{
@@ -100,9 +70,7 @@ public class DataAccessObject implements DataAccess
 		try
 		{	// commit all changes to the database
 			cmdString = "shutdown compact";
-			pstmt = con.prepareStatement(cmdString);
-			rs = pstmt.executeQuery();
-//			rs = stmt.executeQuery(cmdString);
+			rss = stmt.executeQuery(cmdString);
 			con.close();
 		}
 		catch (Exception e)
@@ -113,49 +81,181 @@ public class DataAccessObject implements DataAccess
 	}
 
 
-	public String insertParkingSpot(ParkingSpot currentParkingSpot)
+	public String insertDaySlot(String psID, DaySlot daySlot)
     {
-//        String values;
+        long dsID;
+        String theResult = null;
+
+        try
+        {
+            cmdString = "INSERT INTO DAYSLOTS (PS_ID,STARTDAYTIME,ENDDAYTIME) " +
+                        "VALUES (?,?,?)";
+            pstmt2 = con.prepareStatement(cmdString);
+            pstmt2.setString(1, psID);
+            pstmt2.setString(2, df.getSqlDateTimeFormat().format(daySlot.getStart()));
+            pstmt2.setString(3, df.getSqlDateTimeFormat().format(daySlot.getEnd()));
+
+            updateCount = pstmt2.executeUpdate();
+            theResult = checkWarning(pstmt, updateCount);
+
+            cmdString = "CALL IDENTITY()";
+            rss = stmt.executeQuery(cmdString);
+
+            if (rss.next())
+            {
+                dsID = rss.getLong(1);
+
+                // insert all timeSlots related to this daySlot
+                String rtn = insertTimeSlots(psID, dsID, daySlot.getTimeSlots());
+
+                if (rtn != null)
+                    return rtn;
+            } else
+            {
+                theResult += "\nCould not retrieve DaySlot ID from Database!";
+            }
+
+        } catch (Exception e)
+        {
+            theResult = processSQLError(e);
+        }
+
+        return theResult;
+    }
+
+
+	public String insertDaySlots(String psID, ArrayList<DaySlot> daySlots)
+    {
+        String rtn = null;
+
+        for (int i = 0; i < daySlots.size(); i++)
+        {
+            rtn = insertDaySlot(psID, daySlots.get(i));
+
+            if (rtn != null)
+            {
+                return rtn;
+            }
+        }
+
+        return rtn;
+    }
+
+    public String insertTimeSlot(String psID, Long dsID, Date start, Date end)
+    {
+        String theResult = null;
+
+        try
+        {
+            cmdString = "INSERT INTO TIMESLOTS (PS_ID,DS_ID,STARTDATETIME,ENDDATETIME) " +
+                    "VALUES (?,?,?,?)";
+            pstmt3 = con.prepareStatement(cmdString);
+            pstmt3.setString(1, psID);
+            if (dsID == null)
+            {
+                pstmt3.setNull(2, Types.NULL);
+            } else
+            {
+                pstmt3.setLong(2, dsID);
+            }
+            pstmt3.setString(3, df.getSqlDateTimeFormat().format(start));
+            pstmt3.setString(4, df.getSqlDateTimeFormat().format(end));
+
+            updateCount = pstmt3.executeUpdate();
+            theResult = checkWarning(pstmt, updateCount);
+
+        } catch (Exception e)
+        {
+            theResult = processSQLError(e);
+        }
+
+        return theResult;
+    }
+
+
+    public String insertTimeSlot(String psID, Long dsID, TimeSlot timeSlot)
+    {
+        return insertTimeSlot(psID, dsID, timeSlot.getStart(), timeSlot.getEnd());
+    }
+
+
+    public String insertTimeSlots(String psID, Long dsID, ArrayList<TimeSlot> timeSlots)
+    {
+        String rtn = null;
+
+        for (int i = 0; i < timeSlots.size(); i++)
+        {
+            rtn = insertTimeSlot(psID, dsID, timeSlots.get(i));
+
+            if (rtn != null)
+            {
+                return rtn;
+            }
+        }
+
+        return rtn;
+    }
+
+
+	public String insertParkingSpot(User user, ParkingSpot currentParkingSpot)
+    {
         result = null;
 
         try
         {
-            pstmt = con.prepareStatement("Insert into Parkingspots Values(?,?,?,?,?,?,?,?,?)");
-            pstmt.setString(1,currentParkingSpot.getSpotID() + "_" + currentParkingSpot.getSlotID());
-            pstmt.setString(2,currentParkingSpot.getName());
-            pstmt.setString(3,currentParkingSpot.getAddress());
-            pstmt.setString(4,currentParkingSpot.getPhone());
-            pstmt.setString(5,currentParkingSpot.getEmail());
-            pstmt.setDouble(6,currentParkingSpot.getRate());
-            pstmt.setBoolean(7,currentParkingSpot.isBooked());
-            pstmt.setString(8,TimeSlot.df.getSqlDateTimeFormat().format(currentParkingSpot.getStartTime()));
-            pstmt.setString(9,TimeSlot.df.getSqlDateTimeFormat().format(currentParkingSpot.getEndTime()));
+            cmdString = "INSERT INTO PARKINGSPOTS VALUES(?,?,?,?,?,?,?,?)";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setString(1,currentParkingSpot.getSpotID());
+            pstmt.setLong(2,user.getUserID());
+            pstmt.setString(3,currentParkingSpot.getName());
+            pstmt.setString(4,currentParkingSpot.getAddress());
+            pstmt.setString(5,currentParkingSpot.getPhone());
+            pstmt.setString(6,currentParkingSpot.getEmail());
+            pstmt.setDouble(7,currentParkingSpot.getRate());
+            pstmt.setBoolean(8,currentParkingSpot.isBooked());
 
-//            values = "'" + currentParkingSpot.getId()
-//                    + "', '" + currentParkingSpot.getName()
-//                    + "', '" + currentParkingSpot.getAddress()
-//                    + "', '" + currentParkingSpot.getPhone()
-//                    + "', '" + currentParkingSpot.getEmail()
-//                    + "', " + currentParkingSpot.getRate()
-//                    + ", " + currentParkingSpot.isBooked()
-//                    + ", '" + currentParkingSpot.getSqlStartDateTime()
-//                    + "', '" + currentParkingSpot.getSqlEndDateTime()
-//                    +"'";
-//            cmdString = "Insert into Parkingspots Values(" + values +")";
             //System.out.println(cmdString);
-//            updateCount = stmt.executeUpdate(cmdString);
             updateCount = pstmt.executeUpdate();
-//            result = checkWarning(stmt, updateCount);
             result = checkWarning(pstmt, updateCount);
+
+            String rtnt = insertTimeSlot(currentParkingSpot.getSpotID(), null, currentParkingSpot.getStartTime(), currentParkingSpot.getEndTime());
+
+            if (rtnt != null)
+                return rtnt;
+
+            String rtnd = insertDaySlots(currentParkingSpot.getSpotID(), currentParkingSpot.getDaySlots());
+
+            if (rtnd != null)
+                return rtnd;
         }
         catch (Exception e)
         {
             result = processSQLError(e);
         }
 
-        return null;
+        return result;
     }
 
+    public String insertUser(String username)
+    {
+        result = null;
+
+        try
+        {
+            cmdString = "INSERT INTO USERS (USERNAME) VALUES(?)";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setString(1, username);
+
+            updateCount = pstmt.executeUpdate();
+            result = checkWarning(pstmt, updateCount);
+
+        } catch (Exception e)
+        {
+            result = processSQLError(e);
+        }
+
+        return result;
+    }
 
     public ArrayList<ParkingSpot> getParkingSpots()
     {
@@ -164,6 +264,7 @@ public class DataAccessObject implements DataAccess
         Calendar calEnd = Calendar.getInstance();
         Date start, end;
         Double rate;
+        long tsId;
         ParkingSpot ps;
         TimeSlot timeSlot;
         String id, name, addr, phone, email;
@@ -173,34 +274,34 @@ public class DataAccessObject implements DataAccess
 
         try
         {
-            cmdString = "Select * from ParkingSpots";
-            pstmt = con.prepareStatement(cmdString);
-            rs = pstmt.executeQuery();
-//            rs = stmt.executeQuery(cmdString);
+            cmdString = "SELECT * FROM PARKINGSPOTS P JOIN TIMESLOTS T ON P.PS_ID = T.PS_ID AND T.DS_ID IS NULL";
+            rss = stmt.executeQuery(cmdString);
             //ResultSetMetaData md = rs.getMetaData();
 
-            while (rs.next())
+            while (rss.next())
             {
-                id = rs.getString("PS_ID");
-                name = rs.getString("Name");
-                addr = rs.getString("Address");
-                phone = rs.getString("Phone");
-                email = rs.getString("Email");
-                rate = rs.getDouble("Rate");
-                isBooked = rs.getBoolean("Is_Booked");
-                start = rs.getTimestamp("Startdatetime");
-                end = rs.getTimestamp("Enddatetime");
+                id = rss.getString("PS_ID");
+                name = rss.getString("Name");
+                addr = rss.getString("Address");
+                phone = rss.getString("Phone");
+                email = rss.getString("Email");
+                rate = rss.getDouble("Rate");
+                isBooked = rss.getBoolean("Is_Booked");
+                start = rss.getDate("Startdatetime");
+                end = rss.getDate("Enddatetime");
+                tsId = rss.getLong("TS_ID");
 
                 calStart.setTime(start);
                 calEnd.setTime(end);
 
-                //timeSlot = new TimeSlot(calStart.getTime(), calEnd.getTime(), Integer.parseInt(id.split("_")[1]));
+                timeSlot = new TimeSlot(calStart.getTime(), calEnd.getTime(), Long.toString(tsId));
 
-                ps = new ParkingSpot(id.split("_")[0], addr, name, phone, email, rate, isBooked);
+                ps = new ParkingSpot(id, addr, name, phone, email, rate, timeSlot, isBooked);
+//                ps = new ParkingSpot(id.split("_")[0], addr, name, phone, email, rate, isBooked, timeSlot);
                 parkingSpots.add(ps);
             }
 
-            rs.close();
+            rss.close();
         }
         catch (Exception e)
         {
@@ -210,53 +311,86 @@ public class DataAccessObject implements DataAccess
         return parkingSpots;
     }
 
-
-    public String setSpotToBooked(String spotID, String slotID)
+    public User getUser(String username)
     {
-        boolean isBooked;
-        String bookMessage = "Not Booked";
-        String values, where;
+        long uID;
+        String uName;
+        User user = null;
 
         result = null;
 
         try
         {
-            cmdString = "SELECT * FROM ParkingSpots WHERE PS_ID=?";
-//            cmdString = "Select * from ParkingSpots Where PS_ID='" + id + "'";
+            cmdString = "SELECT * FROM USERS WHERE USERNAME = ?";
             pstmt = con.prepareStatement(cmdString);
-            pstmt.setString(1, spotID + "_" + slotID);
-            rs = pstmt.executeQuery();
-//            rs = stmt.executeQuery(cmdString);
+            pstmt.setString(1,username);
+            rsp = pstmt.executeQuery();
 
-            if (rs.next() == true)
+            if (rsp.next())
             {
-                isBooked = rs.getBoolean("Is_Booked");
+                uID = rsp.getLong("USER_ID");
+                uName = rsp.getString("USERNAME");
 
-                if (isBooked)
-                {
-                    bookMessage = "Already Booked";
-                }
-                else
-                {
-//                    values = "Is_Booked=TRUE";
-//                    where = "where PS_ID='" + id + "'";
-
-//                    cmdString = "Update ParkingSpots Set " + values + " " + where;
-                    cmdString = "Update ParkingSpots Set Is_Booked=? where PS_ID=?";
-                    pstmt = con.prepareStatement(cmdString);
-                    pstmt.setBoolean(1, true);
-                    pstmt.setString(2,spotID + "_" + slotID);
-                    //System.out.println(cmdString);
-                    updateCount = pstmt.executeUpdate();
-//                    updateCount = stmt.executeUpdate(cmdString);
-                    result = checkWarning(pstmt, updateCount);
-//                    result = checkWarning(stmt, updateCount);
-
-                    bookMessage = "Booked";
-                }
+                user = new User(uID, uName);
             }
 
-            rs.close();
+            rsp.close();
+        } catch (Exception e)
+        {
+            result = processSQLError(e);
+        }
+
+        return user;
+    }
+
+    public String setSpotToBooked(String spotID, String slotID)
+    {
+        boolean isBooked;
+        String bookMessage = "Not Booked";
+
+        result = null;
+
+        try
+        {
+//            cmdString = "SELECT * FROM ParkingSpots WHERE PS_ID = ?";
+            cmdString = "UPDATE PARKINGSPOTS SET IS_BOOKED = ? WHERE PS_ID = ? AND IS_BOOKED = FALSE";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setBoolean(1, true);
+            pstmt.setString(2, spotID);
+//            pstmt.setString(2, spotID + "_" + slotID);
+            updateCount = pstmt.executeUpdate();
+
+            if (updateCount == 0)
+            {
+                bookMessage = "Already Booked";
+            } else
+            {
+                bookMessage = "Booked";
+            }
+
+//            if (rsp.next())
+//            {
+//                isBooked = rsp.getBoolean("Is_Booked");
+//
+//                if (isBooked)
+//                {
+//                    bookMessage = "Already Booked";
+//                }
+//                else
+//                {
+//                    cmdString = "Update ParkingSpots Set Is_Booked=? where PS_ID=?";
+//                    pstmt = con.prepareStatement(cmdString);
+//                    pstmt.setBoolean(1, true);
+//                    pstmt.setString(2,spotID + "_" + slotID);
+//                    //System.out.println(cmdString);
+//                    updateCount = pstmt.executeUpdate();
+//                    result = checkWarning(pstmt, updateCount);
+//
+//                    bookMessage = "Booked";
+//                }
+//            }
+//
+//            rsp.close();
         }
         catch (Exception e)
         {

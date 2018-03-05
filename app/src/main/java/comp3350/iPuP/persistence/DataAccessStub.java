@@ -1,9 +1,12 @@
 package comp3350.iPuP.persistence;
 
 import java.util.ArrayList;
+import java.util.Date;
 
+import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
+import comp3350.iPuP.objects.User;
 
 public class DataAccessStub implements DataAccess
 {
@@ -237,19 +240,58 @@ public class DataAccessStub implements DataAccess
     }
 
 
-    public String insertParkingSpot(ParkingSpot currentParkingSpot)
+	public String insertDaySlot(String psID, DaySlot daySlot)
+	{
+		//TODO: implement insertDaySlot method
+		return null;
+	}
+
+	public String insertDaySlots(String psID, ArrayList<DaySlot> daySlots)
+	{
+		//TODO: implement insertDaySlots method
+		return null;
+	}
+
+	public String insertTimeSlot(String psID, Long dsID, Date start, Date end)
+	{
+		//TODO: implement insertTimeSlot method
+		return null;
+	}
+
+	public String insertTimeSlot(String psID, Long dsID, TimeSlot timeSlot)
+	{
+		return insertTimeSlot(psID, dsID, timeSlot.getStart(), timeSlot.getEnd());
+	}
+
+	public String insertTimeSlots(String psID, Long dsID, ArrayList<TimeSlot> timeSlots)
+	{
+		//TODO: implement insertTimeSlots method
+		return null;
+	}
+
+    public String insertParkingSpot(User user, ParkingSpot currentParkingSpot)
     {
         // not checking for duplicates yet
         parkingSpots.add(currentParkingSpot);
         return null;
     }
 
+	public String insertUser(String username)
+	{
+		//TODO: implement insertUser method
+		return null;
+	}
 
 	public ArrayList<ParkingSpot> getParkingSpots()
 	{
 		return parkingSpots;
 	}
 
+    public User getUser(String username)
+    {
+        //TODO: implement getUser method
+        return null;
+    }
 
 	public String setSpotToBooked(String spotID, String slotID)
 	{

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -28,8 +29,9 @@ public class RepeatActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_repeat);
         this.setFinishOnTouchOutside(false);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_repeat);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
         String dateStr = getIntent().getStringExtra("date");

@@ -2,8 +2,6 @@ package comp3350.iPuP.presentation;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.application.Main;
-import comp3350.iPuP.objects.User;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,27 +11,26 @@ import android.view.View;
 
 public class HostMenuActivity extends Activity
 {
-    private User user;
-
+    private String name;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_menu);
-        user = getIntent().getParcelableExtra("parcel_user");
+        name = getIntent().getStringExtra("name");
     }
 
     public void buttonCreateOnClick(View v)
     {
         Intent hostMenuIntent = new Intent(HostMenuActivity.this, HostActivity.class);
-        hostMenuIntent.putExtra("parcel_user", user);
+        hostMenuIntent.putExtra("name", name);
         HostMenuActivity.this.startActivity(hostMenuIntent);
     }
 
     public void buttonViewOnClick(View v)
     {
         Intent hostViewIntent = new Intent(HostMenuActivity.this, HostViewActivity.class);
-        hostViewIntent.putExtra("parcel_user", user);
+        hostViewIntent.putExtra("name", name);
         HostMenuActivity.this.startActivity(hostViewIntent);
     }
 }

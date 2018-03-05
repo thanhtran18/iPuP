@@ -13,8 +13,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -152,32 +152,33 @@ public class HomeActivity extends Activity {
 
     public void buttonParkerOnClick(View v)
     {
-        if (user == null)
+        String name = ((EditText)findViewById(R.id.editTextName)).getText().toString();
+        if (name != null && !name.equals(""))
         {
-            highlightEmptyUsername();
-        } else {
             Intent parkerIntent = new Intent(HomeActivity.this, AvailableParkingSpots.class);
-            parkerIntent.putExtra("parcel_user", user);
+            parkerIntent.putExtra("name", ((EditText) findViewById(R.id.editTextName)).getText());
             HomeActivity.this.startActivity(parkerIntent);
+        }
+        else
+        {
+            ((EditText)findViewById(R.id.editTextName)).setHint("Enter a name");
+            ((EditText)findViewById(R.id.editTextName)).setHintTextColor(getResources().getColor(R.color.colorWarning));
         }
     }
 
     public void buttonHostOnClick(View v)
     {
-        if (user == null)
+        String name = ((EditText)findViewById(R.id.editTextName)).getText().toString();
+        if (name != null && !name.equals(""))
         {
-            highlightEmptyUsername();
-        } else {
             Intent hostMenuIntent = new Intent(HomeActivity.this, HostMenuActivity.class);
-            hostMenuIntent.putExtra("parcel_user", user);
+            hostMenuIntent.putExtra("name", ((EditText)findViewById(R.id.editTextName)).getText());
             HomeActivity.this.startActivity(hostMenuIntent);
         }
+        else
+        {
+            ((EditText)findViewById(R.id.editTextName)).setHint("Enter a name");
+            ((EditText)findViewById(R.id.editTextName)).setHintTextColor(getResources().getColor(R.color.colorWarning));
+        }
     }
-
-    //TODO: Finish the following highlightEmptyUsername method
-    public void highlightEmptyUsername()
-    {
-        Toast.makeText(this, "NO USERNAME ENTERED!!!", Toast.LENGTH_LONG).show();
-    }
-
 }

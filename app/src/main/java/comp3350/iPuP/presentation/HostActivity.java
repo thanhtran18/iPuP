@@ -13,6 +13,8 @@ import android.widget.Toast;
 import android.app.DialogFragment;
 import android.widget.ToggleButton;
 
+import org.w3c.dom.Text;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,6 +28,7 @@ public class HostActivity extends Activity
 {
     private AccessParkingSpots accessParkingSpots;
     private String repetitionInfo;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,7 +36,10 @@ public class HostActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host);
         accessParkingSpots = new AccessParkingSpots();
+
         repetitionInfo = "";
+
+        name = getIntent().getStringExtra("name");
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat date = new SimpleDateFormat("EEE, d MMM yyyy");
@@ -102,9 +108,7 @@ public class HostActivity extends Activity
     @TargetApi(Build.VERSION_CODES.O)
     public void buttonConfirmOnClick(View v)
     {
-        EditText edit =  (EditText) findViewById(R.id.editName);
-        String name = edit.getText().toString();
-        edit =  (EditText) findViewById(R.id.editAddress);
+        EditText edit =  (EditText) findViewById(R.id.editAddress);
         String address = edit.getText().toString();
         edit =  (EditText) findViewById(R.id.editEmail);
         String email = edit.getText().toString();
@@ -113,7 +117,6 @@ public class HostActivity extends Activity
         edit = (EditText) findViewById(R.id.editRate);
         String rateStr = edit.getText().toString();
         Double rate = Double.parseDouble(rateStr.equals("") ? "0": rateStr);
-
 
         boolean valid = true;
 
@@ -138,60 +141,61 @@ public class HostActivity extends Activity
         if (address.equals(""))
         {
             valid = false;
-            TextView text = findViewById(R.id.textAddress);
-            text.setTextColor(Color.RED);
+            EditText text = findViewById(R.id.editAddress);
+            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
         }
         else
         {
-            TextView text = findViewById(R.id.textAddress);
-            text.setTextColor(Color.BLACK);
-        }
-
-        if (name.equals(""))
-        {
-            valid = false;
-            TextView text = findViewById(R.id.textName);
-            text.setTextColor(Color.RED);
-        }
-        else
-        {
-            TextView text = findViewById(R.id.textName);
-            text.setTextColor(Color.BLACK);
+            EditText text = findViewById(R.id.editAddress);
+            text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         }
 
         if (rate == 0)
         {
             valid = false;
-            TextView text = findViewById(R.id.textRate);
-            text.setTextColor(Color.RED);
+            EditText text = findViewById(R.id.editRate);
+            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
         }
         else
         {
-            TextView text = findViewById(R.id.textRate);
-            text.setTextColor(Color.BLACK);
+            EditText text = findViewById(R.id.editRate);
+            text.setBackgroundColor(getResources().getColor(R.color.colorLightGrey));
         }
 
         if (email.equals("") && phone.equals(""))
         {
             valid = false;
-            TextView text = findViewById(R.id.textPhone);
-            text.setTextColor(Color.RED);
-            text.setText("" + text.getText() + "\nYou must enter either phone or email");
-            text = findViewById(R.id.textEmail);
-            text.setTextColor(Color.RED);
+            EditText text = findViewById(R.id.editPhone);
+            text.setHint("Enter either phone");
+            text.setBackgroundColor(getResources().getColor(R.color.colorLightGrey));
+            text.setHint("or email");
+            text = findViewById(R.id.editEmail);
+            text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+        }
+        else
+        {
+            EditText text = findViewById(R.id.editPhone);
+            text.setHint(getResources().getString(R.string.host_phone));
+            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
+            text.setHint(getResources().getString(R.string.host_email));
+            text = findViewById(R.id.editEmail);
+            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
         }
 
         if (timeSlot.getStart().compareTo(timeSlot.getEnd()) >= 0)
         {
             valid = false;
-            TextView text = findViewById(R.id.textDateTime);
-            text.setTextColor(Color.RED);
-            text.setText("Your ending time must be after your starting time");
+            TextView text = findViewById(R.id.editFromTime);
+            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
+            text = findViewById(R.id.editFromDate);
+            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
         }
         else
         {
-            TextView text = findViewById(R.id.textFrom);
-            text.setTextColor(Color.BLACK);
+            TextView text = findViewById(R.id.editFromTime);
+            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
+            text = findViewById(R.id.editFromDate);
+            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
         }
 
         if (valid)
@@ -229,13 +233,26 @@ public class HostActivity extends Activity
                 }
                 break;
             case(1):
-                ret = data.getStringExtra("time");
-                ((TextView)findViewById(R.id.editFromTime)).setText(ret);
+                if (resultCode == Activity.RESULT_OK)
+                {
+                    ret = data.getStringExtra("time");
+                    ((TextView) findViewById(R.id.editFromTime)).setText(ret.toString());
+                }
                 break;
             case(2):
-                ret = data.getStringExtra("time");
-                ((TextView)findViewById(R.id.editToTime)).setText(ret);
+                if (resultCode == Activity.RESULT_OK)
+                {
+                    ret = data.getStringExtra("time");
+                    TextView textView = ((TextView) findViewById(R.id.editToTime));
+                    textView.setText(ret.toString());
+                }
                 break;
         }
+    }
+
+    public void buttonCancelOnClick(View view)
+    {
+        setResult(Activity.RESULT_CANCELED);
+        finish();
     }
 }

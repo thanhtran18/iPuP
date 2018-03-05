@@ -25,38 +25,34 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:orientation="vertical"
-        android:layout_alignParentBottom="true"
-        android:layout_alignBottom="@id/imageViewTitle"
-        android:layout_below="@id/imageViewTitle">
+        android:layout_below="@id/imageViewTitle"
+        android:layout_above="@id/editTextName">
         <Button
             android:id="@+id/buttonParker"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_margin="0dp"
-            android:layout_weight="1"
-            android:padding="40dp"
+            style="@style/AppTheme.MenuButton"
             android:background="@color/colorButtonBack3"
             android:drawableLeft="@drawable/ic_icon_car"
-            android:textColor="@color/colorButtonText"
-            android:textSize="30sp"
+            android:drawableStart="@drawable/ic_icon_car"
             android:onClick="buttonParkerOnClick"
             android:text="@string/home_parker"/>
 
         <Button
             android:id="@+id/buttonHost"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_margin="0dp"
-            android:layout_weight="1"
-            android:padding="40dp"
+            style="@style/AppTheme.MenuButton"
             android:background="@color/colorButtonBack4"
             android:drawableLeft="@drawable/ic_icon_park"
-            android:textColor="@color/colorButtonText"
-            android:textSize="30sp"
+            android:drawableStart="@drawable/ic_icon_park"
             android:onClick="buttonHostOnClick"
             android:text="@string/home_host"/>
     </LinearLayout>
 
+    <EditText
+        android:id="@+id/editTextName"
+        style="@style/AppTheme.EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        android:text="" />
 </RelativeLayout>

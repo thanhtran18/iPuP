@@ -113,4 +113,9 @@ public class AccessParkingSpots
     {
         dataAccess.clearSpotList();
     }
+
+    public ArrayList<ParkingSpot> getMySpots(String name)
+    {
+        return new ArrayList<ParkingSpot>();
+    }
 }

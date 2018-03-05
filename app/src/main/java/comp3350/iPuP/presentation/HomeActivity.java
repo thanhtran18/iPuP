@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.EditText;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -110,13 +112,33 @@ public class HomeActivity extends Activity {
 
     public void buttonParkerOnClick(View v)
     {
-        Intent parkerIntent = new Intent(HomeActivity.this, AvailableParkingSpots.class);
-        HomeActivity.this.startActivity(parkerIntent);
+        String name = ((EditText)findViewById(R.id.editTextName)).getText().toString();
+        if (name != null && !name.equals(""))
+        {
+            Intent parkerIntent = new Intent(HomeActivity.this, AvailableParkingSpots.class);
+            parkerIntent.putExtra("name", ((EditText) findViewById(R.id.editTextName)).getText());
+            HomeActivity.this.startActivity(parkerIntent);
+        }
+        else
+        {
+            ((EditText)findViewById(R.id.editTextName)).setHint("Enter a name");
+            ((EditText)findViewById(R.id.editTextName)).setHintTextColor(getResources().getColor(R.color.colorWarning));
+        }
     }
 
     public void buttonHostOnClick(View v)
     {
-        Intent hostMenuIntent = new Intent(HomeActivity.this, HostMenuActivity.class);
-        HomeActivity.this.startActivity(hostMenuIntent);
+        String name = ((EditText)findViewById(R.id.editTextName)).getText().toString();
+        if (name != null && !name.equals(""))
+        {
+            Intent hostMenuIntent = new Intent(HomeActivity.this, HostMenuActivity.class);
+            hostMenuIntent.putExtra("name", ((EditText)findViewById(R.id.editTextName)).getText());
+            HomeActivity.this.startActivity(hostMenuIntent);
+        }
+        else
+        {
+            ((EditText)findViewById(R.id.editTextName)).setHint("Enter a name");
+            ((EditText)findViewById(R.id.editTextName)).setHintTextColor(getResources().getColor(R.color.colorWarning));
+        }
     }
 }

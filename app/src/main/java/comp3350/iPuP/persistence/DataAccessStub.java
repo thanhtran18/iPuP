@@ -6,7 +6,6 @@ import java.util.Date;
 import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
-import comp3350.iPuP.objects.User;
 
 public class DataAccessStub implements DataAccess
 {
@@ -269,29 +268,23 @@ public class DataAccessStub implements DataAccess
 		return null;
 	}
 
-    public String insertParkingSpot(User user, ParkingSpot currentParkingSpot)
+    public String insertParkingSpot(String user, ParkingSpot currentParkingSpot)
     {
         // not checking for duplicates yet
         parkingSpots.add(currentParkingSpot);
         return null;
     }
 
-	public String insertUser(String username)
+	public boolean insertUser(String username)
 	{
 		//TODO: implement insertUser method
-		return null;
+		return false;
 	}
 
 	public ArrayList<ParkingSpot> getParkingSpots()
 	{
 		return parkingSpots;
 	}
-
-    public User getUser(String username)
-    {
-        //TODO: implement getUser method
-        return null;
-    }
 
 	public String setSpotToBooked(String spotID, String slotID)
 	{

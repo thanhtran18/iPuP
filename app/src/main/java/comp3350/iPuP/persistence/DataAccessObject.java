@@ -17,7 +17,6 @@ import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
-import comp3350.iPuP.objects.User;
 
 public class DataAccessObject implements DataAccess
 {
@@ -197,7 +196,7 @@ public class DataAccessObject implements DataAccess
     }
 
 
-	public String insertParkingSpot(User user, ParkingSpot currentParkingSpot)
+	public String insertParkingSpot(String user, ParkingSpot currentParkingSpot)
     {
         result = null;
 
@@ -206,7 +205,7 @@ public class DataAccessObject implements DataAccess
             cmdString = "INSERT INTO PARKINGSPOTS VALUES(?,?,?,?,?,?,?,?)";
             pstmt = con.prepareStatement(cmdString);
             pstmt.setString(1,currentParkingSpot.getSpotID());
-            pstmt.setLong(2,user.getUserID());
+            pstmt.setString(2,user);
             pstmt.setString(3,currentParkingSpot.getName());
             pstmt.setString(4,currentParkingSpot.getAddress());
             pstmt.setString(5,currentParkingSpot.getPhone());
@@ -236,17 +235,24 @@ public class DataAccessObject implements DataAccess
         return result;
     }
 
-    public String insertUser(String username)
+    public boolean insertUser(String username)
     {
+        boolean inserted = false;
         result = null;
 
         try
         {
-            cmdString = "INSERT INTO USERS (USERNAME) VALUES(?)";
+            cmdString = "INSERT INTO USERS VALUES(?)";
             pstmt = con.prepareStatement(cmdString);
             pstmt.setString(1, username);
 
             updateCount = pstmt.executeUpdate();
+
+            if (updateCount == 1)
+            {
+                inserted = true;
+            }
+
             result = checkWarning(pstmt, updateCount);
 
         } catch (Exception e)
@@ -254,7 +260,7 @@ public class DataAccessObject implements DataAccess
             result = processSQLError(e);
         }
 
-        return result;
+        return inserted;
     }
 
     public ArrayList<ParkingSpot> getParkingSpots()
@@ -309,38 +315,6 @@ public class DataAccessObject implements DataAccess
         }
 
         return parkingSpots;
-    }
-
-    public User getUser(String username)
-    {
-        long uID;
-        String uName;
-        User user = null;
-
-        result = null;
-
-        try
-        {
-            cmdString = "SELECT * FROM USERS WHERE USERNAME = ?";
-            pstmt = con.prepareStatement(cmdString);
-            pstmt.setString(1,username);
-            rsp = pstmt.executeQuery();
-
-            if (rsp.next())
-            {
-                uID = rsp.getLong("USER_ID");
-                uName = rsp.getString("USERNAME");
-
-                user = new User(uID, uName);
-            }
-
-            rsp.close();
-        } catch (Exception e)
-        {
-            result = processSQLError(e);
-        }
-
-        return user;
     }
 
     public String setSpotToBooked(String spotID, String slotID)

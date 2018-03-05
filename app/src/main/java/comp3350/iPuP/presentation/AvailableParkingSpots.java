@@ -16,7 +16,6 @@ import comp3350.iPuP.R;
 import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
-import comp3350.iPuP.objects.User;
 
 public class AvailableParkingSpots extends ListActivity
 {
@@ -34,7 +33,6 @@ public class AvailableParkingSpots extends ListActivity
     private ArrayList<ParkingSpot>fakeSpots=new ArrayList<ParkingSpot>();
 
     private AccessParkingSpots accessParkingSpots;
-    private User user;
 
     ArrayAdapter<ParkingSpot> adapter;
     @Override
@@ -42,7 +40,6 @@ public class AvailableParkingSpots extends ListActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_available_parking_spots);
-        user = getIntent().getParcelableExtra("parcel_user");
         accessParkingSpots = new AccessParkingSpots();
         fakeSpots = accessParkingSpots.getAvailableSpots();
         adapter = new ArrayAdapter<ParkingSpot>(this,
@@ -71,7 +68,6 @@ public class AvailableParkingSpots extends ListActivity
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(getApplicationContext(), ParkingSpotInfoActivity.class);
-        intent.putExtra("parcel_user", user);
 
         intent.putExtra(KEY_RESERVATION_START, item.getStartTime().toString());
         intent.putExtra(KEY_RESERVATION_END, item.getEndTime().toString());

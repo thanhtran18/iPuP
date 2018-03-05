@@ -12,7 +12,6 @@ import comp3350.iPuP.application.Services;
 import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
-import comp3350.iPuP.objects.User;
 import comp3350.iPuP.persistence.DataAccess;
 
 
@@ -27,7 +26,7 @@ public class AccessParkingSpots
         availableSpots = new ArrayList<ParkingSpot>();
     }
 
-    public String insertParkingSpots(User user, TimeSlot timeSlot, String repetitionInfo, String address, String name, String phone, String email, double rate)
+    public String insertParkingSpots(String user, TimeSlot timeSlot, String repetitionInfo, String address, String name, String phone, String email, double rate)
     {
         Calendar start = new GregorianCalendar();
         Calendar end = new GregorianCalendar();
@@ -80,7 +79,7 @@ public class AccessParkingSpots
         insertParkingSpot(user, spot);
         return null;
     }
-    public String insertParkingSpot(User user, ParkingSpot newParkingSpot)
+    public String insertParkingSpot(String user, ParkingSpot newParkingSpot)
     {
         return dataAccess.insertParkingSpot(user, newParkingSpot);
     }

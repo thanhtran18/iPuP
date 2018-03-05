@@ -24,7 +24,6 @@ import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.objects.TimeSlot;
-import comp3350.iPuP.objects.User;
 
 public class HostActivity extends Activity
 {
@@ -32,14 +31,12 @@ public class HostActivity extends Activity
     private String repetitionInfo;
     private String name;
     private DateFormatter df;
-    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host);
-        user = getIntent().getParcelableExtra("parcel_user");
         accessParkingSpots = new AccessParkingSpots();
 
         repetitionInfo = "";
@@ -204,7 +201,7 @@ public class HostActivity extends Activity
 
         if (valid)
         {
-            String rtn = accessParkingSpots.insertParkingSpots(user, timeSlot, repetitionInfo, address, name, phone, email, rate);
+            String rtn = accessParkingSpots.insertParkingSpots(name, timeSlot, repetitionInfo, address, name, phone, email, rate);
 
             if (rtn == null)
             {

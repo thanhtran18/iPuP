@@ -3,7 +3,6 @@ package comp3350.iPuP.presentation;
 import comp3350.iPuP.R;
 import comp3350.iPuP.application.Main;
 import comp3350.iPuP.business.AccessUsers;
-import comp3350.iPuP.objects.User;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -23,8 +23,7 @@ import java.io.InputStreamReader;
 
 public class HomeActivity extends Activity {
 
-    private AccessUsers accessUsers;
-    private User user;
+    AccessUsers accessUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,38 +37,31 @@ public class HomeActivity extends Activity {
         setContentView(R.layout.activity_home);
 
         accessUsers = new AccessUsers();
-        user = null;
-
-        //TODO: Remove following get user code after username edittext added to main activity
-        user = accessUsers.createAndGetUser("Amanjyot");
-
-        //TODO: Uncomment following code after username edittext added to main activity
-        /*
-        EditText editTextUN = (EditText) findViewById(R.id.username);
-        final String username = editTextUN.getText().toString();
-
-        editTextUN.setOnFocusChangeListener(new View.OnFocusChangeListener()
-        {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus)
-            {
-                if (!hasFocus)
-                {
-                    // get new user if username not same on focus lost
-                    if (user == null || !username.equals(user.getUsername()))
-                    {
-                        user = accessUsers.getUser(username);
-                        Toast.makeText(this, "Loaded User: " + username + "!", Toast.LENGTH_LONG).show();
-                        if (user == null)
-                        {
-                            user = createAndGetUser(username);
-                            Toast.makeText(this, "Created User: " + username + "!", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }
-            }
-        });
-        */
+//
+//        EditText editTextUN = (EditText) findViewById(R.id.textName);
+//        final String username = editTextUN.getText().toString();
+//
+//        editTextUN.setOnFocusChangeListener(new View.OnFocusChangeListener()
+//        {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus)
+//            {
+//                if (!hasFocus)
+//                {
+//                    // get new user if username not same on focus lost
+//                    if (!username.equals(""))
+//                    {
+//                        user = accessUsers.getUser(username);
+//                        Toast.makeText(this, "Loaded User: " + username + "!", Toast.LENGTH_LONG).show();
+//                        if (user == null)
+//                        {
+//                            user = createAndGetUser(username);
+//                            Toast.makeText(this, "Created User: " + username + "!", Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -97,7 +89,8 @@ public class HomeActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void copyDatabaseToDevice() {
+    private void copyDatabaseToDevice()
+    {
         final String DB_PATH = "db";
 
         String[] assetNames;
@@ -123,7 +116,8 @@ public class HomeActivity extends Activity {
         }
     }
 
-    public void copyAssetsToDirectory(String[] assets, File directory) throws IOException {
+    public void copyAssetsToDirectory(String[] assets, File directory) throws IOException
+    {
         AssetManager assetManager = getAssets();
 
         for (String asset : assets) {
@@ -155,8 +149,9 @@ public class HomeActivity extends Activity {
         String name = ((EditText)findViewById(R.id.editTextName)).getText().toString();
         if (name != null && !name.equals(""))
         {
+            accessUsers.createUser(name);
             Intent parkerIntent = new Intent(HomeActivity.this, AvailableParkingSpots.class);
-            parkerIntent.putExtra("name", ((EditText) findViewById(R.id.editTextName)).getText());
+            parkerIntent.putExtra("name", name);
             HomeActivity.this.startActivity(parkerIntent);
         }
         else
@@ -171,8 +166,9 @@ public class HomeActivity extends Activity {
         String name = ((EditText)findViewById(R.id.editTextName)).getText().toString();
         if (name != null && !name.equals(""))
         {
+            accessUsers.createUser(name);
             Intent hostMenuIntent = new Intent(HomeActivity.this, HostMenuActivity.class);
-            hostMenuIntent.putExtra("name", ((EditText)findViewById(R.id.editTextName)).getText());
+            hostMenuIntent.putExtra("name", name);
             HomeActivity.this.startActivity(hostMenuIntent);
         }
         else

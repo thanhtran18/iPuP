@@ -202,7 +202,7 @@ public class DataAccessObject implements DataAccess
 
         try
         {
-            cmdString = "INSERT INTO PARKINGSPOTS VALUES(?,?,?,?,?,?,?,?)";
+            cmdString = "INSERT INTO PARKINGSPOTS VALUES(?,?,?,?,?,?,?)";
             pstmt = con.prepareStatement(cmdString);
             pstmt.setString(1,currentParkingSpot.getSpotID());
             pstmt.setString(2,user);
@@ -211,7 +211,6 @@ public class DataAccessObject implements DataAccess
             pstmt.setString(5,currentParkingSpot.getPhone());
             pstmt.setString(6,currentParkingSpot.getEmail());
             pstmt.setDouble(7,currentParkingSpot.getRate());
-            pstmt.setBoolean(8,currentParkingSpot.isBooked());
 
             //System.out.println(cmdString);
             updateCount = pstmt.executeUpdate();
@@ -265,7 +264,6 @@ public class DataAccessObject implements DataAccess
 
     public ArrayList<ParkingSpot> getParkingSpots()
     {
-        Boolean isBooked;
         Calendar calStart = Calendar.getInstance();
         Calendar calEnd = Calendar.getInstance();
         Date start, end;
@@ -292,7 +290,6 @@ public class DataAccessObject implements DataAccess
                 phone = rss.getString("Phone");
                 email = rss.getString("Email");
                 rate = rss.getDouble("Rate");
-                isBooked = rss.getBoolean("Is_Booked");
                 start = rss.getDate("Startdatetime");
                 end = rss.getDate("Enddatetime");
                 tsId = rss.getLong("TS_ID");
@@ -302,7 +299,7 @@ public class DataAccessObject implements DataAccess
 
                 timeSlot = new TimeSlot(calStart.getTime(), calEnd.getTime(), Long.toString(tsId));
 
-                ps = new ParkingSpot(id, addr, name, phone, email, rate, timeSlot, isBooked);
+                ps = new ParkingSpot(id, addr, name, phone, email, rate, timeSlot);
 //                ps = new ParkingSpot(id.split("_")[0], addr, name, phone, email, rate, isBooked, timeSlot);
                 parkingSpots.add(ps);
             }
@@ -317,62 +314,62 @@ public class DataAccessObject implements DataAccess
         return parkingSpots;
     }
 
-    public String setSpotToBooked(String spotID, String slotID)
-    {
-        boolean isBooked;
-        String bookMessage = "Not Booked";
-
-        result = null;
-
-        try
-        {
-//            cmdString = "SELECT * FROM ParkingSpots WHERE PS_ID = ?";
-            cmdString = "UPDATE PARKINGSPOTS SET IS_BOOKED = ? WHERE PS_ID = ? AND IS_BOOKED = FALSE";
-            pstmt = con.prepareStatement(cmdString);
-            pstmt.setBoolean(1, true);
-            pstmt.setString(2, spotID);
-//            pstmt.setString(2, spotID + "_" + slotID);
-            updateCount = pstmt.executeUpdate();
-
-            if (updateCount == 0)
-            {
-                bookMessage = "Already Booked";
-            } else
-            {
-                bookMessage = "Booked";
-            }
-
-//            if (rsp.next())
+//    public String setSpotToBooked(String spotID, String slotID)
+//    {
+//        boolean isBooked;
+//        String bookMessage = "Not Booked";
+//
+//        result = null;
+//
+//        try
+//        {
+////            cmdString = "SELECT * FROM ParkingSpots WHERE PS_ID = ?";
+//            cmdString = "UPDATE PARKINGSPOTS SET IS_BOOKED = ? WHERE PS_ID = ? AND IS_BOOKED = FALSE";
+//            pstmt = con.prepareStatement(cmdString);
+//            pstmt.setBoolean(1, true);
+//            pstmt.setString(2, spotID);
+////            pstmt.setString(2, spotID + "_" + slotID);
+//            updateCount = pstmt.executeUpdate();
+//
+//            if (updateCount == 0)
 //            {
-//                isBooked = rsp.getBoolean("Is_Booked");
-//
-//                if (isBooked)
-//                {
-//                    bookMessage = "Already Booked";
-//                }
-//                else
-//                {
-//                    cmdString = "Update ParkingSpots Set Is_Booked=? where PS_ID=?";
-//                    pstmt = con.prepareStatement(cmdString);
-//                    pstmt.setBoolean(1, true);
-//                    pstmt.setString(2,spotID + "_" + slotID);
-//                    //System.out.println(cmdString);
-//                    updateCount = pstmt.executeUpdate();
-//                    result = checkWarning(pstmt, updateCount);
-//
-//                    bookMessage = "Booked";
-//                }
+//                bookMessage = "Already Booked";
+//            } else
+//            {
+//                bookMessage = "Booked";
 //            }
 //
-//            rsp.close();
-        }
-        catch (Exception e)
-        {
-            result = processSQLError(e);
-        }
-
-        return bookMessage;
-    }
+////            if (rsp.next())
+////            {
+////                isBooked = rsp.getBoolean("Is_Booked");
+////
+////                if (isBooked)
+////                {
+////                    bookMessage = "Already Booked";
+////                }
+////                else
+////                {
+////                    cmdString = "Update ParkingSpots Set Is_Booked=? where PS_ID=?";
+////                    pstmt = con.prepareStatement(cmdString);
+////                    pstmt.setBoolean(1, true);
+////                    pstmt.setString(2,spotID + "_" + slotID);
+////                    //System.out.println(cmdString);
+////                    updateCount = pstmt.executeUpdate();
+////                    result = checkWarning(pstmt, updateCount);
+////
+////                    bookMessage = "Booked";
+////                }
+////            }
+////
+////            rsp.close();
+//        }
+//        catch (Exception e)
+//        {
+//            result = processSQLError(e);
+//        }
+//
+//        return bookMessage;
+//    }
 
 
     public void clearSpotList()

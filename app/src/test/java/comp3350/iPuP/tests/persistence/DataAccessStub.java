@@ -1,4 +1,4 @@
-package comp3350.iPuP.persistence;
+package comp3350.iPuP.tests.persistence;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -6,6 +6,7 @@ import java.util.Date;
 import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
+import comp3350.iPuP.persistence.DataAccess;
 
 public class DataAccessStub implements DataAccess
 {
@@ -286,27 +287,27 @@ public class DataAccessStub implements DataAccess
 		return parkingSpots;
 	}
 
-	public String setSpotToBooked(String spotID, String slotID)
-	{
-		String bookMessage = "Not Booked";
-	    for (int i = 0; i < parkingSpots.size(); i++)
-	    {
-            if (parkingSpots.get(i).isSpot(spotID, slotID))
-            {
-            	if (parkingSpots.get(i).isBooked())
-            	{
-            		bookMessage = "Already Booked";
-				}
-				else
-				{
-					parkingSpots.get(i).setBooked(true);
-					bookMessage = "Booked";
-				}
-                break;
-            }
-        }
-        return bookMessage;
-	}
+//	public String setSpotToBooked(String spotID, String slotID)
+//	{
+//		String bookMessage = "Not Booked";
+//	    for (int i = 0; i < parkingSpots.size(); i++)
+//	    {
+//            if (parkingSpots.get(i).isSpot(spotID, slotID))
+//            {
+//            	if (parkingSpots.get(i).isBooked())
+//            	{
+//            		bookMessage = "Already Booked";
+//				}
+//				else
+//				{
+//					parkingSpots.get(i).setBooked(true);
+//					bookMessage = "Booked";
+//				}
+//                break;
+//            }
+//        }
+//        return bookMessage;
+//	}
 
 	public void clearSpotList()
 	{

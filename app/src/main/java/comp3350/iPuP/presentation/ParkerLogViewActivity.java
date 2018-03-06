@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import comp3350.iPuP.R;
@@ -32,8 +33,16 @@ public class ParkerLogViewActivity extends ListActivity
 
         ListView list = findViewById(android.R.id.list);
 
-        ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getMySpots(name);
+        try {
+            ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getMySpots(name);
 
-        adapter = new ArrayAdapter<ParkingSpot>(this, android.R.layout.simple_list_item_1, parkingSpots);
+            adapter = new ArrayAdapter<ParkingSpot>(this, android.R.layout.simple_list_item_1, parkingSpots);
+            setListAdapter(adapter);
+        }
+        catch (ParseException pe)
+        {
+            System.out.print(pe.getMessage());
+        }
     }
 }
+

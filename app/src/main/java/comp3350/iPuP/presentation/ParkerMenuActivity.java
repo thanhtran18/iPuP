@@ -20,4 +20,10 @@ public class ParkerMenuActivity extends AppCompatActivity {
         Intent parkerMenuIntent = new Intent(ParkerMenuActivity.this, ParkerSearchActivity.class);
         ParkerMenuActivity.this.startActivity(parkerMenuIntent);
     }
+
+    public void buttonParkerLogOnClick(View v)
+    {
+        Intent parkerLogIntent = new Intent(ParkerMenuActivity.this, ParkerLogViewActivity.class);
+        ParkerMenuActivity.this.startActivity(parkerLogIntent);
+    }
 }

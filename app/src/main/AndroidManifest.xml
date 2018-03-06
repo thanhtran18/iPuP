@@ -59,7 +59,11 @@
         <activity
             android:name=".presentation.ParkerSearchActivity"
             android:label="@string/title_activity_parker_search"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".presentation.ParkerLogViewActivity"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>

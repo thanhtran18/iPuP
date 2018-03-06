@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -412,4 +413,61 @@ public class DataAccessObject implements DataAccess
 		
 		return result;
 	}
+
+
+	//added by Kevin
+    public ArrayList<ParkingSpot> getSpotsOfGivenUser(String username)
+    {
+        Calendar calStart = Calendar.getInstance();
+        Calendar calEnd = Calendar.getInstance();
+        Date start, end;
+        Double rate;
+        long tsId;
+        ParkingSpot ps;
+        TimeSlot timeSlot;
+        String id, name, addr, phone, email;
+
+        parkingSpots = new ArrayList<ParkingSpot>();
+        result = null;
+
+
+        try
+        {
+            cmdString = "SELECT * FROM PARKINGSPOTS P JOIN TIMESLOTS T ON P.PS_ID = T.PS_ID AND T.DS_ID IS NULL WHERE P.NAME = '" + username + "'";
+            rss = stmt.executeQuery(cmdString);
+            //ResultSetMetaData md = rs.getMetaData();
+
+            while (rss.next())
+            {
+                id = rss.getString("PS_ID");
+                name = rss.getString("Name");
+                addr = rss.getString("Address");
+                phone = rss.getString("Phone");
+                email = rss.getString("Email");
+                rate = rss.getDouble("Rate");
+                start = rss.getDate("Startdatetime");
+                end = rss.getDate("Enddatetime");
+                tsId = rss.getLong("TS_ID");
+                //userId = rss.getString("USER_ID");
+
+                calStart.setTime(start);
+                calEnd.setTime(end);
+                timeSlot = new TimeSlot(calStart.getTime(), calEnd.getTime(), Long.toString(tsId));
+
+                ps = new ParkingSpot(id, addr, name, phone, email, rate, timeSlot);
+//                ps = new ParkingSpot(id.split("_")[0], addr, name, phone, email, rate, isBooked, timeSlot);
+                parkingSpots.add(ps);
+            }
+
+            rss.close();
+        }
+        catch (Exception e)
+        {
+            processSQLError(e);
+        }
+
+        return parkingSpots;
+    }
+
+
 }

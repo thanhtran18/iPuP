@@ -26,4 +26,6 @@ public interface DataAccess
 	ArrayList<ParkingSpot> getParkingSpots();
 
 	void clearSpotList();
+
+	public ArrayList<ParkingSpot> getSpotsOfGivenUser(String username);
 }

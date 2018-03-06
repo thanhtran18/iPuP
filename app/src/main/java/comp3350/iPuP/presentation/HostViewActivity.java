@@ -29,7 +29,8 @@ public class HostViewActivity extends ListActivity
 
         ListView list = findViewById(android.R.id.list);
 
-        try {
+        try
+        {
             ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getMySpots(name);
             adapter = new ArrayAdapter<ParkingSpot>(this, android.R.layout.simple_list_item_1, parkingSpots);
             setListAdapter(adapter);

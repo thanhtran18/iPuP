@@ -26,15 +26,26 @@ public class ParkerLogViewActivity extends ListActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        String name = getIntent().getStringExtra("name");
+        String name;
+        //String name = getIntent().getExtras().getString("name");
+        //String name = getIntent().getStringExtra("name");
+        //String name = getIntent().getExtras();
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            name = null;
+        } else {
+            name = extras.getString("name");
+        }
         setContentView(R.layout.activity_parker_log_view);
 
         accessParkingSpots = new AccessParkingSpots();
 
         ListView list = findViewById(android.R.id.list);
 
-        try {
+        try
+        {
             ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getMySpots(name);
+            //ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getAllSpots();
 
             adapter = new ArrayAdapter<ParkingSpot>(this, android.R.layout.simple_list_item_1, parkingSpots);
             setListAdapter(adapter);

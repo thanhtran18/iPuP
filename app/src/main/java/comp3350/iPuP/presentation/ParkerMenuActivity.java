@@ -23,7 +23,20 @@ public class ParkerMenuActivity extends AppCompatActivity {
 
     public void buttonParkerLogOnClick(View v)
     {
+        String name;
+        //String name = getIntent().getExtras().getString("name");
+        //String name = getIntent().getStringExtra("name");
+        //String name = getIntent().getExtras();
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            name = null;
+        } else {
+            name = extras.getString("name");
+        }
         Intent parkerLogIntent = new Intent(ParkerMenuActivity.this, ParkerLogViewActivity.class);
+        Bundle newBundle = new Bundle();
+        newBundle.putString("name", name);
+        parkerLogIntent.putExtras(newBundle);
         ParkerMenuActivity.this.startActivity(parkerLogIntent);
     }
 }

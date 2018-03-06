@@ -149,7 +149,9 @@ public class HomeActivity extends Activity {
         {
             accessUsers.createUser(name);
             Intent parkerIntent = new Intent(HomeActivity.this, ParkerMenuActivity.class);
-            parkerIntent.putExtra("name", name);
+            Bundle bundle = new Bundle();
+            bundle.putString("name", name);
+            parkerIntent.putExtras(bundle);
             HomeActivity.this.startActivity(parkerIntent);
         }
         else

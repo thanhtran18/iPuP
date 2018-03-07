@@ -433,7 +433,8 @@ public class DataAccessObject implements DataAccess
 
         try
         {
-            cmdString = "SELECT * FROM PARKINGSPOTS P JOIN TIMESLOTS T ON P.PS_ID = T.PS_ID AND T.DS_ID IS NULL WHERE P.NAME = '" + username + "'";
+            cmdString = "SELECT * FROM PARKINGSPOTS P JOIN TIMESLOTS T ON P.PS_ID = T.PS_ID AND T.DS_ID IS NULL WHERE P.USER_ID = '" + username + "'";
+            //cmdString = "SELECT * FROM PARKINGSPOTS P JOIN DAYSLOTS D ON P.PS_ID = D.PS_ID AND D.DS_ID IS NULL WHERE P.USER_ID = '" + username + "'";
             rss = stmt.executeQuery(cmdString);
             //ResultSetMetaData md = rs.getMetaData();
 

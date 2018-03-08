@@ -62,6 +62,7 @@ public class ParkerLogViewActivity extends ListActivity
             for (final Booking spot : bookingSpots)
             {
 //                if (!spot.isCancelled())
+
                 arrayList.add(spot);
                 SimpleDateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
                 //Date now = new Date();
@@ -119,8 +120,11 @@ public class ParkerLogViewActivity extends ListActivity
         switch (item.getItemId())
         {
             case R.id.delete:
+                //accessParkingSpots.cancelThisSpot(name, .getTimeSlotId());
                 //parkingSpots.get(obj.position).setCancelled(true);
+                accessParkingSpots.cancelThisSpot(arrayList.get(obj.position).getUsername(), arrayList.get(obj.position).getTimeSlotId());
                 arrayList.remove(obj.position);
+
                 adapter.notifyDataSetChanged();
                 break;
         }

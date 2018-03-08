@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -550,7 +551,8 @@ public class DataAccessObject implements DataAccess
         Calendar calEnd = Calendar.getInstance();
         Date start, end;
         Booking booking;
-        String userID, tsID, addr;
+        long tsID;
+        String userID, addr;
 
         ArrayList<Booking> bookingSpots = new ArrayList<Booking>();
         result = null;
@@ -562,7 +564,7 @@ public class DataAccessObject implements DataAccess
                         "LEFT JOIN PARKINGSPOTS P ON B.PS_ID = P.PS_ID " +
                         "LEFT JOIN TIMESLOTS T ON B.TS_ID = T.TS_ID " +
                         "WHERE B.USER_ID = ? AND B.DELETED = FALSE " +
-                            "AND NOT T.DS_ID IS NULL";
+                            "AND NOT T.DS_ID IS NULL ORDER BY T.STARTDATETIME";
             pstmt = con.prepareStatement(cmdString);
             pstmt.setString(1, username);
             rss = pstmt.executeQuery();
@@ -571,7 +573,7 @@ public class DataAccessObject implements DataAccess
             while (rss.next())
             {
                 userID = rss.getString("USER_ID");
-                tsID = rss.getString("TS_ID");
+                tsID = rss.getLong("TS_ID");
                 addr = rss.getString("Address");
                 start = rss.getTimestamp("Startdatetime");
                 end = rss.getTimestamp("Enddatetime");
@@ -591,6 +593,27 @@ public class DataAccessObject implements DataAccess
         }
 
         return bookingSpots;
+    }
+
+    public boolean setSpotToCancelled(String username, Long timeSlotId)
+    {
+        boolean result = false;
+        try
+        {
+            cmdString = "UPDATE BOOKINGS SET DELETED = TRUE WHERE USER_ID = ? AND TS_ID = ?";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setString(1, username);
+            pstmt.setLong(2, timeSlotId);
+            updateCount = pstmt.executeUpdate();
+            if (updateCount != 0)
+                result = true;
+
+        }
+        catch (SQLException se)
+        {
+            System.out.print(se.getMessage());
+        }
+        return result;
     }
 
 

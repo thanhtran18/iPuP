@@ -137,4 +137,9 @@ public class AccessParkingSpots
         return dataAccess.getSpotsOfGivenUser(name);
         //return new ArrayList<ParkingSpot>();
     }
+
+    public boolean cancelThisSpot(String username, Long timeSlotId)
+    {
+        return dataAccess.setSpotToCancelled(username, timeSlotId);
+    }
 }

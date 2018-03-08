@@ -564,6 +564,7 @@ public class DataAccessObject implements DataAccess
                         "WHERE B.USER_ID = ? AND B.DELETED = FALSE " +
                             "AND NOT T.DS_ID IS NULL";
             pstmt = con.prepareStatement(cmdString);
+            pstmt.setString(1, username);
             rss = pstmt.executeQuery();
             //ResultSetMetaData md = rs.getMetaData();
 
@@ -572,8 +573,8 @@ public class DataAccessObject implements DataAccess
                 userID = rss.getString("USER_ID");
                 tsID = rss.getString("TS_ID");
                 addr = rss.getString("Address");
-                start = rss.getDate("Startdatetime");
-                end = rss.getDate("Enddatetime");
+                start = rss.getTimestamp("Startdatetime");
+                end = rss.getTimestamp("Enddatetime");
 
                 calStart.setTime(start);
                 calEnd.setTime(end);

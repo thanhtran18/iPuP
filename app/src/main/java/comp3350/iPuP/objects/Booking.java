@@ -14,6 +14,7 @@ public class Booking
     private String address;
     private Date start;
     private Date end;
+    private DateFormatter dateFormatter = new DateFormatter();
 
     public Booking(String username, String timeSlotId, String address, Date start, Date end)
     {
@@ -64,6 +65,11 @@ public class Booking
 
     public void setEnd(Date end) {
         this.end = end;
+    }
+
+    public String toString()
+    {
+        return "\n" + this.address + " (hold to cancel this booking) \n" + dateFormatter.getDateTimeFormat().format(start) + " - " + dateFormatter.getDateTimeFormat().format(end) + "\n";
     }
 }
 

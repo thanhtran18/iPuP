@@ -12,7 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.business.AccessParkingSpots;
@@ -28,9 +32,10 @@ public class ParkerLogViewActivity extends ListActivity
     ArrayAdapter<ParkingSpot> adapter;
     ArrayList<ParkingSpot> parkingSpots = new ArrayList<>();
     ArrayList<ParkingSpot> arrayList = new ArrayList<>();
+    ArrayList<Integer> disabledIndices = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         String name;
@@ -53,14 +58,42 @@ public class ParkerLogViewActivity extends ListActivity
         {
             parkingSpots = accessParkingSpots.getMySpots(name);
             //ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getAllSpots();
-            for (ParkingSpot spot : parkingSpots)
+            for (final ParkingSpot spot : parkingSpots)
             {
+//                if (!spot.isCancelled())
                 arrayList.add(spot);
+                SimpleDateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+                //Date now = new Date();
+                //Date bookedTime = spot.getStartTime();
+                //int difference = now.compareTo(formatter.parse(bookedTime.toString()));
+//                if (spot.getStartTime().before(new Date())) {
+//                    list.setEnabled(false);
+//                    //list.setOnItemClickListener(null);
+//                    disabledIndices.add(parkingSpots.indexOf(spot));
+//                }
+
+
+//                list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                        Date now = new Date();
+//                        Date bookedTime = spot.getStartTime();
+//                        if (spot.getStartTime().before(new Date()))
+//                            disabledIndices.add(parkingSpots.indexOf(spot));
+//                    }
+//                });
+
+
+
             }
 
             adapter = new ArrayAdapter<ParkingSpot>(this, android.R.layout.simple_list_item_1, arrayList);
             //setListAdapter(adapter);
             list.setAdapter(adapter);
+//            int first = list.getFirstVisiblePosition();
+//            for (int i : disabledIndices)
+//                list.getChildAt(0).setEnabled(false);
+
 
             registerForContextMenu(list);
         }
@@ -85,6 +118,7 @@ public class ParkerLogViewActivity extends ListActivity
         switch (item.getItemId())
         {
             case R.id.delete:
+                //parkingSpots.get(obj.position).setCancelled(true);
                 arrayList.remove(obj.position);
                 adapter.notifyDataSetChanged();
                 break;
@@ -92,5 +126,8 @@ public class ParkerLogViewActivity extends ListActivity
 
         return super.onContextItemSelected(item);
     }
+
+
+
 }
 

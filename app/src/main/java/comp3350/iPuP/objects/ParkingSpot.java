@@ -15,6 +15,7 @@ public class ParkingSpot
     private String spotID;
     private double rate;
     private ArrayList<DaySlot> daySlots;
+    //private boolean cancelled;
 
     public ParkingSpot(String address, String name, String phone, String email, double rate, TimeSlot timeSlot)
     {
@@ -32,11 +33,14 @@ public class ParkingSpot
         this.timeSlot = timeSlot;
 
         this.daySlots = new ArrayList<DaySlot>();
+
+//        this.cancelled = false;
     }
 
     public ParkingSpot(String id, String address, String name, String phone, String email, double rate, TimeSlot timeSlot) throws Exception {
         this(address, name, phone, email, rate, timeSlot);
 //        this.spotID = id;
+//        this.cancelled = false;
 
         if (!this.spotID.equals(id)) {
             throw new Exception("Passed in ID (" + id + ") does not match generated ID (" + this.spotID + ") !");
@@ -103,10 +107,18 @@ public class ParkingSpot
         return timeSlot.getSlotID();
     }
 
+//    public boolean isCancelled() {
+//        return cancelled;
+//    }
+//
+//    public void setCancelled(boolean cancelled) {
+//        this.cancelled = cancelled;
+//    }
+
     @Override
     public String toString()
     {
-        return this.address + "\n" + this.timeSlot.toString();
+        return this.address + " (hold to cancel this booking) \n" + this.timeSlot.toString();
     }
 
     @Override

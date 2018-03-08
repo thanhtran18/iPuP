@@ -1,6 +1,7 @@
 package comp3350.iPuP.objects;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by ThanhTran on 2018-03-05.
@@ -9,12 +10,16 @@ import java.util.ArrayList;
 public class Booking
 {
     private String username; //the unique username of each user
-    private ArrayList<ParkingSpot> spotList;
+    private String address;
+    private Date start;
+    private Date end;
 
-    public Booking(String username)
+    public Booking(String username, String address, Date start, Date end)
     {
         this.username = username;
-        this.spotList = null;
+        this.address = address;
+        this.start = start;
+        this.end = end;
     }
 
     public String getUsername()
@@ -27,15 +32,29 @@ public class Booking
         this.username = username;
     }
 
-    public ArrayList<ParkingSpot> getSpotList()
-    {
-        return spotList;
+
+    public String getAddress() {
+        return address;
     }
 
-    public void setSpotList(ArrayList<ParkingSpot> spotList)
-    {
-        this.spotList = spotList;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
+    public Date getStart() {
+        return start;
+    }
+
+    public void setStart(Date start) {
+        this.start = start;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
+    }
 }
 

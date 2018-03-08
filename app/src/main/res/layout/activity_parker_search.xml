@@ -1,0 +1,27 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="comp3350.iPuP.presentation.ParkerSearchActivity">
+
+    <!-- More GUI components go here  -->
+    <SearchView
+        android:id="@+id/showSearchIcon"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:actionViewClass="android.widget.SearchView"
+        android:iconifiedByDefault="false"
+        android:orientation="horizontal"
+        android:showAsAction="always"
+        android:title="SEARCH">
+
+    </SearchView>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/showSearchIcon"/>
+
+</RelativeLayout>

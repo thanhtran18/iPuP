@@ -32,4 +32,6 @@ public interface DataAccess
 //	ArrayList<ParkingSpot> getParkingSpotsByDateStreet(Date date, String street);
 
 	void clearSpotList();
+
+	public ArrayList<ParkingSpot> getSpotsOfGivenUser(String username);
 }

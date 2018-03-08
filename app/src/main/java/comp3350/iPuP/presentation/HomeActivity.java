@@ -12,9 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -126,8 +124,10 @@ public class HomeActivity extends Activity {
         {
             boolean userCreated = accessUsers.createUser(name);
             if (userCreated) { toastNewUserCreated(name); }
-            Intent parkerIntent = new Intent(HomeActivity.this, AvailableParkingSpots.class);
-            parkerIntent.putExtra("name", name);
+            Intent parkerIntent = new Intent(HomeActivity.this, ParkerMenuActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("name", name);
+            parkerIntent.putExtras(bundle);
             HomeActivity.this.startActivity(parkerIntent);
         }
         else

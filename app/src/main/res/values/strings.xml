@@ -13,6 +13,8 @@
     <string name="host_to">To</string>
     <string name="host_repeat">Repeats</string>
     <string name="host_repeat_default">None</string>
+    <string name="parker_menu_search">SEARCH FOR AVAILABLE PARKING SPOTS</string>
+    <string name="parker_menu_view">VIEW YOUR BOOKED SPOTS</string>
 
     <string-array name="repeats_periods">
         <item>Days</item>
@@ -86,4 +88,6 @@
         "We're gonna put the list of parking spots here.\n\n"
     </string>
     <string name="book_this_spot">Book this spot</string>
+    <string name="title_activity_parker_menu">parkerMenuActivity</string>
+    <string name="title_activity_parker_search">ParkerSearchActivity</string>
 </resources>

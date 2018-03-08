@@ -1,6 +1,8 @@
 package comp3350.iPuP.business;
 
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -115,8 +117,23 @@ public class AccessParkingSpots
         dataAccess.clearSpotList();
     }
 
-    public ArrayList<ParkingSpot> getMySpots(String name)
+    public ArrayList<ParkingSpot> getMySpots(String name) throws ParseException
     {
-        return new ArrayList<ParkingSpot>();
+        //test
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+//        String dateInString = "31-08-1982 10:00:00";
+//        Date date1 = sdf.parse(dateInString);
+//        dateInString = "31-08-1982 10:30:00";
+//        Date date2 = sdf.parse(dateInString);
+//        TimeSlot timeSlot = new TimeSlot(date1, date2);
+//        DaySlot daySlot = new DaySlot(date1, date2, "abc");
+//        ArrayList<ParkingSpot> list = new ArrayList<ParkingSpot>();
+//        list.add(new ParkingSpot("1 sd", "sdfd", "12321", "srewr", 10.0, timeSlot));
+        //return list;
+        //end test
+        ArrayList<ParkingSpot> result = new ArrayList<>();
+        result.addAll(dataAccess.getSpotsOfGivenUser(name));
+        return result;
+        //return new ArrayList<ParkingSpot>();
     }
 }

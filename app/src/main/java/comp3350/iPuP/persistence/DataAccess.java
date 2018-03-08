@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
 
@@ -33,5 +34,5 @@ public interface DataAccess
 
 	void clearSpotList();
 
-	public ArrayList<ParkingSpot> getSpotsOfGivenUser(String username);
+	public ArrayList<Booking> getSpotsOfGivenUser(String username);
 }

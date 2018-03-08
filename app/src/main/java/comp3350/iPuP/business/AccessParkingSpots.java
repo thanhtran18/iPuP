@@ -11,6 +11,7 @@ import java.util.List;
 
 import comp3350.iPuP.application.Main;
 import comp3350.iPuP.application.Services;
+import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
@@ -117,7 +118,7 @@ public class AccessParkingSpots
         dataAccess.clearSpotList();
     }
 
-    public ArrayList<ParkingSpot> getMySpots(String name) throws ParseException
+    public ArrayList<Booking> getMySpots(String name) throws ParseException
     {
         //test
 //        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
@@ -131,9 +132,9 @@ public class AccessParkingSpots
 //        list.add(new ParkingSpot("1 sd", "sdfd", "12321", "srewr", 10.0, timeSlot));
         //return list;
         //end test
-        ArrayList<ParkingSpot> result = new ArrayList<>();
-        result.addAll(dataAccess.getSpotsOfGivenUser(name));
-        return result;
+//        ArrayList<Booking> result = new ArrayList<>();
+//        result.addAll(dataAccess.getSpotsOfGivenUser(name)
+        return dataAccess.getSpotsOfGivenUser(name);
         //return new ArrayList<ParkingSpot>();
     }
 }

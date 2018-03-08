@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
@@ -232,7 +233,7 @@ public class DataAccessObject implements DataAccess
         {
             cmdString = "SELECT * FROM PARKINGSPOTS WHERE PS_ID = ?";
             pstmt = con.prepareStatement(cmdString);
-            pstmt.setString(1, currentParkingSpot.getSlotID());
+            pstmt.setLong(1, currentParkingSpot.getSlotID());
             rsp = pstmt.executeQuery();
 
             if (!rsp.next()) {
@@ -543,48 +544,42 @@ public class DataAccessObject implements DataAccess
 
 
 	//added by Kevin
-    public ArrayList<ParkingSpot> getSpotsOfGivenUser(String username)
+    public ArrayList<Booking> getSpotsOfGivenUser(String username)
     {
         Calendar calStart = Calendar.getInstance();
         Calendar calEnd = Calendar.getInstance();
         Date start, end;
-        Double rate;
-        long tsId;
-        ParkingSpot ps;
-        TimeSlot timeSlot;
-        String id, name, addr, phone, email;
+        Booking booking;
+        String userID, tsID, addr;
 
-        parkingSpots = new ArrayList<ParkingSpot>();
+        ArrayList<Booking> bookingSpots = new ArrayList<Booking>();
         result = null;
-
 
         try
         {
-            cmdString = "SELECT * FROM PARKINGSPOTS P JOIN TIMESLOTS T ON P.PS_ID = T.PS_ID AND T.DS_ID IS NULL WHERE P.USER_ID = '" + username + "'";
-            //cmdString = "SELECT * FROM PARKINGSPOTS P JOIN DAYSLOTS D ON P.PS_ID = D.PS_ID AND D.DS_ID IS NULL WHERE P.USER_ID = '" + username + "'";
-            rss = stmt.executeQuery(cmdString);
+            cmdString = "SELECT B.USER_ID, B.TS_ID, P.PS_ID, P.ADDRESS, T.STARTDATETIME, T.ENDDATETIME " +
+                        "FROM BOOKINGS B " +
+                        "LEFT JOIN PARKINGSPOTS P ON B.PS_ID = P.PS_ID " +
+                        "LEFT JOIN TIMESLOTS T ON B.TS_ID = T.TS_ID " +
+                        "WHERE B.USER_ID = ? AND B.DELETED = FALSE " +
+                            "AND NOT T.DS_ID IS NULL";
+            pstmt = con.prepareStatement(cmdString);
+            rss = pstmt.executeQuery();
             //ResultSetMetaData md = rs.getMetaData();
 
             while (rss.next())
             {
-                id = rss.getString("PS_ID");
-                name = rss.getString("Name");
+                userID = rss.getString("USER_ID");
+                tsID = rss.getString("TS_ID");
                 addr = rss.getString("Address");
-                phone = rss.getString("Phone");
-                email = rss.getString("Email");
-                rate = rss.getDouble("Rate");
                 start = rss.getDate("Startdatetime");
                 end = rss.getDate("Enddatetime");
-                tsId = rss.getLong("TS_ID");
-                //userId = rss.getString("USER_ID");
 
                 calStart.setTime(start);
                 calEnd.setTime(end);
-                timeSlot = new TimeSlot(calStart.getTime(), calEnd.getTime(), Long.toString(tsId));
 
-                ps = new ParkingSpot(id, addr, name, phone, email, rate, timeSlot);
-//                ps = new ParkingSpot(id.split("_")[0], addr, name, phone, email, rate, isBooked, timeSlot);
-                parkingSpots.add(ps);
+                booking = new Booking(userID, tsID, addr, calStart.getTime(), calEnd.getTime());
+                bookingSpots.add(booking);
             }
 
             rss.close();
@@ -594,7 +589,7 @@ public class DataAccessObject implements DataAccess
             processSQLError(e);
         }
 
-        return parkingSpots;
+        return bookingSpots;
     }
 
 

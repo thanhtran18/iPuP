@@ -9,10 +9,14 @@ public class Services
 
 	public static DataAccess createDataAccess(String dbName)
 	{
-		if (dataAccessService == null)
+		try {
+			if (dataAccessService == null) {
+				dataAccessService = new DataAccessObject(dbName);
+				dataAccessService.open(Main.getDBPathName());
+			}
+		} catch (Exception e)
 		{
-			dataAccessService = new DataAccessObject(dbName);
-			dataAccessService.open(Main.getDBPathName());
+
 		}
 		return dataAccessService;
 	}

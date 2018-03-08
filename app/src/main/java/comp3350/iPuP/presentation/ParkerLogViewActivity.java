@@ -20,6 +20,7 @@ import java.util.Locale;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.business.AccessParkingSpots;
+import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.ParkingSpot;
 
 /**
@@ -29,9 +30,9 @@ import comp3350.iPuP.objects.ParkingSpot;
 public class ParkerLogViewActivity extends ListActivity
 {
     private AccessParkingSpots accessParkingSpots;
-    ArrayAdapter<ParkingSpot> adapter;
-    ArrayList<ParkingSpot> parkingSpots = new ArrayList<>();
-    ArrayList<ParkingSpot> arrayList = new ArrayList<>();
+    ArrayAdapter<Booking> adapter;
+    ArrayList<Booking> bookingSpots = new ArrayList<>();
+    ArrayList<Booking> arrayList = new ArrayList<>();
     ArrayList<Integer> disabledIndices = new ArrayList<>();
 
     @Override
@@ -56,9 +57,9 @@ public class ParkerLogViewActivity extends ListActivity
 
         try
         {
-            parkingSpots = accessParkingSpots.getMySpots(name);
+            bookingSpots = accessParkingSpots.getMySpots(name);
             //ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getAllSpots();
-            for (final ParkingSpot spot : parkingSpots)
+            for (final Booking spot : bookingSpots)
             {
 //                if (!spot.isCancelled())
                 arrayList.add(spot);
@@ -87,7 +88,7 @@ public class ParkerLogViewActivity extends ListActivity
 
             }
 
-            adapter = new ArrayAdapter<ParkingSpot>(this, android.R.layout.simple_list_item_1, arrayList);
+            adapter = new ArrayAdapter<Booking>(this, android.R.layout.simple_list_item_1, arrayList);
             //setListAdapter(adapter);
             list.setAdapter(adapter);
 //            int first = list.getFirstVisiblePosition();

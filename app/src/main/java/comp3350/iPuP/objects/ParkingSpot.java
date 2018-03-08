@@ -102,7 +102,7 @@ public class ParkingSpot
         return spotID;
     }
 
-    public String getSlotID()
+    public Long getSlotID()
     {
         return timeSlot.getSlotID();
     }

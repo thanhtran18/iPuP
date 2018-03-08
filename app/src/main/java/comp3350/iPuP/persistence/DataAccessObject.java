@@ -373,8 +373,8 @@ public class DataAccessObject implements DataAccess
                 phone = rs.getString("Phone");
                 email = rs.getString("Email");
                 rate = rs.getDouble("Rate");
-                start = rs.getDate("Startdatetime");
-                end = rs.getDate("Enddatetime");
+                start = rs.getTimestamp("Startdatetime");
+                end = rs.getTimestamp("Enddatetime");
                 tsId = rs.getLong("TS_ID");
 
                 calStart.setTime(start);
@@ -550,7 +550,8 @@ public class DataAccessObject implements DataAccess
         Calendar calEnd = Calendar.getInstance();
         Date start, end;
         Booking booking;
-        String userID, tsID, addr;
+        long tsID;
+        String userID, addr;
 
         ArrayList<Booking> bookingSpots = new ArrayList<Booking>();
         result = null;
@@ -562,15 +563,16 @@ public class DataAccessObject implements DataAccess
                         "LEFT JOIN PARKINGSPOTS P ON B.PS_ID = P.PS_ID " +
                         "LEFT JOIN TIMESLOTS T ON B.TS_ID = T.TS_ID " +
                         "WHERE B.USER_ID = ? AND B.DELETED = FALSE " +
-                            "AND NOT T.DS_ID IS NULL";
+                            "AND NOT T.DS_ID IS NULL ORDER BY T.STARTDATETIME";
             pstmt = con.prepareStatement(cmdString);
+            pstmt.setString(1, username);
             rss = pstmt.executeQuery();
             //ResultSetMetaData md = rs.getMetaData();
 
             while (rss.next())
             {
                 userID = rss.getString("USER_ID");
-                tsID = rss.getString("TS_ID");
+                tsID = rss.getLong("TS_ID");
                 addr = rss.getString("Address");
                 start = rss.getDate("Startdatetime");
                 end = rss.getDate("Enddatetime");

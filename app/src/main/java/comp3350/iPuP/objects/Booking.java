@@ -10,12 +10,12 @@ import java.util.Date;
 public class Booking
 {
     private String username; //the unique username of each user
-    private String timeSlotId;
+    private long timeSlotId;
     private String address;
     private Date start;
     private Date end;
 
-    public Booking(String username, String timeSlotId, String address, Date start, Date end)
+    public Booking(String username, long timeSlotId, String address, Date start, Date end)
     {
         this.username = username;
         this.timeSlotId = timeSlotId;
@@ -34,11 +34,11 @@ public class Booking
         this.username = username;
     }
 
-    public String getTimeSlotId() {
+    public long getTimeSlotId() {
         return timeSlotId;
     }
 
-    public void setTimeSlotId(String timeSlotId) {
+    public void setTimeSlotId(long timeSlotId) {
         this.timeSlotId = timeSlotId;
     }
 

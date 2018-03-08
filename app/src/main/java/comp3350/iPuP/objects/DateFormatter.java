@@ -21,8 +21,8 @@ public class DateFormatter {
         this.time = new SimpleDateFormat("h:mm a");
         this.dateTime = new SimpleDateFormat("EEE, d MMM yyyy, h:mm a");
         this.sqlDate = new SimpleDateFormat("yyyy-MM-dd");
-        this.sqlTime = new SimpleDateFormat("hh:mm:ss");
-        this.sqlDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        this.sqlTime = new SimpleDateFormat("HH:mm:ss");
+        this.sqlDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 
     public SimpleDateFormat getDateFormat()

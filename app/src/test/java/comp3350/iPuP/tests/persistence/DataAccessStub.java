@@ -1,8 +1,11 @@
 package comp3350.iPuP.tests.persistence;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
+import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
@@ -12,7 +15,10 @@ public class DataAccessStub implements DataAccess
 {
 	private String dbName;
 	private String dbType = "stub";
+	private long dayslotCounter = 0;
+	private long timeslotCounter = 0;
 
+	private DateFormatter df = new DateFormatter();
     private ArrayList<ParkingSpot> parkingSpots;
 
 	public DataAccessStub(String dbName)
@@ -20,7 +26,7 @@ public class DataAccessStub implements DataAccess
         this.dbName = dbName;
 	}
 
-	public void open(String dbPath)
+	public void open(String dbPath) throws Exception
 	{
 		parkingSpots = new ArrayList<ParkingSpot>();
 		ParkingSpot tempSpot;
@@ -30,179 +36,243 @@ public class DataAccessStub implements DataAccess
 		String phone;
 		String email;
 		double rate;
+		Calendar calStart = Calendar.getInstance();
+		Calendar calEnd = Calendar.getInstance();
 
+		try {
+            address = "88 Plaza Drive";
+            name = "Rodney N-chris";
+            phone = "204-855-2342";
+            email = "poor&Homeless@gmail.com";
+            rate = 2;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 12:30:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "2 Chancellor Drive";
+            name = "Scott Gordon";
+            phone = "204-122-1234";
+            email = "scottfils@hotmail.ca";
+            rate = 4.50;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "30 Chancellor Drive";
+            name = "Roberto Nesta Marley";
+            phone = "204-577-3422";
+            email = "rastaLikebob@gmail.com";
+            rate = 0.10;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:30:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "60 Main Street";
+            name = "Avocado Stevenson";
+            phone = "601-122-1211";
+            email = "avocadoisgood@gmail.com";
+            rate = 5.25;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:00:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "566 Pasedina avenue";
+            name = "Brian Cambell";
+            phone = "204-419-8819";
+            email = "Brian1989@gmail.com";
+            rate = 4;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:00:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "1 Kings Drive";
+            name = "Jenifer Aniston";
+            phone = "604-253-1111";
+            email = "JeniferAniston@hotmail.ca";
+            rate = 7;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 20:00:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "20 Silverston Avenue";
+            name = "Christopher Turk";
+            phone = "204-236-2322";
+            email = "chrisTurk27@gmail.com";
+            rate = 5;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 13:30:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "20 Kings Drive";
+            name = "Tom Brady";
+            phone = "877-377-4234";
+            email = "theGoat@gmail.com";
+            rate = 10;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 15:00:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "1 Pembina Hwy";
+            name = "George H. Bush";
+            phone = "204-927-9277";
+            email = "myFamilyLikesWar@gmail.com";
+            rate = 10;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "100 St. Mary's Rd";
+            name = "Watson k. Smith";
+            phone = "204-245-3433";
+            email = "watsonK@gmail.com";
+            rate = 7;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 16:00:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "1691 Pembina Hwy";
+            name = "Victory Iyakoregha";
+            phone = "204-888-9292";
+            email = "Ivic565@gmail.com";
+            rate = 5;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 12:30:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "1338 Chancellor Drive";
+            name = "Micheal Douglas";
+            phone = "204-123-1234";
+            email = "theblondegirl22@hotmail.ca";
+            rate = 4.50;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "1122 Chancellor Drive";
+            name = "Kelly Cook";
+            phone = "204-566-7122";
+            email = "cookk@gmail.com";
+            rate = 4;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:30:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "91 Dalhousie Drive";
+            name = "Madison Fishburne";
+            phone = "204-345-4353";
+            email = "madifish101@gmail.com";
+            rate = 5.25;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:00:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "565 Pasedina Avenue";
+            name = "Ronald Regan";
+            phone = "204-419-1419";
+            email = "theDevil666@gmail.com";
+            rate = 100;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 16:30:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "1334 Pembina Hwy";
+            name = "Marilyn Monroe";
+            phone = "604-253-3424";
+            email = "iammonroe@hotmail.ca";
+            rate = 7;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 20:00:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "Brady Road Landfill";
+            name = "Donald Trump";
+            phone = "877-311-4974";
+            email = "lolattheUSA@gmail.com";
+            rate = 100;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 15:00:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "1 Pembina Hwy";
+            name = "George W. Bush";
+            phone = "204-927-9277";
+            email = "myFamilyLikesWar@gmail.com";
+            rate = 10;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "29 St. Mary's Rd";
+            name = "Mary Watson";
+            phone = "204-242-2255";
+            email = "sherlock101@gmail.com";
+            rate = 4.50;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 20:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 02:00:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+        } catch (ParseException e)
+        {
+            throw new Exception("Failed to open " + dbType +" database " + dbName + "!",e);
+        }
 /*
-		time = new ReservationTime(2018, 6, 11, 10, 30, 12, 30);
-		address = "88 plaza drive";
-		name = "Rodney N-chris";
-		phone = "204-855-2342";
-		email = "poor&Homeless@gmail.com";
-		rate = 2;
-		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 14, 30);
-		address = "2 chancellor drive";
-		name = "Scott Gordon";
-		phone = "204-122-1234";
-		email = "scottfils@hotmail.ca";
-		rate = 4.50;
-		tempSpot = new ParkingSpot(time,address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 11, 20);
-		address = "30 chancellor drive";
-		name = "Roberto Nesta Marley";
-		phone = "204-577-3422";
-		email = "rastaLikebob@gmail.com";
-		rate = 0.10;
-		tempSpot = new ParkingSpot(time,address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 11, 0);
-		address = "60 main street";
-		name = "Avocado Stevenson";
-		phone = "601-122-1211";
-		email = "avocadoisgood@gmail.com";
-		rate = 5.25;
-		tempSpot = new ParkingSpot(time , address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 16, );
-		address = "566 Pasedina avenue";
-		name = "Brian Cambell";
-		phone = "204-419-8819";
-		email = "Brian1989@gmail.com";
-		rate = 4;
-		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 20, 0);
-		address = "1 kings drive";
-		name = "Jenifer Aniston";
-		phone = "604-253-1111";
-		email = "JeniferAniston@hotmail.ca";
-		rate = 7;
-		tempSpot = new ParkingSpot(time,address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 13,30);
-		address = "20 silverston avenue";
-		name = "Christopher Turk";
-		phone = "204-236-2322";
-		email = "chrisTurk27@gmail.com";
-		rate = 5;
-		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 15, 0);
-		address = "20 kings drive";
-		name = "Tom Brady";
-		phone = "877-377-4234";
-		email = "theGoat@gmail.com";
-		rate = 10;
-		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 14, 30);
-		address = "1 pembina hwy";
-		name = "George H. Bush";
-		phone = "204-927-9277";
-		email = "myFamilyLikesWar@gmail.com";
-		rate = 10;
-		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 16, 0);
-		address = "100 st. mary's rd";
-		name = "Watson k. Smith";
-		phone = "204-245-3433";
-		email = "watsonK@gmail.com";
-		rate = 7;
-		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 12, 30);
-		address = "1691 pemina hwy";
-		name = "Victory Iyakoregha";
-		phone = "204-888-9292";
-		email = "Ivic565@gmail.com";
-		rate = 5;
-		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 14, 45);
-		address = "1338 chancellor drive";
-		name = "Micheal Douglas";
-		phone = "204-123-1234";
-		email = "theblondegirl22@hotmail.ca";
-		rate = 4.50;
-		tempSpot = new ParkingSpot(time,address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 11, 20);
-		address = "1122 chancellor drive";
-		name = "Kelly Cook";
-		phone = "204-566-7122";
-		email = "cookk@gmail.com";
-		rate = 4;
-		tempSpot = new ParkingSpot(time,address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 11, 0);
-		address = "91 Dalhousie drive";
-		name = "Madison Fishburne";
-		phone = "204-345-4353";
-		email = "madifish101@gmail.com";
-		rate = 5.25;
-		tempSpot = new ParkingSpot(time , address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 16, 45);
-		address = "565 Pasedina avenue";
-		name = "Ronald Regan";
-		phone = "204-419-1419";
-		email = "theDevil666@gmail.com";
-		rate = 100;
-		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 20, 0);
-		address = "1334 Pembina Hwy";
-		name = "Marilyn Monroe";
-		phone = "604-253-3424";
-		email = "iammonroe@hotmail.ca";
-		rate = 7;
-		tempSpot = new ParkingSpot(time,address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 13,30);
-		address = "200 pasedina avenue";
-		name = "Nelson Mandela";
-		phone = "204-234-2555";
-		email = "Nelson27@gmail.com";
-		rate = 5;
-		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 15, 0);
-		address = "Brady road landfill";
-		name = "Donald Trump";
-		phone = "877-311-4974";
-		email = "lolattheUSA@gmail.com";
-		rate = 100;
-		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 14, 30);
-		address = "1 pembina hwy";
-		name = "George W. Bush";
-		phone = "204-927-9277";
-		email = "myFamilyLikesWar@gmail.com";
-		rate = 10;
-		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
 		time = new ReservationTime(2018, 6, 11, 20, 30, 22, 0);
 		address = "29 st. mary's rd";
 		name = "Mary Watson";

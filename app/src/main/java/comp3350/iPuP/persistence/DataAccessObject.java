@@ -80,6 +80,33 @@ public class DataAccessObject implements DataAccess
 	}
 
 
+	private boolean doesUserExists(String user)
+    {
+        boolean rtn = false;
+
+        result = null;
+
+        try
+        {
+            cmdString = "SELECT * FROM USERS WHERE USER_ID = ?";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setString(1,user);
+
+            rsp = pstmt.executeQuery();
+
+            if (rsp.next())
+            {
+                rtn = true;
+            }
+        } catch (Exception e)
+        {
+            result = processSQLError(e);
+        }
+
+        return rtn;
+    }
+
+
 	public String insertDaySlot(String psID, DaySlot daySlot)
     {
         long dsID;
@@ -202,19 +229,29 @@ public class DataAccessObject implements DataAccess
 
         try
         {
-            cmdString = "INSERT INTO PARKINGSPOTS VALUES(?,?,?,?,?,?,?)";
+            cmdString = "SELECT * FROM PARKINGSPOTS WHERE PS_ID = ?";
             pstmt = con.prepareStatement(cmdString);
-            pstmt.setString(1,currentParkingSpot.getSpotID());
-            pstmt.setString(2,user);
-            pstmt.setString(3,currentParkingSpot.getName());
-            pstmt.setString(4,currentParkingSpot.getAddress());
-            pstmt.setString(5,currentParkingSpot.getPhone());
-            pstmt.setString(6,currentParkingSpot.getEmail());
-            pstmt.setDouble(7,currentParkingSpot.getRate());
+            pstmt.setString(1, currentParkingSpot.getSlotID());
+            rsp = pstmt.executeQuery();
 
-            //System.out.println(cmdString);
-            updateCount = pstmt.executeUpdate();
-            result = checkWarning(pstmt, updateCount);
+            if (!rsp.next()) {
+                cmdString = "INSERT INTO PARKINGSPOTS VALUES(?,?,?,?,?,?,?)";
+                pstmt = con.prepareStatement(cmdString);
+                pstmt.setString(1, currentParkingSpot.getSpotID());
+                pstmt.setString(2, user);
+                pstmt.setString(3, currentParkingSpot.getName());
+                pstmt.setString(4, currentParkingSpot.getAddress());
+                pstmt.setString(5, currentParkingSpot.getPhone());
+                pstmt.setString(6, currentParkingSpot.getEmail());
+                pstmt.setDouble(7, currentParkingSpot.getRate());
+
+                //System.out.println(cmdString);
+                updateCount = pstmt.executeUpdate();
+                result = checkWarning(pstmt, updateCount);
+            } else
+            {
+                rsp.close();
+            }
 
             String rtnt = insertTimeSlot(currentParkingSpot.getSpotID(), null, currentParkingSpot.getStartTime(), currentParkingSpot.getEndTime());
 
@@ -234,35 +271,86 @@ public class DataAccessObject implements DataAccess
         return result;
     }
 
-    public boolean insertUser(String username)
+    public boolean insertUser(String userID)
     {
         boolean inserted = false;
         result = null;
 
+        if (!doesUserExists(userID)) { // if user does not exist
+            try {
+                cmdString = "INSERT INTO USERS VALUES(?)";
+                pstmt = con.prepareStatement(cmdString);
+                pstmt.setString(1, userID);
+
+                updateCount = pstmt.executeUpdate();
+
+                if (updateCount == 1) {
+                    inserted = true;
+                }
+
+                result = checkWarning(pstmt, updateCount);
+
+            } catch (Exception e) {
+                result = processSQLError(e);
+            }
+        }
+
+        return inserted;
+    }
+
+
+
+    public ArrayList<DaySlot> getDaySlotsForParkingSpot(String psID)
+    {
+        //TODO: implement this
+        ArrayList<DaySlot> daySlots = new ArrayList<DaySlot>();
+
+        return daySlots;
+    }
+
+    public ArrayList<ParkingSpot> getParkingSpotsByDateTime(Date start, Date end)
+    {
+        parkingSpots = new ArrayList<ParkingSpot>();
+
+        result = null;
+
         try
         {
-            cmdString = "INSERT INTO USERS VALUES(?)";
-            pstmt = con.prepareStatement(cmdString);
-            pstmt.setString(1, username);
-
-            updateCount = pstmt.executeUpdate();
-
-            if (updateCount == 1)
+            if (end == null)
             {
-                inserted = true;
+                cmdString = "SELECT * FROM PARKINGSPOTS P JOIN TIMESLOTS T " +
+                            "ON P.PS_ID = T.PS_ID AND T.DS_ID IS NULL WHERE ? " +
+                            "BETWEEN CAST(STARTDATETIME AS DATE) AND CAST(ENDDATETIME AS DATE)";
+                pstmt = con.prepareStatement(cmdString);
+                pstmt.setString(1, df.getSqlDateFormat().format(start));
+            } else
+            {
+//                cmdString = "SELECT * FROM PARKINGSPOTS P JOIN TIMESLOTS T" +
+//                            "ON P.PS_ID = T.PS_ID AND T.DS_ID IS NULL" +
+//                            "WHERE T.STARTDATETIME BETWEEN DATE? AND DATE?";
+//                pstmt = con.prepareStatement(cmdString);
+//                pstmt.setString(1, df.getSqlDateFormat().format(start));
+//                pstmt.setString(2, df.getSqlDateFormat().format(end));
             }
 
-            result = checkWarning(pstmt, updateCount);
+            rss = pstmt.executeQuery();
+
+            if (rss.next())
+            {
+                getParkingSpot(rss, parkingSpots);
+            }
+
+            rss.close();
 
         } catch (Exception e)
         {
             result = processSQLError(e);
         }
 
-        return inserted;
+        return parkingSpots;
     }
 
-    public ArrayList<ParkingSpot> getParkingSpots()
+    private void getParkingSpot(ResultSet rs, ArrayList<ParkingSpot> parkingSpots)
     {
         Calendar calStart = Calendar.getInstance();
         Calendar calEnd = Calendar.getInstance();
@@ -273,46 +361,85 @@ public class DataAccessObject implements DataAccess
         TimeSlot timeSlot;
         String id, name, addr, phone, email;
 
-        parkingSpots = new ArrayList<ParkingSpot>();
-        result = null;
-
         try
         {
-            cmdString = "SELECT * FROM PARKINGSPOTS P JOIN TIMESLOTS T ON P.PS_ID = T.PS_ID AND T.DS_ID IS NULL";
-            rss = stmt.executeQuery(cmdString);
-            //ResultSetMetaData md = rs.getMetaData();
-
-            while (rss.next())
+            while (rs.next())
             {
-                id = rss.getString("PS_ID");
-                name = rss.getString("Name");
-                addr = rss.getString("Address");
-                phone = rss.getString("Phone");
-                email = rss.getString("Email");
-                rate = rss.getDouble("Rate");
-                start = rss.getDate("Startdatetime");
-                end = rss.getDate("Enddatetime");
-                tsId = rss.getLong("TS_ID");
+                id = rs.getString("PS_ID");
+                name = rs.getString("Name");
+                addr = rs.getString("Address");
+                phone = rs.getString("Phone");
+                email = rs.getString("Email");
+                rate = rs.getDouble("Rate");
+                start = rs.getDate("Startdatetime");
+                end = rs.getDate("Enddatetime");
+                tsId = rs.getLong("TS_ID");
 
                 calStart.setTime(start);
                 calEnd.setTime(end);
 
-                timeSlot = new TimeSlot(calStart.getTime(), calEnd.getTime(), Long.toString(tsId));
+                timeSlot = new TimeSlot(calStart.getTime(), calEnd.getTime(), tsId);
 
                 ps = new ParkingSpot(id, addr, name, phone, email, rate, timeSlot);
-//                ps = new ParkingSpot(id.split("_")[0], addr, name, phone, email, rate, isBooked, timeSlot);
                 parkingSpots.add(ps);
             }
-
-            rss.close();
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
-            processSQLError(e);
+            result = processSQLError(e);
         }
-
-        return parkingSpots;
     }
+
+//    private ArrayList<ParkingSpot> getParkingSpots(ResultSet rs)
+//    {
+//        Calendar calStart = Calendar.getInstance();
+//        Calendar calEnd = Calendar.getInstance();
+//        Date start, end;
+//        Double rate;
+//        long tsId;
+//        ParkingSpot ps;
+//        TimeSlot timeSlot;
+//        String id, name, addr, phone, email;
+//
+//        parkingSpots = new ArrayList<ParkingSpot>();
+//        result = null;
+//
+//        try
+//        {
+//            cmdString = "SELECT * FROM PARKINGSPOTS P JOIN TIMESLOTS T ON P.PS_ID = T.PS_ID AND T.DS_ID IS NULL";
+//            rss = stmt.executeQuery(cmdString);
+//            //ResultSetMetaData md = rs.getMetaData();
+//
+//            while (rss.next())
+//            {
+//                id = rss.getString("PS_ID");
+//                name = rss.getString("Name");
+//                addr = rss.getString("Address");
+//                phone = rss.getString("Phone");
+//                email = rss.getString("Email");
+//                rate = rss.getDouble("Rate");
+//                start = rss.getDate("Startdatetime");
+//                end = rss.getDate("Enddatetime");
+//                tsId = rss.getLong("TS_ID");
+//
+//                calStart.setTime(start);
+//                calEnd.setTime(end);
+//
+//                timeSlot = new TimeSlot(calStart.getTime(), calEnd.getTime(), Long.toString(tsId));
+//
+//                ps = new ParkingSpot(id, addr, name, phone, email, rate, timeSlot);
+////                ps = new ParkingSpot(id.split("_")[0], addr, name, phone, email, rate, isBooked, timeSlot);
+//                parkingSpots.add(ps);
+//            }
+//
+//            rss.close();
+//        }
+//        catch (Exception e)
+//        {
+//            processSQLError(e);
+//        }
+//
+//        return parkingSpots;
+//    }
 
 //    public String setSpotToBooked(String spotID, String slotID)
 //    {

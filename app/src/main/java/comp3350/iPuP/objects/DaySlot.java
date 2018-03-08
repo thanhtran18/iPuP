@@ -14,7 +14,6 @@ public class DaySlot extends TimeSlot
         super(newStart, newEnd);
         this.timeSlots = new ArrayList<TimeSlot>();
 
-
         Calendar start = new GregorianCalendar();
         Calendar end = new GregorianCalendar();
         start.setTime(newStart);
@@ -31,7 +30,7 @@ public class DaySlot extends TimeSlot
         }
     }
 
-    public DaySlot(Date newStart, Date newEnd, String id)
+    public DaySlot(Date newStart, Date newEnd, long id)
     {
         this(newStart, newEnd);
         this.slotID = id;

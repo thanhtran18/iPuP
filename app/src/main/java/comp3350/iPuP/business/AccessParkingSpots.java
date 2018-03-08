@@ -86,13 +86,13 @@ public class AccessParkingSpots
     public ArrayList<ParkingSpot> getAllSpots()
     {
         ArrayList<ParkingSpot> returnList=new ArrayList<ParkingSpot>();
-        returnList.addAll(dataAccess.getParkingSpots());
+//        returnList.addAll(dataAccess.getParkingSpots());
         return returnList;
     }
 
     public ArrayList<ParkingSpot> getAvailableSpots()
     {
-        List<ParkingSpot> temp = dataAccess.getParkingSpots();
+//        List<ParkingSpot> temp = dataAccess.getParkingSpots();
         availableSpots = new ArrayList<ParkingSpot>();
 //        for (int i = 0; i < temp.size(); i++)
 //        {

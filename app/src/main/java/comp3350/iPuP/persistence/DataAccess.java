@@ -9,7 +9,7 @@ import comp3350.iPuP.objects.ParkingSpot;
 
 public interface DataAccess
 {
-	void open(String string);
+	void open(String string) throws Exception;
 
 	void close();
 
@@ -23,7 +23,13 @@ public interface DataAccess
 
 	boolean insertUser(String username);
 
-	ArrayList<ParkingSpot> getParkingSpots();
+//	ArrayList<ParkingSpot> getParkingSpotsByDate(Date date);
+
+	ArrayList<ParkingSpot> getParkingSpotsByDateTime(Date start, Date end);
+//
+//	ArrayList<ParkingSpot> getParkingSpotsByDateRate(Date date, Double rate);
+//
+//	ArrayList<ParkingSpot> getParkingSpotsByDateStreet(Date date, String street);
 
 	void clearSpotList();
 }

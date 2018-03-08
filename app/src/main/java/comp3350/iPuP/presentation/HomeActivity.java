@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -35,31 +36,6 @@ public class HomeActivity extends Activity {
         setContentView(R.layout.activity_home);
 
         accessUsers = new AccessUsers();
-//
-//        EditText editTextUN = (EditText) findViewById(R.id.textName);
-//        final String username = editTextUN.getText().toString();
-//
-//        editTextUN.setOnFocusChangeListener(new View.OnFocusChangeListener()
-//        {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus)
-//            {
-//                if (!hasFocus)
-//                {
-//                    // get new user if username not same on focus lost
-//                    if (!username.equals(""))
-//                    {
-//                        user = accessUsers.getUser(username);
-//                        Toast.makeText(this, "Loaded User: " + username + "!", Toast.LENGTH_LONG).show();
-//                        if (user == null)
-//                        {
-//                            user = createAndGetUser(username);
-//                            Toast.makeText(this, "Created User: " + username + "!", Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//                }
-//            }
-//        });
     }
 
     @Override
@@ -147,9 +123,12 @@ public class HomeActivity extends Activity {
         String name = ((EditText)findViewById(R.id.editTextName)).getText().toString();
         if (name != null && !name.equals(""))
         {
-            accessUsers.createUser(name);
+            boolean userCreated = accessUsers.createUser(name);
+            if (userCreated) { toastNewUserCreated(name); }
             Intent parkerIntent = new Intent(HomeActivity.this, ParkerMenuActivity.class);
-            parkerIntent.putExtra("name", name);
+            Bundle bundle = new Bundle();
+            bundle.putString("name", name);
+            parkerIntent.putExtras(bundle);
             HomeActivity.this.startActivity(parkerIntent);
         }
         else
@@ -164,7 +143,8 @@ public class HomeActivity extends Activity {
         String name = ((EditText)findViewById(R.id.editTextName)).getText().toString();
         if (name != null && !name.equals(""))
         {
-            accessUsers.createUser(name);
+            boolean userCreated = accessUsers.createUser(name);
+            if (userCreated) { toastNewUserCreated(name); }
             Intent hostMenuIntent = new Intent(HomeActivity.this, HostMenuActivity.class);
             hostMenuIntent.putExtra("name", name);
             HomeActivity.this.startActivity(hostMenuIntent);
@@ -174,5 +154,10 @@ public class HomeActivity extends Activity {
             ((EditText)findViewById(R.id.editTextName)).setHint("Enter a name");
             ((EditText)findViewById(R.id.editTextName)).setHintTextColor(getResources().getColor(R.color.colorWarning));
         }
+    }
+
+    public void toastNewUserCreated(String userID)
+    {
+        Toast.makeText(this, "New User, '" + userID + "' successfully created!", Toast.LENGTH_LONG).show();
     }
 }

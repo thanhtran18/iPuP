@@ -1,6 +1,8 @@
 package comp3350.iPuP.business;
 
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,6 +11,7 @@ import java.util.List;
 
 import comp3350.iPuP.application.Main;
 import comp3350.iPuP.application.Services;
+import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
@@ -86,13 +89,13 @@ public class AccessParkingSpots
     public ArrayList<ParkingSpot> getAllSpots()
     {
         ArrayList<ParkingSpot> returnList=new ArrayList<ParkingSpot>();
-        returnList.addAll(dataAccess.getParkingSpots());
+//        returnList.addAll(dataAccess.getParkingSpots());
         return returnList;
     }
 
     public ArrayList<ParkingSpot> getAvailableSpots()
     {
-        List<ParkingSpot> temp = dataAccess.getParkingSpots();
+//        List<ParkingSpot> temp = dataAccess.getParkingSpots();
         availableSpots = new ArrayList<ParkingSpot>();
 //        for (int i = 0; i < temp.size(); i++)
 //        {
@@ -115,8 +118,28 @@ public class AccessParkingSpots
         dataAccess.clearSpotList();
     }
 
-    public ArrayList<ParkingSpot> getMySpots(String name)
+    public ArrayList<Booking> getMySpots(String name) throws ParseException
     {
-        return new ArrayList<ParkingSpot>();
+        //test
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+//        String dateInString = "31-08-1982 10:00:00";
+//        Date date1 = sdf.parse(dateInString);
+//        dateInString = "31-08-1982 10:30:00";
+//        Date date2 = sdf.parse(dateInString);
+//        TimeSlot timeSlot = new TimeSlot(date1, date2);
+//        DaySlot daySlot = new DaySlot(date1, date2, "abc");
+//        ArrayList<ParkingSpot> list = new ArrayList<ParkingSpot>();
+//        list.add(new ParkingSpot("1 sd", "sdfd", "12321", "srewr", 10.0, timeSlot));
+        //return list;
+        //end test
+//        ArrayList<Booking> result = new ArrayList<>();
+//        result.addAll(dataAccess.getSpotsOfGivenUser(name)
+        return dataAccess.getSpotsOfGivenUser(name);
+        //return new ArrayList<ParkingSpot>();
+    }
+
+    public boolean cancelThisSpot(String username, Long timeSlotId)
+    {
+        return dataAccess.setSpotToCancelled(username, timeSlotId);
     }
 }

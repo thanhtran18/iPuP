@@ -12,9 +12,12 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import comp3350.iPuP.R;
+import comp3350.iPuP.objects.DateFormatter;
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
 {
+    private DateFormatter df;
+
     public static DatePickerFragment newInstance(int id)
     {
         Bundle b = new Bundle();
@@ -28,8 +31,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
         final Calendar c = Calendar.getInstance();
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        int month = c.get(Calendar.MONTH);
+        int day = 10;//c.get(Calendar.DAY_OF_MONTH);
+        int month = 5;//c.get(Calendar.MONTH);
         int year = c.get(Calendar.YEAR);
 
         return new DatePickerDialog(getActivity(), this, year, month, day);

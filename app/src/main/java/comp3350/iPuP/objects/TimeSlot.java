@@ -8,7 +8,7 @@ public class TimeSlot
 {
     private Date start;
     private Date end;
-    protected String slotID;
+    protected Long slotID;
 
     public static DateFormatter df = new DateFormatter();
 
@@ -38,9 +38,10 @@ public class TimeSlot
     {
         start = newStart;
         end = newEnd;
+        slotID = null;
     }
 
-    public TimeSlot(Date newStart, Date newEnd, String slotID)
+    public TimeSlot(Date newStart, Date newEnd, long slotID)
     {
         this(newStart, newEnd);
         this.slotID = slotID;
@@ -77,7 +78,7 @@ public class TimeSlot
             return "Invalid date";
     }
 
-    public String getSlotID()
+    public Long getSlotID()
     {
         return slotID;
     }

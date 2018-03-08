@@ -41,6 +41,7 @@
             android:padding="40dp"
             android:background="@color/colorButtonBack2"
             android:drawableLeft="@drawable/ic_icon_list"
+            android:onClick="buttonParkerLogOnClick"
             android:text="@string/parker_menu_view"
             android:textColor="@color/colorButtonText"
             android:textSize="30sp" />

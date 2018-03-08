@@ -19,6 +19,9 @@ public class TimePickerActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_time_picker);
+        //TODO: Remove this after
+        ((Spinner)findViewById(R.id.spinnerHour)).setSelection(9);
+        ((Spinner)findViewById(R.id.spinnerMinute)).setSelection(1);
     }
 
     public void buttonCancelOnClick(View v)

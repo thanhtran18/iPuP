@@ -6,16 +6,18 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.business.AccessParkingSpots;
+import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.ParkingSpot;
 
 public class HostViewActivity extends ListActivity
 {
     private AccessParkingSpots accessParkingSpots;
-    ArrayAdapter<ParkingSpot> adapter;
+    ArrayAdapter<Booking> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,8 +30,15 @@ public class HostViewActivity extends ListActivity
 
         ListView list = findViewById(android.R.id.list);
 
-        ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getMySpots(name);
-
-        adapter = new ArrayAdapter<ParkingSpot>(this, android.R.layout.simple_list_item_1, parkingSpots);
+        try
+        {
+            ArrayList<Booking> parkingSpots = accessParkingSpots.getMySpots(name);
+            adapter = new ArrayAdapter<Booking>(this, android.R.layout.simple_list_item_1, parkingSpots);
+            setListAdapter(adapter);
+        }
+        catch (ParseException pe)
+        {
+            System.out.print(pe.getMessage());
+        }
     }
 }

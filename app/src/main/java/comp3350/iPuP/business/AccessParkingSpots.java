@@ -36,7 +36,7 @@ public class AccessParkingSpots
         start.setTime(timeSlot.getStart());
         end.setTime(timeSlot.getEnd());
 
-        ParkingSpot spot = new ParkingSpot(address, name, phone, email, rate, timeSlot);
+        ParkingSpot spot = new ParkingSpot(address, name, phone, email, rate);
 
         if (repetitionInfo != null && !repetitionInfo.equals(""))
         {
@@ -69,7 +69,8 @@ public class AccessParkingSpots
                     start.add(Calendar.WEEK_OF_YEAR, Integer.parseInt(splits[1]) - 1);
                     end.add(Calendar.WEEK_OF_YEAR, Integer.parseInt(splits[1]) - 1);
                 }
-            } else
+            }
+            else
             {
 
             }

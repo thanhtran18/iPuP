@@ -234,7 +234,6 @@ public class DataAccessObject implements DataAccess
         {
             cmdString = "SELECT * FROM PARKINGSPOTS WHERE PS_ID = ?";
             pstmt = con.prepareStatement(cmdString);
-            pstmt.setLong(1, currentParkingSpot.getSlotID());
             rsp = pstmt.executeQuery();
 
             if (!rsp.next()) {
@@ -255,11 +254,6 @@ public class DataAccessObject implements DataAccess
             {
                 rsp.close();
             }
-
-            String rtnt = insertTimeSlot(currentParkingSpot.getSpotID(), null, currentParkingSpot.getStartTime(), currentParkingSpot.getEndTime());
-
-            if (rtnt != null)
-                return rtnt;
 
             String rtnd = insertDaySlots(currentParkingSpot.getSpotID(), currentParkingSpot.getDaySlots());
 

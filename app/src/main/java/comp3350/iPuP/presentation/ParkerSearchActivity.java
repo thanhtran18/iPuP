@@ -43,17 +43,12 @@ public class ParkerSearchActivity extends Activity {
         else c.set(Calendar.MINUTE, 0);
         TextView tv = (TextView)findViewById(R.id.editDate);
         tv.setText(setDate.getDateFormat().format(c.getTime()));
-        
-
-        Date today= new Date();
-        today.setDate(11);
-        today.setMonth(5);
-        today.setYear(2018);
 
         accessParkingSpots = new AccessParkingSpots();
         ListView list = findViewById(R.id.dailySpot);
         try
         {
+            Date today= new Date(setDate.getSqlDateFormat().parse("2018-06-11").getTime());
             parkingSpots = accessParkingSpots.getDailySpots(today);
             //ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getAllSpots();
             for (final ParkingSpot spot : parkingSpots)

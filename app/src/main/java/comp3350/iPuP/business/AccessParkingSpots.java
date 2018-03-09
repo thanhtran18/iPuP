@@ -131,22 +131,7 @@ public class AccessParkingSpots
 
     public ArrayList<ParkingSpot> getDailySpots(Date today) throws ParseException
     {
-        //test
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-//        String dateInString = "31-08-1982 10:00:00";
-//        Date date1 = sdf.parse(dateInString);
-//        dateInString = "31-08-1982 10:30:00";
-//        Date date2 = sdf.parse(dateInString);
-//        TimeSlot timeSlot = new TimeSlot(date1, date2);
-//        DaySlot daySlot = new DaySlot(date1, date2, "abc");
-//        ArrayList<ParkingSpot> list = new ArrayList<ParkingSpot>();
-//        list.add(new ParkingSpot("1 sd", "sdfd", "12321", "srewr", 10.0, timeSlot));
-        //return list;
-        //end test
-//        ArrayList<Booking> result = new ArrayList<>();
-//        result.addAll(dataAccess.getSpotsOfGivenUser(name)
         return dataAccess.getParkingSpotsByDate(today);
-        //return new ArrayList<ParkingSpot>();
     }
 
     public boolean cancelThisSpot(String username, Long timeSlotId)

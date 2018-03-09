@@ -374,8 +374,8 @@ public class DataAccessObject implements DataAccess
                 phone = rs.getString("Phone");
                 email = rs.getString("Email");
                 rate = rs.getDouble("Rate");
-                start = rs.getDate("Startdatetime");
-                end = rs.getDate("Enddatetime");
+                start = rs.getTimestamp("Startdatetime");
+                end = rs.getTimestamp("Enddatetime");
                 tsId = rs.getLong("TS_ID");
 
                 calStart.setTime(start);

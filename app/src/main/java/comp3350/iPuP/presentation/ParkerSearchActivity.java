@@ -43,7 +43,7 @@ public class ParkerSearchActivity extends Activity {
         else c.set(Calendar.MINUTE, 0);
         TextView tv = (TextView)findViewById(R.id.editDate);
         tv.setText(setDate.getDateFormat().format(c.getTime()));
-        
+
         accessParkingSpots = new AccessParkingSpots();
         ListView list = findViewById(R.id.dailySpot);
         try

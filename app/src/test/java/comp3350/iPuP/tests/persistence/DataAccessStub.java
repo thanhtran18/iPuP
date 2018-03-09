@@ -7,7 +7,6 @@ import java.util.Date;
 
 import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.DateFormatter;
-import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
 import comp3350.iPuP.persistence.DataAccess;

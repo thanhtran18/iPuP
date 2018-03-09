@@ -34,5 +34,7 @@ public interface DataAccess
 
 	void clearSpotList();
 
-	public ArrayList<Booking> getSpotsOfGivenUser(String username);
+	ArrayList<Booking> getSpotsOfGivenUser(String username);
+
+	boolean setSpotToCancelled(String username, Long timeSlotId);
 }

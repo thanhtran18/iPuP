@@ -10,12 +10,13 @@ import java.util.Date;
 public class Booking
 {
     private String username; //the unique username of each user
-    private long timeSlotId;
+    private Long timeSlotId;
     private String address;
     private Date start;
     private Date end;
+    private DateFormatter dateFormatter = new DateFormatter();
 
-    public Booking(String username, long timeSlotId, String address, Date start, Date end)
+    public Booking(String username, Long timeSlotId, String address, Date start, Date end)
     {
         this.username = username;
         this.timeSlotId = timeSlotId;
@@ -34,11 +35,11 @@ public class Booking
         this.username = username;
     }
 
-    public long getTimeSlotId() {
+    public Long getTimeSlotId() {
         return timeSlotId;
     }
 
-    public void setTimeSlotId(long timeSlotId) {
+    public void setTimeSlotId(Long timeSlotId) {
         this.timeSlotId = timeSlotId;
     }
 
@@ -64,6 +65,11 @@ public class Booking
 
     public void setEnd(Date end) {
         this.end = end;
+    }
+
+    public String toString()
+    {
+        return "\n" + this.address + " (hold to cancel this booking) \n" + dateFormatter.getDateTimeFormat().format(start) + " - " + dateFormatter.getDateTimeFormat().format(end) + "\n";
     }
 }
 

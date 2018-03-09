@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -574,8 +575,8 @@ public class DataAccessObject implements DataAccess
                 userID = rss.getString("USER_ID");
                 tsID = rss.getLong("TS_ID");
                 addr = rss.getString("Address");
-                start = rss.getDate("Startdatetime");
-                end = rss.getDate("Enddatetime");
+                start = rss.getTimestamp("Startdatetime");
+                end = rss.getTimestamp("Enddatetime");
 
                 calStart.setTime(start);
                 calEnd.setTime(end);
@@ -592,6 +593,27 @@ public class DataAccessObject implements DataAccess
         }
 
         return bookingSpots;
+    }
+
+    public boolean setSpotToCancelled(String username, Long timeSlotId)
+    {
+        boolean result = false;
+        try
+        {
+            cmdString = "UPDATE BOOKINGS SET DELETED = TRUE WHERE USER_ID = ? AND TS_ID = ?";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setString(1, username);
+            pstmt.setLong(2, timeSlotId);
+            updateCount = pstmt.executeUpdate();
+            if (updateCount != 0)
+                result = true;
+
+        }
+        catch (SQLException se)
+        {
+            System.out.print(se.getMessage());
+        }
+        return result;
     }
 
 

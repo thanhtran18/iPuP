@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import comp3350.iPuP.R;
+import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.business.AccessParkingSpots;
@@ -201,15 +202,17 @@ public class HostActivity extends Activity
 
         if (valid)
         {
-            String rtn = accessParkingSpots.insertParkingSpots(name, timeSlot, repetitionInfo, address, name, phone, email, rate);
+            try {
+                boolean rtn = accessParkingSpots.insertParkingSpot(name, timeSlot, repetitionInfo, address, name, phone, email, rate);
 
-            if (rtn == null)
+                if (rtn) {
+                    Toast.makeText(this, "New advertisement created!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Failed to create new advertisement!", Toast.LENGTH_LONG).show();
+                }
+            } catch (DAOException daoe)
             {
-                Toast.makeText(this, "New advertisement created!", Toast.LENGTH_LONG).show();
-            }
-            else
-            {
-                Toast.makeText(this, "Failed to create new advertisement!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, daoe.getMessage(), Toast.LENGTH_LONG).show();
             }
 
             finish();

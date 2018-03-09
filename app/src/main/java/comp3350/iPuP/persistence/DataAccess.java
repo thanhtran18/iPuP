@@ -6,38 +6,34 @@ import java.util.Date;
 import java.util.List;
 
 import comp3350.iPuP.objects.Booking;
+import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
+import comp3350.iPuP.objects.TimeSlot;
 
 public interface DataAccess
 {
-	void open(String string) throws Exception;
+	void open(String string) throws DAOException;
 
-	void close();
+	void close() throws DAOException;
 
-	String insertDaySlot(String psID, DaySlot daySlot);
+	boolean insertDaySlot(String psID, DaySlot daySlot) throws DAOException;
 
-	String insertDaySlots(String psID, ArrayList<DaySlot> daySlots);
+	boolean insertDaySlots(String psID, ArrayList<DaySlot> daySlots) throws DAOException;
 
-	String insertParkingSpot(String user, ParkingSpot currentParkingSpot);
+	boolean insertParkingSpot(String user, ParkingSpot currentParkingSpot) throws DAOException;
 
-	String insertTimeSlot(String psID, Long tsID, Date start, Date end);
+	boolean insertTimeSlot(String psID, Long tsID, Date start, Date end) throws DAOException;
 
-	boolean insertUser(String username);
+	boolean insertUser(String username) throws DAOException;
 
-	ArrayList<ParkingSpot> getParkingSpotsByDate(Date date);
-
-//	ArrayList<ParkingSpot> getParkingSpotsByDateTime(Date start, Date end);
-//
-//	ArrayList<ParkingSpot> getParkingSpotsByDateRate(Date date, Double rate);
-//
-//	ArrayList<ParkingSpot> getParkingSpotsByDateStreet(Date date, String street);
+	ArrayList<ParkingSpot> getParkingSpotsByAddressDate(String address, Date date) throws DAOException;
 
 	void clearSpotList();
 
-	ArrayList<Booking> getBookedSpotsOfGivenUser(String username) throws Exception;
+	ArrayList<Booking> getBookedSpotsOfGivenUser(String username) throws DAOException;
 
-	ArrayList<ParkingSpot> getHostedSpotsOfGivenUser(String username) throws Exception;
+	ArrayList<ParkingSpot> getHostedSpotsOfGivenUser(String username) throws DAOException;
 
-	boolean setSpotToCancelled(String username, Long timeSlotId);
+	boolean setBookedSpotToDeleted(String username, Long timeSlotId) throws  DAOException;
 }

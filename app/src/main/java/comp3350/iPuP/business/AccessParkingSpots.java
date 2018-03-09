@@ -1,9 +1,5 @@
 package comp3350.iPuP.business;
 
-import java.sql.SQLException;
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,6 +9,7 @@ import java.util.List;
 import comp3350.iPuP.application.Main;
 import comp3350.iPuP.application.Services;
 import comp3350.iPuP.objects.Booking;
+import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
@@ -30,8 +27,9 @@ public class AccessParkingSpots
         availableSpots = new ArrayList<ParkingSpot>();
     }
 
-    public String insertParkingSpots(String user, TimeSlot timeSlot, String repetitionInfo, String address, String name, String phone, String email, double rate)
+    public boolean insertParkingSpot(String user, TimeSlot timeSlot, String repetitionInfo, String address, String name, String phone, String email, double rate) throws DAOException
     {
+        boolean result = false;
         Calendar start = new GregorianCalendar();
         Calendar end = new GregorianCalendar();
         start.setTime(timeSlot.getStart());
@@ -81,10 +79,11 @@ public class AccessParkingSpots
             spot.addDaySlot(new DaySlot(start.getTime(), end.getTime()));
         }
 
-        insertParkingSpot(user, spot);
-        return null;
+        result = insertParkingSpot(user, spot);
+
+        return result;
     }
-    public String insertParkingSpot(String user, ParkingSpot newParkingSpot)
+    public boolean insertParkingSpot(String user, ParkingSpot newParkingSpot) throws DAOException
     {
         return dataAccess.insertParkingSpot(user, newParkingSpot);
     }
@@ -120,23 +119,23 @@ public class AccessParkingSpots
         dataAccess.clearSpotList();
     }
 
-    public ArrayList<ParkingSpot> getMyHostedSpots(String name) throws Exception
+    public ArrayList<ParkingSpot> getMyHostedSpots(String name) throws DAOException
     {
         return dataAccess.getHostedSpotsOfGivenUser(name);
     }
 
-    public ArrayList<Booking> getMyBookedSpots(String name) throws Exception
+    public ArrayList<Booking> getMyBookedSpots(String name) throws DAOException
     {
         return dataAccess.getBookedSpotsOfGivenUser(name);
     }
 
-    public ArrayList<ParkingSpot> getDailySpots(Date today) throws ParseException
+    public ArrayList<ParkingSpot> getDailySpots(String address, Date today) throws DAOException
     {
-        return dataAccess.getParkingSpotsByDate(today);
+        return dataAccess.getParkingSpotsByAddressDate(address, today);
     }
 
-    public boolean cancelThisSpot(String username, Long timeSlotId)
+    public boolean cancelThisSpot(String username, Long timeSlotId) throws DAOException
     {
-        return dataAccess.setSpotToCancelled(username, timeSlotId);
+        return dataAccess.setBookedSpotToDeleted(username, timeSlotId);
     }
 }

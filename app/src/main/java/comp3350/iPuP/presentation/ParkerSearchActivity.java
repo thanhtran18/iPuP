@@ -3,6 +3,7 @@ package comp3350.iPuP.presentation;
 import comp3350.iPuP.R;
 import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.objects.Booking;
+import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.objects.ParkingSpot;
 
@@ -13,6 +14,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.Date;
 
 import java.text.ParseException;
@@ -49,7 +52,8 @@ public class ParkerSearchActivity extends Activity {
         try
         {
             Date today= new Date(setDate.getSqlDateFormat().parse("2018-06-11").getTime());
-            parkingSpots = accessParkingSpots.getDailySpots(today);
+            //TODO: Victory, replace null with address search string
+            parkingSpots = accessParkingSpots.getDailySpots(null, today);
             //ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getAllSpots();
             for (final ParkingSpot spot : parkingSpots)
             {
@@ -65,10 +69,12 @@ public class ParkerSearchActivity extends Activity {
 
 
             registerForContextMenu(list);
-        }
-        catch (ParseException pe)
+        } catch (ParseException pe)
         {
-            System.out.print(pe.getMessage());
+            Toast.makeText(this, pe.getMessage(), Toast.LENGTH_LONG).show();
+        } catch (DAOException daoe)
+        {
+            Toast.makeText(this, daoe.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
     

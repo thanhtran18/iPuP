@@ -35,9 +35,8 @@ public class ParkingSpot
 //        this.cancelled = false;
     }
 
-    public ParkingSpot(String id, String address, String name, String phone, String email, double rate, TimeSlot timeSlot) throws Exception {
+    public ParkingSpot(String id, String address, String name, String phone, String email, double rate) throws Exception {
         this(address, name, phone, email, rate);
-//        this.spotID = id;
 //        this.cancelled = false;
 
         if (!this.spotID.equals(id)) {

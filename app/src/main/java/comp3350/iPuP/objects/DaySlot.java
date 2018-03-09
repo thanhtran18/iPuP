@@ -32,11 +32,11 @@ public class DaySlot extends TimeSlot
 
     public DaySlot(Date newStart, Date newEnd, long id)
     {
-        this(newStart, newEnd);
-        this.slotID = id;
+        super(newStart, newEnd, id);
+        this.timeSlots = new ArrayList<TimeSlot>();
     }
 
-    private void addTimeSlot(TimeSlot newSlot)
+    public void addTimeSlot(TimeSlot newSlot)
     {
         timeSlots.add(newSlot);
     }

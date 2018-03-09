@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,6 +22,7 @@ import java.util.Locale;
 import comp3350.iPuP.R;
 import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.objects.Booking;
+import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.ParkingSpot;
 
 /**
@@ -57,7 +59,7 @@ public class ParkerLogViewActivity extends ListActivity
 
         try
         {
-            bookingSpots = accessParkingSpots.getMySpots(name);
+            bookingSpots = accessParkingSpots.getMyBookedSpots(name);
             //ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getAllSpots();
             for (final Booking spot : bookingSpots)
             {
@@ -99,9 +101,9 @@ public class ParkerLogViewActivity extends ListActivity
 
             registerForContextMenu(list);
         }
-        catch (ParseException pe)
+        catch (Exception e)
         {
-            System.out.print(pe.getMessage());
+            System.out.print(e.getMessage());
         }
     }
 
@@ -122,7 +124,12 @@ public class ParkerLogViewActivity extends ListActivity
             case R.id.delete:
                 //accessParkingSpots.cancelThisSpot(name, .getTimeSlotId());
                 //parkingSpots.get(obj.position).setCancelled(true);
-                accessParkingSpots.cancelThisSpot(arrayList.get(obj.position).getUsername(), arrayList.get(obj.position).getTimeSlotId());
+                try {
+                    accessParkingSpots.cancelThisSpot(arrayList.get(obj.position).getUsername(), arrayList.get(obj.position).getTimeSlotId());
+                } catch (DAOException daoe)
+                {
+                    Toast.makeText(this, daoe.getMessage(), Toast.LENGTH_LONG).show();
+                }
                 arrayList.remove(obj.position);
 
                 adapter.notifyDataSetChanged();

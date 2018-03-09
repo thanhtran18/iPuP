@@ -9,15 +9,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import comp3350.iPuP.objects.Booking;
+import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.DateFormatter;
-import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
 
@@ -26,18 +24,20 @@ public class DataAccessObject implements DataAccess
 	private PreparedStatement pstmt, pstmt2, pstmt3;
 	private Statement stmt;
 	private Connection con;
-	private ResultSet rss, rsp, rsp2, rsp3, genkey;
+	private ResultSet rss, rsp;
 
 	private String dbName;
 	private String dbType;
 
     private DateFormatter df = new DateFormatter();
 
+    private ArrayList<Booking> bookingSpotsOfAUser;
+
 	private ArrayList<ParkingSpot> parkingSpots;
+    private ArrayList<ParkingSpot> parkingSpotsOfAUser;
 
 	private String cmdString;
 	private int updateCount;
-	private String result;
 	private static String EOF = "  ";
 
 
@@ -47,7 +47,7 @@ public class DataAccessObject implements DataAccess
 	}
 
 
-	public void open(String dbPath)
+	public void open(String dbPath) throws DAOException
 	{
 		String url;
 		try
@@ -62,12 +62,13 @@ public class DataAccessObject implements DataAccess
 		catch (Exception e)
 		{
 			processSQLError(e);
+			throw new DAOException("Error in opening "+dbType+" database "+dbPath+"!",e);
 		}
 		System.out.println("Opened " +dbType +" database " +dbPath);
 	}
 
 
-	public void close()
+	public void close() throws DAOException
 	{
 		try
 		{	// commit all changes to the database
@@ -78,371 +79,279 @@ public class DataAccessObject implements DataAccess
 		catch (Exception e)
 		{
 			processSQLError(e);
+			throw new DAOException("Error in closing "+dbType+" database "+dbName+"!",e);
 		}
 		System.out.println("Closed " +dbType +" database " +dbName);
 	}
 
 
-	private boolean doesUserExists(String user)
+	private boolean doesParkingSpotExists(String spotID) throws DAOException
     {
-        boolean rtn = false;
+        boolean result = false;
 
-        result = null;
-
-        try
-        {
-            cmdString = "SELECT * FROM USERS WHERE USER_ID = ?";
+        try {
+            cmdString = "SELECT * FROM PARKINGSPOTS WHERE SPOT_ID = ?";
             pstmt = con.prepareStatement(cmdString);
-            pstmt.setString(1,user);
+            pstmt.setString(1, spotID);
 
             rsp = pstmt.executeQuery();
 
             if (rsp.next())
             {
-                rtn = true;
-            }
-        } catch (Exception e)
-        {
-            result = processSQLError(e);
-        }
-
-        return rtn;
-    }
-
-
-	public String insertDaySlot(String psID, DaySlot daySlot)
-    {
-        long dsID;
-        String theResult = null;
-
-        try
-        {
-            cmdString = "INSERT INTO DAYSLOTS (PS_ID,STARTDAYTIME,ENDDAYTIME) " +
-                        "VALUES (?,?,?)";
-            pstmt2 = con.prepareStatement(cmdString);
-            pstmt2.setString(1, psID);
-            pstmt2.setString(2, df.getSqlDateTimeFormat().format(daySlot.getStart()));
-            pstmt2.setString(3, df.getSqlDateTimeFormat().format(daySlot.getEnd()));
-
-            updateCount = pstmt2.executeUpdate();
-            theResult = checkWarning(pstmt, updateCount);
-
-            cmdString = "CALL IDENTITY()";
-            rss = stmt.executeQuery(cmdString);
-
-            if (rss.next())
-            {
-                dsID = rss.getLong(1);
-
-                // insert all timeSlots related to this daySlot
-                String rtn = insertTimeSlots(psID, dsID, daySlot.getTimeSlots());
-
-                if (rtn != null)
-                    return rtn;
-            } else
-            {
-                theResult += "\nCould not retrieve DaySlot ID from Database!";
+                result = true;
             }
 
-        } catch (Exception e)
+            rsp.close();
+        } catch (SQLException sqle)
         {
-            theResult = processSQLError(e);
-        }
-
-        return theResult;
-    }
-
-
-	public String insertDaySlots(String psID, ArrayList<DaySlot> daySlots)
-    {
-        String rtn = null;
-
-        for (int i = 0; i < daySlots.size(); i++)
-        {
-            rtn = insertDaySlot(psID, daySlots.get(i));
-
-            if (rtn != null)
-            {
-                return rtn;
-            }
-        }
-
-        return rtn;
-    }
-
-    public String insertTimeSlot(String psID, Long dsID, Date start, Date end)
-    {
-        String theResult = null;
-
-        try
-        {
-            cmdString = "INSERT INTO TIMESLOTS (PS_ID,DS_ID,STARTDATETIME,ENDDATETIME) " +
-                    "VALUES (?,?,?,?)";
-            pstmt3 = con.prepareStatement(cmdString);
-            pstmt3.setString(1, psID);
-            if (dsID == null)
-            {
-                pstmt3.setNull(2, Types.NULL);
-            } else
-            {
-                pstmt3.setLong(2, dsID);
-            }
-            pstmt3.setString(3, df.getSqlDateTimeFormat().format(start));
-            pstmt3.setString(4, df.getSqlDateTimeFormat().format(end));
-
-            updateCount = pstmt3.executeUpdate();
-            theResult = checkWarning(pstmt, updateCount);
-
-        } catch (Exception e)
-        {
-            theResult = processSQLError(e);
-        }
-
-        return theResult;
-    }
-
-
-    public String insertTimeSlot(String psID, Long dsID, TimeSlot timeSlot)
-    {
-        return insertTimeSlot(psID, dsID, timeSlot.getStart(), timeSlot.getEnd());
-    }
-
-
-    public String insertTimeSlots(String psID, Long dsID, ArrayList<TimeSlot> timeSlots)
-    {
-        String rtn = null;
-
-        for (int i = 0; i < timeSlots.size(); i++)
-        {
-            rtn = insertTimeSlot(psID, dsID, timeSlots.get(i));
-
-            if (rtn != null)
-            {
-                return rtn;
-            }
-        }
-
-        return rtn;
-    }
-
-
-	public String insertParkingSpot(String user, ParkingSpot currentParkingSpot)
-    {
-        result = null;
-
-        try
-        {
-            cmdString = "SELECT * FROM PARKINGSPOTS WHERE PS_ID = ?";
-            pstmt = con.prepareStatement(cmdString);
-            pstmt.setLong(1, currentParkingSpot.getSlotID());
-            rsp = pstmt.executeQuery();
-
-            if (!rsp.next()) {
-                cmdString = "INSERT INTO PARKINGSPOTS VALUES(?,?,?,?,?,?,?)";
-                pstmt = con.prepareStatement(cmdString);
-                pstmt.setString(1, currentParkingSpot.getSpotID());
-                pstmt.setString(2, user);
-                pstmt.setString(3, currentParkingSpot.getName());
-                pstmt.setString(4, currentParkingSpot.getAddress());
-                pstmt.setString(5, currentParkingSpot.getPhone());
-                pstmt.setString(6, currentParkingSpot.getEmail());
-                pstmt.setDouble(7, currentParkingSpot.getRate());
-
-                //System.out.println(cmdString);
-                updateCount = pstmt.executeUpdate();
-                result = checkWarning(pstmt, updateCount);
-            } else
-            {
-                rsp.close();
-            }
-
-            String rtnt = insertTimeSlot(currentParkingSpot.getSpotID(), null, currentParkingSpot.getStartTime(), currentParkingSpot.getEndTime());
-
-            if (rtnt != null)
-                return rtnt;
-
-            String rtnd = insertDaySlots(currentParkingSpot.getSpotID(), currentParkingSpot.getDaySlots());
-
-            if (rtnd != null)
-                return rtnd;
-        }
-        catch (Exception e)
-        {
-            result = processSQLError(e);
+            processSQLError(sqle);
+            throw new DAOException("Error in checking if ParkingSpot object with spotID = "+spotID+" exists!",sqle);
         }
 
         return result;
     }
 
-    public boolean insertUser(String userID)
+
+	private boolean doesUserExists(String username) throws DAOException
     {
-        boolean inserted = false;
-        result = null;
+        boolean result = false;
 
-        if (!doesUserExists(userID)) { // if user does not exist
-            try {
-                cmdString = "INSERT INTO USERS VALUES(?)";
-                pstmt = con.prepareStatement(cmdString);
-                pstmt.setString(1, userID);
+        try
+        {
+            cmdString = "SELECT * FROM USERS WHERE USERNAME = ?";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setString(1,username);
 
-                updateCount = pstmt.executeUpdate();
+            rsp = pstmt.executeQuery();
 
-                if (updateCount == 1) {
-                    inserted = true;
-                }
-
-                result = checkWarning(pstmt, updateCount);
-
-            } catch (Exception e) {
-                result = processSQLError(e);
+            if (rsp.next())
+            {
+                result = true;
             }
+        } catch (Exception e)
+        {
+            processSQLError(e);
+            throw new DAOException("Error in checking if User ("+username+") exists!",e);
         }
 
-        return inserted;
+        return result;
     }
 
 
+	public long insertDaySlot(TimeSlot daySlot, String spotID) throws DAOException
+    {
+        long dayslotID;
 
-    public ArrayList<DaySlot> getDaySlotsForParkingSpot(String psID)
+        try
+        {
+            cmdString = "INSERT INTO DAYSLOTS (SPOT_ID,STARTDAYTIME,ENDDAYTIME) " +
+                        "VALUES (?,?,?,?)";
+            pstmt2 = con.prepareStatement(cmdString);
+            pstmt2.setString(1, spotID);
+            pstmt2.setString(2, df.getSqlDateTimeFormat().format(daySlot.getStart()));
+            pstmt2.setString(3, df.getSqlDateTimeFormat().format(daySlot.getEnd()));
+            pstmt2.setBoolean(4,false);
+            updateCount = pstmt2.executeUpdate();
+            checkWarning(pstmt, updateCount);
+        }
+        catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error in inserting DaySlot object with spotID = "+spotID+"!",sqle);
+        }
+
+        try
+        {
+            cmdString = "CALL IDENTITY()";
+            rss = stmt.executeQuery(cmdString);
+
+            if (rss.next())
+            {
+                dayslotID = rss.getLong(1);
+            } else
+            {
+                throw new DAOException("Could not retrieve last auto generated DaySlot ID!");
+            }
+        } catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Could not retrieve last auto generated DaySlot ID!",sqle);
+        }
+
+        return dayslotID;
+    }
+
+    public long insertTimeSlot(TimeSlot timeSlot, long dayslotID, String spotID) throws DAOException
+    {
+        long timeslotID;
+
+        try
+        {
+            cmdString = "INSERT INTO TIMESLOTS (SPOT_ID,DAYSLOT_ID,STARTDATETIME,ENDDATETIME) " +
+                    "VALUES (?,?,?,?,?)";
+            pstmt3 = con.prepareStatement(cmdString);
+            pstmt3.setString(1, spotID);
+            pstmt3.setLong(2, dayslotID);
+            pstmt3.setString(3, df.getSqlDateTimeFormat().format(timeSlot.getStart()));
+            pstmt3.setString(4, df.getSqlDateTimeFormat().format(timeSlot.getEnd()));
+            pstmt3.setBoolean(5,false);
+
+            updateCount = pstmt3.executeUpdate();
+            checkWarning(pstmt, updateCount);
+        } catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error in inserting TimeSlot object with dayslotID = "+dayslotID+" and slotID = "+spotID+"!",sqle);
+        }
+
+        try
+        {
+            cmdString = "CALL IDENTITY()";
+            rss = stmt.executeQuery(cmdString);
+
+            if (rss.next())
+            {
+                timeslotID = rss.getLong(1);
+            } else
+            {
+                throw new DAOException("Could not retrieve last auto generated TimeSlot ID!");
+            }
+        } catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Could not retrieve last auto generated TimeSlot ID!",sqle);
+        }
+
+        return timeslotID;
+    }
+
+	public boolean insertParkingSpot(String username, ParkingSpot currentParkingSpot) throws DAOException
+    {
+        boolean result = false;
+        try
+        {
+            if (!doesParkingSpotExists(currentParkingSpot.getSpotID())) {
+                cmdString = "INSERT INTO PARKINGSPOTS VALUES(?,?,?,?,?,?,?,?)";
+                pstmt = con.prepareStatement(cmdString);
+                pstmt.setString(1, currentParkingSpot.getSpotID());
+                pstmt.setString(2, username);
+                pstmt.setString(3, currentParkingSpot.getName());
+                pstmt.setString(4, currentParkingSpot.getAddress());
+                pstmt.setString(5, currentParkingSpot.getPhone());
+                pstmt.setString(6, currentParkingSpot.getEmail());
+                pstmt.setDouble(7, currentParkingSpot.getRate());
+                pstmt.setBoolean(8,false);
+
+                //System.out.println(cmdString);
+                updateCount = pstmt.executeUpdate();
+                checkWarning(pstmt, updateCount);
+
+                result = true;
+            }
+        }
+        catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error in creating ParkingSpot object with SPOT_ID = "+currentParkingSpot.getSpotID()+" for Username: "+username+"!",sqle);
+        }
+
+        return result;
+    }
+
+    public boolean insertUser(String username) throws DAOException
+    {
+        boolean result = false;
+
+        if (!doesUserExists(username)) { // if user does not exist
+            try {
+                cmdString = "INSERT INTO USERS VALUES(?)";
+                pstmt = con.prepareStatement(cmdString);
+                pstmt.setString(1, username);
+
+                updateCount = pstmt.executeUpdate();
+                checkWarning(pstmt, updateCount);
+
+                result = true;
+
+            } catch (SQLException sqle) {
+                processSQLError(sqle);
+                throw new DAOException("Error in creating new user with USERNAME = "+username+"!",sqle);
+            }
+        }
+
+        return result;
+    }
+
+    public ArrayList<TimeSlot> getDaySlotsForAParkingSpot(String slotID) throws DAOException
     {
         //TODO: implement this
-        ArrayList<DaySlot> daySlots = new ArrayList<DaySlot>();
+        ArrayList<TimeSlot> daySlots = new ArrayList<TimeSlot>();
 
         return daySlots;
     }
 
-    public ArrayList<ParkingSpot> getParkingSpotsByDateTime(Date start, Date end)
+    public ArrayList<ParkingSpot> getParkingSpotsByAddressDate(String address, Date date) throws DAOException
     {
         parkingSpots = new ArrayList<ParkingSpot>();
 
-        result = null;
+        try {
+            cmdString = "SELECT * FROM PARKINGSPOTS P WHERE P.ADDRESS LIKE ? " +
+                        "AND EXISTS (SELECT * FROM DAYSLOTS D WHERE D.SPOT_ID = P.SPOT_ID " +
+                        "AND ? BETWEEN CAST(D.STARTDAYTIME AS DATE) AND CAST(D.ENDDAYTIME AS DATE))";
+            pstmt = con.prepareStatement(cmdString);
 
-        try
-        {
-            if (end == null)
+            if (address == null)
             {
-                cmdString = "SELECT * FROM PARKINGSPOTS P JOIN TIMESLOTS T " +
-                            "ON P.PS_ID = T.PS_ID AND T.DS_ID IS NULL WHERE ? " +
-                            "BETWEEN CAST(STARTDATETIME AS DATE) AND CAST(ENDDATETIME AS DATE)";
-                pstmt = con.prepareStatement(cmdString);
-                pstmt.setString(1, df.getSqlDateFormat().format(start));
+                pstmt.setString(1,"%");
             } else
             {
-//                cmdString = "SELECT * FROM PARKINGSPOTS P JOIN TIMESLOTS T" +
-//                            "ON P.PS_ID = T.PS_ID AND T.DS_ID IS NULL" +
-//                            "WHERE T.STARTDATETIME BETWEEN DATE? AND DATE?";
-//                pstmt = con.prepareStatement(cmdString);
-//                pstmt.setString(1, df.getSqlDateFormat().format(start));
-//                pstmt.setString(2, df.getSqlDateFormat().format(end));
+                pstmt.setString(1,"%"+address+"%");
             }
+            pstmt.setString(2, df.getSqlDateFormat().format(date));
 
             rss = pstmt.executeQuery();
 
-            if (rss.next())
-            {
-                getParkingSpot(rss, parkingSpots);
-            }
+            getParkingSpots(rss, parkingSpots);
 
             rss.close();
-
-        } catch (Exception e)
+        } catch (SQLException sqle)
         {
-            result = processSQLError(e);
+            processSQLError(sqle);
+            throw new DAOException("Error in getting ParkingSpots ordered by Date: "+df.getSqlDateFormat().format(date)+"!",sqle);
         }
 
         return parkingSpots;
     }
 
-    private void getParkingSpot(ResultSet rs, ArrayList<ParkingSpot> parkingSpots)
+    private void getParkingSpots(ResultSet rs, ArrayList<ParkingSpot> parkingSpots) throws DAOException
     {
-        Calendar calStart = Calendar.getInstance();
-        Calendar calEnd = Calendar.getInstance();
-        Date start, end;
         Double rate;
-        long tsId;
         ParkingSpot ps;
-        TimeSlot timeSlot;
         String id, name, addr, phone, email;
 
-        try
-        {
-            while (rs.next())
-            {
-                id = rs.getString("PS_ID");
-                name = rs.getString("Name");
-                addr = rs.getString("Address");
-                phone = rs.getString("Phone");
-                email = rs.getString("Email");
-                rate = rs.getDouble("Rate");
-                start = rs.getDate("Startdatetime");
-                end = rs.getDate("Enddatetime");
-                tsId = rs.getLong("TS_ID");
+        try {
+            while (rs.next()) {
+                id = rs.getString("SPOT_ID");
+                name = rs.getString("NAME");
+                addr = rs.getString("ADDRESS");
+                phone = rs.getString("PHONE");
+                email = rs.getString("EMAIL");
+                rate = rs.getDouble("RATE");
 
-                calStart.setTime(start);
-                calEnd.setTime(end);
-
-                timeSlot = new TimeSlot(calStart.getTime(), calEnd.getTime(), tsId);
-
-                ps = new ParkingSpot(id, addr, name, phone, email, rate, timeSlot);
+                ps = new ParkingSpot(id, addr, name, phone, email, rate);
                 parkingSpots.add(ps);
             }
+        } catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error in getting list of ParkingSpot objects!",sqle);
         } catch (Exception e)
         {
-            result = processSQLError(e);
+            processSQLError(e);
+            throw new DAOException("Error in creating a new ParkingSpot object!",e);
         }
     }
 
-//    private ArrayList<ParkingSpot> getParkingSpots(ResultSet rs)
-//    {
-//        Calendar calStart = Calendar.getInstance();
-//        Calendar calEnd = Calendar.getInstance();
-//        Date start, end;
-//        Double rate;
-//        long tsId;
-//        ParkingSpot ps;
-//        TimeSlot timeSlot;
-//        String id, name, addr, phone, email;
-//
-//        parkingSpots = new ArrayList<ParkingSpot>();
-//        result = null;
-//
-//        try
-//        {
-//            cmdString = "SELECT * FROM PARKINGSPOTS P JOIN TIMESLOTS T ON P.PS_ID = T.PS_ID AND T.DS_ID IS NULL";
-//            rss = stmt.executeQuery(cmdString);
-//            //ResultSetMetaData md = rs.getMetaData();
-//
-//            while (rss.next())
-//            {
-//                id = rss.getString("PS_ID");
-//                name = rss.getString("Name");
-//                addr = rss.getString("Address");
-//                phone = rss.getString("Phone");
-//                email = rss.getString("Email");
-//                rate = rss.getDouble("Rate");
-//                start = rss.getDate("Startdatetime");
-//                end = rss.getDate("Enddatetime");
-//                tsId = rss.getLong("TS_ID");
-//
-//                calStart.setTime(start);
-//                calEnd.setTime(end);
-//
-//                timeSlot = new TimeSlot(calStart.getTime(), calEnd.getTime(), Long.toString(tsId));
-//
-//                ps = new ParkingSpot(id, addr, name, phone, email, rate, timeSlot);
-////                ps = new ParkingSpot(id.split("_")[0], addr, name, phone, email, rate, isBooked, timeSlot);
-//                parkingSpots.add(ps);
-//            }
-//
-//            rss.close();
-//        }
-//        catch (Exception e)
-//        {
-//            processSQLError(e);
-//        }
-//
-//        return parkingSpots;
-//    }
 
 //    public String setSpotToBooked(String spotID, String slotID)
 //    {
@@ -453,8 +362,8 @@ public class DataAccessObject implements DataAccess
 //
 //        try
 //        {
-////            cmdString = "SELECT * FROM ParkingSpots WHERE PS_ID = ?";
-//            cmdString = "UPDATE PARKINGSPOTS SET IS_BOOKED = ? WHERE PS_ID = ? AND IS_BOOKED = FALSE";
+////            cmdString = "SELECT * FROM ParkingSpots WHERE SPOT_ID = ?";
+//            cmdString = "UPDATE PARKINGSPOTS SET IS_BOOKED = ? WHERE SPOT_ID = ? AND IS_BOOKED = FALSE";
 //            pstmt = con.prepareStatement(cmdString);
 //            pstmt.setBoolean(1, true);
 //            pstmt.setString(2, spotID);
@@ -479,7 +388,7 @@ public class DataAccessObject implements DataAccess
 ////                }
 ////                else
 ////                {
-////                    cmdString = "Update ParkingSpots Set Is_Booked=? where PS_ID=?";
+////                    cmdString = "Update ParkingSpots Set Is_Booked=? where SPOT_ID=?";
 ////                    pstmt = con.prepareStatement(cmdString);
 ////                    pstmt.setBoolean(1, true);
 ////                    pstmt.setString(2,spotID + "_" + slotID);
@@ -502,17 +411,39 @@ public class DataAccessObject implements DataAccess
 //    }
 
 
+    public ArrayList<ParkingSpot> getHostedSpotsOfGivenUser(String username) throws DAOException
+    {
+        parkingSpotsOfAUser = new ArrayList<ParkingSpot>();
+
+        try
+        {
+            cmdString = "SELECT * FROM PARKINGSPOTS WHERE  USERNAME = ? AND DELETED = FALSE";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setString(1, username);
+            rss = pstmt.executeQuery();
+            //ResultSetMetaData md = rs.getMetaData();
+
+            getParkingSpots(rss, parkingSpotsOfAUser);
+
+            rss.close();
+        } catch (SQLException e)
+        {
+            processSQLError(e);
+            throw new DAOException("Error in getting hosted Parking Spots by "+username+"!",e);
+        }
+
+        return parkingSpotsOfAUser;
+    }
+
     public void clearSpotList()
     {
         this.parkingSpots.clear();
     }
 
 
-	public String checkWarning(Statement st, int updateCount)
+	public String checkWarning(Statement st, int updateCount) throws DAOException
 	{
-		String result;
-
-		result = null;
+		String result = null;
 		try
 		{
 			SQLWarning warning = st.getWarnings();
@@ -523,11 +454,13 @@ public class DataAccessObject implements DataAccess
 		}
 		catch (Exception e)
 		{
-			result = processSQLError(e);
+			processSQLError(e);
+			throw new DAOException("Error in getting warnings!",e);
 		}
 		if (updateCount != 1)
 		{
 			result = "Tuple not inserted correctly.";
+            throw new DAOException(result);
 		}
 		return result;
 	}
@@ -545,26 +478,25 @@ public class DataAccessObject implements DataAccess
 
 
 	//added by Kevin
-    public ArrayList<Booking> getSpotsOfGivenUser(String username)
+    public ArrayList<Booking> getBookedSpotsOfGivenUser(String username) throws DAOException
     {
         Calendar calStart = Calendar.getInstance();
         Calendar calEnd = Calendar.getInstance();
         Date start, end;
         Booking booking;
-        long tsID;
-        String userID, addr;
+        long timeslotID;
+        String addr;
 
-        ArrayList<Booking> bookingSpots = new ArrayList<Booking>();
-        result = null;
+        bookingSpotsOfAUser = new ArrayList<Booking>();
 
         try
         {
-            cmdString = "SELECT B.USER_ID, B.TS_ID, P.PS_ID, P.ADDRESS, T.STARTDATETIME, T.ENDDATETIME " +
-                        "FROM BOOKINGS B " +
-                        "LEFT JOIN PARKINGSPOTS P ON B.PS_ID = P.PS_ID " +
-                        "LEFT JOIN TIMESLOTS T ON B.TS_ID = T.TS_ID " +
-                        "WHERE B.USER_ID = ? AND B.DELETED = FALSE " +
-                            "AND NOT T.DS_ID IS NULL ORDER BY T.STARTDATETIME";
+            cmdString = "SELECT B.USERNAME, B.TIMESLOT_ID, P.SPOT_ID, P.ADDRESS, T.STARTDATETIME, T.ENDDATETIME " +
+                        "FROM BOOKINGS B LEFT JOIN PARKINGSPOTS P ON B.SPOT_ID = P.SPOT_ID " +
+                        "LEFT JOIN TIMESLOTS T ON B.TIMESLOT_ID = T.TIMESLOT_ID " +
+                        "WHERE B.USERNAME = ? AND B.DELETED = FALSE " +
+                            "AND NOT T.DAYSLOT_ID IS NULL ORDER BY T.STARTDATETIME";
+            //TODO: remove null check on dayslotID after change in database
             pstmt = con.prepareStatement(cmdString);
             pstmt.setString(1, username);
             rss = pstmt.executeQuery();
@@ -572,8 +504,7 @@ public class DataAccessObject implements DataAccess
 
             while (rss.next())
             {
-                userID = rss.getString("USER_ID");
-                tsID = rss.getLong("TS_ID");
+                timeslotID = rss.getLong("TIMESLOT_ID");
                 addr = rss.getString("Address");
                 start = rss.getTimestamp("Startdatetime");
                 end = rss.getTimestamp("Enddatetime");
@@ -581,8 +512,8 @@ public class DataAccessObject implements DataAccess
                 calStart.setTime(start);
                 calEnd.setTime(end);
 
-                booking = new Booking(userID, tsID, addr, calStart.getTime(), calEnd.getTime());
-                bookingSpots.add(booking);
+                booking = new Booking(username, timeslotID, addr, calStart.getTime(), calEnd.getTime());
+                bookingSpotsOfAUser.add(booking);
             }
 
             rss.close();
@@ -590,28 +521,30 @@ public class DataAccessObject implements DataAccess
         catch (Exception e)
         {
             processSQLError(e);
+            throw new DAOException("Error in getting bookings list for User: "+username+"!",e);
         }
 
-        return bookingSpots;
+        return bookingSpotsOfAUser;
     }
 
-    public boolean setSpotToCancelled(String username, Long timeSlotId)
+    public boolean setBookedSpotToDeleted(String username, long timeSlotId) throws DAOException
     {
         boolean result = false;
         try
         {
-            cmdString = "UPDATE BOOKINGS SET DELETED = TRUE WHERE USER_ID = ? AND TS_ID = ?";
+            cmdString = "UPDATE BOOKINGS SET DELETED = TRUE WHERE USERNAME = ? AND TIMESLOT_ID = ?";
             pstmt = con.prepareStatement(cmdString);
             pstmt.setString(1, username);
             pstmt.setLong(2, timeSlotId);
             updateCount = pstmt.executeUpdate();
-            if (updateCount != 0)
-                result = true;
+            checkWarning(pstmt, updateCount);
 
+            result = true;
         }
-        catch (SQLException se)
+        catch (SQLException sqle)
         {
-            System.out.print(se.getMessage());
+            processSQLError(sqle);
+            throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = "+timeSlotId+"!",sqle);
         }
         return result;
     }

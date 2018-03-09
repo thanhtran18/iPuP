@@ -8,7 +8,7 @@ public class TimeSlot
 {
     private Date start;
     private Date end;
-    protected Long slotID;
+    protected long slotID;
 
     public static DateFormatter df = new DateFormatter();
 
@@ -38,7 +38,7 @@ public class TimeSlot
     {
         start = newStart;
         end = newEnd;
-        slotID = null;
+        slotID = 0;
     }
 
     public TimeSlot(Date newStart, Date newEnd, long slotID)
@@ -81,5 +81,10 @@ public class TimeSlot
     public Long getSlotID()
     {
         return slotID;
+    }
+
+    public void setSlotID(long slotID)
+    {
+        this.slotID = slotID;
     }
 }

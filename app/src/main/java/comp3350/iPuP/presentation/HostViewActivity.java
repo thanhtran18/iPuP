@@ -5,19 +5,19 @@ import android.app.ListActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.business.AccessParkingSpots;
-import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.ParkingSpot;
 
 public class HostViewActivity extends ListActivity
 {
     private AccessParkingSpots accessParkingSpots;
-    ArrayAdapter<Booking> adapter;
+    ArrayAdapter<ParkingSpot> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -32,13 +32,13 @@ public class HostViewActivity extends ListActivity
 
         try
         {
-            ArrayList<Booking> parkingSpots = accessParkingSpots.getMySpots(name);
-            adapter = new ArrayAdapter<Booking>(this, android.R.layout.simple_list_item_1, parkingSpots);
+            ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getMyHostedSpots(name);
+            adapter = new ArrayAdapter<ParkingSpot>(this, android.R.layout.simple_list_item_1, parkingSpots);
             setListAdapter(adapter);
         }
-        catch (ParseException pe)
+        catch (Exception e)
         {
-            System.out.print(pe.getMessage());
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 }

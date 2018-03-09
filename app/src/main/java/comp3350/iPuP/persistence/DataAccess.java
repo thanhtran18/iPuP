@@ -2,39 +2,35 @@ package comp3350.iPuP.persistence;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import comp3350.iPuP.objects.Booking;
-import comp3350.iPuP.objects.DaySlot;
+import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.ParkingSpot;
+import comp3350.iPuP.objects.TimeSlot;
 
 public interface DataAccess
 {
-	void open(String string) throws Exception;
+	void open(String string) throws DAOException;
 
-	void close();
+	void close() throws DAOException;
 
-	String insertDaySlot(String psID, DaySlot daySlot);
+	boolean insertParkingSpot(String user, ParkingSpot currentParkingSpot) throws DAOException;
 
-	String insertDaySlots(String psID, ArrayList<DaySlot> daySlots);
+	long insertDaySlot(TimeSlot daySlot, String spotID) throws DAOException;
 
-	String insertParkingSpot(String user, ParkingSpot currentParkingSpot);
+	long insertTimeSlot(TimeSlot timeSlot, long daySlotID, String spotID) throws DAOException;
 
-	String insertTimeSlot(String psID, Long tsID, Date start, Date end);
+	boolean insertUser(String username) throws DAOException;
 
-	boolean insertUser(String username);
+	ArrayList<ParkingSpot> getParkingSpotsByAddressDate(String address, Date date) throws DAOException;
 
-//	ArrayList<ParkingSpot> getParkingSpotsByDate(Date date);
-
-	ArrayList<ParkingSpot> getParkingSpotsByDateTime(Date start, Date end);
-//
-//	ArrayList<ParkingSpot> getParkingSpotsByDateRate(Date date, Double rate);
-//
-//	ArrayList<ParkingSpot> getParkingSpotsByDateStreet(Date date, String street);
+    ArrayList<TimeSlot> getDaySlotsForAParkingSpot(String spotID) throws DAOException;
 
 	void clearSpotList();
 
-	ArrayList<Booking> getSpotsOfGivenUser(String username);
+	ArrayList<Booking> getBookedSpotsOfGivenUser(String username) throws DAOException;
 
-	boolean setSpotToCancelled(String username, Long timeSlotId);
+	ArrayList<ParkingSpot> getHostedSpotsOfGivenUser(String username) throws DAOException;
+
+	boolean setBookedSpotToDeleted(String username, long timeSlotId) throws  DAOException;
 }

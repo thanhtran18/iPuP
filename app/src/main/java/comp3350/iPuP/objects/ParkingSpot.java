@@ -7,7 +7,6 @@ import java.util.Date;
 
 public class ParkingSpot
 {
-    private TimeSlot timeSlot;
     private String address;
     private String name;
     private String phone;
@@ -17,7 +16,7 @@ public class ParkingSpot
     private ArrayList<DaySlot> daySlots;
     //private boolean cancelled;
 
-    public ParkingSpot(String address, String name, String phone, String email, double rate, TimeSlot timeSlot)
+    public ParkingSpot(String address, String name, String phone, String email, double rate)
     {
         this.address = address;// required
         this.name = name;// required
@@ -30,7 +29,6 @@ public class ParkingSpot
 
         this.spotID = address+name;
 
-        this.timeSlot = timeSlot;
 
         this.daySlots = new ArrayList<DaySlot>();
 
@@ -38,7 +36,7 @@ public class ParkingSpot
     }
 
     public ParkingSpot(String id, String address, String name, String phone, String email, double rate, TimeSlot timeSlot) throws Exception {
-        this(address, name, phone, email, rate, timeSlot);
+        this(address, name, phone, email, rate);
 //        this.spotID = id;
 //        this.cancelled = false;
 
@@ -47,24 +45,14 @@ public class ParkingSpot
         }
     }
 
-    public boolean isSpot(String spotID, String slotID)
+    public boolean isSpot(String spotID)
     {
-        return this.spotID.equals(spotID) && timeSlot.getSlotID().equals(slotID);
+        return this.spotID.equals(spotID);
     }
 
     public void addDaySlot(DaySlot newSlot)
     {
         daySlots.add(newSlot);
-    }
-
-    public Date getStartTime()
-    {
-        return timeSlot.getStart();
-    }
-
-    public Date getEndTime()
-    {
-        return timeSlot.getEnd();
     }
 
     public String getName()
@@ -102,11 +90,6 @@ public class ParkingSpot
         return spotID;
     }
 
-    public Long getSlotID()
-    {
-        return timeSlot.getSlotID();
-    }
-
 //    public boolean isCancelled() {
 //        return cancelled;
 //    }
@@ -118,7 +101,7 @@ public class ParkingSpot
     @Override
     public String toString()
     {
-        return this.address + " (hold to cancel this booking) \n" + this.timeSlot.toString();
+        return this.address + " (hold to cancel this booking)";
     }
 
     @Override
@@ -129,7 +112,7 @@ public class ParkingSpot
             ParkingSpot otherSpot = (ParkingSpot) other;
             if (this.name.equals(otherSpot.name) && this.address.equals(otherSpot.address) &&
                     this.phone.equals(otherSpot.phone) && this.email.equals(otherSpot.email) &&
-                    this.rate == otherSpot.rate && this.timeSlot.equals(otherSpot.timeSlot))
+                    this.rate == otherSpot.rate)
                 return true;
         }
         return false;

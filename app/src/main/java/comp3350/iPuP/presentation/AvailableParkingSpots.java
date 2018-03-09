@@ -60,17 +60,13 @@ public class AvailableParkingSpots extends ListActivity
         String emailOfTheHost = item.getEmail();
         String phoneNumberOfTheHost = item.getPhone();
         String rateDescription = "$" + item.getRate() + "/hr";
-        String reservationTime = item.getStartTime().toString();
         String message = nameOfTheParkingHost + " with email: " + emailOfTheHost +
                 " and phone number: " + phoneNumberOfTheHost +
-                " is offering " + addressOfTheSpot + " at " + rateDescription+
-                " at " + reservationTime;
+                " is offering " + addressOfTheSpot + " at " + rateDescription;
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(getApplicationContext(), ParkingSpotInfoActivity.class);
 
-        intent.putExtra(KEY_RESERVATION_START, item.getStartTime().toString());
-        intent.putExtra(KEY_RESERVATION_END, item.getEndTime().toString());
         intent.putExtra(KEY_NAME, item.getName());
         intent.putExtra(KEY_ADDRESS, item.getAddress());
         intent.putExtra(KEY_PHONE, item.getPhone());

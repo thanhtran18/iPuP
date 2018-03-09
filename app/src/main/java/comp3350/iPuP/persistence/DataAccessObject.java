@@ -282,7 +282,7 @@ public class DataAccessObject implements DataAccess
         return result;
     }
 
-    public ArrayList<TimeSlot> getDaySlotsForAParkingSpot(String slotID)
+    public ArrayList<TimeSlot> getDaySlotsForAParkingSpot(String slotID) throws DAOException
     {
         //TODO: implement this
         ArrayList<TimeSlot> daySlots = new ArrayList<TimeSlot>();
@@ -333,10 +333,10 @@ public class DataAccessObject implements DataAccess
             while (rs.next()) {
                 id = rs.getString("SPOT_ID");
                 name = rs.getString("NAME");
-                addr = rss.getString("ADDRESS");
-                phone = rss.getString("PHONE");
-                email = rss.getString("EMAIL");
-                rate = rss.getDouble("RATE");
+                addr = rs.getString("ADDRESS");
+                phone = rs.getString("PHONE");
+                email = rs.getString("EMAIL");
+                rate = rs.getDouble("RATE");
 
                 ps = new ParkingSpot(id, addr, name, phone, email, rate);
                 parkingSpots.add(ps);

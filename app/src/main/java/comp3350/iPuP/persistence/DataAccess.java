@@ -1,5 +1,6 @@
 package comp3350.iPuP.persistence;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,9 +25,9 @@ public interface DataAccess
 
 	boolean insertUser(String username);
 
-//	ArrayList<ParkingSpot> getParkingSpotsByDate(Date date);
+	ArrayList<ParkingSpot> getParkingSpotsByDate(Date date);
 
-	ArrayList<ParkingSpot> getParkingSpotsByDateTime(Date start, Date end);
+//	ArrayList<ParkingSpot> getParkingSpotsByDateTime(Date start, Date end);
 //
 //	ArrayList<ParkingSpot> getParkingSpotsByDateRate(Date date, Double rate);
 //
@@ -34,7 +35,9 @@ public interface DataAccess
 
 	void clearSpotList();
 
-	ArrayList<Booking> getSpotsOfGivenUser(String username);
+	ArrayList<Booking> getBookedSpotsOfGivenUser(String username) throws Exception;
+
+	ArrayList<ParkingSpot> getHostedSpotsOfGivenUser(String username) throws Exception;
 
 	boolean setSpotToCancelled(String username, Long timeSlotId);
 }

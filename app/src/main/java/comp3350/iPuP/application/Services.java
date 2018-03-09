@@ -16,7 +16,8 @@ public class Services
 			}
 		} catch (Exception e)
 		{
-
+            System.out.println("Unable to connect to "+dbName+" database!");
+            System.exit(1);
 		}
 		return dataAccessService;
 	}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
@@ -256,6 +257,7 @@ public class DataAccessStub implements DataAccess
             tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
             parkingSpots.add(tempSpot);
 
+            //TODO change this depending on how to add more spots
             address = "29 St. Mary's Rd";
             name = "Mary Watson";
             phone = "204-242-2255";
@@ -268,37 +270,34 @@ public class DataAccessStub implements DataAccess
             tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
             parkingSpots.add(tempSpot);
 
+            address = "1000 St. Mary's Rd";
+            name = "Philipe Coutinho";
+            phone = "204-124-2222";
+            email = "iAmAsnake10@hotmail.ca";
+            rate = 0.10;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 16:00:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
+            address = "1000 St. Mary's Rd";
+            name = "Anne Coutinho";
+            phone = "204-124-2222";
+            email = "iAmAlsoAsnake10@hotmail.ca";
+            rate = 0.20;
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 17:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 19:00:00"));
+            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
+            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
+            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            parkingSpots.add(tempSpot);
+
         } catch (ParseException e)
         {
             throw new Exception("Failed to open " + dbType +" database " + dbName + "!",e);
         }
-/*
-		time = new ReservationTime(2018, 6, 11, 20, 30, 22, 0);
-		address = "29 st. mary's rd";
-		name = "Mary Watson";
-		phone = "204-242-2255";
-		email = "sherlock101@gmail.com";
-		rate = 4.50;
-		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 10, 30, 16, 0);
-		address = "1000 st. Mary's rd";
-		name = "Philipe Coutinho";
-		phone = "204-124-2222";
-		email = "iAmAsnake10@hotmail.ca";
-		rate = 0.10;
-		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);
-
-		time = new ReservationTime(2018, 6, 11, 17, 30, 19, 0);
-		address = "1000 st. Mary's rd";
-		name = "Anne Coutinho";
-		phone = "204-124-2222";
-		email = "iAmAlsoAsnake10@hotmail.ca";
-		rate = 0.20;
-		tempSpot = new ParkingSpot(time, address, name, phone, email,rate);
-		parkingSpots.add(tempSpot);*/
 
         System.out.println("Opened " +dbType +" database " +dbName);
 	}
@@ -351,6 +350,39 @@ public class DataAccessStub implements DataAccess
 		//TODO: implement insertUser method
 		return false;
 	}
+
+    public ArrayList<ParkingSpot> getParkingSpotsByDate(Date date)
+    {
+        ArrayList<ParkingSpot> parkingSpots = new ArrayList<ParkingSpot>();
+
+        //TODO: finish this method
+
+        return parkingSpots;
+    }
+
+    public ArrayList<ParkingSpot> getHostedSpotsOfGivenUser(String username)
+    {
+        ArrayList<ParkingSpot> parkingSpots = new ArrayList<ParkingSpot>();
+
+        //TODO: finish this method
+
+        return parkingSpots;
+    }
+
+	public ArrayList<Booking> getBookedSpotsOfGivenUser(String username)
+    {
+        ArrayList<Booking> bookings = new ArrayList<Booking>();
+
+        //TODO: finish this method!
+
+        return bookings;
+    }
+
+    public boolean setSpotToCancelled(String username, Long timeSlotId)
+    {
+        //TODO: finish this method
+        return false;
+    }
 
 	public ArrayList<ParkingSpot> getParkingSpots()
 	{

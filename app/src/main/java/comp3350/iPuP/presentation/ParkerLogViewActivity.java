@@ -57,7 +57,7 @@ public class ParkerLogViewActivity extends ListActivity
 
         try
         {
-            bookingSpots = accessParkingSpots.getMySpots(name);
+            bookingSpots = accessParkingSpots.getMyBookedSpots(name);
             //ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getAllSpots();
             for (final Booking spot : bookingSpots)
             {
@@ -99,9 +99,9 @@ public class ParkerLogViewActivity extends ListActivity
 
             registerForContextMenu(list);
         }
-        catch (ParseException pe)
+        catch (Exception e)
         {
-            System.out.print(pe.getMessage());
+            System.out.print(e.getMessage());
         }
     }
 

@@ -33,7 +33,10 @@ public class DataAccessObject implements DataAccess
 
     private DateFormatter df = new DateFormatter();
 
+    private ArrayList<Booking> bookingSpotsOfAUser;
+
 	private ArrayList<ParkingSpot> parkingSpots;
+    private ArrayList<ParkingSpot> parkingSpotsOfAUser;
 
 	private String cmdString;
 	private int updateCount;
@@ -118,12 +121,12 @@ public class DataAccessObject implements DataAccess
         try
         {
             cmdString = "INSERT INTO DAYSLOTS (PS_ID,STARTDAYTIME,ENDDAYTIME) " +
-                        "VALUES (?,?,?)";
+                        "VALUES (?,?,?,?)";
             pstmt2 = con.prepareStatement(cmdString);
             pstmt2.setString(1, psID);
             pstmt2.setString(2, df.getSqlDateTimeFormat().format(daySlot.getStart()));
             pstmt2.setString(3, df.getSqlDateTimeFormat().format(daySlot.getEnd()));
-
+            pstmt2.setBoolean(4,false);
             updateCount = pstmt2.executeUpdate();
             theResult = checkWarning(pstmt, updateCount);
 
@@ -177,7 +180,7 @@ public class DataAccessObject implements DataAccess
         try
         {
             cmdString = "INSERT INTO TIMESLOTS (PS_ID,DS_ID,STARTDATETIME,ENDDATETIME) " +
-                    "VALUES (?,?,?,?)";
+                    "VALUES (?,?,?,?,?)";
             pstmt3 = con.prepareStatement(cmdString);
             pstmt3.setString(1, psID);
             if (dsID == null)
@@ -189,6 +192,7 @@ public class DataAccessObject implements DataAccess
             }
             pstmt3.setString(3, df.getSqlDateTimeFormat().format(start));
             pstmt3.setString(4, df.getSqlDateTimeFormat().format(end));
+            pstmt3.setBoolean(5,false);
 
             updateCount = pstmt3.executeUpdate();
             theResult = checkWarning(pstmt, updateCount);
@@ -238,7 +242,7 @@ public class DataAccessObject implements DataAccess
             rsp = pstmt.executeQuery();
 
             if (!rsp.next()) {
-                cmdString = "INSERT INTO PARKINGSPOTS VALUES(?,?,?,?,?,?,?)";
+                cmdString = "INSERT INTO PARKINGSPOTS VALUES(?,?,?,?,?,?,?,?)";
                 pstmt = con.prepareStatement(cmdString);
                 pstmt.setString(1, currentParkingSpot.getSpotID());
                 pstmt.setString(2, user);
@@ -247,6 +251,7 @@ public class DataAccessObject implements DataAccess
                 pstmt.setString(5, currentParkingSpot.getPhone());
                 pstmt.setString(6, currentParkingSpot.getEmail());
                 pstmt.setDouble(7, currentParkingSpot.getRate());
+                pstmt.setBoolean(8,false);
 
                 //System.out.println(cmdString);
                 updateCount = pstmt.executeUpdate();
@@ -311,7 +316,7 @@ public class DataAccessObject implements DataAccess
         return daySlots;
     }
 
-    public ArrayList<ParkingSpot> getParkingSpotsByDateTime(Date start, Date end)
+    public ArrayList<ParkingSpot> getParkingSpotsByDate(Date date)
     {
         parkingSpots = new ArrayList<ParkingSpot>();
 
@@ -319,22 +324,11 @@ public class DataAccessObject implements DataAccess
 
         try
         {
-            if (end == null)
-            {
-                cmdString = "SELECT * FROM PARKINGSPOTS P JOIN TIMESLOTS T " +
-                            "ON P.PS_ID = T.PS_ID AND T.DS_ID IS NULL WHERE ? " +
-                            "BETWEEN CAST(STARTDATETIME AS DATE) AND CAST(ENDDATETIME AS DATE)";
-                pstmt = con.prepareStatement(cmdString);
-                pstmt.setString(1, df.getSqlDateFormat().format(start));
-            } else
-            {
-//                cmdString = "SELECT * FROM PARKINGSPOTS P JOIN TIMESLOTS T" +
-//                            "ON P.PS_ID = T.PS_ID AND T.DS_ID IS NULL" +
-//                            "WHERE T.STARTDATETIME BETWEEN DATE? AND DATE?";
-//                pstmt = con.prepareStatement(cmdString);
-//                pstmt.setString(1, df.getSqlDateFormat().format(start));
-//                pstmt.setString(2, df.getSqlDateFormat().format(end));
-            }
+            cmdString = "SELECT * FROM PARKINGSPOTS P JOIN TIMESLOTS T " +
+                        "ON P.PS_ID = T.PS_ID AND T.DS_ID IS NULL WHERE ? " +
+                        "BETWEEN CAST(STARTDATETIME AS DATE) AND CAST(ENDDATETIME AS DATE)";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setString(1, df.getSqlDateFormat().format(date));
 
             rss = pstmt.executeQuery();
 
@@ -502,6 +496,65 @@ public class DataAccessObject implements DataAccess
 //    }
 
 
+    public ArrayList<ParkingSpot> getHostedSpotsOfGivenUser(String username) throws Exception
+    {
+        Calendar calStart = Calendar.getInstance();
+        Calendar calEnd = Calendar.getInstance();
+        Date start, end;
+        double rate;
+        ParkingSpot parkingSpot;
+        TimeSlot timeSlot;
+        long tsID;
+        String psID = "";
+        String userID, addr, phone, email;
+
+        parkingSpotsOfAUser = new ArrayList<ParkingSpot>();
+        result = null;
+
+        try
+        {
+            cmdString = "SELECT P.*, T.STARTDATETIME, T.TS_ID, T.ENDDATETIME FROM PARKINGSPOTS P " +
+                        "LEFT JOIN TIMESLOTS T ON P.PS_ID = T.PS_ID AND T.DS_ID IS NULL " +
+                        "WHERE  USER_ID = ? AND P.DELETED = FALSE AND T.DELETED = FALSE";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setString(1, username);
+            rss = pstmt.executeQuery();
+            //ResultSetMetaData md = rs.getMetaData();
+
+            while (rss.next())
+            {
+                userID = rss.getString("USER_ID");
+                psID = rss.getString("PS_ID");
+                tsID = rss.getLong("TS_ID");
+                addr = rss.getString("ADDRESS");
+                phone = rss.getString("PHONE");
+                email = rss.getString("EMAIL");
+                rate = rss.getDouble("RATE");
+                start = rss.getTimestamp("STARTDATETIME");
+                end = rss.getTimestamp("ENDDATETIME");
+
+                calStart.setTime(start);
+                calEnd.setTime(end);
+                timeSlot = new TimeSlot(calStart.getTime(),calEnd.getTime(),tsID);
+
+                parkingSpot = new ParkingSpot(psID, addr, userID, phone, email, rate, timeSlot);
+                parkingSpotsOfAUser.add(parkingSpot);
+            }
+
+            rss.close();
+        } catch (SQLException e)
+        {
+            processSQLError(e);
+            throw new SQLException("Error in getting hosted Parking Spots by "+username+"!",e);
+        } catch (Exception e)
+        {
+            processSQLError(e);
+            throw new Exception("Error in creating ParkingSpot with ID = "+psID+"!",e);
+        }
+
+        return parkingSpotsOfAUser;
+    }
+
     public void clearSpotList()
     {
         this.parkingSpots.clear();
@@ -545,7 +598,7 @@ public class DataAccessObject implements DataAccess
 
 
 	//added by Kevin
-    public ArrayList<Booking> getSpotsOfGivenUser(String username)
+    public ArrayList<Booking> getBookedSpotsOfGivenUser(String username) throws Exception
     {
         Calendar calStart = Calendar.getInstance();
         Calendar calEnd = Calendar.getInstance();
@@ -554,7 +607,7 @@ public class DataAccessObject implements DataAccess
         long tsID;
         String userID, addr;
 
-        ArrayList<Booking> bookingSpots = new ArrayList<Booking>();
+        bookingSpotsOfAUser = new ArrayList<Booking>();
         result = null;
 
         try
@@ -582,7 +635,7 @@ public class DataAccessObject implements DataAccess
                 calEnd.setTime(end);
 
                 booking = new Booking(userID, tsID, addr, calStart.getTime(), calEnd.getTime());
-                bookingSpots.add(booking);
+                bookingSpotsOfAUser.add(booking);
             }
 
             rss.close();
@@ -590,9 +643,10 @@ public class DataAccessObject implements DataAccess
         catch (Exception e)
         {
             processSQLError(e);
+            throw new Exception("Error in getting bookings list for User: "+username+"!",e);
         }
 
-        return bookingSpots;
+        return bookingSpotsOfAUser;
     }
 
     public boolean setSpotToCancelled(String username, Long timeSlotId)

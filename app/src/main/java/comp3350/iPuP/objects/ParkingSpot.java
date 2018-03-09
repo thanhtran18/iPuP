@@ -13,45 +13,28 @@ public class ParkingSpot
     private String email;
     private String spotID;
     private double rate;
-    private ArrayList<DaySlot> daySlots;
-    //private boolean cancelled;
 
     public ParkingSpot(String address, String name, String phone, String email, double rate)
     {
-        this.address = address;// required
-        this.name = name;// required
+        this.address = address;
+        this.name = name;
 
-        // either phone or email required
         this.phone = phone;
         this.email = email;
 
-        this.rate = rate;// required
+        this.rate = rate;
 
         this.spotID = address+name;
 
-
-        this.daySlots = new ArrayList<DaySlot>();
-
-//        this.cancelled = false;
     }
 
     public ParkingSpot(String id, String address, String name, String phone, String email, double rate) throws Exception {
         this(address, name, phone, email, rate);
-//        this.cancelled = false;
+
 
         if (!this.spotID.equals(id)) {
             throw new Exception("Passed in ID (" + id + ") does not match generated ID (" + this.spotID + ") !");
         }
-    }
-
-    public boolean isSpot(String spotID)
-    {
-        return this.spotID.equals(spotID);
-    }
-
-    public void addDaySlot(DaySlot newSlot)
-    {
-        daySlots.add(newSlot);
     }
 
     public String getName()
@@ -79,23 +62,10 @@ public class ParkingSpot
         return rate;
     }
 
-    public ArrayList<DaySlot> getDaySlots()
-    {
-        return this.daySlots;
-    }
-
     public String getSpotID()
     {
         return spotID;
     }
-
-//    public boolean isCancelled() {
-//        return cancelled;
-//    }
-//
-//    public void setCancelled(boolean cancelled) {
-//        this.cancelled = cancelled;
-//    }
 
     @Override
     public String toString()

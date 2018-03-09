@@ -1,13 +1,10 @@
 package comp3350.iPuP.persistence;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.DAOException;
-import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
 
@@ -17,13 +14,11 @@ public interface DataAccess
 
 	void close() throws DAOException;
 
-	boolean insertDaySlot(String psID, DaySlot daySlot) throws DAOException;
-
-//	boolean insertDaySlots(String psID, ArrayList<DaySlot> daySlots) throws DAOException;
-
 	boolean insertParkingSpot(String user, ParkingSpot currentParkingSpot) throws DAOException;
 
-	boolean insertTimeSlot(String psID, long tsID, Date start, Date end) throws DAOException;
+	long insertDaySlot(TimeSlot daySlot, String spotID) throws DAOException;
+
+	boolean insertTimeSlot(TimeSlot timeSlot, long daySlotID, String spotID) throws DAOException;
 
 	boolean insertUser(String username) throws DAOException;
 

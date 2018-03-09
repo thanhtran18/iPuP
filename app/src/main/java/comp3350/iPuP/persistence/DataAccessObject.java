@@ -9,9 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,7 +16,6 @@ import java.util.Date;
 import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.DateFormatter;
-import comp3350.iPuP.objects.DaySlot;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
 
@@ -142,10 +138,10 @@ public class DataAccessObject implements DataAccess
     }
 
 
-	public boolean insertDaySlot(String spotID, DaySlot daySlot) throws DAOException
+	public long insertDaySlot(String spotID, DaySlot daySlot) throws DAOException
     {
         boolean result = false;
-        long dayslotID;
+        long dayslotID = 0;
 
         try
         {
@@ -158,7 +154,8 @@ public class DataAccessObject implements DataAccess
             pstmt2.setBoolean(4,false);
             updateCount = pstmt2.executeUpdate();
             checkWarning(pstmt, updateCount);
-        } catch (SQLException sqle)
+        }
+        catch (SQLException sqle)
         {
             processSQLError(sqle);
             throw new DAOException("Error in inserting DaySlot object with spotID = "+spotID+"!",sqle);
@@ -172,9 +169,6 @@ public class DataAccessObject implements DataAccess
             if (rss.next())
             {
                 dayslotID = rss.getLong(1);
-
-                // insert all timeSlots related to this daySlot
-//                result = insertTimeSlots(spotID, dayslotID, daySlot.getTimeSlots());
             } else
             {
                 throw new DAOException("Could not retrieve last auto generated DaySlot ID!");
@@ -185,25 +179,13 @@ public class DataAccessObject implements DataAccess
             throw new DAOException("Could not retrieve last auto generated DaySlot ID!",sqle);
         }
 
-        return result;
+        return dayslotID;
     }
 
-
-//	public boolean insertDaySlots(String spotID, ArrayList<DaySlot> daySlots) throws DAOException
-//    {
-//        boolean result = false;
-//
-//        for (int i = 0; i < daySlots.size(); i++)
-//        {
-//            result = insertDaySlot(spotID, daySlots.get(i));
-//        }
-//
-//        return result;
-//    }
-
-    public boolean insertTimeSlot(String spotID, long dayslotID, Date start, Date end) throws DAOException
+    public long insertTimeSlot(TimeSlot timeSlot, long dayslotID, String spotID) throws DAOException
     {
         boolean result = false;
+        long timeslotID = 0;
 
         try
         {
@@ -212,8 +194,8 @@ public class DataAccessObject implements DataAccess
             pstmt3 = con.prepareStatement(cmdString);
             pstmt3.setString(1, spotID);
             pstmt3.setLong(2, dayslotID);
-            pstmt3.setString(3, df.getSqlDateTimeFormat().format(start));
-            pstmt3.setString(4, df.getSqlDateTimeFormat().format(end));
+            pstmt3.setString(3, df.getSqlDateTimeFormat().format(timeSlot.getStart()));
+            pstmt3.setString(4, df.getSqlDateTimeFormat().format(timeSlot.getEnd()));
             pstmt3.setBoolean(5,false);
 
             updateCount = pstmt3.executeUpdate();
@@ -227,28 +209,26 @@ public class DataAccessObject implements DataAccess
             throw new DAOException("Error in inserting TimeSlot object with dayslotID = "+dayslotID+" and slotID = "+spotID+"!",sqle);
         }
 
-        return result;
+        try
+        {
+            cmdString = "CALL IDENTITY()";
+            rss = stmt.executeQuery(cmdString);
+
+            if (rss.next())
+            {
+                timeslotID = rss.getLong(1);
+            } else
+            {
+                throw new DAOException("Could not retrieve last auto generated TimeSlot ID!");
+            }
+        } catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Could not retrieve last auto generated TimeSlot ID!",sqle);
+        }
+
+        return timeslotID;
     }
-
-
-    public boolean insertTimeSlot(String spotID, long dayslotID, TimeSlot timeSlot) throws DAOException
-    {
-        return insertTimeSlot(spotID, dayslotID, timeSlot.getStart(), timeSlot.getEnd());
-    }
-
-
-//    public boolean insertTimeSlots(String spotID, long dayslotID, ArrayList<TimeSlot> timeSlots) throws DAOException
-//    {
-//        boolean result = false;
-//
-//        for (int i = 0; i < timeSlots.size(); i++)
-//        {
-//            result = insertTimeSlot(spotID, dayslotID, timeSlots.get(i));
-//        }
-//
-//        return result;
-//    }
-
 
 	public boolean insertParkingSpot(String username, ParkingSpot currentParkingSpot) throws DAOException
     {
@@ -306,78 +286,6 @@ public class DataAccessObject implements DataAccess
 
         return result;
     }
-
-
-//    private void setTimeSlotsForDaySlot(DaySlot daySlot) throws DAOException
-//    {
-//        Calendar calStart = Calendar.getInstance();
-//        Calendar calEnd = Calendar.getInstance();
-//        Date start, end;
-//        long timeslotID;
-//        TimeSlot timeSlot;
-//
-//        try {
-//            cmdString = "SELECT * FROM TIMESLOTS WHERE DS_ID = ?";
-//            pstmt = con.prepareStatement(cmdString);
-//            pstmt.setLong(1, daySlot.getSlotID());
-//            rsp = pstmt.executeQuery();
-//
-//            while (rsp.next()) {
-//                timeslotID = rsp.getLong("TS_ID");
-//                start = rsp.getTimestamp("STARTDATETIME");
-//                end = rsp.getTimestamp("ENDDATETIME");
-//
-//                calStart.setTime(start);
-//                calEnd.setTime(end);
-//
-//                timeSlot = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotID);
-//                daySlot.addTimeSlot(timeSlot);
-//            }
-//        } catch (SQLException sqle)
-//        {
-//            processSQLError(sqle);
-//            throw new DAOException("Error in getting list of TimeSlots for TS_ID = "+daySlot.getSlotID()+"!",sqle);
-//        }
-//    }
-
-
-    public ArrayList<TimeSlot> getDaySlotsForAParkingSpot(String spotID) throws DAOException
-    {
-        Calendar calStart = Calendar.getInstance();
-        Calendar calEnd = Calendar.getInstance();
-        Date start, end;
-        TimeSlot daySlot;
-        ArrayList<TimeSlot> daySlots = new ArrayList<TimeSlot>();
-        long dayslotID;
-
-        try
-        {
-            cmdString = "SELECT * FROM DAYSLOTS WHERE PS_ID = ?";
-            pstmt = con.prepareStatement(cmdString);
-            pstmt.setString(1,spotID);
-            rsp = pstmt.executeQuery();
-
-            while (rsp.next())
-            {
-                dayslotID = rsp.getLong("DS_ID");
-                start = rsp.getTimestamp("STARTDAYTIME");
-                end = rsp.getTimestamp("ENDDAYTIME");
-
-                calStart.setTime(start);
-                calEnd.setTime(end);
-
-                daySlot = new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotID);
-                daySlots.add(daySlot);
-            }
-        } catch (SQLException sqle)
-        {
-            processSQLError(sqle);
-            throw new DAOException("Error in getting list of DaySlots for PS_ID = "+spotID+"!",sqle);
-        }
-
-        return daySlots;
-    }
-
 
     public ArrayList<ParkingSpot> getParkingSpotsByAddressDate(String address, Date date) throws DAOException
     {

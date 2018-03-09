@@ -145,7 +145,7 @@ public class AccessParkingSpots
         //end test
 //        ArrayList<Booking> result = new ArrayList<>();
 //        result.addAll(dataAccess.getSpotsOfGivenUser(name)
-        return dataAccess.getParkingSpotsByDateTime(today,today);
+        return dataAccess.getParkingSpotsByDate(today);
         //return new ArrayList<ParkingSpot>();
     }
 

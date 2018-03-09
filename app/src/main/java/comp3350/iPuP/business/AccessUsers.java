@@ -1,6 +1,7 @@
 package comp3350.iPuP.business;
 
 import comp3350.iPuP.application.Services;
+import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.persistence.DataAccess;
 
 /**
@@ -16,7 +17,7 @@ public class AccessUsers {
         dataAccess = Services.getDataAccess();
     }
 
-    public boolean createUser(String username)
+    public boolean createUser(String username) throws DAOException
     {
         return dataAccess.insertUser(username);
     }

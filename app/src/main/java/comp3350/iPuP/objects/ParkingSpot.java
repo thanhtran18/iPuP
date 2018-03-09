@@ -7,64 +7,34 @@ import java.util.Date;
 
 public class ParkingSpot
 {
-    private TimeSlot timeSlot;
     private String address;
     private String name;
     private String phone;
     private String email;
     private String spotID;
     private double rate;
-    private ArrayList<DaySlot> daySlots;
-    //private boolean cancelled;
 
-    public ParkingSpot(String address, String name, String phone, String email, double rate, TimeSlot timeSlot)
+    public ParkingSpot(String address, String name, String phone, String email, double rate)
     {
-        this.address = address;// required
-        this.name = name;// required
+        this.address = address;
+        this.name = name;
 
-        // either phone or email required
         this.phone = phone;
         this.email = email;
 
-        this.rate = rate;// required
+        this.rate = rate;
 
         this.spotID = address+name;
 
-        this.timeSlot = timeSlot;
-
-        this.daySlots = new ArrayList<DaySlot>();
-
-//        this.cancelled = false;
     }
 
-    public ParkingSpot(String id, String address, String name, String phone, String email, double rate, TimeSlot timeSlot) throws Exception {
-        this(address, name, phone, email, rate, timeSlot);
-//        this.spotID = id;
-//        this.cancelled = false;
+    public ParkingSpot(String id, String address, String name, String phone, String email, double rate) throws Exception {
+        this(address, name, phone, email, rate);
+
 
         if (!this.spotID.equals(id)) {
             throw new Exception("Passed in ID (" + id + ") does not match generated ID (" + this.spotID + ") !");
         }
-    }
-
-    public boolean isSpot(String spotID, String slotID)
-    {
-        return this.spotID.equals(spotID) && timeSlot.getSlotID().equals(slotID);
-    }
-
-    public void addDaySlot(DaySlot newSlot)
-    {
-        daySlots.add(newSlot);
-    }
-
-    public Date getStartTime()
-    {
-        return timeSlot.getStart();
-    }
-
-    public Date getEndTime()
-    {
-        return timeSlot.getEnd();
     }
 
     public String getName()
@@ -92,33 +62,15 @@ public class ParkingSpot
         return rate;
     }
 
-    public ArrayList<DaySlot> getDaySlots()
-    {
-        return this.daySlots;
-    }
-
     public String getSpotID()
     {
         return spotID;
     }
 
-    public Long getSlotID()
-    {
-        return timeSlot.getSlotID();
-    }
-
-//    public boolean isCancelled() {
-//        return cancelled;
-//    }
-//
-//    public void setCancelled(boolean cancelled) {
-//        this.cancelled = cancelled;
-//    }
-
     @Override
     public String toString()
     {
-        return this.address + " (hold to cancel this booking) \n" + this.timeSlot.toString();
+        return this.address + " (hold to cancel this booking)";
     }
 
     @Override
@@ -129,7 +81,7 @@ public class ParkingSpot
             ParkingSpot otherSpot = (ParkingSpot) other;
             if (this.name.equals(otherSpot.name) && this.address.equals(otherSpot.address) &&
                     this.phone.equals(otherSpot.phone) && this.email.equals(otherSpot.email) &&
-                    this.rate == otherSpot.rate && this.timeSlot.equals(otherSpot.timeSlot))
+                    this.rate == otherSpot.rate)
                 return true;
         }
         return false;

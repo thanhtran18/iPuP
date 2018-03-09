@@ -3,6 +3,7 @@ package comp3350.iPuP.presentation;
 import comp3350.iPuP.R;
 import comp3350.iPuP.application.Main;
 import comp3350.iPuP.business.AccessUsers;
+import comp3350.iPuP.objects.DAOException;
 
 import android.app.Activity;
 import android.content.Context;
@@ -123,13 +124,20 @@ public class HomeActivity extends Activity {
         String name = ((EditText)findViewById(R.id.editTextName)).getText().toString();
         if (name != null && !name.equals(""))
         {
-            boolean userCreated = accessUsers.createUser(name);
-            if (userCreated) { toastNewUserCreated(name); }
-            Intent parkerIntent = new Intent(HomeActivity.this, ParkerMenuActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("name", name);
-            parkerIntent.putExtras(bundle);
-            HomeActivity.this.startActivity(parkerIntent);
+            try {
+                boolean userCreated = accessUsers.createUser(name);
+                if (userCreated) {
+                    toastNewUserCreated(name);
+                }
+                Intent parkerIntent = new Intent(HomeActivity.this, ParkerMenuActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("name", name);
+                parkerIntent.putExtras(bundle);
+                HomeActivity.this.startActivity(parkerIntent);
+            } catch (DAOException daoe)
+            {
+                toastMessage(daoe.getMessage());
+            }
         }
         else
         {
@@ -143,11 +151,18 @@ public class HomeActivity extends Activity {
         String name = ((EditText)findViewById(R.id.editTextName)).getText().toString();
         if (name != null && !name.equals(""))
         {
-            boolean userCreated = accessUsers.createUser(name);
-            if (userCreated) { toastNewUserCreated(name); }
-            Intent hostMenuIntent = new Intent(HomeActivity.this, HostMenuActivity.class);
-            hostMenuIntent.putExtra("name", name);
-            HomeActivity.this.startActivity(hostMenuIntent);
+            try {
+                boolean userCreated = accessUsers.createUser(name);
+                if (userCreated) {
+                    toastNewUserCreated(name);
+                }
+                Intent hostMenuIntent = new Intent(HomeActivity.this, HostMenuActivity.class);
+                hostMenuIntent.putExtra("name", name);
+                HomeActivity.this.startActivity(hostMenuIntent);
+            } catch (DAOException daoe)
+            {
+                toastMessage(daoe.getMessage());
+            }
         }
         else
         {
@@ -158,6 +173,11 @@ public class HomeActivity extends Activity {
 
     public void toastNewUserCreated(String userID)
     {
-        Toast.makeText(this, "New User, '" + userID + "' successfully created!", Toast.LENGTH_LONG).show();
+        toastMessage("New User, '" + userID + "' successfully created!");
+    }
+
+    public void toastMessage(String message)
+    {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

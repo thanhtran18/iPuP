@@ -1,5 +1,6 @@
 package comp3350.iPuP.application;
 
+import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.persistence.DataAccess;
 import comp3350.iPuP.persistence.DataAccessObject;
 
@@ -14,9 +15,9 @@ public class Services
 				dataAccessService = new DataAccessObject(dbName);
 				dataAccessService.open(Main.getDBPathName());
 			}
-		} catch (Exception e)
+		} catch (DAOException daoe)
 		{
-            System.out.println("Unable to connect to "+dbName+" database!");
+            System.out.println(daoe.getMessage());
             System.exit(1);
 		}
 		return dataAccessService;
@@ -38,7 +39,14 @@ public class Services
 	{
 		if (dataAccessService != null)
 		{
-			dataAccessService.close();
+		    try
+            {
+                dataAccessService.close();
+            } catch (DAOException daoe)
+            {
+                System.err.println(daoe.getMessage());
+                System.exit(1);
+            }
 		}
 		dataAccessService = null;
 	}

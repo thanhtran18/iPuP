@@ -74,8 +74,8 @@ public class ParkerSearchActivity extends Activity {
             Toast.makeText(this, daoe.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
-    
-    
+
+
     public void onDateClick(View v) {
         DialogFragment dateFragment = DatePickerFragment.newInstance(R.id.editDate);
         dateFragment.show(getFragmentManager(), "DatePicker");

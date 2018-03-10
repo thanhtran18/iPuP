@@ -41,9 +41,6 @@ public class ParkerSearchActivity extends Activity {
         Calendar c = Calendar.getInstance();
         setDate = new DateFormatter();
 
-        if (c.get(Calendar.MINUTE) > 30)
-            c.set(Calendar.MINUTE, 30);
-        else c.set(Calendar.MINUTE, 0);
         TextView tv = (TextView)findViewById(R.id.editDate);
         tv.setText(setDate.getDateFormat().format(c.getTime()));
 
@@ -83,4 +80,10 @@ public class ParkerSearchActivity extends Activity {
         DialogFragment dateFragment = DatePickerFragment.newInstance(R.id.editDate);
         dateFragment.show(getFragmentManager(), "DatePicker");
     }
+
+    public void prevDayClick(View v)
+    {}
+    public void nextDayClick(View v)
+    {}
+
 }

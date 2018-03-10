@@ -46,8 +46,8 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="@string/no_available_parking_spots"
-        android:textColor="@color/colorWarning"
-        />
+    android:textColor="@color/colorWarning"
+    />
 
 
     <Button
@@ -60,8 +60,8 @@
         android:layout_below="@+id/showSearchIcon"
         android:layout_toLeftOf="@+id/editDate"
         android:layout_toStartOf="@+id/editDate"
+        android:onClick="prevDayClick"
         android:text="Prev" />
-
     <Button
         android:id="@+id/rightButton"
         android:layout_width="wrap_content"
@@ -72,6 +72,7 @@
         android:layout_below="@+id/showSearchIcon"
         android:layout_toRightOf="@+id/editDate"
         android:layout_toEndOf="@+id/editDate"
+        android:onClick="nextDayClick"
         android:text="Next" />
 
 

@@ -6,4 +6,4 @@
 .DS_Store
 /build
 /captures
-/modules.xml
+/.idea/modules.xml

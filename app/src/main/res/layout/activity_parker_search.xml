@@ -8,10 +8,11 @@
     <SearchView
 
         android:id="@+id/showSearchIcon"
-        android:layout_width="500sp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:actionViewClass="android.widget.SearchView"
         android:iconifiedByDefault="false"
+        android:layout_alignParentLeft="true"
         android:orientation="horizontal"
         android:showAsAction="always"
         android:title="Search">
@@ -25,6 +26,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/showSearchIcon"
         android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_alignParentLeft="true"
         android:layout_weight="1"
         android:ems="10"
         android:onClick="onDateClick"
@@ -34,10 +37,9 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/editDate" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/startSearch"></ListView>
 
     <TextView
         android:id="@android:id/empty"
@@ -50,41 +52,25 @@
 
 
     <Button
-        android:id="@+id/leftButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@android:id/list"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/showSearchIcon"
-        android:layout_toLeftOf="@+id/editDate"
-        android:layout_toStartOf="@+id/editDate"
-        android:onClick="prevDayClick"
-        android:text="Prev" />
-
-    <Button
         android:id="@+id/rightButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@android:id/list"
+        android:layout_above="@+id/startSearch"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/showSearchIcon"
-        android:layout_toEndOf="@+id/editDate"
-        android:layout_toRightOf="@+id/editDate"
-        android:onClick="nextDayClick"
-        android:text="Next" />
+        android:text=">>" />
+
+
 
     <Button
         android:id="@+id/startSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_toEndOf="@+id/showSearchIcon"
-        android:layout_toRightOf="@+id/showSearchIcon"
+        android:layout_below="@+id/editDate"
         android:onClick="startSearch"
-        android:text="start search" />
+        android:text="Update search" />
 
 
 </RelativeLayout>

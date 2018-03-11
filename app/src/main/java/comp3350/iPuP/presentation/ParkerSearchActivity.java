@@ -16,10 +16,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.View.OnClickListener;
 
 import java.util.Date;
 
@@ -44,7 +46,12 @@ public class ParkerSearchActivity extends ListActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parker_search);
 
-        Calendar c = Calendar.getInstance();
+
+        //todo get current date from onclick listen
+        //todo change button and screen colors
+        //todo try implementing without the start seach button
+        //todo write test
+        final Calendar c = Calendar.getInstance();
         setDate = new DateFormatter();
 
         TextView tv = (TextView)findViewById(R.id.editDate);
@@ -52,6 +59,17 @@ public class ParkerSearchActivity extends ListActivity{
         dayTime = tv.getText().toString();
         populateScreen(null,dayTime);
 
+        final Button next = findViewById(R.id.rightButton);
+        next.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                c.add(Calendar.DATE, +1);
+                TextView tv = (TextView)findViewById(R.id.editDate);
+                tv.setText(setDate.getDateFormat().format(c.getTime()));
+            }
+        });
 
     }
 
@@ -67,7 +85,7 @@ public class ParkerSearchActivity extends ListActivity{
         SearchView streetName = (SearchView)findViewById(R.id.showSearchIcon);
         CharSequence charName = streetName.getQuery();
         String searchText = charName.toString();
-        if(searchText.length() == 0)
+        if(searchText.trim().length() == 0 )
         {
             searchText = null;
         }
@@ -117,8 +135,12 @@ public class ParkerSearchActivity extends ListActivity{
         }
     }
     public void prevDayClick(View v)
-    {}
+    {
+
+    }
     public void nextDayClick(View v)
-    {}
+    {
+
+    }
 
 }

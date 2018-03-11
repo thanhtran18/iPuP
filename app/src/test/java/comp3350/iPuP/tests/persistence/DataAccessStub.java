@@ -1,11 +1,15 @@
 package comp3350.iPuP.tests.persistence;
 
+import java.lang.reflect.Array;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import comp3350.iPuP.objects.Booking;
+import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
@@ -19,18 +23,29 @@ public class DataAccessStub implements DataAccess
 	private long timeslotCounter = 0;
 
 	private DateFormatter df = new DateFormatter();
+
+	private ArrayList<String> users;
     private ArrayList<ParkingSpot> parkingSpots;
+    private ArrayList<TimeSlot> daySlots;
+    private ArrayList<TimeSlot> timeSlots;
+    private ArrayList<Booking> bookings;
 
 	public DataAccessStub(String dbName)
 	{
         this.dbName = dbName;
 	}
 
-	public void open(String dbPath) throws Exception
+	public void open(String dbPath)
 	{
+	    users = new ArrayList<String>();
 		parkingSpots = new ArrayList<ParkingSpot>();
-		ParkingSpot tempSpot;
-        TimeSlot time;
+		daySlots = new ArrayList<TimeSlot>();
+		timeSlots = new ArrayList<TimeSlot>();
+		bookings = new ArrayList<Booking>();
+
+		ParkingSpot parkingspot;
+		TimeSlot dayslot;
+        TimeSlot timeslot;
 		String address;
 		String name;
 		String phone;
@@ -50,6 +65,7 @@ public class DataAccessStub implements DataAccess
             time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
             tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
             tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+            users.a
             parkingSpots.add(tempSpot);
 
             address = "2 Chancellor Drive";
@@ -415,5 +431,62 @@ public class DataAccessStub implements DataAccess
 		parkingSpots.clear();
 	}
 
+    private boolean addAUser(String user)
+    {
+        if (!users.contains(user))
+        {
+            users.add(user);
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
 
+    private boolean addAParkingSpot(ParkingSpot parkingSpot)
+    {
+        int i;
+
+        for (i = 0; i < parkingSpots.size(); i++) {
+            ParkingSpot aparkingspot = parkingSpots.get(i);
+            if ((parkingSpot.getSpotID()).equals(aparkingspot.getSpotID()) ||
+                    (parkingSpot.getName()).equals(aparkingspot.getName()))
+            {
+                break;
+            }
+        }
+
+        if (!(i >= 0))
+        {
+            parkingSpots.add(parkingSpot);
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
+
+    private boolean addADaySlot(TimeSlot daySlot)
+    {
+        int i;
+
+        for (i = 0; i < daySlots.size(); i++) {
+            TimeSlot adayspot = daySlots.get(i);
+            if ((adayspot.getSlotID()).equals(adayspot.getSlotID()) ||
+                    ((adayspot.gets()).equals(adayspot.getName()) &&
+                            ()))
+            {
+                break;
+            }
+        }
+
+        if (!(i >= 0))
+        {
+            daySlots.add(daySlot);
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
 }

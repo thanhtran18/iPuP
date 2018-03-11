@@ -1,6 +1,7 @@
 package comp3350.iPuP.persistence;
 
 import org.hsqldb.Types;
+import org.w3c.dom.DOMException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -548,6 +550,47 @@ public class DataAccessObject implements DataAccess
         }
         return result;
     }
+
+    //TODO: Make method to get timeslots from database and return arraylist
+    public ArrayList<TimeSlot> getTimeSlotsForParkingSpot(String spotID) throws DAOException{
+	    ArrayList<TimeSlot> returnVal;
+	    TimeSlot currSlot;
+        Calendar calStart = Calendar.getInstance();
+        Calendar calEnd = Calendar.getInstance();
+        Date start, end;
+        long timeSlotID;
+
+	    try {
+            cmdString = "SELECT * FROM TIMESLOTS WHERE SPOT_ID = ? AND DELETED=FALSE ORDER BY STARTDATETIME";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setString(1, spotID);
+            rss = pstmt.executeQuery();
+            returnVal=new ArrayList<TimeSlot>();
+            while (rss.next())
+            {
+                timeSlotID = rss.getLong("TIMESLOT_ID");
+                start = rss.getTimestamp("STARTDATETIME");
+                end = rss.getTimestamp("ENDDATETIME");
+
+                calStart.setTime(start);
+                calEnd.setTime(end);
+
+                currSlot=new TimeSlot(calStart.getTime(),calEnd.getTime(),timeSlotID);
+                returnVal.add(currSlot);
+            }
+
+            rss.close();
+
+        }catch (SQLException SqlEx){
+	        processSQLError(SqlEx);
+	        throw new DAOException("Error in getting timeslots from parking spot with SPOT_ID" +
+                    " = "+spotID+"!",SqlEx);
+        }
+
+	    return returnVal;
+    }
+    //TODO: Make method to set the deleted field for timeslots in the database to true.
+
 
 
 }

@@ -9,6 +9,7 @@ import comp3350.iPuP.objects.ParkingSpot;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -85,5 +86,10 @@ public class ParkerSearchActivity extends Activity {
     {}
     public void nextDayClick(View v)
     {}
+
+    public void goToTestScreen(View v){
+        Intent intent = new Intent(this, BookTimeSlotsActivity.class);
+        startActivity(intent);
+    }
 
 }

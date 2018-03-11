@@ -16,8 +16,12 @@ public class Booking
     private Date end;
     private DateFormatter dateFormatter = new DateFormatter();
 
-    public Booking(String username, Long timeSlotId, String address, Date start, Date end)
+    public Booking(String username, Long timeSlotId, String address, Date start, Date end) throws Exception
     {
+        if (username.equals(""))
+            throw new Exception("User must have a username!");
+        if (start.after(end))
+            throw new Exception("Starting time must be after ending time!");
         this.username = username;
         this.timeSlotId = timeSlotId;
         this.address = address;
@@ -35,41 +39,52 @@ public class Booking
         this.username = username;
     }
 
-    public Long getTimeSlotId() {
+    public Long getTimeSlotId()
+    {
         return timeSlotId;
     }
 
-    public void setTimeSlotId(Long timeSlotId) {
+    public void setTimeSlotId(Long timeSlotId)
+    {
         this.timeSlotId = timeSlotId;
     }
 
-    public String getAddress() {
+    public String getAddress()
+    {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(String address)
+    {
         this.address = address;
     }
 
-    public Date getStart() {
+    public Date getStart()
+    {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(Date start)
+    {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public Date getEnd()
+    {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(Date end)
+    {
         this.end = end;
     }
 
     public String toString()
     {
-        return "\n" + this.address + " (hold to cancel this booking) \n" + dateFormatter.getDateTimeFormat().format(start) + " - " + dateFormatter.getDateTimeFormat().format(end) + "\n";
+        if (start.after(new Date()))
+            return "\n" + this.address + " (hold to cancel this booking) \n" + dateFormatter.getDateTimeFormat().format(start) + " - " + dateFormatter.getDateTimeFormat().format(end) + "\n";
+        else
+            return "\n" + this.address + "\n" + dateFormatter.getDateTimeFormat().format(start) + " - " + dateFormatter.getDateTimeFormat().format(end) + "\n";
     }
 }
 

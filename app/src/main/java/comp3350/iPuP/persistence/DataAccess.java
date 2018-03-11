@@ -22,9 +22,9 @@ public interface DataAccess
 
 	boolean insertUser(String username) throws DAOException;
 
-    ArrayList<TimeSlot> getDaySlotsForAParkingSpot(String spotID) throws DAOException;
-
 	ArrayList<ParkingSpot> getParkingSpotsByAddressDate(String address, Date date) throws DAOException;
+
+    ArrayList<TimeSlot> getDaySlotsForAParkingSpot(String spotID) throws DAOException;
 
 	void clearSpotList();
 

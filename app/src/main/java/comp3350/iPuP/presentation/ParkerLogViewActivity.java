@@ -46,15 +46,12 @@ public class ParkerLogViewActivity extends ListActivity
     {
         super.onCreate(savedInstanceState);
         String name;
-        //String name = getIntent().getExtras().getString("name");
-        //String name = getIntent().getStringExtra("name");
-        //String name = getIntent().getExtras();
         Bundle extras = getIntent().getExtras();
-        if(extras == null) {
+        if(extras == null)
             name = null;
-        } else {
+        else
             name = extras.getString("name");
-        }
+
         setContentView(R.layout.activity_parker_log_view);
 
         accessParkingSpots = new AccessParkingSpots();
@@ -67,31 +64,9 @@ public class ParkerLogViewActivity extends ListActivity
             //ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getAllSpots();
             for (final Booking spot : bookingSpots)
             {
-//                if (!spot.isCancelled())
 
                 arrayList.add(spot);
                 SimpleDateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
-                //Date now = new Date();
-                //Date bookedTime = spot.getStartTime();
-                //int difference = now.compareTo(formatter.parse(bookedTime.toString()));
-//                if (spot.getStartTime().before(new Date())) {
-//                    list.setEnabled(false);
-//                    //list.setOnItemClickListener(null);
-//                    disabledIndices.add(parkingSpots.indexOf(spot));
-//                }
-
-
-//                list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                        Date now = new Date();
-//                        Date bookedTime = spot.getStartTime();
-//                        if (spot.getStartTime().before(new Date()))
-//                            disabledIndices.add(parkingSpots.indexOf(spot));
-//                    }
-//                });
-
-
 
             }
 
@@ -114,13 +89,8 @@ public class ParkerLogViewActivity extends ListActivity
                     return row;
                 }
             };
-            //setListAdapter(adapter);
-            //list.getChildAt(0).setEnabled(false);
             list.setAdapter(adapter);
 
-//            int first = list.getFirstVisiblePosition();
-//            for (int i : disabledIndices)
-//                list.getChildAt(0).setEnabled(false);
 
 
             registerForContextMenu(list);
@@ -146,11 +116,11 @@ public class ParkerLogViewActivity extends ListActivity
         switch (item.getItemId())
         {
             case R.id.delete:
-                //accessParkingSpots.cancelThisSpot(name, .getTimeSlotId());
-                //parkingSpots.get(obj.position).setCancelled(true);
-                try {
+                try
+                {
                     accessParkingSpots.cancelThisSpot(arrayList.get(obj.position).getUsername(), arrayList.get(obj.position).getTimeSlotId());
-                } catch (DAOException daoe)
+                }
+                catch (DAOException daoe)
                 {
                     Toast.makeText(this, daoe.getMessage(), Toast.LENGTH_LONG).show();
                 }
@@ -162,7 +132,5 @@ public class ParkerLogViewActivity extends ListActivity
 
         return super.onContextItemSelected(item);
     }
-
-
-
+    
 }

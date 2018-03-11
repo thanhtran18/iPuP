@@ -3,6 +3,6 @@
 
     <item
         android:id="@+id/delete"
-        android:title="Delete this reservation" />|
+        android:title="Cancel this reservation" />|
 
 </menu>

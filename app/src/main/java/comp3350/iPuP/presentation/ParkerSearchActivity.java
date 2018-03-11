@@ -50,7 +50,7 @@ public class ParkerSearchActivity extends ListActivity{
         TextView tv = (TextView)findViewById(R.id.editDate);
         tv.setText(setDate.getDateFormat().format(c.getTime()));
         dayTime = tv.getText().toString();
-        populateScreen(dayTime);
+        populateScreen(null,dayTime);
 
 
     }
@@ -64,11 +64,18 @@ public class ParkerSearchActivity extends ListActivity{
     {
         setDate = new DateFormatter();
         TextView tv = (TextView)findViewById(R.id.editDate);
+        SearchView streetName = (SearchView)findViewById(R.id.showSearchIcon);
+        CharSequence charName = streetName.getQuery();
+        String searchText = charName.toString();
+        if(searchText.length() == 0)
+        {
+            searchText = null;
+        }
         dayTime = tv.getText().toString();
-        populateScreen(dayTime);
+        populateScreen(searchText,dayTime);
     }
 
-    public void populateScreen(String dayTime)
+    public void populateScreen( String name, String dayTime)
     {
         accessParkingSpots = new AccessParkingSpots();
         ListView list = findViewById(android.R.id.list);
@@ -85,7 +92,7 @@ public class ParkerSearchActivity extends ListActivity{
             dayTime = newForm.format(date);
             Date today= new Date(setDate.getSqlDateFormat().parse(dayTime).getTime());
             //TODO: Victory, replace null with address search string
-            parkingSpots = accessParkingSpots.getDailySpots(null, today);
+            parkingSpots = accessParkingSpots.getDailySpots(name, today);
             //ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getAllSpots();
             for (final ParkingSpot spot : parkingSpots)
             {

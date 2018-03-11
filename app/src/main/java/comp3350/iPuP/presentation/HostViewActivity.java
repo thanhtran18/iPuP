@@ -17,7 +17,7 @@ import comp3350.iPuP.objects.ParkingSpot;
 public class HostViewActivity extends ListActivity
 {
     private AccessParkingSpots accessParkingSpots;
-    ArrayAdapter<ParkingSpot> adapter;
+    SpotAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,7 +33,7 @@ public class HostViewActivity extends ListActivity
         try
         {
             ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getMyHostedSpots(name);
-            adapter = new ArrayAdapter<ParkingSpot>(this, android.R.layout.simple_list_item_1, parkingSpots);
+            adapter = new SpotAdapter(this, parkingSpots);
             setListAdapter(adapter);
         }
         catch (Exception e)

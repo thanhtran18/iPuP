@@ -482,7 +482,57 @@ public class DataAccessStub implements DataAccess
 
         if (!(i >= 0))
         {
+            daySlot.setSlotID(dayslotCounter++);
             daySlots.add(daySlot);
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
+
+    private boolean addATimeSlot(TimeSlot timeSlot)
+    {
+        int i;
+
+        for (i = 0; i < timeSlots.size(); i++) {
+            TimeSlot atimespot = timeSlots.get(i);
+            if ((timeSlot.getSlotID()).equals(atimespot.getSlotID()) ||
+                    ((timeSlot.gets()).equals(atimespot.getName()) &&
+                            ()))
+            {
+                break;
+            }
+        }
+
+        if (!(i >= 0))
+        {
+            timeSlot.setSlotID(timeslotCounter++);
+            timeSlots.add(timeSlot);
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
+
+    private boolean addABooking (Booking booking)
+    {
+        int i;
+
+        for (i = 0; i < bookings.size(); i++) {
+            Booking abooking = bookings.get(i);
+            if ((booking.getSlotID()).equals(abooking.getSlotID()) ||
+                    ((booking.gets()).equals(abooking.getName()) &&
+                            ()))
+            {
+                break;
+            }
+        }
+
+        if (!(i >= 0))
+        {
+            bookings.add(booking);
             return true;
         } else
         {

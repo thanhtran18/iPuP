@@ -171,7 +171,7 @@ public class AccessParkingSpots
         return dataAccess.getParkingSpotByID(spotID);
     }
 
-    public boolean bookThisTimeSlot(TimeSlot timeSlot, String userBooking ) throws DAOException{
-        return dataAccess.bookTimeSlot(timeSlot, userBooking);
+    public boolean bookThisTimeSlot(TimeSlot timeSlot, String userBooking, String spotID ) throws DAOException{
+        return dataAccess.bookTimeSlot(timeSlot, userBooking, spotID);
     }
 }

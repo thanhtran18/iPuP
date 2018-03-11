@@ -87,6 +87,7 @@ public class ParkerSearchActivity extends Activity {
     public void nextDayClick(View v)
     {}
 
+    //TODO: Change this method to use the selected spot to go to next screen instead.
     public void goToTestScreen(View v){
         Intent intent = new Intent(this, BookTimeSlotsActivity.class);
         startActivity(intent);

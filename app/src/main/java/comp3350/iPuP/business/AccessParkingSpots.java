@@ -161,4 +161,17 @@ public class AccessParkingSpots
     {
         return dataAccess.setBookedSpotToDeleted(username, timeSlotId);
     }
+
+    //TODO: Method added by me to get the required timeslots may be edited.
+    public ArrayList<TimeSlot> getFreeTimeSlotsByID(String spotID) throws DAOException{
+        return dataAccess.getTimeSlotsForParkingSpot(spotID);
+    }
+
+    public ParkingSpot getSpotBYID(String spotID) throws DAOException{
+        return dataAccess.getParkingSpotByID(spotID);
+    }
+
+    public boolean bookThisTimeSlot(TimeSlot timeSlot, String userBooking ) throws DAOException{
+        return dataAccess.bookTimeSlot(timeSlot, userBooking);
+    }
 }

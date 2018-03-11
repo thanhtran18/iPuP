@@ -74,6 +74,7 @@
         android:layout_toEndOf="@+id/editDate"
         android:onClick="goToTestScreen"
         android:text="Next" />
+        <!--TODO: CHANGE THIS ONCLICK method-->
 
 
 

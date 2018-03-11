@@ -5,4 +5,5 @@
     android:layout_height="wrap_content"
     android:checkMark="?android:attr/listChoiceIndicatorMultiple"
     android:gravity="center_vertical"
-    android:padding="5dp" />
+    android:padding="5dp"
+    android:textSize="24sp" />

@@ -589,7 +589,41 @@ public class DataAccessObject implements DataAccess
 
 	    return returnVal;
     }
+
     //TODO: Make method to set the deleted field for timeslots in the database to true.
+    public ParkingSpot getParkingSpotByID(String spotID) throws DAOException{
+	   ParkingSpot returnVal=null;
+	   String name, address, phone, email ;
+	   Double rate;
+        try {
+            cmdString = "SELECT * FROM PARKINGSPOTS WHERE SPOT_ID = ?";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setString(1, spotID);
+            rss = pstmt.executeQuery();
+            while (rss.next())
+            {
+                name=rss.getString("NAME");
+                address=rss.getString("ADDRESS");
+                phone=rss.getString("PHONE");
+                email=rss.getString("EMAIL");
+                rate=rss.getDouble("RATE");
+                returnVal=new ParkingSpot(spotID,address,name, phone, email, rate);
+            }
+
+            rss.close();
+
+        }catch (Exception SqlEx){ //TODO: Exception catching style here may need to change
+            processSQLError(SqlEx);
+            throw new DAOException("Error in getting timeslots from parking spot with SPOT_ID" +
+                    " = "+spotID+"!",SqlEx);
+        }
+        return returnVal;
+    }
+
+    public boolean bookTimeSlot(TimeSlot timeSlot, String theUser, String spotID) throws DAOException{
+        boolean returnVal=false;
+	    return returnVal;
+    }
 
 
 

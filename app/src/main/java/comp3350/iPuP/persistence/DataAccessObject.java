@@ -282,7 +282,7 @@ public class DataAccessObject implements DataAccess
         return result;
     }
 
-    public ArrayList<TimeSlot> getDaySlotsForAParkingSpot(String slotID)
+    public ArrayList<TimeSlot> getDaySlotsForAParkingSpot(String slotID) throws DAOException
     {
         //TODO: implement this
         ArrayList<TimeSlot> daySlots = new ArrayList<TimeSlot>();

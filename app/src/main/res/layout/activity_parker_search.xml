@@ -1,4 +1,3 @@
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,14 +6,15 @@
 
     <!-- More GUI components go here  -->
     <SearchView
+
         android:id="@+id/showSearchIcon"
-        android:layout_width="fill_parent"
+        android:layout_width="500sp"
         android:layout_height="wrap_content"
         android:actionViewClass="android.widget.SearchView"
         android:iconifiedByDefault="false"
         android:orientation="horizontal"
         android:showAsAction="always"
-        android:title="SEARCH">
+        android:title="Search">
 
     </SearchView>
 
@@ -31,14 +31,14 @@
         android:textSize="25sp" />
 
     <ListView
-        android:id="@+id/dailySpot"
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/editDate"
-        />
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/editDate" />
+
     <TextView
         android:id="@android:id/empty"
         android:layout_width="wrap_content"
@@ -46,15 +46,14 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="@string/no_available_parking_spots"
-    android:textColor="@color/colorWarning"
-    />
+        android:textColor="@color/colorWarning" />
 
 
     <Button
         android:id="@+id/leftButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/dailySpot"
+        android:layout_above="@android:id/list"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/showSearchIcon"
@@ -62,20 +61,30 @@
         android:layout_toStartOf="@+id/editDate"
         android:onClick="prevDayClick"
         android:text="Prev" />
+
     <Button
         android:id="@+id/rightButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/dailySpot"
-        android:layout_alignParentRight="true"
+        android:layout_above="@android:id/list"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/showSearchIcon"
-        android:layout_toRightOf="@+id/editDate"
         android:layout_toEndOf="@+id/editDate"
+        android:layout_toRightOf="@+id/editDate"
         android:onClick="nextDayClick"
         android:text="Next" />
 
-
+    <Button
+        android:id="@+id/startSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_toEndOf="@+id/showSearchIcon"
+        android:layout_toRightOf="@+id/showSearchIcon"
+        android:onClick="startSearch"
+        android:text="start search" />
 
 
 </RelativeLayout>

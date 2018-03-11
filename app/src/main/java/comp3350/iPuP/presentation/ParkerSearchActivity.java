@@ -8,11 +8,16 @@ import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.objects.ParkingSpot;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.DialogFragment;
+import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,13 +32,14 @@ import java.util.Calendar;
  * Created by Victory on 2018-03-01.
  */
 
-public class ParkerSearchActivity extends Activity {
+public class ParkerSearchActivity extends ListActivity{
     private DateFormatter setDate;//for setting the date
 
     private AccessParkingSpots accessParkingSpots;
     ArrayAdapter<ParkingSpot> adapter;
     ArrayList<ParkingSpot> parkingSpots = new ArrayList<>();
     ArrayList<ParkingSpot> arrayList = new ArrayList<>();
+    String dayTime;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parker_search);
@@ -43,12 +49,41 @@ public class ParkerSearchActivity extends Activity {
 
         TextView tv = (TextView)findViewById(R.id.editDate);
         tv.setText(setDate.getDateFormat().format(c.getTime()));
+        dayTime = tv.getText().toString();
+        populateScreen(dayTime);
 
+
+    }
+
+
+    public void onDateClick(View v) {
+        DialogFragment dateFragment = DatePickerFragment.newInstance(R.id.editDate);
+        dateFragment.show(getFragmentManager(), "DatePicker");
+    }
+    public void startSearch(View v)
+    {
+        setDate = new DateFormatter();
+        TextView tv = (TextView)findViewById(R.id.editDate);
+        dayTime = tv.getText().toString();
+        populateScreen(dayTime);
+    }
+
+    public void populateScreen(String dayTime)
+    {
         accessParkingSpots = new AccessParkingSpots();
-        ListView list = findViewById(R.id.dailySpot);
+        ListView list = findViewById(android.R.id.list);
+        //String name = ((SearchView)findViewById(R.id.showSearchIcon)).getQuery().toString();
         try
         {
-            Date today= new Date(setDate.getSqlDateFormat().parse("2018-06-11").getTime());
+            arrayList.clear();
+            SimpleDateFormat currForm = new SimpleDateFormat("E, dd MMM yyyy");
+            // parse the string into Date object
+            Date date = currForm.parse(dayTime);
+            // create SimpleDateFormat object with desired date format
+            SimpleDateFormat newForm = new SimpleDateFormat("yyyy-MM-dd");
+            // parse the date into another format
+            dayTime = newForm.format(date);
+            Date today= new Date(setDate.getSqlDateFormat().parse(dayTime).getTime());
             //TODO: Victory, replace null with address search string
             parkingSpots = accessParkingSpots.getDailySpots(null, today);
             //ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getAllSpots();
@@ -74,13 +109,6 @@ public class ParkerSearchActivity extends Activity {
             Toast.makeText(this, daoe.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
-    
-    
-    public void onDateClick(View v) {
-        DialogFragment dateFragment = DatePickerFragment.newInstance(R.id.editDate);
-        dateFragment.show(getFragmentManager(), "DatePicker");
-    }
-
     public void prevDayClick(View v)
     {}
     public void nextDayClick(View v)

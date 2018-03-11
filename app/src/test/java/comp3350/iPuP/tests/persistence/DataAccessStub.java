@@ -13,33 +13,33 @@
 //
 //public class DataAccessStub implements DataAccess
 //{
-//	private String dbName;
-//	private String dbType = "stub";
-//	private long dayslotCounter = 0;
-//	private long timeslotCounter = 0;
+//    private String dbName;
+//    private String dbType = "stub";
+//    private long dayslotCounter = 0;
+//    private long timeslotCounter = 0;
 //
-//	private DateFormatter df = new DateFormatter();
+//    private DateFormatter df = new DateFormatter();
 //    private ArrayList<ParkingSpot> parkingSpots;
 //
-//	public DataAccessStub(String dbName)
-//	{
+//    public DataAccessStub(String dbName)
+//    {
 //        this.dbName = dbName;
-//	}
+//    }
 //
-//	public void open(String dbPath) throws Exception
-//	{
-//		parkingSpots = new ArrayList<ParkingSpot>();
-//		ParkingSpot tempSpot;
+//    public void open(String dbPath) throws Exception
+//    {
+//        parkingSpots = new ArrayList<ParkingSpot>();
+//        ParkingSpot tempSpot;
 //        TimeSlot time;
-//		String address;
-//		String name;
-//		String phone;
-//		String email;
-//		double rate;
-//		Calendar calStart = Calendar.getInstance();
-//		Calendar calEnd = Calendar.getInstance();
+//        String address;
+//        String name;
+//        String phone;
+//        String email;
+//        double rate;
+//        Calendar calStart = Calendar.getInstance();
+//        Calendar calEnd = Calendar.getInstance();
 //
-//		try {
+//        try {
 //            address = "88 Plaza Drive";
 //            name = "Rodney N-chris";
 //            phone = "204-855-2342";
@@ -299,43 +299,43 @@
 //        }
 //
 //        System.out.println("Opened " +dbType +" database " +dbName);
-//	}
+//    }
 //
 //
-//	public void close()
+//    public void close()
 //    {
 //        System.out.println("Closed " +dbType +" database " +dbName);
 //    }
 //
 //
-//	public String insertDaySlot(String psID, DaySlot daySlot)
-//	{
-//		//TODO: implement insertDaySlot method
-//		return null;
-//	}
+//    public String insertDaySlot(String psID, DaySlot daySlot)
+//    {
+//        //TODO: implement insertDaySlot method
+//        return null;
+//    }
 //
-//	public String insertDaySlots(String psID, ArrayList<DaySlot> daySlots)
-//	{
-//		//TODO: implement insertDaySlots method
-//		return null;
-//	}
+//    public String insertDaySlots(String psID, ArrayList<DaySlot> daySlots)
+//    {
+//        //TODO: implement insertDaySlots method
+//        return null;
+//    }
 //
-//	public String insertTimeSlot(String psID, Long dsID, Date start, Date end)
-//	{
-//		//TODO: implement insertTimeSlot method
-//		return null;
-//	}
+//    public String insertTimeSlot(String psID, Long dsID, Date start, Date end)
+//    {
+//        //TODO: implement insertTimeSlot method
+//        return null;
+//    }
 //
-//	public String insertTimeSlot(String psID, Long dsID, TimeSlot timeSlot)
-//	{
-//		return insertTimeSlot(psID, dsID, timeSlot.getStart(), timeSlot.getEnd());
-//	}
+//    public String insertTimeSlot(String psID, Long dsID, TimeSlot timeSlot)
+//    {
+//        return insertTimeSlot(psID, dsID, timeSlot.getStart(), timeSlot.getEnd());
+//    }
 //
-//	public String insertTimeSlots(String psID, Long dsID, ArrayList<TimeSlot> timeSlots)
-//	{
-//		//TODO: implement insertTimeSlots method
-//		return null;
-//	}
+//    public String insertTimeSlots(String psID, Long dsID, ArrayList<TimeSlot> timeSlots)
+//    {
+//        //TODO: implement insertTimeSlots method
+//        return null;
+//    }
 //
 //    public String insertParkingSpot(String user, ParkingSpot currentParkingSpot)
 //    {
@@ -344,11 +344,11 @@
 //        return null;
 //    }
 //
-//	public boolean insertUser(String username)
-//	{
-//		//TODO: implement insertUser method
-//		return false;
-//	}
+//    public boolean insertUser(String username)
+//    {
+//        //TODO: implement insertUser method
+//        return false;
+//    }
 //
 //    public ArrayList<ParkingSpot> getParkingSpotsByDate(Date date)
 //    {
@@ -368,7 +368,7 @@
 //        return parkingSpots;
 //    }
 //
-//	public ArrayList<Booking> getBookedSpotsOfGivenUser(String username)
+//    public ArrayList<Booking> getBookedSpotsOfGivenUser(String username)
 //    {
 //        ArrayList<Booking> bookings = new ArrayList<Booking>();
 //
@@ -383,10 +383,10 @@
 //        return false;
 //    }
 //
-//	public ArrayList<ParkingSpot> getParkingSpots()
-//	{
-//		return parkingSpots;
-//	}
+//    public ArrayList<ParkingSpot> getParkingSpots()
+//    {
+//        return parkingSpots;
+//    }
 //
 ////	public String setSpotToBooked(String spotID, String slotID)
 ////	{
@@ -410,10 +410,10 @@
 ////        return bookMessage;
 ////	}
 //
-//	public void clearSpotList()
-//	{
-//		parkingSpots.clear();
-//	}
+//    public void clearSpotList()
+//    {
+//        parkingSpots.clear();
+//    }
 //
 //
 //}

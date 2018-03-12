@@ -82,14 +82,15 @@ public class DataAccessObject implements DataAccess
 	}
 
 
-	private boolean doesParkingSpotExists(String spotID) throws DAOException
+	private boolean doesParkingSpotExists(String address, String name) throws DAOException
     {
         boolean result = false;
 
         try {
-            cmdString = "SELECT * FROM PARKINGSPOTS WHERE SPOT_ID = ?";
+            cmdString = "SELECT * FROM PARKINGSPOTS WHERE ADDRESS = ? AND NAME = ?";
             pstmt = con.prepareStatement(cmdString);
-            pstmt.setString(1, spotID);
+            pstmt.setString(1, address);
+            pstmt.setString(2, name);
 
             rsp = pstmt.executeQuery();
 
@@ -102,7 +103,7 @@ public class DataAccessObject implements DataAccess
         } catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Error in checking if ParkingSpot object with spotID = "+spotID+" exists!",sqle);
+            throw new DAOException("Error in checking if ParkingSpot object with address = "+address+" and name = "+name+" exists!",sqle);
         }
 
         return result;
@@ -135,7 +136,7 @@ public class DataAccessObject implements DataAccess
     }
 
 
-	public long insertDaySlot(TimeSlot daySlot, String spotID) throws DAOException
+	public long insertDaySlot(TimeSlot daySlot, long spotID) throws DAOException
     {
         long dayslotID;
 
@@ -144,7 +145,7 @@ public class DataAccessObject implements DataAccess
             cmdString = "INSERT INTO DAYSLOTS (SPOT_ID,STARTDAYTIME,ENDDAYTIME,DELETED) " +
                         "VALUES (?,?,?,?)";
             pstmt2 = con.prepareStatement(cmdString);
-            pstmt2.setString(1, spotID);
+            pstmt2.setLong(1, spotID);
             pstmt2.setString(2, df.getSqlDateTimeFormat().format(daySlot.getStart()));
             pstmt2.setString(3, df.getSqlDateTimeFormat().format(daySlot.getEnd()));
             pstmt2.setBoolean(4,false);
@@ -178,7 +179,7 @@ public class DataAccessObject implements DataAccess
         return dayslotID;
     }
 
-    public long insertTimeSlot(TimeSlot timeSlot, long daySlotID, String spotID) throws DAOException
+    public long insertTimeSlot(TimeSlot timeSlot, long daySlotID, long spotID) throws DAOException
     {
         long timeslotID;
 
@@ -187,7 +188,7 @@ public class DataAccessObject implements DataAccess
             cmdString = "INSERT INTO TIMESLOTS (SPOT_ID,DAYSLOT_ID,STARTDATETIME,ENDDATETIME,DELETED) " +
                         "VALUES (?,?,?,?,?)";
             pstmt3 = con.prepareStatement(cmdString);
-            pstmt3.setString(1, spotID);
+            pstmt3.setLong(1, spotID);
             pstmt3.setLong(2, daySlotID);
             pstmt3.setString(3, df.getSqlDateTimeFormat().format(timeSlot.getStart()));
             pstmt3.setString(4, df.getSqlDateTimeFormat().format(timeSlot.getEnd()));
@@ -222,21 +223,22 @@ public class DataAccessObject implements DataAccess
         return timeslotID;
     }
 
-	public void insertParkingSpot(String username, ParkingSpot currentParkingSpot) throws DAOException
+	public long insertParkingSpot(String username, ParkingSpot currentParkingSpot) throws DAOException
     {
+        long spotID;
+
         try
         {
-            if (!doesParkingSpotExists(currentParkingSpot.getSpotID())) {
-                cmdString = "INSERT INTO PARKINGSPOTS VALUES(?,?,?,?,?,?,?,?)";
+            if (!doesParkingSpotExists(currentParkingSpot.getAddress(),currentParkingSpot.getName())) {
+                cmdString = "INSERT INTO PARKINGSPOTS (USERNAME,NAME,ADDRESS,PHONE,EMAIL,RATE,DELETED) VALUES(?,?,?,?,?,?,?)";
                 pstmt = con.prepareStatement(cmdString);
-                pstmt.setString(1, currentParkingSpot.getSpotID());
-                pstmt.setString(2, username);
-                pstmt.setString(3, currentParkingSpot.getName());
-                pstmt.setString(4, currentParkingSpot.getAddress());
-                pstmt.setString(5, currentParkingSpot.getPhone());
-                pstmt.setString(6, currentParkingSpot.getEmail());
-                pstmt.setDouble(7, currentParkingSpot.getRate());
-                pstmt.setBoolean(8,false);
+                pstmt.setString(1, username);
+                pstmt.setString(2, currentParkingSpot.getName());
+                pstmt.setString(3, currentParkingSpot.getAddress());
+                pstmt.setString(4, currentParkingSpot.getPhone());
+                pstmt.setString(5, currentParkingSpot.getEmail());
+                pstmt.setDouble(6, currentParkingSpot.getRate());
+                pstmt.setBoolean(7,false);
 
                 //System.out.println(cmdString);
                 updateCount = pstmt.executeUpdate();
@@ -248,6 +250,26 @@ public class DataAccessObject implements DataAccess
             processSQLError(sqle);
             throw new DAOException("Error in creating ParkingSpot object with SPOT_ID = "+currentParkingSpot.getSpotID()+" for Username: "+username+"!",sqle);
         }
+
+        try
+        {
+            cmdString = "CALL IDENTITY()";
+            rss = stmt.executeQuery(cmdString);
+
+            if (rss.next())
+            {
+                spotID = rss.getLong(1);
+            } else
+            {
+                throw new DAOException("Could not retrieve last auto generated Spot ID!");
+            }
+        } catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Could not retrieve last auto generated Spot ID!",sqle);
+        }
+
+        return spotID;
     }
 
     public boolean insertUser(String username) throws DAOException
@@ -287,7 +309,7 @@ public class DataAccessObject implements DataAccess
         parkingSpots = new ArrayList<>();
 
         try {
-            cmdString = "SELECT * FROM PARKINGSPOTS P WHERE P.ADDRESS LIKE ? " +
+            cmdString = "SELECT * FROM PARKINGSPOTS P WHERE LCASE(P.ADDRESS) LIKE ? " +
                         "AND EXISTS (SELECT * FROM DAYSLOTS D WHERE D.SPOT_ID = P.SPOT_ID " +
                         "AND ? BETWEEN CAST(D.STARTDAYTIME AS DATE) AND CAST(D.ENDDAYTIME AS DATE))";
             pstmt = con.prepareStatement(cmdString);
@@ -297,7 +319,7 @@ public class DataAccessObject implements DataAccess
                 pstmt.setString(1,"%");
             } else
             {
-                pstmt.setString(1,"%"+address+"%");
+                pstmt.setString(1,"%"+address.toLowerCase()+"%");
             }
             pstmt.setString(2, df.getSqlDateFormat().format(date));
 
@@ -317,18 +339,14 @@ public class DataAccessObject implements DataAccess
 
 
 
-    public ParkingSpot getParkingSpot(String spotID) throws DAOException
+    public ParkingSpot getParkingSpot(long spotID) throws DAOException
     {
-        if (spotID == null)
-        {
-            throw new DAOException("Error: Attempt to get null parking spot");
-        }
         try
         {
-            cmdString = "SELECT * FROM PARKINGSPOTS P WHERE P.SPOT_ID=? ";
+            cmdString = "SELECT * FROM PARKINGSPOTS P WHERE P.SPOT_ID = ? ";
             pstmt = con.prepareStatement(cmdString);
 
-            pstmt.setString(1, spotID);
+            pstmt.setLong(1, spotID);
 
             rss = pstmt.executeQuery();
 
@@ -342,19 +360,18 @@ public class DataAccessObject implements DataAccess
 
         Double rate;
         ParkingSpot ps;
-        String id, name, addr, phone, email;
+        String name, addr, phone, email;
 
         try
         {
             rss.next();
-            id = rss.getString("SPOT_ID");
             name = rss.getString("NAME");
             addr = rss.getString("ADDRESS");
             phone = rss.getString("PHONE");
             email = rss.getString("EMAIL");
             rate = rss.getDouble("RATE");
 
-            ps = new ParkingSpot(id, addr, name, phone, email, rate);
+            ps = new ParkingSpot(spotID, addr, name, phone, email, rate);
             rss.close();
         }
         catch (SQLException sqle)
@@ -373,19 +390,20 @@ public class DataAccessObject implements DataAccess
     private void getParkingSpots(ResultSet rs, ArrayList<ParkingSpot> parkingSpots) throws DAOException
     {
         Double rate;
+        long spotID;
         ParkingSpot ps;
-        String id, name, addr, phone, email;
+        String name, addr, phone, email;
 
         try {
             while (rs.next()) {
-                id = rs.getString("SPOT_ID");
+                spotID = rs.getLong("SPOT_ID");
                 name = rs.getString("NAME");
                 addr = rs.getString("ADDRESS");
                 phone = rs.getString("PHONE");
                 email = rs.getString("EMAIL");
                 rate = rs.getDouble("RATE");
 
-                ps = new ParkingSpot(id, addr, name, phone, email, rate);
+                ps = new ParkingSpot(spotID, addr, name, phone, email, rate);
                 parkingSpots.add(ps);
             }
         } catch (SQLException sqle)
@@ -517,7 +535,7 @@ public class DataAccessObject implements DataAccess
     }
 
     @Override
-    public void modifyParkingSpot(String spotID, String address, String phone, String email, Double rate) throws DAOException
+    public void modifyParkingSpot(long spotID, String address, String phone, String email, Double rate) throws DAOException
     {
         boolean result = false;
         try
@@ -528,7 +546,7 @@ public class DataAccessObject implements DataAccess
             pstmt.setString(2, phone);
             pstmt.setString(3, email);
             pstmt.setDouble(4, rate);
-            pstmt.setString(5, spotID);
+            pstmt.setLong(5, spotID);
             updateCount = pstmt.executeUpdate();
             checkWarning(pstmt, updateCount);
         }

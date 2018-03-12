@@ -22,7 +22,7 @@ import comp3350.iPuP.objects.TimeSlot;
 public class HostModifyActivity extends AppCompatActivity
 {
     protected AccessParkingSpots accessParkingSpots;
-    private String spotID;
+    private long spotID;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -32,8 +32,8 @@ public class HostModifyActivity extends AppCompatActivity
 
         accessParkingSpots = new AccessParkingSpots();
 
-        spotID = getIntent().getStringExtra("spotid");
-        if (spotID != null)
+        spotID = getIntent().getLongExtra("spotid",-1);
+        if (spotID != -1)
         {
             try
             {

@@ -1,11 +1,6 @@
 package comp3350.iPuP.tests.persistence;
 
-import java.lang.reflect.Array;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import comp3350.iPuP.objects.Booking;
@@ -37,15 +32,16 @@ public class DataAccessStub implements DataAccess
 
 	public void open(String dbPath)
 	{
+	    /*
 	    users = new ArrayList<String>();
 		parkingSpots = new ArrayList<ParkingSpot>();
 		daySlots = new ArrayList<TimeSlot>();
 		timeSlots = new ArrayList<TimeSlot>();
 		bookings = new ArrayList<Booking>();
 
-		ParkingSpot parkingspot;
+		ParkingSpot tempSpot;
 		TimeSlot dayslot;
-        TimeSlot timeslot;
+        TimeSlot time;
 		String address;
 		String name;
 		String phone;
@@ -314,7 +310,7 @@ public class DataAccessStub implements DataAccess
             throw new Exception("Failed to open " + dbType +" database " + dbName + "!",e);
         }
 
-        System.out.println("Opened " +dbType +" database " +dbName);
+        System.out.println("Opened " +dbType +" database " +dbName);*/
 	}
 
 
@@ -324,73 +320,80 @@ public class DataAccessStub implements DataAccess
     }
 
 
-	public String insertDaySlot(String psID, DaySlot daySlot)
-	{
-		//TODO: implement insertDaySlot method
-		return null;
-	}
-
-	public String insertDaySlots(String psID, ArrayList<DaySlot> daySlots)
-	{
-		//TODO: implement insertDaySlots method
-		return null;
-	}
-
-	public String insertTimeSlot(String psID, Long dsID, Date start, Date end)
-	{
-		//TODO: implement insertTimeSlot method
-		return null;
-	}
-
-	public String insertTimeSlot(String psID, Long dsID, TimeSlot timeSlot)
-	{
-		return insertTimeSlot(psID, dsID, timeSlot.getStart(), timeSlot.getEnd());
-	}
-
-	public String insertTimeSlots(String psID, Long dsID, ArrayList<TimeSlot> timeSlots)
-	{
-		//TODO: implement insertTimeSlots method
-		return null;
-	}
-
-    public String insertParkingSpot(String user, ParkingSpot currentParkingSpot)
+    public boolean insertParkingSpot(String user, ParkingSpot currentParkingSpot)
     {
         // not checking for duplicates yet
         parkingSpots.add(currentParkingSpot);
-        return null;
+        return true;
     }
 
-	public boolean insertUser(String username)
+    @Override
+    public long insertDaySlot(TimeSlot daySlot, String spotID) throws DAOException
+    {
+        return 0;
+    }
+
+    @Override
+    public long insertTimeSlot(TimeSlot timeSlot, long daySlotID, String spotID) throws DAOException
+    {
+        return 0;
+    }
+
+    public boolean insertUser(String username)
 	{
 		//TODO: implement insertUser method
 		return false;
 	}
 
+    @Override
+    public ArrayList<ParkingSpot> getParkingSpotsByAddressDate(String address, Date date) throws DAOException
+    {
+        return null;
+    }
+
+    @Override
+    public ParkingSpot getParkingSpot(String spotID) throws DAOException
+    {
+        return null;
+    }
+
+    @Override
+    public ArrayList<TimeSlot> getDaySlotsForAParkingSpot(String spotID) throws DAOException
+    {
+        return null;
+    }
+
     public ArrayList<ParkingSpot> getParkingSpotsByDate(Date date)
     {
-        ArrayList<ParkingSpot> parkingSpots = new ArrayList<ParkingSpot>();
-
         //TODO: finish this method
 
-        return parkingSpots;
+        return new ArrayList<>();
     }
 
     public ArrayList<ParkingSpot> getHostedSpotsOfGivenUser(String username)
     {
-        ArrayList<ParkingSpot> parkingSpots = new ArrayList<ParkingSpot>();
-
         //TODO: finish this method
 
-        return parkingSpots;
+        return new ArrayList<>();
     }
 
-	public ArrayList<Booking> getBookedSpotsOfGivenUser(String username)
+    @Override
+    public void setBookedSpotToDeleted(String username, long timeSlotId) throws DAOException
     {
-        ArrayList<Booking> bookings = new ArrayList<Booking>();
+    }
+
+    @Override
+    public void modifyParkingSpot(String spotID, String address, String phone, String email, Double rate) throws DAOException
+    {
+
+    }
+
+    public ArrayList<Booking> getBookedSpotsOfGivenUser(String username)
+    {
 
         //TODO: finish this method!
 
-        return bookings;
+        return new ArrayList<>();
     }
 
     public boolean setSpotToCancelled(String username, Long timeSlotId)
@@ -459,80 +462,6 @@ public class DataAccessStub implements DataAccess
         if (!(i >= 0))
         {
             parkingSpots.add(parkingSpot);
-            return true;
-        } else
-        {
-            return false;
-        }
-    }
-
-    private boolean addADaySlot(TimeSlot daySlot)
-    {
-        int i;
-
-        for (i = 0; i < daySlots.size(); i++) {
-            TimeSlot adayspot = daySlots.get(i);
-            if ((adayspot.getSlotID()).equals(adayspot.getSlotID()) ||
-                    ((adayspot.gets()).equals(adayspot.getName()) &&
-                            ()))
-            {
-                break;
-            }
-        }
-
-        if (!(i >= 0))
-        {
-            daySlot.setSlotID(dayslotCounter++);
-            daySlots.add(daySlot);
-            return true;
-        } else
-        {
-            return false;
-        }
-    }
-
-    private boolean addATimeSlot(TimeSlot timeSlot)
-    {
-        int i;
-
-        for (i = 0; i < timeSlots.size(); i++) {
-            TimeSlot atimespot = timeSlots.get(i);
-            if ((timeSlot.getSlotID()).equals(atimespot.getSlotID()) ||
-                    ((timeSlot.gets()).equals(atimespot.getName()) &&
-                            ()))
-            {
-                break;
-            }
-        }
-
-        if (!(i >= 0))
-        {
-            timeSlot.setSlotID(timeslotCounter++);
-            timeSlots.add(timeSlot);
-            return true;
-        } else
-        {
-            return false;
-        }
-    }
-
-    private boolean addABooking (Booking booking)
-    {
-        int i;
-
-        for (i = 0; i < bookings.size(); i++) {
-            Booking abooking = bookings.get(i);
-            if ((booking.getSlotID()).equals(abooking.getSlotID()) ||
-                    ((booking.gets()).equals(abooking.getName()) &&
-                            ()))
-            {
-                break;
-            }
-        }
-
-        if (!(i >= 0))
-        {
-            bookings.add(booking);
             return true;
         } else
         {

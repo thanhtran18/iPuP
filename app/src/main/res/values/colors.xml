@@ -5,10 +5,10 @@
     <color name="colorAccent">#2d2dce</color>
     <color name="colorTransparent">#00000000</color>
     <color name="colorWhite">#fff</color>
-    <color name="colorLightGrey">#f2f2f2</color>
+    <color name="colorLightGrey">#eaeaea</color>
     <color name="colorButton">#894f99</color>
     <color name="colorButtonText">#fff</color>
-    <color name="colorTextHint">#d8d8d8</color>
+    <color name="colorTextHint">#cecece</color>
     <color name="colorButtonBack1">#afa17b</color>
     <color name="colorButtonBack2">#56c988</color>
     <color name="colorButtonBack3">#5282ce</color>

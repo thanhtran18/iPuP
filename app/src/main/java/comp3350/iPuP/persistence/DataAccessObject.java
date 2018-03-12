@@ -1,13 +1,10 @@
 package comp3350.iPuP.persistence;
 
-import org.hsqldb.Types;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -285,14 +282,13 @@ public class DataAccessObject implements DataAccess
     public ArrayList<TimeSlot> getDaySlotsForAParkingSpot(String slotID) throws DAOException
     {
         //TODO: implement this
-        ArrayList<TimeSlot> daySlots = new ArrayList<TimeSlot>();
 
-        return daySlots;
+        return new ArrayList<>();
     }
 
     public ArrayList<ParkingSpot> getParkingSpotsByAddressDate(String address, Date date) throws DAOException
     {
-        parkingSpots = new ArrayList<ParkingSpot>();
+        parkingSpots = new ArrayList<>();
 
         try {
             cmdString = "SELECT * FROM PARKINGSPOTS P WHERE P.ADDRESS LIKE ? " +
@@ -323,6 +319,61 @@ public class DataAccessObject implements DataAccess
         return parkingSpots;
     }
 
+
+
+    public ParkingSpot getParkingSpot(String spotID) throws DAOException
+    {
+        if (spotID == null)
+        {
+            throw new DAOException("Error: Attempt to get null parking spot");
+        }
+        try
+        {
+            cmdString = "SELECT * FROM PARKINGSPOTS P WHERE P.SPOT_ID=? ";
+            pstmt = con.prepareStatement(cmdString);
+
+            pstmt.setString(1, spotID);
+
+            rss = pstmt.executeQuery();
+
+
+        }
+        catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error in getting ParkingSpot!", sqle);
+        }
+
+        Double rate;
+        ParkingSpot ps;
+        String id, name, addr, phone, email;
+
+        try
+        {
+            rss.next();
+            id = rss.getString("SPOT_ID");
+            name = rss.getString("NAME");
+            addr = rss.getString("ADDRESS");
+            phone = rss.getString("PHONE");
+            email = rss.getString("EMAIL");
+            rate = rss.getDouble("RATE");
+
+            ps = new ParkingSpot(id, addr, name, phone, email, rate);
+            rss.close();
+        }
+        catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error in ParkingSpot object!",sqle);
+        }
+        catch (Exception e)
+        {
+            processSQLError(e);
+            throw new DAOException("Error in creating a new ParkingSpot object!",e);
+        }
+        return ps;
+    }
+
     private void getParkingSpots(ResultSet rs, ArrayList<ParkingSpot> parkingSpots) throws DAOException
     {
         Double rate;
@@ -351,7 +402,6 @@ public class DataAccessObject implements DataAccess
             throw new DAOException("Error in creating a new ParkingSpot object!",e);
         }
     }
-
 
 //    public String setSpotToBooked(String spotID, String slotID)
 //    {
@@ -413,7 +463,7 @@ public class DataAccessObject implements DataAccess
 
     public ArrayList<ParkingSpot> getHostedSpotsOfGivenUser(String username) throws DAOException
     {
-        parkingSpotsOfAUser = new ArrayList<ParkingSpot>();
+        parkingSpotsOfAUser = new ArrayList<>();
 
         try
         {
@@ -441,40 +491,22 @@ public class DataAccessObject implements DataAccess
     }
 
 
-	public String checkWarning(Statement st, int updateCount) throws DAOException
+	private void checkWarning(Statement st, int updateCount) throws DAOException
 	{
-		String result = null;
-		try
-		{
-			SQLWarning warning = st.getWarnings();
-			if (warning != null)
-			{
-				result = warning.getMessage();
-			}
-		}
-		catch (Exception e)
-		{
-			processSQLError(e);
-			throw new DAOException("Error in getting warnings!",e);
-		}
 		if (updateCount != 1)
 		{
-			result = "Tuple not inserted correctly.";
-            throw new DAOException(result);
+            throw new DAOException("Tuple not inserted correctly.");
 		}
-		return result;
 	}
 
 
-	public String processSQLError(Exception e)
+	private void processSQLError(Exception e)
 	{
 		String result = "*** SQL Error: " + e.getMessage();
 
 		// Remember, this will NOT be seen by the user!
 		e.printStackTrace();
-		
-		return result;
-	}
+    }
 
 
 	//added by Kevin
@@ -487,7 +519,7 @@ public class DataAccessObject implements DataAccess
         long timeslotID;
         String addr;
 
-        bookingSpotsOfAUser = new ArrayList<Booking>();
+        bookingSpotsOfAUser = new ArrayList<>();
 
         try
         {
@@ -527,9 +559,8 @@ public class DataAccessObject implements DataAccess
         return bookingSpotsOfAUser;
     }
 
-    public boolean setBookedSpotToDeleted(String username, long timeSlotId) throws DAOException
+    public void setBookedSpotToDeleted(String username, long timeSlotId) throws DAOException
     {
-        boolean result = false;
         try
         {
             cmdString = "UPDATE BOOKINGS SET DELETED = TRUE WHERE USERNAME = ? AND TIMESLOT_ID = ?";
@@ -538,15 +569,35 @@ public class DataAccessObject implements DataAccess
             pstmt.setLong(2, timeSlotId);
             updateCount = pstmt.executeUpdate();
             checkWarning(pstmt, updateCount);
-
-            result = true;
         }
         catch (SQLException sqle)
         {
             processSQLError(sqle);
             throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = "+timeSlotId+"!",sqle);
         }
-        return result;
+    }
+
+    @Override
+    public void modifyParkingSpot(String spotID, String address, String phone, String email, Double rate) throws DAOException
+    {
+        boolean result = false;
+        try
+        {
+            cmdString = "UPDATE PARKINGSPOTS SET ADDRESS=?, PHONE=?, EMAIL=?, RATE=? WHERE SPOT_ID=?";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setString(1, address);
+            pstmt.setString(2, phone);
+            pstmt.setString(3, email);
+            pstmt.setDouble(4, rate);
+            pstmt.setString(5, spotID);
+            updateCount = pstmt.executeUpdate();
+            checkWarning(pstmt, updateCount);
+        }
+        catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error in updateing ParkingSpot with id = "+spotID+"!",sqle);
+        }
     }
 
 

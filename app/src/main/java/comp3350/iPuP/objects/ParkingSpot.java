@@ -70,7 +70,7 @@ public class ParkingSpot
     @Override
     public String toString()
     {
-        return this.address ;
+        return this.address;
     }
 
     @Override

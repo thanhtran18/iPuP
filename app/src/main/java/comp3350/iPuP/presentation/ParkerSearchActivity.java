@@ -49,7 +49,7 @@ public class ParkerSearchActivity extends ListActivity{
 
         //todo get current date from onclick listen
         //todo change button and screen colors
-        //todo try implementing without the start seach button
+        //todo try implementing without the start seacrh button
         //todo write test
         final Calendar c = Calendar.getInstance();
         setDate = new DateFormatter();
@@ -58,6 +58,18 @@ public class ParkerSearchActivity extends ListActivity{
         tv.setText(setDate.getDateFormat().format(c.getTime()));
         dayTime = tv.getText().toString();
         populateScreen(null,dayTime);
+        final Button prev = findViewById(R.id.leftButton);
+        prev.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                c.add(Calendar.DATE, -1);
+                TextView tv = (TextView)findViewById(R.id.editDate);
+                tv.setText(setDate.getDateFormat().format(c.getTime()));
+            }
+        });
+
 
         final Button next = findViewById(R.id.rightButton);
         next.setOnClickListener(new OnClickListener() {
@@ -133,14 +145,6 @@ public class ParkerSearchActivity extends ListActivity{
         {
             Toast.makeText(this, daoe.getMessage(), Toast.LENGTH_LONG).show();
         }
-    }
-    public void prevDayClick(View v)
-    {
-
-    }
-    public void nextDayClick(View v)
-    {
-
     }
 
 }

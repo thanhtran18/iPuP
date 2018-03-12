@@ -559,9 +559,13 @@ public class DataAccessObject implements DataAccess
         Calendar calEnd = Calendar.getInstance();
         Date start, end;
         long timeSlotID;
+        boolean bookedVar=false;
 
 	    try {
-            cmdString = "SELECT * FROM TIMESLOTS WHERE SPOT_ID = ? AND DELETED=FALSE ORDER BY STARTDATETIME";
+            cmdString = "SELECT T.TIMESLOT_ID, T.SPOT_ID, T.STARTDATETIME, T.ENDDATETIME, B.USERNAME" +
+                    " FROM TIMESLOTS T LEFT JOIN BOOKINGS B ON T.TIMESLOT_ID=B.TIMESLOT_ID " +
+                    "AND B.DELETED=FALSE WHERE T.SPOT_ID=? AND T.DELETED=FALSE" +
+                    " ORDER BY T.STARTDATETIME";
             pstmt = con.prepareStatement(cmdString);
             pstmt.setString(1, spotID);
             rss = pstmt.executeQuery();
@@ -575,7 +579,11 @@ public class DataAccessObject implements DataAccess
                 calStart.setTime(start);
                 calEnd.setTime(end);
 
-                currSlot=new TimeSlot(calStart.getTime(),calEnd.getTime(),timeSlotID);
+                if(rss.getString("TIMESLOT_ID")!=null) {
+                    bookedVar = true;
+                }
+
+                currSlot=new TimeSlot(calStart.getTime(),calEnd.getTime(),timeSlotID, bookedVar);
                 returnVal.add(currSlot);
             }
 
@@ -620,8 +628,22 @@ public class DataAccessObject implements DataAccess
         return returnVal;
     }
 
-    public boolean bookTimeSlot(TimeSlot timeSlot, String theUser, String spotID) throws DAOException{
+    public boolean bookTimeSlot(String theUser, long timeSLot_ID, String spot_ID) throws DAOException{
         boolean returnVal=false;
+        try {
+            cmdString = "INSERT INTO BOOKINGS VALUES(?,?,?,FALSE)";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setString(1, theUser);
+            pstmt.setLong(2, timeSLot_ID);
+            pstmt.setString(3, spot_ID);
+            updateCount = pstmt.executeUpdate();
+            checkWarning(pstmt,updateCount);
+
+        }catch (Exception SqlEx){ //TODO: Exception catching style here may need to change
+            processSQLError(SqlEx);
+            throw new DAOException("Error in booking timeslots for parking spot with SPOT_ID" +
+                    " = "+spot_ID+"!",SqlEx);
+        }
 	    return returnVal;
     }
 

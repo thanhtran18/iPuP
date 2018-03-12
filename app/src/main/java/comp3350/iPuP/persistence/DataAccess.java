@@ -39,5 +39,5 @@ public interface DataAccess
 	//TODO: COnfirm if returning ParkingSpot is ideal here.
 	ParkingSpot getParkingSpotByID(String spotID) throws DAOException;
 
-	boolean bookTimeSlot(TimeSlot timeSlot, String theUser, String spotID) throws DAOException;
+	boolean bookTimeSlot(String theUser, long timeSlot_ID, String spot_ID) throws DAOException;
 }

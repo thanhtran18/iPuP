@@ -88,7 +88,7 @@ public class ParkerSearchActivity extends Activity {
     {}
 
     //TODO: Change this method to use the selected spot to go to next screen instead.
-    public void goToTestScreen(View v){
+    public void showTimeSlots(View v){
         Intent intent = new Intent(this, BookTimeSlotsActivity.class);
         startActivity(intent);
     }

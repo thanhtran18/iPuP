@@ -72,7 +72,7 @@
         android:layout_below="@+id/showSearchIcon"
         android:layout_toRightOf="@+id/editDate"
         android:layout_toEndOf="@+id/editDate"
-        android:onClick="goToTestScreen"
+        android:onClick="showTimeSlots"
         android:text="Next" />
         <!--TODO: CHANGE THIS ONCLICK method-->
 

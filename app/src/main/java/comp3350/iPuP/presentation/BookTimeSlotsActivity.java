@@ -21,10 +21,13 @@ import comp3350.iPuP.objects.TimeSlot;
 
 public class BookTimeSlotsActivity extends AppCompatActivity {
     String testSPOTIDFORSCREEN; //TODO: Make the ID come from previous screen instead
-    ParkingSpot currSpot;
+    String userBookingSpot="marker";
+    ParkingSpot currSpot; //TODO this parking spot object should come from the prevoius screen instead
     private AccessParkingSpots accessParkingSpots=new AccessParkingSpots();
     ArrayList<TimeSlot> timesToShow;
     ArrayList<TimeSlot> bookedSlots=new ArrayList<TimeSlot>();
+    ArrayAdapter<TimeSlot> timeListAdapter;
+    ListView tSlots;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +55,9 @@ public class BookTimeSlotsActivity extends AppCompatActivity {
         TextView rate=(TextView)findViewById(R.id.parkingSpotChargeRate);
         rate.setText(Double.toString(currSpot.getRate()));
 
-        ListView tSlots=(ListView)findViewById(R.id.timeSlotsList);
+        tSlots=(ListView)findViewById(R.id.timeSlotsList);
         tSlots.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        ArrayAdapter<TimeSlot> timeListAdapter=new ArrayAdapter<TimeSlot>(this,
+        timeListAdapter=new ArrayAdapter<TimeSlot>(this,
                 R.layout.time_slot_item_layout,R.id.timeSlotCheckItem, timesToShow);
         tSlots.setAdapter(timeListAdapter);
         tSlots.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -80,9 +83,44 @@ public class BookTimeSlotsActivity extends AppCompatActivity {
     public boolean bookSelectedSlotsInDB(ArrayList<TimeSlot> theArray){
         //TODO: Add the full functionality for this function!
         if(theArray.size()>0) {
-
+            try {
+                boolean allsPotsBooked = accessParkingSpots.bookTimeSlots(theArray, userBookingSpot,
+                        testSPOTIDFORSCREEN);
+            }catch (Exception ex){
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+            }
             Toast.makeText(this, theArray.get(0).toString(), Toast.LENGTH_LONG).show();
+
+            timeListAdapter.clear();
+            try
+            {
+                currSpot=accessParkingSpots.getSpotBYID(testSPOTIDFORSCREEN);
+                timesToShow = accessParkingSpots.getFreeTimeSlotsByID(testSPOTIDFORSCREEN);
+            }catch (DAOException exd){
+                Toast.makeText(this, exd.getMessage(), Toast.LENGTH_LONG).show();
+            }
+            timeListAdapter=new ArrayAdapter<TimeSlot>(this,
+                    R.layout.time_slot_item_layout,R.id.timeSlotCheckItem, timesToShow);
+            tSlots.setAdapter(timeListAdapter);
         }
         return true;
     }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        timeListAdapter.clear();
+        try
+        {
+            currSpot=accessParkingSpots.getSpotBYID(testSPOTIDFORSCREEN);
+            timesToShow = accessParkingSpots.getFreeTimeSlotsByID(testSPOTIDFORSCREEN);
+        }catch (DAOException exd){
+            Toast.makeText(this, exd.getMessage(), Toast.LENGTH_LONG).show();
+        }
+        timeListAdapter=new ArrayAdapter<TimeSlot>(this,
+                R.layout.time_slot_item_layout,R.id.timeSlotCheckItem, timesToShow);
+        tSlots.setAdapter(timeListAdapter);
+    }
+
 }

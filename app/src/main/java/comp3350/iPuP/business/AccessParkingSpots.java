@@ -1,5 +1,6 @@
 package comp3350.iPuP.business;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -162,7 +163,7 @@ public class AccessParkingSpots
         return dataAccess.setBookedSpotToDeleted(username, timeSlotId);
     }
 
-    //TODO: Method added by me to get the required timeslots may be edited.
+    //TODO: Methods added by me for timeslot functionality begin here may be edited.
     public ArrayList<TimeSlot> getFreeTimeSlotsByID(String spotID) throws DAOException{
         return dataAccess.getTimeSlotsForParkingSpot(spotID);
     }
@@ -171,7 +172,19 @@ public class AccessParkingSpots
         return dataAccess.getParkingSpotByID(spotID);
     }
 
-    public boolean bookThisTimeSlot(TimeSlot timeSlot, String userBooking, String spotID ) throws DAOException{
-        return dataAccess.bookTimeSlot(timeSlot, userBooking, spotID);
+    public boolean bookTimeSlots(ArrayList<TimeSlot> timeSlots, String userBooking, String pSpotID) throws DAOException{
+        boolean returnVal=false;
+        int checkLoop=0;
+        for(TimeSlot currSlot:timeSlots){
+            long timeSLotID=currSlot.getSlotID();
+            boolean bookingWorked=dataAccess.bookTimeSlot(userBooking, timeSLotID, pSpotID);
+            if(bookingWorked) {
+                checkLoop++;
+            }
+        }
+        if(checkLoop==timeSlots.size()){
+            returnVal=false;
+        }
+        return returnVal;
     }
 }

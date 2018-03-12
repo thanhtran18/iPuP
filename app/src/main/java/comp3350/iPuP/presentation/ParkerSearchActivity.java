@@ -70,6 +70,9 @@ public class ParkerSearchActivity extends ListActivity {
                 c.add(Calendar.DATE, -1);
                 TextView tv = (TextView)findViewById(R.id.editDate);
                 tv.setText(setDate.getDateFormat().format(c.getTime()));
+                String searchText = getSearchText();
+                dayTime = tv.getText().toString();
+                populateScreen(searchText,dayTime);
             }
         });
 
@@ -83,6 +86,9 @@ public class ParkerSearchActivity extends ListActivity {
                 c.add(Calendar.DATE, +1);
                 TextView tv = (TextView)findViewById(R.id.editDate);
                 tv.setText(setDate.getDateFormat().format(c.getTime()));
+                String searchText = getSearchText();
+                dayTime = tv.getText().toString();
+                populateScreen(searchText,dayTime);
             }
         });
 
@@ -97,16 +103,24 @@ public class ParkerSearchActivity extends ListActivity {
     {
         setDate = new DateFormatter();
         TextView tv = (TextView)findViewById(R.id.editDate);
+        String searchText = getSearchText();
+        dayTime = tv.getText().toString();
+        populateScreen(searchText,dayTime);
+    }
+
+    public String getSearchText()
+    {
         SearchView streetName = (SearchView)findViewById(R.id.showSearchIcon);
         CharSequence charName = streetName.getQuery();
         String searchText = charName.toString();
         if(searchText.trim().length() == 0 )
         {
             searchText = null;
+            return searchText;
         }
-        dayTime = tv.getText().toString();
-        populateScreen(searchText,dayTime);
+        return searchText;
     }
+
 
     public void populateScreen( String name, String dayTime)
     {

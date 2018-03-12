@@ -8,6 +8,9 @@ public class TimeSlot
 {
     private Date start;
     private Date end;
+
+    //TODO: CONFIRM THIS
+    private boolean isBooked;
     protected long slotID;
 
     public static DateFormatter df = new DateFormatter();
@@ -39,12 +42,23 @@ public class TimeSlot
         start = newStart;
         end = newEnd;
         slotID = 0;
+
+        isBooked=false;
     }
 
     public TimeSlot(Date newStart, Date newEnd, long slotID)
     {
         this(newStart, newEnd);
         this.slotID = slotID;
+
+        isBooked=false;
+    }
+
+    public TimeSlot(Date newStart, Date newEnd, long slotID, boolean bookedOrNot){
+        start=newStart;
+        end=newEnd;
+        this.slotID=slotID;
+        this.isBooked=bookedOrNot;
     }
 
     @Override
@@ -86,5 +100,9 @@ public class TimeSlot
     public void setSlotID(long slotID)
     {
         this.slotID = slotID;
+    }
+
+    public boolean isBooked() {
+        return isBooked;
     }
 }

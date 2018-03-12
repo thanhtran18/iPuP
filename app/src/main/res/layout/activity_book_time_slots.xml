@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="comp3350.iPuP.presentation.BookTimeSlotsActivity">
+
+    <Button
+        android:id="@+id/timeSlotConfirmButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="9dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="80dp"
+        android:onClick="buttonPerform"
+        android:text="Confirm Bookings"
+        app:layout_constraintBottom_toTopOf="@+id/timeSlotsList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/timeSlotsList"
+        android:layout_width="match_parent"
+        android:layout_height="390dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeSlotConfirmButton" />
+
+    <TextView
+        android:id="@+id/parkingSpotHostName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="6dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/parkingSpotAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/parkingSpotHostName"
+        app:layout_constraintTop_toBottomOf="@+id/parkingSpotHostName" />
+
+    <TextView
+        android:id="@+id/parkingSpotPhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/parkingSpotAddress"
+        app:layout_constraintTop_toBottomOf="@+id/parkingSpotAddress" />
+
+    <TextView
+        android:id="@+id/parkingSpotHostEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginTop="15dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/parkingSpotPhoneNumber"
+        app:layout_constraintTop_toTopOf="@+id/parkingSpotPhoneNumber" />
+
+    <TextView
+        android:id="@+id/parkingSpotChargeRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/parkingSpotHostEmail"
+        app:layout_constraintTop_toTopOf="@+id/parkingSpotHostEmail" />
+</android.support.constraint.ConstraintLayout>

@@ -63,6 +63,7 @@
         <activity
             android:name=".presentation.ParkerLogViewActivity"
             android:configChanges="orientation|screenSize" />
+        <activity android:name=".presentation.BookTimeSlotsActivity"></activity>
         <activity android:name=".presentation.HostViewDayActivity" />
         <activity
             android:name=".presentation.HostModifyActivity"

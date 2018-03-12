@@ -1,17 +1,8 @@
 package comp3350.iPuP.tests.persistence;
 
-import junit.framework.TestCase;
+/**
+ * Created by Amanjyot on 2018-03-05.
+ */
 
-import comp3350.iPuP.persistence.DataAccess;
-
-public class DataAccessTest extends TestCase
-{
-    private DataAccess dataAccess;
-
-    public DataAccessTest(String arg0)
-    {
-        super(arg0);
-    }
-
-
+public class DataAccessTest {
 }

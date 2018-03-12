@@ -39,7 +39,9 @@ import java.util.Map;
  * Created by Victory on 2018-03-01.
  */
 
-public class ParkerSearchActivity extends ListActivity{
+public class ParkerSearchActivity extends ListActivity {
+
+    public static final String SELECTED_SPOT = "spot_to_view";
     private DateFormatter setDate;//for setting the date
 
     private AccessParkingSpots accessParkingSpots;
@@ -58,6 +60,18 @@ public class ParkerSearchActivity extends ListActivity{
         tv.setText(setDate.getDateFormat().format(c.getTime()));
         dayTime = tv.getText().toString();
         populateScreen(null,dayTime);
+        final Button prev = findViewById(R.id.leftButton);
+        prev.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                c.add(Calendar.DATE, -1);
+                TextView tv = (TextView)findViewById(R.id.editDate);
+                tv.setText(setDate.getDateFormat().format(c.getTime()));
+            }
+        });
+
 
 
     }
@@ -127,5 +141,15 @@ public class ParkerSearchActivity extends ListActivity{
     {}
     public void nextDayClick(View v)
     {}
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id){
+        super.onListItemClick(l, v, position, id);
+        ParkingSpot currItem=arrayList.get(position);
+
+        Intent intent = new Intent(getApplicationContext(), BookTimeSlotsActivity.class);
+        intent.putExtra(SELECTED_SPOT, currItem.getSpotID());
+        startActivity(intent);
+    }
 
 }

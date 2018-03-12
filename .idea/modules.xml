@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SRSYS.iml" filepath="$PROJECT_DIR$/SRSYS.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iPuP(3350 Project).iml" filepath="$PROJECT_DIR$/iPuP(3350 Project).iml" />
     </modules>
   </component>
 </project>

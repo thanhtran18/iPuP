@@ -36,10 +36,14 @@ public interface DataAccess
 
     void modifyParkingSpot(String spotID, String address, String phone, String email, Double rate) throws DAOException;
 
+    //TODO: Remove one of these methods, later on
 	ArrayList<TimeSlot> getTimeSlotsForParkingSpot(String spotID) throws DAOException;
+
+	ArrayList<TimeSlot> getUnbookedTimeSlotsForParkingSpot(String spotID) throws DAOException;
 
 	//TODO: COnfirm if returning ParkingSpot is ideal here.
 	ParkingSpot getParkingSpotByID(String spotID) throws DAOException;
+
 
 	boolean bookTimeSlot(String theUser, long timeSlot_ID, String spot_ID) throws DAOException;
 }

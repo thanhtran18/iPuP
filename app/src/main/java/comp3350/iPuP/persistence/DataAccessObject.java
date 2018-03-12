@@ -590,6 +590,52 @@ public class DataAccessObject implements DataAccess
 	    return returnVal;
     }
 
+    //TODO: Confirm if this method should or should not be used.
+    public ArrayList<TimeSlot> getUnbookedTimeSlotsForParkingSpot(String spotID) throws DAOException{
+        ArrayList<TimeSlot> returnVal;
+        TimeSlot currSlot;
+        Calendar calStart = Calendar.getInstance();
+        Calendar calEnd = Calendar.getInstance();
+        Date start, end;
+        long timeSlotID;
+        boolean bookedVar=false;
+
+        try {
+            cmdString = "SELECT T.TIMESLOT_ID, T.SPOT_ID, T.STARTDATETIME, T.ENDDATETIME, B.USERNAME" +
+                    " FROM TIMESLOTS T LEFT JOIN BOOKINGS B ON T.TIMESLOT_ID=B.TIMESLOT_ID " +
+                    "AND B.DELETED=FALSE WHERE T.SPOT_ID=? AND T.DELETED=FALSE" +
+                    " ORDER BY T.STARTDATETIME";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setString(1, spotID);
+            rss = pstmt.executeQuery();
+            returnVal=new ArrayList<TimeSlot>();
+            while (rss.next())
+            {
+                timeSlotID = rss.getLong("TIMESLOT_ID");
+                start = rss.getTimestamp("STARTDATETIME");
+                end = rss.getTimestamp("ENDDATETIME");
+
+                calStart.setTime(start);
+                calEnd.setTime(end);
+
+                if(rss.getString("USERNAME")!=null) {
+                    bookedVar = true;
+                }else{
+                    currSlot=new TimeSlot(calStart.getTime(),calEnd.getTime(),timeSlotID, bookedVar);
+                    returnVal.add(currSlot);
+                }
+            }
+            rss.close();
+
+        }catch (SQLException SqlEx){
+            processSQLError(SqlEx);
+            throw new DAOException("Error in getting timeslots from parking spot with SPOT_ID" +
+                    " = "+spotID+"!",SqlEx);
+        }
+
+        return returnVal;
+    }
+
     //TODO: Make method to set the deleted field for timeslots in the database to true.
     public ParkingSpot getParkingSpotByID(String spotID) throws DAOException{
 	   ParkingSpot returnVal=null;

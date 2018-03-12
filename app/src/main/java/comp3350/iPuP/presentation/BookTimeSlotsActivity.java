@@ -1,5 +1,6 @@
 package comp3350.iPuP.presentation;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,8 @@ import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
 
+import static comp3350.iPuP.presentation.ParkerSearchActivity.SELECTED_SPOT;
+
 public class BookTimeSlotsActivity extends AppCompatActivity {
     String testSPOTIDFORSCREEN; //TODO: Make the ID come from previous screen instead
     String userBookingSpot="marker";
@@ -34,7 +37,13 @@ public class BookTimeSlotsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_time_slots);
 
-        testSPOTIDFORSCREEN="88 Plaza Drivemarker";
+        final Intent intent = getIntent();
+        if (null != intent)
+        {
+            testSPOTIDFORSCREEN = intent.getStringExtra(SELECTED_SPOT);
+        }
+
+        //testSPOTIDFORSCREEN="88 Plaza Drivemarker";
 
         try
         {

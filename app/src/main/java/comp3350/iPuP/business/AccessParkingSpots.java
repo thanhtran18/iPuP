@@ -169,7 +169,7 @@ public class AccessParkingSpots
 
     //TODO: Methods added by me for timeslot functionality begin here may be edited.
     public ArrayList<TimeSlot> getFreeTimeSlotsByID(String spotID) throws DAOException{
-        return dataAccess.getTimeSlotsForParkingSpot(spotID);
+        return dataAccess.getUnbookedTimeSlotsForParkingSpot(spotID);
     }
 
     public ParkingSpot getSpotBYID(String spotID) throws DAOException{

@@ -2,30 +2,36 @@ package comp3350.iPuP.presentation;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.app.DialogFragment;
+import android.widget.ToggleButton;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
+import org.w3c.dom.Text;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import comp3350.iPuP.R;
+import comp3350.iPuP.objects.DAOException;
+import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.business.AccessParkingSpots;
-import comp3350.iPuP.objects.ReservationTime;
+import comp3350.iPuP.objects.TimeSlot;
 
 public class HostActivity extends Activity
 {
-    private AccessParkingSpots accessParkingSpots;
+    protected AccessParkingSpots accessParkingSpots;
+    private String repetitionInfo;
+    protected String name;
+    protected DateFormatter df;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,113 +39,222 @@ public class HostActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host);
         accessParkingSpots = new AccessParkingSpots();
+
+        repetitionInfo = "";
+
+        name = getIntent().getStringExtra("name");
+
+        Calendar c = Calendar.getInstance();
+        df = new DateFormatter();
+
+        if (c.get(Calendar.MINUTE) > 30)
+            c.set(Calendar.MINUTE, 30);
+        else c.set(Calendar.MINUTE, 0);
+
+        TextView tv = findViewById(R.id.editFromDate);
+        tv.setText(df.getDateFormat().format(c.getTime()));
+
+        tv = findViewById(R.id.editFromTime);
+        tv.setText(df.getTimeFormat().format(c.getTime()));
+
+        c.add(Calendar.HOUR_OF_DAY,1);
+        tv = findViewById(R.id.editToDate);
+        tv.setText(df.getDateFormat().format(c.getTime()));
+
+        tv = findViewById(R.id.editToTime);
+        tv.setText(df.getTimeFormat().format(c.getTime()));
+    }
+
+    public void onFromDateClick(View v)
+    {
+        DialogFragment dateFragment = DatePickerFragment.newInstance(R.id.editFromDate);
+        dateFragment.show(getFragmentManager(),"DatePicker");
+    }
+
+    public void onToDateClick(View v)
+    {
+        DialogFragment dateFragment = DatePickerFragment.newInstance(R.id.editToDate);
+        dateFragment.show(getFragmentManager(),"DatePicker");
+    }
+
+    public void onFromTimeClick(View v)
+    {
+        //DialogFragment timeFragment = TimePickerFragment.newInstance(R.id.editFromTime);
+        //timeFragment.show(getFragmentManager(),"TimePicker");
+        Intent fromTimeIntent = new Intent(HostActivity.this, TimePickerActivity.class);
+        HostActivity.this.startActivityForResult(fromTimeIntent, 1);
+    }
+
+    public void onToTimeClick(View v)
+    {
+        //DialogFragment timeFragment = TimePickerFragment.newInstance(R.id.editToTime);
+        //timeFragment.show(getFragmentManager(),"TimePicker");
+        Intent toTimeIntent = new Intent(HostActivity.this, TimePickerActivity.class);
+        HostActivity.this.startActivityForResult(toTimeIntent, 2);
+    }
+
+    public void onRepeatClick(View v)
+    {
+        if (((ToggleButton)v).isChecked()) {
+            Intent repeatIntent = new Intent(HostActivity.this, RepeatActivity.class);
+            TextView dateFrom = findViewById(R.id.editFromDate);
+            repeatIntent.putExtra("date", dateFrom.getText());
+            HostActivity.this.startActivityForResult(repeatIntent, 0);
+        }
+        else
+        {
+            repetitionInfo = "";
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.O)
     public void buttonConfirmOnClick(View v)
     {
-        EditText edit =  (EditText) findViewById(R.id.editName);
-        String name = edit.getText().toString();
-        edit =  (EditText) findViewById(R.id.editAddress);
+        EditText edit = findViewById(R.id.editAddress);
         String address = edit.getText().toString();
-        edit =  (EditText) findViewById(R.id.editEmail);
+        edit = findViewById(R.id.editEmail);
         String email = edit.getText().toString();
-        edit =  (EditText) findViewById(R.id.editPhone);
+        edit = findViewById(R.id.editPhone);
         String phone = edit.getText().toString();
-        edit = (EditText) findViewById(R.id.editRate);
+        edit = findViewById(R.id.editRate);
         String rateStr = edit.getText().toString();
         Double rate = Double.parseDouble(rateStr.equals("") ? "0": rateStr);
 
-        DatePicker datePicker =  (DatePicker) findViewById(R.id.datePickerDate);
-        int day = datePicker.getDayOfMonth();
-        int month = datePicker.getMonth();
-        int year =  datePicker.getYear();
-
-        TimePicker timePickerStart =  (TimePicker) findViewById(R.id.timePickerStart);
-        int startHour = timePickerStart.getHour();
-        int startMinute = timePickerStart.getMinute();
-
-        TimePicker timePickerEnd =  (TimePicker) findViewById(R.id.timePickerEnd);
-        int endHour = timePickerEnd.getHour();
-        int endMinute = timePickerEnd.getMinute();
-
-        ReservationTime reservationTime = new ReservationTime(year,month,day,startHour,startMinute,endHour,endMinute);
-
         boolean valid = true;
+
+        TextView tv;
+        tv = findViewById(R.id.editFromDate);
+        String fromStr = tv.getText().toString();
+        tv = findViewById(R.id.editFromTime);
+        fromStr += ", " + tv.getText().toString();
+        tv = findViewById(R.id.editToDate);
+        String toStr = tv.getText().toString();
+        tv = findViewById(R.id.editToTime);
+        toStr += ", " + tv.getText().toString();
+        TimeSlot timeSlot = null;
+        try
+        {
+            timeSlot = TimeSlot.parseString(fromStr + " - " + toStr);
+        }
+        catch (ParseException e)
+        {
+            valid = false;
+        }
         if (address.equals(""))
         {
             valid = false;
-            TextView text = findViewById(R.id.textAddress);
-            text.setTextColor(Color.RED);
+            EditText text = findViewById(R.id.editAddress);
+            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
         }
         else
         {
-            TextView text = findViewById(R.id.textAddress);
-            text.setTextColor(Color.BLACK);
-        }
-
-        if (name.equals(""))
-        {
-            valid = false;
-            TextView text = findViewById(R.id.textName);
-            text.setTextColor(Color.RED);
-        }
-        else
-        {
-            TextView text = findViewById(R.id.textName);
-            text.setTextColor(Color.BLACK);
+            EditText text = findViewById(R.id.editAddress);
+            text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         }
 
         if (rate == 0)
         {
             valid = false;
-            TextView text = findViewById(R.id.textRate);
-            text.setTextColor(Color.RED);
+            EditText text = findViewById(R.id.editRate);
+            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
         }
         else
         {
-            TextView text = findViewById(R.id.textRate);
-            text.setTextColor(Color.BLACK);
+            EditText text = findViewById(R.id.editRate);
+            text.setBackgroundColor(getResources().getColor(R.color.colorLightGrey));
         }
 
         if (email.equals("") && phone.equals(""))
         {
             valid = false;
-            TextView text = findViewById(R.id.textPhone);
-            text.setTextColor(Color.RED);
-            text.setText("" + text.getText() + "\nYou must enter either phone or email");
-            text = findViewById(R.id.textEmail);
-            text.setTextColor(Color.RED);
-        }
-
-        if (reservationTime.getStart().compareTo(reservationTime.getEnd()) >= 0)
-        {
-            valid = false;
-            TextView text = findViewById(R.id.textTime);
-            text.setTextColor(Color.RED);
-            text.setText("" + text.getText() + ".\nYour ending time must be after your starting time");
+            EditText text = findViewById(R.id.editPhone);
+            text.setHint("Enter either phone");
+            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
+            text = findViewById(R.id.editEmail);
+            text.setHint("or email");
+            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
         }
         else
         {
-            TextView text = findViewById(R.id.textTime);
-            text.setTextColor(Color.BLACK);
+            EditText text = findViewById(R.id.editPhone);
+            text.setHint(getResources().getString(R.string.host_phone));
+            text.setBackgroundColor(getResources().getColor(R.color.colorLightGrey));
+            text = findViewById(R.id.editEmail);
+            text.setHint(getResources().getString(R.string.host_email));
+            text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+        }
+
+        if (timeSlot.getStart().compareTo(timeSlot.getEnd()) >= 0)
+        {
+            valid = false;
+            TextView text = findViewById(R.id.editFromTime);
+            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
+            text = findViewById(R.id.editFromDate);
+            text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
+        }
+        else
+        {
+            TextView text = findViewById(R.id.editFromTime);
+            text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+            text = findViewById(R.id.editFromDate);
+            text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         }
 
         if (valid)
         {
-            ParkingSpot newParkingSpot = new ParkingSpot(reservationTime, address, name, phone, email, rate);
-            String rtn = accessParkingSpots.insertParkingSpot(newParkingSpot);
+            try
+            {
+                accessParkingSpots.insertParkingSpot(name, timeSlot, repetitionInfo, address, name, phone, email, rate);
 
-            if (rtn == null)
-            {
-                Toast.makeText(this, "New advertisement created!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "New advertisement created!", Toast.LENGTH_LONG).show();
             }
-            else
+            catch (DAOException daoe)
             {
-                Toast.makeText(this, "Failed to create new advertisement!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, daoe.getMessage(), Toast.LENGTH_LONG).show();
             }
 
             finish();
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        String ret;
+        switch(requestCode)
+        {
+            case (0) :
+                if (resultCode == Activity.RESULT_OK)
+                    repetitionInfo = data.getStringExtra("repetitionInfo");
+                else
+                {
+                    repetitionInfo = "";
+                    ((ToggleButton)findViewById(R.id.toggleButtonRepeat)).setChecked(false);
+                }
+                break;
+            case(1):
+                if (resultCode == Activity.RESULT_OK)
+                {
+                    ret = data.getStringExtra("time");
+                    ((TextView) findViewById(R.id.editFromTime)).setText(ret);
+                }
+                break;
+            case(2):
+                if (resultCode == Activity.RESULT_OK)
+                {
+                    ret = data.getStringExtra("time");
+                    TextView textView = findViewById(R.id.editToTime);
+                    textView.setText(ret);
+                }
+                break;
+        }
+    }
+
+    public void buttonCancelOnClick(View view)
+    {
+        setResult(Activity.RESULT_CANCELED);
+        finish();
     }
 }

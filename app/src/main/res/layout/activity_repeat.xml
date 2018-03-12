@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:excludeFromRecents="true"
+    tools:context="comp3350.iPuP.presentation.RepeatActivity">
+
+    <RelativeLayout
+        android:id="@+id/layoutRepeat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="16dp"
+            android:text="@string/period_text"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <EditText
+            android:id="@+id/editPeriod"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/textView2"
+            android:layout_toEndOf="@+id/textView2"
+            android:layout_toRightOf="@+id/textView2"
+            android:ems="10"
+            android:inputType="number"
+            android:paddingTop="0dp"
+            android:text="@string/period_default"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <Spinner
+            android:id="@+id/spinnerPeriod"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textView2"
+            android:layout_toEndOf="@+id/editPeriod"
+            android:layout_toRightOf="@+id/editPeriod"
+            android:entries="@array/repeats_periods"
+            tools:layout_editor_absoluteX="373dp"
+            tools:layout_editor_absoluteY="29dp" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/spinnerPeriod"
+            android:layout_toEndOf="@+id/spinnerPeriod"
+            android:layout_toRightOf="@+id/spinnerPeriod"
+            android:text="@string/repeats"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+
+        <EditText
+            android:id="@+id/editNumReps"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/spinnerPeriod"
+            android:layout_alignBottom="@+id/spinnerPeriod"
+            android:layout_toEndOf="@+id/textView4"
+            android:layout_toRightOf="@+id/textView4"
+            android:ems="10"
+            android:inputType="number"
+            android:text="@string/reps_default"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/spinnerPeriod"
+            android:layout_alignBottom="@+id/spinnerPeriod"
+            android:layout_toEndOf="@+id/editNumReps"
+            android:layout_toRightOf="@+id/editNumReps"
+            android:text="@string/times"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <RelativeLayout
+            android:id="@+id/layoutMonthly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/layoutWeekly"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/textViewMonthDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:text="@string/monthDate"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layoutWeekly"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_below="@+id/editPeriod"
+            android:layout_marginTop="31dp"
+            android:visibility="visible">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="31dp"
+                android:orientation="horizontal">
+
+                <ToggleButton
+                    android:id="@+id/toggleButtonSun"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textOff="@string/letter_sun"
+                    android:textOn="@string/letter_sun" />
+
+                <ToggleButton
+                    android:id="@+id/toggleButtonMon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textOff="@string/letter_mon"
+                    android:textOn="@string/letter_mon" />
+
+                <ToggleButton
+                    android:id="@+id/toggleButtonTue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textOff="@string/letter_tue"
+                    android:textOn="@string/letter_tue" />
+
+                <ToggleButton
+                    android:id="@+id/toggleButtonWed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textOff="@string/letter_wed"
+                    android:textOn="@string/letter_wed" />
+
+                <ToggleButton
+                    android:id="@+id/toggleButtonThu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textOff="@string/letter_thu"
+                    android:textOn="@string/letter_thu" />
+
+                <ToggleButton
+                    android:id="@+id/toggleButtonFri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textOff="@string/letter_fri"
+                    android:textOn="@string/letter_fri" />
+
+                <ToggleButton
+                    android:id="@+id/toggleButtonSat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textOff="@string/letter_sat"
+                    android:textOn="@string/letter_sat" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/week_title"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/layoutWeekly">
+
+            <Button
+                android:id="@+id/buttonCancel"
+                style="@style/AppTheme.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="buttonCancelOnClick"
+                android:text="@string/cancel" />
+
+            <Button
+                android:id="@+id/buttonConfirm"
+                style="@style/AppTheme.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="buttonConfirmOnClick"
+                android:text="@string/confirm" />
+        </LinearLayout>
+    </RelativeLayout>
+
+
+
+</android.support.constraint.ConstraintLayout>

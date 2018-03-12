@@ -1,23 +1,30 @@
 package comp3350.iPuP.application;
 
-import comp3350.iPuP.persistence.DataAccessStub;
+import comp3350.iPuP.objects.DAOException;
+import comp3350.iPuP.persistence.DataAccess;
+import comp3350.iPuP.persistence.DataAccessObject;
 
 public class Services
 {
-	private static DataAccessStub dataAccessService = null;
+	private static DataAccess dataAccessService = null;
 
-	public static DataAccessStub createDataAccess()
+	public static DataAccess createDataAccess(String dbName)
 	{
-		if (dataAccessService == null)
+		try {
+			if (dataAccessService == null) {
+				dataAccessService = new DataAccessObject(dbName);
+				dataAccessService.open(Main.getDBPathName());
+			}
+		} catch (DAOException daoe)
 		{
-			dataAccessService = new DataAccessStub();
-			dataAccessService.open();
+            System.out.println(daoe.getMessage());
+            System.exit(1);
 		}
 		return dataAccessService;
 	}
 
 
-    public static DataAccessStub getDataAccess()
+    public static DataAccess getDataAccess()
     {
         if (dataAccessService == null)
         {
@@ -32,7 +39,14 @@ public class Services
 	{
 		if (dataAccessService != null)
 		{
-			dataAccessService.close();
+		    try
+            {
+                dataAccessService.close();
+            } catch (DAOException daoe)
+            {
+                System.err.println(daoe.getMessage());
+                System.exit(1);
+            }
 		}
 		dataAccessService = null;
 	}

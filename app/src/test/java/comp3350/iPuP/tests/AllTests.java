@@ -2,10 +2,10 @@ package comp3350.iPuP.tests;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import comp3350.iPuP.objects.ReservationTime;
+
 import comp3350.iPuP.tests.business.AccessParkingSpotsTest;
 import comp3350.iPuP.tests.objects.ParkingSpotTest;
-import comp3350.iPuP.tests.objects.ReservationTimeTest;
+import comp3350.iPuP.tests.objects.TimeSlotTest;
 
 public class AllTests
 {
@@ -22,7 +22,7 @@ public class AllTests
     private static void testObjects()
     {
         suite.addTestSuite(ParkingSpotTest.class);
-        suite.addTestSuite(ReservationTimeTest.class);
+        suite.addTestSuite(TimeSlotTest.class);
     }
 
     private static void testBusiness()

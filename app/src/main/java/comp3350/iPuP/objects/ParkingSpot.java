@@ -1,43 +1,35 @@
 package comp3350.iPuP.objects;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 
 public class ParkingSpot
 {
-    private ReservationTime reservation;
     private String address;
     private String name;
     private String phone;
     private String email;
-    private String id;
+    private long spotID;
     private double rate;
-    private boolean isBooked;
 
-    public ParkingSpot(ReservationTime reservation, String address, String name, String phone, String email, double rate)
+    public ParkingSpot(String address, String name, String phone, String email, double rate)
     {
-        this.reservation = reservation; //required
-        this.address = address;// required
-        this.name = name;// required
+        this.address = address;
+        this.name = name;
 
-        // either phone or email required
         this.phone = phone;
         this.email = email;
 
-        this.rate = rate;// required
-        id = address+name+phone+email;
-        isBooked = false;
-
+        this.rate = rate;
     }
 
-    public Date getStartTime()
+    public ParkingSpot(long id, String address, String name, String phone, String email, double rate)
     {
-        return reservation.getStart();
-    }
-
-    public Date getEndTime()
-    {
-        return reservation.getEnd();
+        this(address, name, phone, email, rate);
+        this.spotID = id;
     }
 
     public String getName()
@@ -65,25 +57,19 @@ public class ParkingSpot
         return rate;
     }
 
-    public boolean isBooked()
+    public long getSpotID()
     {
-        return isBooked;
+        return spotID;
     }
 
-    public void setBooked(boolean booked)
+    public void setSpotID(long spotID)
     {
-        isBooked = booked;
+        this.spotID = spotID;
     }
-
-    public String getId()
-    {
-        return id;
-    }
-
     @Override
     public String toString()
     {
-        return this.address + "\n" + this.reservation.toString();
+        return this.address;
     }
 
     @Override
@@ -94,7 +80,7 @@ public class ParkingSpot
             ParkingSpot otherSpot = (ParkingSpot) other;
             if (this.name.equals(otherSpot.name) && this.address.equals(otherSpot.address) &&
                     this.phone.equals(otherSpot.phone) && this.email.equals(otherSpot.email) &&
-                    this.rate == otherSpot.rate && this.reservation.equals(otherSpot.reservation))
+                    this.rate == otherSpot.rate)
                 return true;
         }
         return false;

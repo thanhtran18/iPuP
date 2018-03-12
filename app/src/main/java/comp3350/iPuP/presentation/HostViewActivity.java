@@ -2,7 +2,10 @@ package comp3350.iPuP.presentation;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -17,7 +20,7 @@ import comp3350.iPuP.objects.ParkingSpot;
 public class HostViewActivity extends ListActivity
 {
     private AccessParkingSpots accessParkingSpots;
-    ArrayAdapter<ParkingSpot> adapter;
+    SpotAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,12 +31,12 @@ public class HostViewActivity extends ListActivity
 
         accessParkingSpots = new AccessParkingSpots();
 
-        ListView list = findViewById(android.R.id.list);
+        ListView list = getListView();
 
         try
         {
             ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getMyHostedSpots(name);
-            adapter = new ArrayAdapter<ParkingSpot>(this, android.R.layout.simple_list_item_1, parkingSpots);
+            adapter = new SpotAdapter(this, parkingSpots);
             setListAdapter(adapter);
         }
         catch (Exception e)

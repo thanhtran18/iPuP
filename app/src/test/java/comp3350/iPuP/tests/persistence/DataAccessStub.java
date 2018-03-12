@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.DAOException;
@@ -27,25 +28,28 @@ public class DataAccessStub implements DataAccess
 	private ArrayList<String> users;
     private ArrayList<ParkingSpot> parkingSpots;
     private ArrayList<TimeSlot> daySlots;
+    private ArrayList<String> daySlotsParkingSpotID;
     private ArrayList<TimeSlot> timeSlots;
+    private ArrayList<String> timeSlotsParkingSpotID;
     private ArrayList<Booking> bookings;
+
 
 	public DataAccessStub(String dbName)
 	{
         this.dbName = dbName;
 	}
 
-	public void open(String dbPath)
+
+	public void open(String dbPath) throws DAOException
 	{
 	    users = new ArrayList<String>();
 		parkingSpots = new ArrayList<ParkingSpot>();
 		daySlots = new ArrayList<TimeSlot>();
+        daySlotsParkingSpotID = new ArrayList<String>();
 		timeSlots = new ArrayList<TimeSlot>();
+		timeSlotsParkingSpotID = new ArrayList<String>();
 		bookings = new ArrayList<Booking>();
 
-		ParkingSpot parkingspot;
-		TimeSlot dayslot;
-        TimeSlot timeslot;
 		String address;
 		String name;
 		String phone;
@@ -62,11 +66,7 @@ public class DataAccessStub implements DataAccess
             rate = 2;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 12:30:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            users.a
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "2 Chancellor Drive";
             name = "Scott Gordon";
@@ -75,10 +75,7 @@ public class DataAccessStub implements DataAccess
             rate = 4.50;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "30 Chancellor Drive";
             name = "Roberto Nesta Marley";
@@ -87,10 +84,7 @@ public class DataAccessStub implements DataAccess
             rate = 0.10;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:30:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "60 Main Street";
             name = "Avocado Stevenson";
@@ -99,10 +93,7 @@ public class DataAccessStub implements DataAccess
             rate = 5.25;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:00:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "566 Pasedina avenue";
             name = "Brian Cambell";
@@ -111,10 +102,7 @@ public class DataAccessStub implements DataAccess
             rate = 4;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:00:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "1 Kings Drive";
             name = "Jenifer Aniston";
@@ -123,10 +111,7 @@ public class DataAccessStub implements DataAccess
             rate = 7;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 20:00:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "20 Silverston Avenue";
             name = "Christopher Turk";
@@ -135,10 +120,7 @@ public class DataAccessStub implements DataAccess
             rate = 5;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 13:30:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "20 Kings Drive";
             name = "Tom Brady";
@@ -147,10 +129,7 @@ public class DataAccessStub implements DataAccess
             rate = 10;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 15:00:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "1 Pembina Hwy";
             name = "George H. Bush";
@@ -159,10 +138,7 @@ public class DataAccessStub implements DataAccess
             rate = 10;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "100 St. Mary's Rd";
             name = "Watson k. Smith";
@@ -171,10 +147,7 @@ public class DataAccessStub implements DataAccess
             rate = 7;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 16:00:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "1691 Pembina Hwy";
             name = "Victory Iyakoregha";
@@ -183,10 +156,7 @@ public class DataAccessStub implements DataAccess
             rate = 5;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 12:30:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "1338 Chancellor Drive";
             name = "Micheal Douglas";
@@ -195,10 +165,7 @@ public class DataAccessStub implements DataAccess
             rate = 4.50;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "1122 Chancellor Drive";
             name = "Kelly Cook";
@@ -207,10 +174,7 @@ public class DataAccessStub implements DataAccess
             rate = 4;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:30:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "91 Dalhousie Drive";
             name = "Madison Fishburne";
@@ -219,10 +183,7 @@ public class DataAccessStub implements DataAccess
             rate = 5.25;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:00:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "565 Pasedina Avenue";
             name = "Ronald Regan";
@@ -231,10 +192,7 @@ public class DataAccessStub implements DataAccess
             rate = 100;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 16:30:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "1334 Pembina Hwy";
             name = "Marilyn Monroe";
@@ -243,10 +201,7 @@ public class DataAccessStub implements DataAccess
             rate = 7;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 20:00:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "Brady Road Landfill";
             name = "Donald Trump";
@@ -255,10 +210,7 @@ public class DataAccessStub implements DataAccess
             rate = 100;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 15:00:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "1 Pembina Hwy";
             name = "George W. Bush";
@@ -267,12 +219,8 @@ public class DataAccessStub implements DataAccess
             rate = 10;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
-            //TODO change this depending on how to add more spots
             address = "29 St. Mary's Rd";
             name = "Mary Watson";
             phone = "204-242-2255";
@@ -280,10 +228,7 @@ public class DataAccessStub implements DataAccess
             rate = 4.50;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 20:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 02:00:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "1000 St. Mary's Rd";
             name = "Philipe Coutinho";
@@ -292,10 +237,7 @@ public class DataAccessStub implements DataAccess
             rate = 0.10;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 16:00:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             address = "1000 St. Mary's Rd";
             name = "Anne Coutinho";
@@ -304,14 +246,11 @@ public class DataAccessStub implements DataAccess
             rate = 0.20;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 17:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 19:00:00"));
-            time = new TimeSlot(calStart.getTime(), calEnd.getTime(), timeslotCounter++);
-            tempSpot = new ParkingSpot(address, name, phone, email, rate, time);
-            tempSpot.addDaySlot(new DaySlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-            parkingSpots.add(tempSpot);
+            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
         } catch (ParseException e)
         {
-            throw new Exception("Failed to open " + dbType +" database " + dbName + "!",e);
+            throw new DAOException("Failed to open " + dbType +" database " + dbName + "!",e);
         }
 
         System.out.println("Opened " +dbType +" database " +dbName);
@@ -324,157 +263,25 @@ public class DataAccessStub implements DataAccess
     }
 
 
-	public String insertDaySlot(String psID, DaySlot daySlot)
-	{
-		//TODO: implement insertDaySlot method
-		return null;
-	}
-
-	public String insertDaySlots(String psID, ArrayList<DaySlot> daySlots)
-	{
-		//TODO: implement insertDaySlots method
-		return null;
-	}
-
-	public String insertTimeSlot(String psID, Long dsID, Date start, Date end)
-	{
-		//TODO: implement insertTimeSlot method
-		return null;
-	}
-
-	public String insertTimeSlot(String psID, Long dsID, TimeSlot timeSlot)
-	{
-		return insertTimeSlot(psID, dsID, timeSlot.getStart(), timeSlot.getEnd());
-	}
-
-	public String insertTimeSlots(String psID, Long dsID, ArrayList<TimeSlot> timeSlots)
-	{
-		//TODO: implement insertTimeSlots method
-		return null;
-	}
-
-    public String insertParkingSpot(String user, ParkingSpot currentParkingSpot)
+    private boolean doesParkingSpotExists(String spotID)
     {
-        // not checking for duplicates yet
-        parkingSpots.add(currentParkingSpot);
-        return null;
+        return daySlotsParkingSpotID.contains(spotID);
     }
 
-	public boolean insertUser(String username)
+
+    private boolean doesUserExists(String username)
+    {
+        return users.contains(username);
+    }
+
+
+	public long insertDaySlot(TimeSlot daySlot, String spotID) throws DAOException
 	{
-		//TODO: implement insertUser method
-		return false;
-	}
-
-    public ArrayList<ParkingSpot> getParkingSpotsByDate(Date date)
-    {
-        ArrayList<ParkingSpot> parkingSpots = new ArrayList<ParkingSpot>();
-
-        //TODO: finish this method
-
-        return parkingSpots;
-    }
-
-    public ArrayList<ParkingSpot> getHostedSpotsOfGivenUser(String username)
-    {
-        ArrayList<ParkingSpot> parkingSpots = new ArrayList<ParkingSpot>();
-
-        //TODO: finish this method
-
-        return parkingSpots;
-    }
-
-	public ArrayList<Booking> getBookedSpotsOfGivenUser(String username)
-    {
-        ArrayList<Booking> bookings = new ArrayList<Booking>();
-
-        //TODO: finish this method!
-
-        return bookings;
-    }
-
-    public boolean setSpotToCancelled(String username, Long timeSlotId)
-    {
-        //TODO: finish this method
-        return false;
-    }
-
-	public ArrayList<ParkingSpot> getParkingSpots()
-	{
-		return parkingSpots;
-	}
-
-//	public String setSpotToBooked(String spotID, String slotID)
-//	{
-//		String bookMessage = "Not Booked";
-//	    for (int i = 0; i < parkingSpots.size(); i++)
-//	    {
-//            if (parkingSpots.get(i).isSpot(spotID, slotID))
-//            {
-//            	if (parkingSpots.get(i).isBooked())
-//            	{
-//            		bookMessage = "Already Booked";
-//				}
-//				else
-//				{
-//					parkingSpots.get(i).setBooked(true);
-//					bookMessage = "Booked";
-//				}
-//                break;
-//            }
-//        }
-//        return bookMessage;
-//	}
-
-	public void clearSpotList()
-	{
-		parkingSpots.clear();
-	}
-
-    private boolean addAUser(String user)
-    {
-        if (!users.contains(user))
-        {
-            users.add(user);
-            return true;
-        } else
-        {
-            return false;
-        }
-    }
-
-    private boolean addAParkingSpot(ParkingSpot parkingSpot)
-    {
         int i;
-
-        for (i = 0; i < parkingSpots.size(); i++) {
-            ParkingSpot aparkingspot = parkingSpots.get(i);
-            if ((parkingSpot.getSpotID()).equals(aparkingspot.getSpotID()) ||
-                    (parkingSpot.getName()).equals(aparkingspot.getName()))
-            {
-                break;
-            }
-        }
-
-        if (!(i >= 0))
-        {
-            parkingSpots.add(parkingSpot);
-            return true;
-        } else
-        {
-            return false;
-        }
-    }
-
-    private boolean addADaySlot(TimeSlot daySlot)
-    {
-        int i;
+        long rtn = dayslotCounter;
 
         for (i = 0; i < daySlots.size(); i++) {
-            TimeSlot adayspot = daySlots.get(i);
-            if ((adayspot.getSlotID()).equals(adayspot.getSlotID()) ||
-                    ((adayspot.gets()).equals(adayspot.getName()) &&
-                            ()))
+            if ((daySlot.getSlotID()).equals(daySlots.get(i).getSlotID()))
             {
                 break;
             }
@@ -484,22 +291,26 @@ public class DataAccessStub implements DataAccess
         {
             daySlot.setSlotID(dayslotCounter++);
             daySlots.add(daySlot);
-            return true;
+            daySlotsParkingSpotID.add(spotID);
         } else
         {
-            return false;
+            throw new DAOException("Error in inserting DaySlot object with spotID = "+spotID+"!");
         }
-    }
 
-    private boolean addATimeSlot(TimeSlot timeSlot)
-    {
+		return rtn;
+	}
+
+
+	public long insertTimeSlot(TimeSlot timeSlot, long daySlotID, String spotID) throws DAOException
+	{
         int i;
+        long rtn = timeslotCounter;
 
         for (i = 0; i < timeSlots.size(); i++) {
             TimeSlot atimespot = timeSlots.get(i);
             if ((timeSlot.getSlotID()).equals(atimespot.getSlotID()) ||
-                    ((timeSlot.gets()).equals(atimespot.getName()) &&
-                            ()))
+                    ((timeSlot.getStart()).equals(atimespot.getStart()) &&
+                            (timeSlot.getEnd()).equals(atimespot.getEnd())))
             {
                 break;
             }
@@ -509,22 +320,24 @@ public class DataAccessStub implements DataAccess
         {
             timeSlot.setSlotID(timeslotCounter++);
             timeSlots.add(timeSlot);
-            return true;
+            timeSlotsParkingSpotID.add(spotID);
         } else
         {
-            return false;
+            throw new DAOException("Error in inserting TimeSlot object with dayslotID = "+daySlotID+" and slotID = "+spotID+"!");
         }
-    }
 
-    private boolean addABooking (Booking booking)
+        return rtn;
+	}
+
+
+    public void insertParkingSpot(String username, ParkingSpot currentParkingSpot) throws DAOException
     {
         int i;
 
-        for (i = 0; i < bookings.size(); i++) {
-            Booking abooking = bookings.get(i);
-            if ((booking.getSlotID()).equals(abooking.getSlotID()) ||
-                    ((booking.gets()).equals(abooking.getName()) &&
-                            ()))
+        for (i = 0; i < parkingSpots.size(); i++) {
+            ParkingSpot aparkingspot = parkingSpots.get(i);
+            if ((currentParkingSpot.getSpotID()).equals(aparkingspot.getSpotID()) ||
+                    (currentParkingSpot.getName()).equals(aparkingspot.getName()))
             {
                 break;
             }
@@ -532,11 +345,201 @@ public class DataAccessStub implements DataAccess
 
         if (!(i >= 0))
         {
-            bookings.add(booking);
-            return true;
+            parkingSpots.add(currentParkingSpot);
         } else
         {
-            return false;
+            throw new DAOException("Error in creating ParkingSpot object with SPOT_ID = "+currentParkingSpot.getSpotID()+" for Username: "+username+"!");
+        }
+    }
+
+
+	public boolean insertUser(String username)
+	{
+		boolean result = false;
+
+		if (!doesUserExists(username))
+        {
+            users.add(username);
+            result = true;
+        }
+
+		return result;
+	}
+
+
+	//TODO: need this?
+//	public ArrayList<TimeSlot> getDaySlotsForAParkingSpot(String slotID)
+//    {
+//        return null;
+//    }
+
+
+    public ArrayList<ParkingSpot> getParkingSpotsByAddressDate(String address, Date date) throws DAOException
+    {
+        ArrayList<ParkingSpot> parkingSpotsByAddrDate = new ArrayList<ParkingSpot>();
+
+        for (int i = 0; i < parkingSpots.size(); i++)
+        {
+            ParkingSpot parkingSpot = parkingSpots.get(i);
+            boolean check = false;
+            if (address != null && address.equals(""))
+            {
+                if (parkingSpot.getAddress().contains(address))
+                    check = true;
+            } else
+            {
+                check = true;
+            }
+
+            if (check)
+            {
+                boolean found = false;
+                for (int j = 0; j < daySlotsParkingSpotID.size(); j++)
+                {
+                    if ((parkingSpot.getSpotID()).equals(daySlotsParkingSpotID.get(j)))
+                    {
+                        TimeSlot daySlot = daySlots.get(j);
+
+                        if (date.after(daySlot.getStart()) && date.before(daySlot.getEnd()))
+                        {
+                            found = true;
+                        }
+                    }
+
+                    if (found)
+                    {
+                        try
+                        {
+                            parkingSpotsByAddrDate.add(new ParkingSpot(parkingSpot.getSpotID(),
+                                    parkingSpot.getAddress(), parkingSpot.getName(), parkingSpot.getPhone(),
+                                    parkingSpot.getEmail(), parkingSpot.getRate()));
+                        } catch (Exception e)
+                        {
+                            throw new DAOException("Error in getting ParkingSpots ordered by Date: "+df.getSqlDateFormat().format(date)+"!",e);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        return parkingSpotsByAddrDate;
+    }
+
+
+    public ArrayList<ParkingSpot> getHostedSpotsOfGivenUser(String username) throws DAOException
+    {
+        ArrayList<ParkingSpot> hostedParkingSpotsOfGivenUser = new ArrayList<ParkingSpot>();
+
+        for(int i = 0; i < parkingSpots.size(); i++)
+        {
+            ParkingSpot parkingSpot = parkingSpots.get(i);
+            if ((parkingSpot.getName()).equals(username))
+            {
+                try
+                {
+                    hostedParkingSpotsOfGivenUser.add(new ParkingSpot(parkingSpot.getSpotID(),
+                            parkingSpot.getAddress(), parkingSpot.getName(), parkingSpot.getPhone(),
+                            parkingSpot.getEmail(), parkingSpot.getRate()));
+                } catch (Exception e)
+                {
+                    throw new DAOException("Error in getting hosted Parking Spots by "+username+"!",e);
+                }
+            }
+        }
+
+        return hostedParkingSpotsOfGivenUser;
+    }
+
+
+    public void clearSpotList()
+    {
+        parkingSpots.clear();
+    }
+
+
+	public ArrayList<Booking> getBookedSpotsOfGivenUser(String username) throws DAOException
+    {
+        ArrayList<Booking> bookedSpotsOfGivenUser = new ArrayList<Booking>();
+        ParkingSpot parkingSpot;
+
+        for(int i = 0; i < bookings.size(); i++)
+        {
+            Booking booking = bookings.get(i);
+            if ((booking.getUsername()).equals(username))
+            {
+                try
+                {
+                    bookedSpotsOfGivenUser.add(new Booking(booking.getUsername(), booking.getTimeSlotId(),
+                            booking.getAddress(), booking.getStart(), booking.getEnd()));
+                } catch (Exception e)
+                {
+                    throw new DAOException("Error in getting bookings list for User: "+username+"!",e);
+                }
+            }
+        }
+
+        return bookedSpotsOfGivenUser;
+    }
+
+
+    public void setBookedSpotToDeleted(String username, long timeSlotId)
+    {
+        for(int i = 0; i < bookings.size(); i++)
+        {
+            Booking booking = bookings.get(i);
+            if ((booking.getUsername()).equals(username) && (booking.getTimeSlotId()) == timeSlotId)
+            {
+                bookings.remove(i);
+            }
+        }
+    }
+
+
+//    private boolean addABooking (Booking booking)
+//    {
+//        int i;
+//
+//        for (i = 0; i < bookings.size(); i++) {
+//            Booking abooking = bookings.get(i);
+//            if ((booking.getSlotID()).equals(abooking.getSlotID()) ||
+//                    ((booking.gets()).equals(abooking.getName()) &&
+//                            ()))
+//            {
+//                break;
+//            }
+//        }
+//
+//        if (!(i >= 0))
+//        {
+//            bookings.add(booking);
+//            return true;
+//        } else
+//        {
+//            return false;
+//        }
+//    }
+
+
+    private void addDefaultData(String name, String address, String phone, String email,
+                                double rate, Calendar calStart, Calendar calEnd)
+    {
+        users.add(name);
+
+        parkingSpots.add(new ParkingSpot(address, name, phone, email, rate));
+
+        daySlots.add(new TimeSlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+        daySlotsParkingSpotID.add(address+name);
+
+        int numSlots = (int)(calEnd.getTimeInMillis() - calStart.getTimeInMillis()) / 1000 / 60 / 30;
+
+        for (int i = 0; i < numSlots; i++)
+        {
+            Date startTime = calStart.getTime();
+            calStart.add(Calendar.MINUTE, 30);
+            Date endTime = calStart.getTime();
+            timeSlots.add(new TimeSlot(startTime, endTime, timeslotCounter++));
+            timeSlotsParkingSpotID.add(address+name);
         }
     }
 }

@@ -105,9 +105,9 @@ public class AccessParkingSpots
         }
     }
 
-    public boolean insertParkingSpot(String user, ParkingSpot newParkingSpot) throws DAOException
+    private void insertParkingSpot(String user, ParkingSpot newParkingSpot) throws DAOException
     {
-        return dataAccess.insertParkingSpot(user, newParkingSpot);
+        dataAccess.insertParkingSpot(user, newParkingSpot);
     }
 
     public ArrayList<ParkingSpot> getAllSpots()
@@ -157,8 +157,8 @@ public class AccessParkingSpots
         return dataAccess.getParkingSpotsByAddressDate(address, today);
     }
 
-    public boolean cancelThisSpot(String username, Long timeSlotId) throws DAOException
+    public void cancelThisSpot(String username, Long timeSlotId) throws DAOException
     {
-        return dataAccess.setBookedSpotToDeleted(username, timeSlotId);
+        dataAccess.setBookedSpotToDeleted(username, timeSlotId);
     }
 }

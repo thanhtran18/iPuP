@@ -181,7 +181,7 @@ public class DataAccessObject implements DataAccess
         return dayslotID;
     }
 
-    public long insertTimeSlot(TimeSlot timeSlot, long dayslotID, String spotID) throws DAOException
+    public long insertTimeSlot(TimeSlot timeSlot, long daySlotID, String spotID) throws DAOException
     {
         long timeslotID;
 
@@ -191,7 +191,7 @@ public class DataAccessObject implements DataAccess
                         "VALUES (?,?,?,?,?)";
             pstmt3 = con.prepareStatement(cmdString);
             pstmt3.setString(1, spotID);
-            pstmt3.setLong(2, dayslotID);
+            pstmt3.setLong(2, daySlotID);
             pstmt3.setString(3, df.getSqlDateTimeFormat().format(timeSlot.getStart()));
             pstmt3.setString(4, df.getSqlDateTimeFormat().format(timeSlot.getEnd()));
             pstmt3.setBoolean(5,false);
@@ -201,7 +201,7 @@ public class DataAccessObject implements DataAccess
         } catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Error in inserting TimeSlot object with dayslotID = "+dayslotID+" and slotID = "+spotID+"!",sqle);
+            throw new DAOException("Error in inserting TimeSlot object with dayslotID = "+daySlotID+" and slotID = "+spotID+"!",sqle);
         }
 
         try
@@ -225,9 +225,8 @@ public class DataAccessObject implements DataAccess
         return timeslotID;
     }
 
-	public boolean insertParkingSpot(String username, ParkingSpot currentParkingSpot) throws DAOException
+	public void insertParkingSpot(String username, ParkingSpot currentParkingSpot) throws DAOException
     {
-        boolean result = false;
         try
         {
             if (!doesParkingSpotExists(currentParkingSpot.getSpotID())) {
@@ -245,8 +244,6 @@ public class DataAccessObject implements DataAccess
                 //System.out.println(cmdString);
                 updateCount = pstmt.executeUpdate();
                 checkWarning(pstmt, updateCount);
-
-                result = true;
             }
         }
         catch (SQLException sqle)
@@ -254,8 +251,6 @@ public class DataAccessObject implements DataAccess
             processSQLError(sqle);
             throw new DAOException("Error in creating ParkingSpot object with SPOT_ID = "+currentParkingSpot.getSpotID()+" for Username: "+username+"!",sqle);
         }
-
-        return result;
     }
 
     public boolean insertUser(String username) throws DAOException
@@ -282,13 +277,13 @@ public class DataAccessObject implements DataAccess
         return result;
     }
 
-    public ArrayList<TimeSlot> getDaySlotsForAParkingSpot(String slotID) throws DAOException
-    {
-        //TODO: implement this
-        ArrayList<TimeSlot> daySlots = new ArrayList<TimeSlot>();
-
-        return daySlots;
-    }
+    //TODO: need this?
+//    public ArrayList<TimeSlot> getDaySlotsForAParkingSpot(String slotID) throws DAOException
+//    {
+//        ArrayList<TimeSlot> daySlots = new ArrayList<TimeSlot>();
+//
+//        return daySlots;
+//    }
 
     public ArrayList<ParkingSpot> getParkingSpotsByAddressDate(String address, Date date) throws DAOException
     {
@@ -353,64 +348,6 @@ public class DataAccessObject implements DataAccess
     }
 
 
-//    public String setSpotToBooked(String spotID, String slotID)
-//    {
-//        boolean isBooked;
-//        String bookMessage = "Not Booked";
-//
-//        result = null;
-//
-//        try
-//        {
-////            cmdString = "SELECT * FROM ParkingSpots WHERE SPOT_ID = ?";
-//            cmdString = "UPDATE PARKINGSPOTS SET IS_BOOKED = ? WHERE SPOT_ID = ? AND IS_BOOKED = FALSE";
-//            pstmt = con.prepareStatement(cmdString);
-//            pstmt.setBoolean(1, true);
-//            pstmt.setString(2, spotID);
-////            pstmt.setString(2, spotID + "_" + slotID);
-//            updateCount = pstmt.executeUpdate();
-//
-//            if (updateCount == 0)
-//            {
-//                bookMessage = "Already Booked";
-//            } else
-//            {
-//                bookMessage = "Booked";
-//            }
-//
-////            if (rsp.next())
-////            {
-////                isBooked = rsp.getBoolean("Is_Booked");
-////
-////                if (isBooked)
-////                {
-////                    bookMessage = "Already Booked";
-////                }
-////                else
-////                {
-////                    cmdString = "Update ParkingSpots Set Is_Booked=? where SPOT_ID=?";
-////                    pstmt = con.prepareStatement(cmdString);
-////                    pstmt.setBoolean(1, true);
-////                    pstmt.setString(2,spotID + "_" + slotID);
-////                    //System.out.println(cmdString);
-////                    updateCount = pstmt.executeUpdate();
-////                    result = checkWarning(pstmt, updateCount);
-////
-////                    bookMessage = "Booked";
-////                }
-////            }
-////
-////            rsp.close();
-//        }
-//        catch (Exception e)
-//        {
-//            result = processSQLError(e);
-//        }
-//
-//        return bookMessage;
-//    }
-
-
     public ArrayList<ParkingSpot> getHostedSpotsOfGivenUser(String username) throws DAOException
     {
         parkingSpotsOfAUser = new ArrayList<ParkingSpot>();
@@ -441,43 +378,6 @@ public class DataAccessObject implements DataAccess
     }
 
 
-	public String checkWarning(Statement st, int updateCount) throws DAOException
-	{
-		String result = null;
-		try
-		{
-			SQLWarning warning = st.getWarnings();
-			if (warning != null)
-			{
-				result = warning.getMessage();
-			}
-		}
-		catch (Exception e)
-		{
-			processSQLError(e);
-			throw new DAOException("Error in getting warnings!",e);
-		}
-		if (updateCount != 1)
-		{
-			result = "Tuple not inserted correctly.";
-            throw new DAOException(result);
-		}
-		return result;
-	}
-
-
-	public String processSQLError(Exception e)
-	{
-		String result = "*** SQL Error: " + e.getMessage();
-
-		// Remember, this will NOT be seen by the user!
-		e.printStackTrace();
-		
-		return result;
-	}
-
-
-	//added by Kevin
     public ArrayList<Booking> getBookedSpotsOfGivenUser(String username) throws DAOException
     {
         Calendar calStart = Calendar.getInstance();
@@ -527,9 +427,8 @@ public class DataAccessObject implements DataAccess
         return bookingSpotsOfAUser;
     }
 
-    public boolean setBookedSpotToDeleted(String username, long timeSlotId) throws DAOException
+    public void setBookedSpotToDeleted(String username, long timeSlotId) throws DAOException
     {
-        boolean result = false;
         try
         {
             cmdString = "UPDATE BOOKINGS SET DELETED = TRUE WHERE USERNAME = ? AND TIMESLOT_ID = ?";
@@ -538,16 +437,47 @@ public class DataAccessObject implements DataAccess
             pstmt.setLong(2, timeSlotId);
             updateCount = pstmt.executeUpdate();
             checkWarning(pstmt, updateCount);
-
-            result = true;
         }
         catch (SQLException sqle)
         {
             processSQLError(sqle);
             throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = "+timeSlotId+"!",sqle);
         }
+    }
+
+
+    public String checkWarning(Statement st, int updateCount) throws DAOException
+    {
+        String result = null;
+        try
+        {
+            SQLWarning warning = st.getWarnings();
+            if (warning != null)
+            {
+                result = warning.getMessage();
+            }
+        }
+        catch (Exception e)
+        {
+            processSQLError(e);
+            throw new DAOException("Error in getting warnings!",e);
+        }
+        if (updateCount != 1)
+        {
+            result = "Tuple not inserted correctly.";
+            throw new DAOException(result);
+        }
         return result;
     }
 
 
+    public String processSQLError(Exception e)
+    {
+        String result = "*** SQL Error: " + e.getMessage();
+
+        // Remember, this will NOT be seen by the user!
+        e.printStackTrace();
+
+        return result;
+    }
 }

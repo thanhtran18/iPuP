@@ -510,6 +510,26 @@ public class DataAccessStub implements DataAccess
 
     }
 
+    @Override
+    public ArrayList<TimeSlot> getTimeSlotsForParkingSpot(long spotID) throws DAOException {
+        return null;
+    }
+
+    @Override
+    public ArrayList<TimeSlot> getUnbookedTimeSlotsForParkingSpot(long spotID) throws DAOException {
+        return null;
+    }
+
+    @Override
+    public ParkingSpot getParkingSpotByID(long spotID) throws DAOException {
+        return null;
+    }
+
+    @Override
+    public boolean bookTimeSlot(String username, long timeSlotID, long spotID) throws DAOException {
+        return false;
+    }
+
 
 //    private boolean addABooking (Booking booking)
 //    {

@@ -562,14 +562,15 @@ public class DataAccessObject implements DataAccess
         }
     }
     //TODO: Make method to get timeslots from database and return arraylist
-    public ArrayList<TimeSlot> getTimeSlotsForParkingSpot(String spotID) throws DAOException{
+    public ArrayList<TimeSlot> getTimeSlotsForParkingSpot(long spotID) throws DAOException
+    {
 	    ArrayList<TimeSlot> returnVal;
 	    TimeSlot currSlot;
         Calendar calStart = Calendar.getInstance();
         Calendar calEnd = Calendar.getInstance();
         Date start, end;
         long timeSlotID;
-        boolean bookedVar=false;
+        boolean bookedVar = false;
 
 	    try {
             cmdString = "SELECT T.TIMESLOT_ID, T.SPOT_ID, T.STARTDATETIME, T.ENDDATETIME, B.USERNAME" +
@@ -577,7 +578,7 @@ public class DataAccessObject implements DataAccess
                     "AND B.DELETED=FALSE WHERE T.SPOT_ID=? AND T.DELETED=FALSE" +
                     " ORDER BY T.STARTDATETIME";
             pstmt = con.prepareStatement(cmdString);
-            pstmt.setString(1, spotID);
+            pstmt.setLong(1, spotID);
             rss = pstmt.executeQuery();
             returnVal=new ArrayList<TimeSlot>();
             while (rss.next())
@@ -609,7 +610,8 @@ public class DataAccessObject implements DataAccess
     }
 
     //TODO: Confirm if this method should or should not be used.
-    public ArrayList<TimeSlot> getUnbookedTimeSlotsForParkingSpot(String spotID) throws DAOException{
+    public ArrayList<TimeSlot> getUnbookedTimeSlotsForParkingSpot(long spotID) throws DAOException
+    {
         ArrayList<TimeSlot> returnVal;
         TimeSlot currSlot;
         Calendar calStart = Calendar.getInstance();
@@ -624,7 +626,7 @@ public class DataAccessObject implements DataAccess
                     "AND B.DELETED=FALSE WHERE T.SPOT_ID=? AND T.DELETED=FALSE" +
                     " ORDER BY T.STARTDATETIME";
             pstmt = con.prepareStatement(cmdString);
-            pstmt.setString(1, spotID);
+            pstmt.setLong(1, spotID);
             rss = pstmt.executeQuery();
             returnVal=new ArrayList<TimeSlot>();
             while (rss.next())
@@ -655,14 +657,16 @@ public class DataAccessObject implements DataAccess
     }
 
     //TODO: Make method to set the deleted field for timeslots in the database to true.
-    public ParkingSpot getParkingSpotByID(String spotID) throws DAOException{
-	   ParkingSpot returnVal=null;
+    public ParkingSpot getParkingSpotByID(long spotID) throws DAOException
+    {
+	   ParkingSpot returnVal = null;
 	   String name, address, phone, email ;
 	   Double rate;
+
         try {
             cmdString = "SELECT * FROM PARKINGSPOTS WHERE SPOT_ID = ?";
             pstmt = con.prepareStatement(cmdString);
-            pstmt.setString(1, spotID);
+            pstmt.setLong(1, spotID);
             rss = pstmt.executeQuery();
             while (rss.next())
             {
@@ -676,7 +680,7 @@ public class DataAccessObject implements DataAccess
 
             rss.close();
 
-        }catch (Exception SqlEx){ //TODO: Exception catching style here may need to change
+        } catch (Exception SqlEx){ //TODO: Exception catching style here may need to change
             processSQLError(SqlEx);
             throw new DAOException("Error in getting timeslots from parking spot with SPOT_ID" +
                     " = "+spotID+"!",SqlEx);
@@ -684,25 +688,25 @@ public class DataAccessObject implements DataAccess
         return returnVal;
     }
 
-    public boolean bookTimeSlot(String theUser, long timeSLot_ID, String spot_ID) throws DAOException{
-        boolean returnVal=false;
+    public boolean bookTimeSlot(String theUser, long timeSlotID, long spotID) throws DAOException
+    {
+        boolean returnVal = false;
+
         try {
             cmdString = "INSERT INTO BOOKINGS VALUES(?,?,?,FALSE)";
             pstmt = con.prepareStatement(cmdString);
             pstmt.setString(1, theUser);
-            pstmt.setLong(2, timeSLot_ID);
-            pstmt.setString(3, spot_ID);
+            pstmt.setLong(2, timeSlotID);
+            pstmt.setLong(3, spotID);
             updateCount = pstmt.executeUpdate();
             checkWarning(pstmt,updateCount);
 
-        }catch (Exception SqlEx){ //TODO: Exception catching style here may need to change
+        } catch (Exception SqlEx){ //TODO: Exception catching style here may need to change
             processSQLError(SqlEx);
             throw new DAOException("Error in booking timeslots for parking spot with SPOT_ID" +
-                    " = "+spot_ID+"!",SqlEx);
+                    " = "+spotID+"!",SqlEx);
         }
+
 	    return returnVal;
     }
-
-
-
 }

@@ -168,27 +168,30 @@ public class AccessParkingSpots
     }
 
     //TODO: Methods added by me for timeslot functionality begin here may be edited.
-    public ArrayList<TimeSlot> getFreeTimeSlotsByID(String spotID) throws DAOException{
+    public ArrayList<TimeSlot> getFreeTimeSlotsByID(long spotID) throws DAOException{
         return dataAccess.getUnbookedTimeSlotsForParkingSpot(spotID);
     }
 
-    public ParkingSpot getSpotBYID(String spotID) throws DAOException{
+    public ParkingSpot getSpotBYID(long spotID) throws DAOException{
         return dataAccess.getParkingSpotByID(spotID);
     }
 
-    public boolean bookTimeSlots(ArrayList<TimeSlot> timeSlots, String userBooking, String pSpotID) throws DAOException{
-        boolean returnVal=false;
+    public boolean bookTimeSlots(ArrayList<TimeSlot> timeSlots, String userBooking, long pSpotID) throws DAOException{
+        boolean returnVal = false;
         int checkLoop=0;
+
         for(TimeSlot currSlot:timeSlots){
-            long timeSLotID=currSlot.getSlotID();
-            boolean bookingWorked=dataAccess.bookTimeSlot(userBooking, timeSLotID, pSpotID);
+            long timeSLotID = currSlot.getSlotID();
+            boolean bookingWorked = dataAccess.bookTimeSlot(userBooking, timeSLotID, pSpotID);
+
             if(bookingWorked) {
                 checkLoop++;
             }
         }
-        if(checkLoop==timeSlots.size()){
-            returnVal=false;
+        if(checkLoop == timeSlots.size()){
+            returnVal = false;
         }
+
         return returnVal;
     }
 }

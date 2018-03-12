@@ -26,13 +26,15 @@ public class AccessParkingSpots
 
     public boolean insertParkingSpot(String user, TimeSlot timeSlot, String repetitionInfo, String address, String name, String phone, String email, double rate) throws DAOException
     {
-        boolean result = false;
+        boolean result = true;
         Calendar start = new GregorianCalendar();
         Calendar end = new GregorianCalendar();
         start.setTime(timeSlot.getStart());
         end.setTime(timeSlot.getEnd());
 
         ParkingSpot spot = new ParkingSpot(address, name, phone, email, rate);
+
+        insertParkingSpot(user, spot);
 
         if (repetitionInfo != null && !repetitionInfo.equals(""))
         {
@@ -74,8 +76,6 @@ public class AccessParkingSpots
         {
             insertDaySlot(start.getTime(), end.getTime(), spot.getSpotID(), dataAccess);
         }
-
-        result = insertParkingSpot(user, spot);
 
         return result;
     }

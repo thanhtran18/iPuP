@@ -144,7 +144,7 @@ public class DataAccessObject implements DataAccess
 
         try
         {
-            cmdString = "INSERT INTO DAYSLOTS (SPOT_ID,STARTDAYTIME,ENDDAYTIME) " +
+            cmdString = "INSERT INTO DAYSLOTS (SPOT_ID,STARTDAYTIME,ENDDAYTIME,DELETED) " +
                         "VALUES (?,?,?,?)";
             pstmt2 = con.prepareStatement(cmdString);
             pstmt2.setString(1, spotID);
@@ -187,8 +187,8 @@ public class DataAccessObject implements DataAccess
 
         try
         {
-            cmdString = "INSERT INTO TIMESLOTS (SPOT_ID,DAYSLOT_ID,STARTDATETIME,ENDDATETIME) " +
-                    "VALUES (?,?,?,?,?)";
+            cmdString = "INSERT INTO TIMESLOTS (SPOT_ID,DAYSLOT_ID,STARTDATETIME,ENDDATETIME,DELETED) " +
+                        "VALUES (?,?,?,?,?)";
             pstmt3 = con.prepareStatement(cmdString);
             pstmt3.setString(1, spotID);
             pstmt3.setLong(2, dayslotID);

@@ -13,27 +13,35 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import comp3350.iPuP.R;
+import comp3350.iPuP.business.AccessParkingSpots;
+import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.objects.ParkingSpot;
+import comp3350.iPuP.objects.TimeSlot;
 
-public class SpotAdapter extends ArrayAdapter<ParkingSpot>
+public class DaySlotAdapter extends ArrayAdapter<TimeSlot>
 {
-    SpotAdapter(Context context, ArrayList<ParkingSpot> spots)
+    DateFormatter df;
+    AccessParkingSpots dataAccess;
+
+    DaySlotAdapter(Context context, ArrayList<TimeSlot> slots)
     {
-        super(context, 0, spots);
+        super(context, 0, slots);
+        df = new DateFormatter();
+        dataAccess = new AccessParkingSpots();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ParkingSpot spot = getItem(position);
+        TimeSlot slot = getItem(position);
         if (convertView == null)
         {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
 
         TextView tv = convertView.findViewById(R.id.textViewRow1);
-        tv.setText(String.format(convertView.getResources().getString(R.string.hostview_Address), spot.getAddress()));
+        tv.setText(String.format(convertView.getResources().getString(R.string.hostview_Start), df.getDateTimeFormat().format(slot.getStart())));
         tv = convertView.findViewById(R.id.textViewRow2);
-        tv.setText(String.format(convertView.getResources().getString(R.string.hostview_Rate), spot.getRate()));
+        tv.setText(String.format(convertView.getResources().getString(R.string.hostview_End), df.getDateTimeFormat().format(slot.getEnd())));
 
         if (position % 2 == 0)
             convertView.setBackgroundResource(R.color.colorWhite);
@@ -48,11 +56,8 @@ public class SpotAdapter extends ArrayAdapter<ParkingSpot>
             public void onClick(View view)
             {
                 int position = (int) view.getTag();
-                ParkingSpot spot = getItem(position);
-
-                Intent hostModifyIntent = new Intent(view.getContext(), HostModifyActivity.class);
-                hostModifyIntent.putExtra("spotID", spot.getSpotID());
-                view.getContext().startActivity(hostModifyIntent);
+                TimeSlot slot = getItem(position);
+                dataAccess.deleteDaySlot(slot.getSlotID());
             }
         });
 
@@ -64,10 +69,10 @@ public class SpotAdapter extends ArrayAdapter<ParkingSpot>
             public void onClick(View view)
             {
                 int position = (int) view.getTag();
-                ParkingSpot spot = getItem(position);
+                TimeSlot slot = getItem(position);
 
-                Intent hostViewDayIntent = new Intent(view.getContext(), HostViewDayActivity.class);
-                hostViewDayIntent.putExtra("spotID", spot.getSpotID());
+                Intent hostViewDayIntent = new Intent(view.getContext(), HostViewTimeActivity.class);
+                hostViewDayIntent.putExtra("slotid", slot.getSlotID());
                 view.getContext().startActivity(hostViewDayIntent);
             }
         });

@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -537,5 +538,73 @@ public class DataAccessObject implements DataAccess
             processSQLError(sqle);
             throw new DAOException("Error in updateing ParkingSpot with id = "+spotID+"!",sqle);
         }
+    }
+
+    @Override
+    public ArrayList<TimeSlot> getDaySlots(long spotID) throws DAOException
+    {
+        ArrayList<TimeSlot> slots = new ArrayList<>();
+
+        try {
+            cmdString = "SELECT * FROM DAYSLOTS D WHERE D.SPOT_ID=? ";
+            pstmt = con.prepareStatement(cmdString);
+
+            pstmt.setLong(1, spotID);
+
+            rss = pstmt.executeQuery();
+            long daySlotID;
+            Date start, end;
+
+            while (rss.next())
+            {
+                daySlotID = rss.getLong("TIMESLOT_ID");
+                start = rss.getTimestamp("Startdatetime");
+                end = rss.getTimestamp("Enddatetime");
+
+                slots.add(new TimeSlot(start, end, daySlotID));
+            }
+
+            rss.close();
+        } catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error in getting day slot for ParkingSpot with spotID: "+spotID+"!",sqle);
+        }
+
+        return slots;
+    }
+
+    @Override
+    public ArrayList<TimeSlot> getTimeSlots(long daySlotID) throws DAOException
+    {
+        ArrayList<TimeSlot> slots = new ArrayList<>();
+
+        try {
+            cmdString = "SELECT * FROM TIMESLOTS T WHERE T.SLOT_ID=? ";
+            pstmt = con.prepareStatement(cmdString);
+
+            pstmt.setLong(1, daySlotID);
+
+            rss = pstmt.executeQuery();
+            long timeSlotID;
+            Date start, end;
+
+            while (rss.next())
+            {
+                timeSlotID = rss.getLong("TIMESLOT_ID");
+                start = rss.getTimestamp("Startdatetime");
+                end = rss.getTimestamp("Enddatetime");
+
+                slots.add(new TimeSlot(start, end, timeSlotID));
+            }
+
+            rss.close();
+        } catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error in getting time slot for day slot with slotID: "+daySlotID+"!",sqle);
+        }
+
+        return slots;
     }
 }

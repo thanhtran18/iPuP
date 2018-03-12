@@ -156,6 +156,7 @@ public class AccessParkingSpots
     {
         dataAccess.setBookedSpotToDeleted(username, timeSlotId);
     }
+
     public ParkingSpot getParkingSpot(String spotID) throws DAOException
     {
         return dataAccess.getParkingSpot(spotID);
@@ -164,5 +165,19 @@ public class AccessParkingSpots
     public void modifyParkingSpot(String spotID, String address, String phone, String email, Double rate) throws DAOException
     {
         dataAccess.modifyParkingSpot(spotID,address,phone,email,rate);
+    }
+
+    public void deleteDaySlot(Long slotID)
+    {
+    }
+
+    public ArrayList<TimeSlot> getDaySlots(long spotID) throws DAOException
+    {
+        return dataAccess.getDaySlots(spotID);
+    }
+
+    public ArrayList<TimeSlot> getTimeSlots(long daySlotID) throws DAOException
+    {
+        return dataAccess.getTimeSlots(daySlotID);
     }
 }

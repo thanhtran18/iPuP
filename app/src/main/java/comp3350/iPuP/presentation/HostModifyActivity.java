@@ -32,7 +32,7 @@ public class HostModifyActivity extends AppCompatActivity
 
         accessParkingSpots = new AccessParkingSpots();
 
-        spotID = getIntent().getStringExtra("spotid");
+        spotID = getIntent().getStringExtra("spotID");
         if (spotID != null)
         {
             try

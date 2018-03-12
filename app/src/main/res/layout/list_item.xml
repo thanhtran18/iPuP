@@ -13,12 +13,14 @@
         <TextView
             style="@style/AppTheme.TextViewSmallStyle"
             android:id="@+id/textViewRow1"
+            android:background="@color/colorTransparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="" />
 
         <TextView
             style="@style/AppTheme.TextViewSmallStyle"
+            android:background="@color/colorTransparent"
             android:id="@+id/textViewRow2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,7 +28,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/buttonModify"
+        android:id="@+id/buttonListItem"
         style="@style/AppTheme.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

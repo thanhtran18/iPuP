@@ -35,4 +35,8 @@ public interface DataAccess
 	void setBookedSpotToDeleted(String username, long timeSlotId) throws  DAOException;
 
     void modifyParkingSpot(String spotID, String address, String phone, String email, Double rate) throws DAOException;
+
+	ArrayList<TimeSlot> getDaySlots(long spotID) throws DAOException;
+
+	ArrayList<TimeSlot> getTimeSlots(long spotID) throws DAOException;
 }

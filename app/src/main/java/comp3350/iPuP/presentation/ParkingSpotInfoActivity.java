@@ -93,9 +93,13 @@ public class ParkingSpotInfoActivity extends AppCompatActivity {
             public void onClick(View view)
             {
                 showBookingResult();
-                String spotID=intent.getStringExtra(ID_OF_SPOT);
+                long spotID=intent.getLongExtra(ID_OF_SPOT,-1);
                 String slotID=intent.getStringExtra(ID_OF_SLOT);
-                accessParkingSpots.bookSpot(spotID, slotID);
+                if (spotID != -1) {
+                    accessParkingSpots.bookSpot(spotID, slotID);
+                } else {
+                    Toast.makeText(getApplicationContext(),"Unable to retrieve spotID!", Toast.LENGTH_LONG).show();
+                }
                 finish();
             }
         });

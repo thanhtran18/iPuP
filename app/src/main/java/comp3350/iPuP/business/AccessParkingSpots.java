@@ -1,5 +1,6 @@
 package comp3350.iPuP.business;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,7 +34,7 @@ public class AccessParkingSpots
 
         ParkingSpot spot = new ParkingSpot(address, name, phone, email, rate);
 
-        insertParkingSpot(user, spot);
+        spot.setSpotID(insertParkingSpot(user, spot));
 
         if (repetitionInfo != null && !repetitionInfo.equals(""))
         {
@@ -77,14 +78,14 @@ public class AccessParkingSpots
         }
     }
 
-    private void insertDaySlot(Date start, Date end, String spotID, DataAccess dataAccess) throws DAOException
+    private void insertDaySlot(Date start, Date end, long spotID, DataAccess dataAccess) throws DAOException
     {
         TimeSlot daySlot = new TimeSlot(start, end);
         daySlot.setSlotID( dataAccess.insertDaySlot(daySlot, spotID));
         insertTimeSlots(daySlot, spotID, dataAccess);
     }
 
-    private void insertTimeSlots(TimeSlot daySlot, String spotID, DataAccess dataAccess) throws DAOException
+    private void insertTimeSlots(TimeSlot daySlot, long spotID, DataAccess dataAccess) throws DAOException
     {
         Calendar start = new GregorianCalendar();
         Calendar end = new GregorianCalendar();
@@ -102,9 +103,9 @@ public class AccessParkingSpots
         }
     }
 
-    private void insertParkingSpot(String user, ParkingSpot newParkingSpot) throws DAOException
+    private long insertParkingSpot(String user, ParkingSpot newParkingSpot) throws DAOException
     {
-        dataAccess.insertParkingSpot(user, newParkingSpot);
+        return dataAccess.insertParkingSpot(user, newParkingSpot);
     }
 
     public ArrayList<ParkingSpot> getAllSpots()
@@ -127,7 +128,7 @@ public class AccessParkingSpots
         return availableSpots;
     }
 
-    public void bookSpot(String spotID, String slotID)
+    public void bookSpot(long spotID, String slotID)
     {
 //        return dataAccess.setSpotToBooked(spotID, slotID);
     }
@@ -156,16 +157,46 @@ public class AccessParkingSpots
     {
         dataAccess.setBookedSpotToDeleted(username, timeSlotId);
     }
-
-    public ParkingSpot getParkingSpot(String spotID) throws DAOException
+    public ParkingSpot getParkingSpot(long spotID) throws DAOException
     {
         return dataAccess.getParkingSpot(spotID);
     }
 
-    public void modifyParkingSpot(String spotID, String address, String phone, String email, Double rate) throws DAOException
+    public void modifyParkingSpot(long spotID, String address, String phone, String email, Double rate) throws DAOException
     {
         dataAccess.modifyParkingSpot(spotID,address,phone,email,rate);
     }
+
+    //TODO: Methods added by me for timeslot functionality begin here may be edited.
+    public ArrayList<TimeSlot> getFreeTimeSlotsByID(long spotID) throws DAOException{
+        return dataAccess.getUnbookedTimeSlotsForParkingSpot(spotID);
+    }
+
+    public ParkingSpot getSpotBYID(long spotID) throws DAOException{
+        return dataAccess.getParkingSpotByID(spotID);
+    }
+
+    public boolean bookTimeSlots(ArrayList<TimeSlot> timeSlots, String userBooking, long pSpotID) throws DAOException{
+        boolean returnVal = false;
+        int checkLoop=0;
+
+        for(TimeSlot currSlot:timeSlots){
+            long timeSLotID = currSlot.getSlotID();
+            boolean bookingWorked = dataAccess.bookTimeSlot(userBooking, timeSLotID, pSpotID);
+
+            if(bookingWorked) {
+                checkLoop++;
+            }
+        }
+        if(checkLoop == timeSlots.size()){
+            returnVal = false;
+        }
+
+        return returnVal;
+    }
+
+
+
 
     public void deleteDaySlot(Long slotID)
     {

@@ -31,8 +31,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
         final Calendar c = Calendar.getInstance();
-        int day = 10;//c.get(Calendar.DAY_OF_MONTH);
-        int month = 5;//c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        int month = c.get(Calendar.MONTH);
         int year = c.get(Calendar.YEAR);
 
         return new DatePickerDialog(getActivity(), this, year, month, day);

@@ -12,7 +12,7 @@ public class ParkingSpot
     private String name;
     private String phone;
     private String email;
-    private String spotID;
+    private long spotID;
     private double rate;
 
     public ParkingSpot(String address, String name, String phone, String email, double rate)
@@ -24,18 +24,12 @@ public class ParkingSpot
         this.email = email;
 
         this.rate = rate;
-
-        this.spotID = address+name;
-
     }
 
-    public ParkingSpot(String id, String address, String name, String phone, String email, double rate) throws Exception {
+    public ParkingSpot(long id, String address, String name, String phone, String email, double rate)
+    {
         this(address, name, phone, email, rate);
-
-
-        if (!this.spotID.equals(id)) {
-            throw new Exception("Passed in ID (" + id + ") does not match generated ID (" + this.spotID + ") !");
-        }
+        this.spotID = id;
     }
 
     public String getName()
@@ -63,15 +57,19 @@ public class ParkingSpot
         return rate;
     }
 
-    public String getSpotID()
+    public long getSpotID()
     {
         return spotID;
     }
 
+    public void setSpotID(long spotID)
+    {
+        this.spotID = spotID;
+    }
     @Override
     public String toString()
     {
-        return this.address ;
+        return this.address;
     }
 
     @Override

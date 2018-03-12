@@ -20,6 +20,7 @@ public class DataAccessStub implements DataAccess
 {
 	private String dbName;
 	private String dbType = "stub";
+	private long parkingspotCounter = 0;
 	private long dayslotCounter = 0;
 	private long timeslotCounter = 0;
 
@@ -28,9 +29,9 @@ public class DataAccessStub implements DataAccess
 	private ArrayList<String> users;
     private ArrayList<ParkingSpot> parkingSpots;
     private ArrayList<TimeSlot> daySlots;
-    private ArrayList<String> daySlotsParkingSpotID;
+    private ArrayList<Long> daySlotsParkingSpotID;
     private ArrayList<TimeSlot> timeSlots;
-    private ArrayList<String> timeSlotsParkingSpotID;
+    private ArrayList<Long> timeSlotsParkingSpotID;
     private ArrayList<Booking> bookings;
 
 
@@ -42,13 +43,13 @@ public class DataAccessStub implements DataAccess
 
 	public void open(String dbPath) throws DAOException
 	{
-	    users = new ArrayList<String>();
-		parkingSpots = new ArrayList<ParkingSpot>();
-		daySlots = new ArrayList<TimeSlot>();
-        daySlotsParkingSpotID = new ArrayList<String>();
-		timeSlots = new ArrayList<TimeSlot>();
-		timeSlotsParkingSpotID = new ArrayList<String>();
-		bookings = new ArrayList<Booking>();
+	    users = new ArrayList<>();
+		parkingSpots = new ArrayList<>();
+		daySlots = new ArrayList<>();
+        daySlotsParkingSpotID = new ArrayList<>();
+		timeSlots = new ArrayList<>();
+		timeSlotsParkingSpotID = new ArrayList<>();
+		bookings = new ArrayList<>();
 
 		String address;
 		String name;
@@ -263,7 +264,7 @@ public class DataAccessStub implements DataAccess
     }
 
 
-    private boolean doesParkingSpotExists(String spotID)
+    private boolean doesParkingSpotExists(long spotID)
     {
         return daySlotsParkingSpotID.contains(spotID);
     }
@@ -275,7 +276,7 @@ public class DataAccessStub implements DataAccess
     }
 
 
-	public long insertDaySlot(TimeSlot daySlot, String spotID) throws DAOException
+	public long insertDaySlot(TimeSlot daySlot, long spotID) throws DAOException
 	{
         int i;
         long rtn = dayslotCounter;
@@ -301,7 +302,7 @@ public class DataAccessStub implements DataAccess
 	}
 
 
-	public long insertTimeSlot(TimeSlot timeSlot, long daySlotID, String spotID) throws DAOException
+	public long insertTimeSlot(TimeSlot timeSlot, long daySlotID, long spotID) throws DAOException
 	{
         int i;
         long rtn = timeslotCounter;
@@ -330,13 +331,14 @@ public class DataAccessStub implements DataAccess
 	}
 
 
-    public void insertParkingSpot(String username, ParkingSpot currentParkingSpot) throws DAOException
+    public long insertParkingSpot(String username, ParkingSpot currentParkingSpot) throws DAOException
     {
         int i;
+        long spotID;
 
         for (i = 0; i < parkingSpots.size(); i++) {
             ParkingSpot aparkingspot = parkingSpots.get(i);
-            if ((currentParkingSpot.getSpotID()).equals(aparkingspot.getSpotID()) ||
+            if ((currentParkingSpot.getAddress()).equals(aparkingspot.getAddress()) &&
                     (currentParkingSpot.getName()).equals(aparkingspot.getName()))
             {
                 break;
@@ -345,11 +347,14 @@ public class DataAccessStub implements DataAccess
 
         if (!(i >= 0))
         {
+            spotID = parkingspotCounter;
+            currentParkingSpot.setSpotID(parkingspotCounter++);
             parkingSpots.add(currentParkingSpot);
         } else
         {
             throw new DAOException("Error in creating ParkingSpot object with SPOT_ID = "+currentParkingSpot.getSpotID()+" for Username: "+username+"!");
         }
+        return spotID;
     }
 
 
@@ -396,7 +401,7 @@ public class DataAccessStub implements DataAccess
                 boolean found = false;
                 for (int j = 0; j < daySlotsParkingSpotID.size(); j++)
                 {
-                    if ((parkingSpot.getSpotID()).equals(daySlotsParkingSpotID.get(j)))
+                    if (parkingSpot.getSpotID() == daySlotsParkingSpotID.get(j))
                     {
                         TimeSlot daySlot = daySlots.get(j);
 
@@ -424,6 +429,11 @@ public class DataAccessStub implements DataAccess
         }
 
         return parkingSpotsByAddrDate;
+    }
+
+    @Override
+    public ParkingSpot getParkingSpot(long spotID) throws DAOException {
+        return null;
     }
 
 
@@ -495,6 +505,31 @@ public class DataAccessStub implements DataAccess
         }
     }
 
+    @Override
+    public void modifyParkingSpot(long spotID, String address, String phone, String email, Double rate) throws DAOException {
+
+    }
+
+    @Override
+    public ArrayList<TimeSlot> getTimeSlotsForParkingSpot(long spotID) throws DAOException {
+        return null;
+    }
+
+    @Override
+    public ArrayList<TimeSlot> getUnbookedTimeSlotsForParkingSpot(long spotID) throws DAOException {
+        return null;
+    }
+
+    @Override
+    public ParkingSpot getParkingSpotByID(long spotID) throws DAOException {
+        return null;
+    }
+
+    @Override
+    public boolean bookTimeSlot(String username, long timeSlotID, long spotID) throws DAOException {
+        return false;
+    }
+
 
 //    private boolean addABooking (Booking booking)
 //    {
@@ -526,10 +561,10 @@ public class DataAccessStub implements DataAccess
     {
         users.add(name);
 
-        parkingSpots.add(new ParkingSpot(address, name, phone, email, rate));
+        parkingSpots.add(new ParkingSpot(parkingspotCounter, address, name, phone, email, rate));
 
         daySlots.add(new TimeSlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
-        daySlotsParkingSpotID.add(address+name);
+        daySlotsParkingSpotID.add(parkingspotCounter);
 
         int numSlots = (int)(calEnd.getTimeInMillis() - calStart.getTimeInMillis()) / 1000 / 60 / 30;
 
@@ -539,7 +574,9 @@ public class DataAccessStub implements DataAccess
             calStart.add(Calendar.MINUTE, 30);
             Date endTime = calStart.getTime();
             timeSlots.add(new TimeSlot(startTime, endTime, timeslotCounter++));
-            timeSlotsParkingSpotID.add(address+name);
+            timeSlotsParkingSpotID.add(parkingspotCounter);
         }
+
+        parkingspotCounter++;
     }
 }

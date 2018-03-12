@@ -538,7 +538,6 @@ public class DataAccessObject implements DataAccess
             pstmt.setLong(2, timeSlotId);
             updateCount = pstmt.executeUpdate();
             checkWarning(pstmt, updateCount);
-
             result = true;
         }
         catch (SQLException sqle)
@@ -548,6 +547,7 @@ public class DataAccessObject implements DataAccess
         }
         return result;
     }
+
 
 
 }

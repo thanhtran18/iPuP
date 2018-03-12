@@ -64,10 +64,8 @@ public class ParkerLogViewActivity extends ListActivity
             //ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getAllSpots();
             for (final Booking spot : bookingSpots)
             {
-
                 arrayList.add(spot);
                 SimpleDateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
-
             }
 
             adapter = new ArrayAdapter<Booking>(this, android.R.layout.simple_list_item_1, arrayList) {
@@ -132,5 +130,5 @@ public class ParkerLogViewActivity extends ListActivity
 
         return super.onContextItemSelected(item);
     }
-    
+
 }

@@ -542,7 +542,6 @@ public class DataAccessObject implements DataAccess
     @Override
     public void modifyParkingSpot(long spotID, String address, String phone, String email, Double rate) throws DAOException
     {
-        boolean result = false;
         try
         {
             cmdString = "UPDATE PARKINGSPOTS SET ADDRESS=?, PHONE=?, EMAIL=?, RATE=? WHERE SPOT_ID=?";
@@ -561,6 +560,7 @@ public class DataAccessObject implements DataAccess
             throw new DAOException("Error in updateing ParkingSpot with id = "+spotID+"!",sqle);
         }
     }
+
     //TODO: Make method to get timeslots from database and return arraylist
     public ArrayList<TimeSlot> getTimeSlotsForParkingSpot(long spotID) throws DAOException
     {

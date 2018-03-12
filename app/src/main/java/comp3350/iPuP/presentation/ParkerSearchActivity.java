@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
@@ -30,6 +31,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Victory on 2018-03-01.

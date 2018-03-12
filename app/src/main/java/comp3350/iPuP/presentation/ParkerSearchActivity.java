@@ -20,7 +20,6 @@ import android.widget.ListView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
@@ -31,9 +30,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Victory on 2018-03-01.
@@ -53,7 +49,12 @@ public class ParkerSearchActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parker_search);
 
-        Calendar c = Calendar.getInstance();
+
+        //todo get current date from onclick listen
+        //todo change button and screen colors
+        //todo try implementing without the start seach button
+        //todo write test
+        final Calendar c = Calendar.getInstance();
         setDate = new DateFormatter();
 
         TextView tv = (TextView)findViewById(R.id.editDate);
@@ -73,6 +74,17 @@ public class ParkerSearchActivity extends ListActivity {
         });
 
 
+        final Button next = findViewById(R.id.rightButton);
+        next.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                c.add(Calendar.DATE, +1);
+                TextView tv = (TextView)findViewById(R.id.editDate);
+                tv.setText(setDate.getDateFormat().format(c.getTime()));
+            }
+        });
 
     }
 
@@ -88,7 +100,7 @@ public class ParkerSearchActivity extends ListActivity {
         SearchView streetName = (SearchView)findViewById(R.id.showSearchIcon);
         CharSequence charName = streetName.getQuery();
         String searchText = charName.toString();
-        if(searchText.length() == 0)
+        if(searchText.trim().length() == 0 )
         {
             searchText = null;
         }
@@ -138,9 +150,13 @@ public class ParkerSearchActivity extends ListActivity {
         }
     }
     public void prevDayClick(View v)
-    {}
+    {
+
+    }
     public void nextDayClick(View v)
-    {}
+    {
+
+    }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){

@@ -2,7 +2,10 @@ package comp3350.iPuP.presentation;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -28,7 +31,7 @@ public class HostViewActivity extends ListActivity
 
         accessParkingSpots = new AccessParkingSpots();
 
-        ListView list = findViewById(android.R.id.list);
+        ListView list = getListView();
 
         try
         {

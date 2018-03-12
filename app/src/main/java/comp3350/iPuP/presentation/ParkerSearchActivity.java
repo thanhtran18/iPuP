@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -34,7 +35,9 @@ import java.util.Calendar;
  * Created by Victory on 2018-03-01.
  */
 
-public class ParkerSearchActivity extends ListActivity{
+public class ParkerSearchActivity extends ListActivity {
+
+    public static final String SELECTED_SPOT = "spot_to_view";
     private DateFormatter setDate;//for setting the date
 
     private AccessParkingSpots accessParkingSpots;
@@ -49,7 +52,7 @@ public class ParkerSearchActivity extends ListActivity{
 
         //todo get current date from onclick listen
         //todo change button and screen colors
-        //todo try implementing without the start seacrh button
+        //todo try implementing without the start seach button
         //todo write test
         final Calendar c = Calendar.getInstance();
         setDate = new DateFormatter();
@@ -145,6 +148,24 @@ public class ParkerSearchActivity extends ListActivity{
         {
             Toast.makeText(this, daoe.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+    public void prevDayClick(View v)
+    {
+
+    }
+    public void nextDayClick(View v)
+    {
+
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id){
+        super.onListItemClick(l, v, position, id);
+        ParkingSpot currItem=arrayList.get(position);
+
+        Intent intent = new Intent(getApplicationContext(), BookTimeSlotsActivity.class);
+        intent.putExtra(SELECTED_SPOT, currItem.getSpotID());
+        startActivity(intent);
     }
 
 }

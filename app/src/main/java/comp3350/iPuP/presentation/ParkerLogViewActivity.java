@@ -2,15 +2,11 @@ package comp3350.iPuP.presentation;
 
 import android.app.Activity;
 import android.app.ListActivity;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -95,29 +91,9 @@ public class ParkerLogViewActivity extends ListActivity
 
             }
 
-            adapter = new ArrayAdapter<Booking>(this, android.R.layout.simple_list_item_1, arrayList) {
-                @Override
-                public boolean isEnabled(int position) {
-                    if (arrayList.get(position).getStart().before(new Date())) {
-                        return false;
-                    }
-                    return true;
-                }
-
-                @NonNull
-                @Override
-                public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                    View row = super.getView(position, convertView, parent);
-                    if (arrayList.get(position).getStart().before(new Date()))
-                        row.setBackgroundColor(Color.parseColor("#E0E0E0"));
-
-                    return row;
-                }
-            };
+            adapter = new ArrayAdapter<Booking>(this, android.R.layout.simple_list_item_1, arrayList);
             //setListAdapter(adapter);
-            //list.getChildAt(0).setEnabled(false);
             list.setAdapter(adapter);
-
 //            int first = list.getFirstVisiblePosition();
 //            for (int i : disabledIndices)
 //                list.getChildAt(0).setEnabled(false);
@@ -166,3 +142,4 @@ public class ParkerLogViewActivity extends ListActivity
 
 
 }
+

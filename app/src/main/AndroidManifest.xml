@@ -59,11 +59,15 @@
         <activity
             android:name=".presentation.ParkerSearchActivity"
             android:label="@string/title_activity_parker_search"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".presentation.ParkerLogViewActivity"
             android:configChanges="orientation|screenSize" />
+        <activity android:name=".presentation.BookTimeSlotsActivity"></activity>
+        <activity android:name=".presentation.HostViewDayActivity" />
+        <activity
+            android:name=".presentation.HostModifyActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
     </application>
 
 </manifest>

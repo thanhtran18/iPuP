@@ -54,15 +54,17 @@ public class BookTimeSlotsActivity extends AppCompatActivity {
         }
 
         TextView hostName = (TextView)findViewById(R.id.parkingSpotHostName);
-        hostName.setText(currSpot.getName());
+        hostName.setText("HOST NAME: "+currSpot.getName());
         TextView spotAddress = (TextView)findViewById(R.id.parkingSpotAddress);
-        spotAddress.setText(currSpot.getAddress());
+        spotAddress.setText("ADDRESS: "+currSpot.getAddress());
         TextView hostPhoneNumber = (TextView)findViewById(R.id.parkingSpotPhoneNumber);
-        hostPhoneNumber.setText(currSpot.getPhone());
+        hostPhoneNumber.setText("PHONE NUMBER: "+currSpot.getPhone());
         TextView hostEmailAddress = (TextView)findViewById(R.id.parkingSpotHostEmail);
-        hostEmailAddress.setText(currSpot.getEmail());
+        hostEmailAddress.setText("E-MAIL: "+currSpot.getEmail());
         TextView rate = (TextView)findViewById(R.id.parkingSpotChargeRate);
-        rate.setText(Double.toString(currSpot.getRate()));
+        rate.setText("CHARGE RATE: $"+Double.toString(+currSpot.getRate()));
+        final TextView currentPrice=(TextView)findViewById(R.id.currentRateView);
+        currentPrice.setText("$"+Double.toString(0.00));
 
         tSlots = (ListView)findViewById(R.id.timeSlotsList);
         tSlots.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -78,27 +80,31 @@ public class BookTimeSlotsActivity extends AppCompatActivity {
                 }else{
                     bookedSlots.add(currSlot);
                 }
-
+                currentPrice.setText("$"+Double.toString(currSpot.getRate()*bookedSlots.size()));
             }
         });
     }
 
 
-    public void buttonPerform(View v){
+    public void bookSlots(View v){
         bookSelectedSlotsInDB(bookedSlots);
+        bookedSlots.clear();
     }
 
 
     public boolean bookSelectedSlotsInDB(ArrayList<TimeSlot> theArray){
         //TODO: Add the full functionality for this function!
+        boolean allSpotsBooked=false;
         if(theArray.size() > 0) {
             try {
-                boolean allsPotsBooked = accessParkingSpots.bookTimeSlots(theArray, userBookingSpot,
+                 allSpotsBooked = accessParkingSpots.bookTimeSlots(theArray, userBookingSpot,
                         testSPOTIDFORSCREEN);
             }catch (Exception ex){
                 Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
             }
-            Toast.makeText(this, theArray.get(0).toString(), Toast.LENGTH_LONG).show();
+            if(allSpotsBooked) {
+                Toast.makeText(this, "SuccessFully Booked Timeslots", Toast.LENGTH_LONG).show();
+            }
 
             timeListAdapter.clear();
             try
@@ -115,7 +121,7 @@ public class BookTimeSlotsActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
+    /*@Override
     protected void onResume()
     {
         super.onResume();
@@ -130,6 +136,6 @@ public class BookTimeSlotsActivity extends AppCompatActivity {
         timeListAdapter = new ArrayAdapter<TimeSlot>(this,
                 R.layout.time_slot_item_layout,R.id.timeSlotCheckItem, timesToShow);
         tSlots.setAdapter(timeListAdapter);
-    }
+    }*/
 
 }

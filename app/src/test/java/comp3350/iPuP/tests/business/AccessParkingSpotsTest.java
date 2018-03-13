@@ -3,10 +3,13 @@ package comp3350.iPuP.tests.business;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import comp3350.iPuP.application.Main;
 import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.objects.ParkingSpot;
+import comp3350.iPuP.objects.TimeSlot;
 
 public class AccessParkingSpotsTest extends TestCase
 {
@@ -33,6 +36,22 @@ public class AccessParkingSpotsTest extends TestCase
         assertTrue(parkSpotAccess.bookSpot("fakeId", 0).equals("Not Booked"));
         assertTrue(spots.size()==0);
         System.out.println("Finished testAccessParkingSpots: No parking spots inserted.");
+    }
+
+    public testInsertParkingSpot()
+    {
+        Main.startUp();
+        parkSpotAccess=new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+        Calendar c = Calendar.getInstance();
+        c.set(2018, 3, 24, 10, 30);
+        Date start, end;
+        start = c.getTime();
+        c.add(Calendar.HOUR_OF_DAY,2);
+        end = c.getTime();
+
+        TimeSlot timeSlot = new TimeSlot(start,end);
+        parkSpotAccess.insertParkingSpot("testuser", timeSlot, null, "356 testing drive, Winnipeg, MB", "Some name", "456-6789", "", 42);
     }
 
     public void testOneParkingSpotInList()

@@ -35,10 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Victory on 2018-03-01.
- */
-
 public class ParkerSearchActivity extends ListActivity {
 
     public static final String SELECTED_SPOT = "spot_to_view";

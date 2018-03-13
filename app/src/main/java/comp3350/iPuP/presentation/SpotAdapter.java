@@ -1,5 +1,6 @@
 package comp3350.iPuP.presentation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -17,9 +18,12 @@ import comp3350.iPuP.objects.ParkingSpot;
 
 public class SpotAdapter extends ArrayAdapter<ParkingSpot>
 {
+    Activity activity;
+
     SpotAdapter(Context context, ArrayList<ParkingSpot> spots)
     {
         super(context, 0, spots);
+        activity = (Activity)context;
     }
 
     @Override
@@ -69,7 +73,7 @@ public class SpotAdapter extends ArrayAdapter<ParkingSpot>
 
                 Intent hostViewDayIntent = new Intent(view.getContext(), HostViewDayActivity.class);
                 hostViewDayIntent.putExtra("spotID", spot.getSpotID());
-                view.getContext().startActivity(hostViewDayIntent);
+                activity.startActivityForResult(hostViewDayIntent,0);
             }
         });
 

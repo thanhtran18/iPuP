@@ -48,7 +48,7 @@ public class DataAccessObject implements DataAccess
 		this.dbName = dbName;
 	}
 
-
+    @Override
 	public void open(String dbPath) throws DAOException
 	{
 		String url;
@@ -69,7 +69,7 @@ public class DataAccessObject implements DataAccess
 		System.out.println("Opened " +dbType +" database " +dbPath);
 	}
 
-
+    @Override
 	public void close() throws DAOException
 	{
 		try
@@ -140,7 +140,7 @@ public class DataAccessObject implements DataAccess
         return result;
     }
 
-
+    @Override
 	public long insertDaySlot(TimeSlot daySlot, long spotID) throws DAOException
     {
         long dayslotID;
@@ -184,6 +184,7 @@ public class DataAccessObject implements DataAccess
         return dayslotID;
     }
 
+    @Override
     public long insertTimeSlot(TimeSlot timeSlot, long daySlotID, long spotID) throws DAOException
     {
         long timeslotID;
@@ -228,6 +229,7 @@ public class DataAccessObject implements DataAccess
         return timeslotID;
     }
 
+    @Override
 	public long insertParkingSpot(String username, ParkingSpot currentParkingSpot) throws DAOException
     {
         long spotID;
@@ -277,6 +279,7 @@ public class DataAccessObject implements DataAccess
         return spotID;
     }
 
+    @Override
     public boolean insertUser(String username) throws DAOException
     {
         boolean result = false;
@@ -301,14 +304,43 @@ public class DataAccessObject implements DataAccess
         return result;
     }
 
-    //TODO: need this?
-//    public ArrayList<TimeSlot> getDaySlotsForAParkingSpot(String slotID) throws DAOException
-//    {
-//        ArrayList<TimeSlot> daySlots = new ArrayList<TimeSlot>();
-//
-//        return daySlots;
-//    }
+    @Override
+    public TimeSlot getAvailableTimeForAParkingSpot(long slotID) throws DAOException
+    {
+        Calendar calStart = Calendar.getInstance();
+        Calendar calEnd = Calendar.getInstance();
+        Date start, end;
+        TimeSlot daySlot = null;
 
+        try
+        {
+            cmdString = "SELECT MIN(STARTDAYTIME) STARTTIME, MAX(ENDDAYTIME) ENDTIME FROM DAYSLOTS " +
+                        "WHERE SPOT_ID = ? AND DELETED = FALSE";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setLong(1,slotID);
+            rsp = pstmt.executeQuery();
+
+            if (rsp.next())
+            {
+                start = rsp.getTimestamp("STARTTIME");
+                end = rsp.getTimestamp("ENDTIME");
+
+                calStart.setTime(start);
+                calEnd.setTime(end);
+
+                daySlot = new TimeSlot(calStart.getTime(), calEnd.getTime());
+            }
+
+        } catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error in retrieving the available time for slotID = "+slotID+"!",sqle);
+        }
+
+        return daySlot;
+    }
+
+    @Override
     public ArrayList<ParkingSpot> getParkingSpotsByAddressDate(String address, Date date) throws DAOException
     {
         parkingSpots = new ArrayList<>();
@@ -342,8 +374,7 @@ public class DataAccessObject implements DataAccess
         return parkingSpots;
     }
 
-
-
+    @Override
     public ParkingSpot getParkingSpot(long spotID) throws DAOException
     {
         try
@@ -422,7 +453,7 @@ public class DataAccessObject implements DataAccess
         }
     }
 
-
+    @Override
     public ArrayList<ParkingSpot> getHostedSpotsOfGivenUser(String username) throws DAOException
     {
         parkingSpotsOfAUser = new ArrayList<>();
@@ -447,6 +478,7 @@ public class DataAccessObject implements DataAccess
         return parkingSpotsOfAUser;
     }
 
+    @Override
     public void clearSpotList()
     {
         this.parkingSpots.clear();
@@ -471,7 +503,7 @@ public class DataAccessObject implements DataAccess
     }
 
 
-	//added by Kevin
+    @Override
     public ArrayList<Booking> getBookedSpotsOfGivenUser(String username) throws DAOException
     {
         Calendar calStart = Calendar.getInstance();
@@ -521,21 +553,22 @@ public class DataAccessObject implements DataAccess
         return bookingSpotsOfAUser;
     }
 
-    public void setBookedSpotToDeleted(String username, long timeSlotId) throws DAOException
+    @Override
+    public void setBookedSpotToDeleted(String username, long timeSlotID) throws DAOException
     {
         try
         {
             cmdString = "UPDATE BOOKINGS SET DELETED = TRUE WHERE USERNAME = ? AND TIMESLOT_ID = ?";
             pstmt = con.prepareStatement(cmdString);
             pstmt.setString(1, username);
-            pstmt.setLong(2, timeSlotId);
+            pstmt.setLong(2, timeSlotID);
             updateCount = pstmt.executeUpdate();
             checkWarning(pstmt, updateCount);
         }
         catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = "+timeSlotId+"!",sqle);
+            throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = "+timeSlotID+"!",sqle);
         }
     }
 
@@ -562,6 +595,7 @@ public class DataAccessObject implements DataAccess
     }
 
     //TODO: Make method to get timeslots from database and return arraylist
+    @Override
     public ArrayList<TimeSlot> getTimeSlotsForParkingSpot(long spotID) throws DAOException
     {
 	    ArrayList<TimeSlot> returnVal;
@@ -680,7 +714,7 @@ public class DataAccessObject implements DataAccess
 
             rss.close();
 
-        } catch (Exception SqlEx){ //TODO: Exception catching style here may need to change
+        } catch (SQLException SqlEx){ //TODO: Exception catching style here may need to change
             processSQLError(SqlEx);
             throw new DAOException("Error in getting timeslots from parking spot with SPOT_ID" +
                     " = "+spotID+"!",SqlEx);
@@ -701,7 +735,7 @@ public class DataAccessObject implements DataAccess
             updateCount = pstmt.executeUpdate();
             checkWarning(pstmt,updateCount);
 
-        } catch (Exception SqlEx){ //TODO: Exception catching style here may need to change
+        } catch (SQLException SqlEx){ //TODO: Exception catching style here may need to change
             processSQLError(SqlEx);
             throw new DAOException("Error in booking timeslots for parking spot with SPOT_ID" +
                     " = "+spotID+"!",SqlEx);

@@ -724,7 +724,7 @@ public class DataAccessObject implements DataAccess
         boolean returnVal = false;
 
         try {
-            cmdString = "INSERT INTO BOOKINGS VALUES(?,?,?,FALSE)";
+            cmdString = "INSERT INTO BOOKINGS VALUES(?,?,?)";
             pstmt = con.prepareStatement(cmdString);
             pstmt.setString(1, theUser);
             pstmt.setLong(2, timeSlotID);

@@ -55,6 +55,7 @@
     <string name="host_menu_view">View your parking spots</string>
 
     <string name="next">Next</string>
+    <string name="prev">Prev</string>
     <string name="confirm">Confirm</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
@@ -97,4 +98,6 @@
     <string name="title_activity_parker_search">ParkerSearchActivity</string>
     <string name="host_dnrepeat">Does not repeat</string>
     <string name="host_repeats">Repeats</string>
+    <string name="selected_spot">spot_to_view</string>
+    <string name="search">Search</string>
 </resources>

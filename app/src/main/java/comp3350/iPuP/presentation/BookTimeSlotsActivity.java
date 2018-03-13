@@ -65,6 +65,8 @@ public class BookTimeSlotsActivity extends AppCompatActivity {
         hostEmailAddress.setText(currSpot.getEmail());
         TextView rate = (TextView)findViewById(R.id.parkingSpotChargeRate);
         rate.setText(Double.toString(currSpot.getRate()));
+        final TextView currentPrice=(TextView)findViewById(R.id.currentRateView);
+        currentPrice.setText(Double.toString(0.00));
 
         tSlots = (ListView)findViewById(R.id.timeSlotsList);
         tSlots.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -80,7 +82,7 @@ public class BookTimeSlotsActivity extends AppCompatActivity {
                 }else{
                     bookedSlots.add(currSlot);
                 }
-
+                currentPrice.setText(Double.toString(currSpot.getRate()*bookedSlots.size()));
             }
         });
     }
@@ -88,6 +90,7 @@ public class BookTimeSlotsActivity extends AppCompatActivity {
 
     public void buttonPerform(View v){
         bookSelectedSlotsInDB(bookedSlots);
+        bookedSlots.clear();
     }
 
 

@@ -95,4 +95,6 @@
     <string name="title_activity_parker_search">ParkerSearchActivity</string>
     <string name="host_dnrepeat">Does not repeat</string>
     <string name="host_repeats">Repeats</string>
+
+    <string name="timeSlot_booking_confirm">CONFIRM BOOKING</string>
 </resources>

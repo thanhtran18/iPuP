@@ -49,6 +49,7 @@ public class DaySlotAdapter extends ArrayAdapter<TimeSlot>
             convertView.setBackgroundResource(R.color.colorLightGrey);
 
         Button b = convertView.findViewById(R.id.buttonListItem);
+        b.setText(convertView.getResources().getString(R.string.delete));
         b.setTag(position);
         b.setOnClickListener(new View.OnClickListener()
         {
@@ -72,7 +73,7 @@ public class DaySlotAdapter extends ArrayAdapter<TimeSlot>
                 TimeSlot slot = getItem(position);
 
                 Intent hostViewDayIntent = new Intent(view.getContext(), HostViewTimeActivity.class);
-                hostViewDayIntent.putExtra("slotid", slot.getSlotID());
+                hostViewDayIntent.putExtra("slotID", slot.getSlotID());
                 view.getContext().startActivity(hostViewDayIntent);
             }
         });

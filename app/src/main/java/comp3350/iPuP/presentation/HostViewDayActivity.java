@@ -25,19 +25,18 @@ public class HostViewDayActivity extends ListActivity
         setContentView(R.layout.activity_host_view_day);
 
         long spotID = getIntent().getLongExtra("spotID",0);
-        setContentView(R.layout.activity_host_view);
 
         accessParkingSpots = new AccessParkingSpots();
 
         ListView list = getListView();
         try
         {
-            ParkingSpot spot = null;//accessParkingSpots.getParkingSpot(spotID);
+            ParkingSpot spot = accessParkingSpots.getParkingSpot(spotID);
 
-            TextView tv = findViewById(R.id.addressText);
-            tv.setText(spot.getAddress());
+            TextView tv = findViewById(R.id.textViewAddress);
+            tv.setText(String.format(getResources().getString(R.string.hostview_Address), spot.getAddress()));
             tv = findViewById(R.id.textViewRate);
-            tv.setText(String.valueOf(spot.getRate()));
+            tv.setText(String.format(getResources().getString(R.string.hostview_Rate), spot.getRate()));
 
             ArrayList<TimeSlot> daySlots = accessParkingSpots.getDaySlots(spotID);
             adapter = new DaySlotAdapter(this, daySlots);

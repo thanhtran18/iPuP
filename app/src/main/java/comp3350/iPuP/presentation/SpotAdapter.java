@@ -41,6 +41,7 @@ public class SpotAdapter extends ArrayAdapter<ParkingSpot>
             convertView.setBackgroundResource(R.color.colorLightGrey);
 
         Button b = convertView.findViewById(R.id.buttonListItem);
+        b.setText(convertView.getResources().getString(R.string.modify));
         b.setTag(position);
         b.setOnClickListener(new View.OnClickListener()
         {

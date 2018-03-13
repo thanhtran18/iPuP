@@ -20,85 +20,70 @@
 
     <TextView
         android:id="@+id/parkingSpotHostName"
+        style="@style/AppTheme.TextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="hstname"
-        android:textColor="@android:color/black"
-        android:textSize="30sp"
-        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         tools:layout_editor_absoluteY="8dp" />
 
     <TextView
         android:id="@+id/parkingSpotAddress"
+        style="@style/AppTheme.TextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="addr"
-        android:textColor="@android:color/black"
-        android:textSize="30sp"
-        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/parkingSpotPhoneNumber" />
 
     <TextView
         android:id="@+id/parkingSpotPhoneNumber"
+        style="@style/AppTheme.TextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="numba"
-        android:textColor="@android:color/black"
-        android:textSize="30sp"
-        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/parkingSpotHostName" />
 
     <TextView
         android:id="@+id/parkingSpotHostEmail"
+        style="@style/AppTheme.TextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="mail"
-        android:textColor="@android:color/black"
-        android:textSize="30sp"
-        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/parkingSpotAddress" />
 
     <TextView
         android:id="@+id/parkingSpotChargeRate"
+        style="@style/AppTheme.TextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="textchr"
-        android:textColor="@android:color/black"
-        android:textSize="30sp"
-        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/parkingSpotHostEmail" />
 
     <TextView
         android:id="@+id/currentRateView"
+        style="@style/AppTheme.TextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="txtrt"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="30sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/timeSlotConfirmButton"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
         android:id="@+id/CurrentPriceText"
+        style="@style/AppTheme.TextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Current Price"
-        android:textColor="@android:color/black"
-        android:textSize="30sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/currentRateView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

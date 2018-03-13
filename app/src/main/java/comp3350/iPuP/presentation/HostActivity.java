@@ -6,32 +6,30 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.app.DialogFragment;
 import android.widget.ToggleButton;
 
-import org.w3c.dom.Text;
-
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.DateFormatter;
-import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.objects.TimeSlot;
 
-public class HostActivity extends Activity
+public class HostActivity extends Activity implements DateFragmentObserver
 {
     protected AccessParkingSpots accessParkingSpots;
     private String repetitionInfo;
     protected String name;
     protected DateFormatter df;
+
+    boolean dateFrom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -67,13 +65,15 @@ public class HostActivity extends Activity
 
     public void onFromDateClick(View v)
     {
-        DialogFragment dateFragment = DatePickerFragment.newInstance(R.id.editFromDate);
+        dateFrom = true;
+        DialogFragment dateFragment = DatePickerFragment.newInstance();
         dateFragment.show(getFragmentManager(),"DatePicker");
     }
 
     public void onToDateClick(View v)
     {
-        DialogFragment dateFragment = DatePickerFragment.newInstance(R.id.editToDate);
+        dateFrom = false;
+        DialogFragment dateFragment = DatePickerFragment.newInstance();
         dateFragment.show(getFragmentManager(),"DatePicker");
     }
 
@@ -256,5 +256,16 @@ public class HostActivity extends Activity
     {
         setResult(Activity.RESULT_CANCELED);
         finish();
+    }
+
+    @Override
+    public void update(Date date)
+    {
+        TextView tv;
+        if (dateFrom)
+          tv = findViewById(R.id.editFromDate);
+        else
+            tv = findViewById(R.id.editToDate);
+        tv.setText(df.getDateFormat().format(date));
     }
 }

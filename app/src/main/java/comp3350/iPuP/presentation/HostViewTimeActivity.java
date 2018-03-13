@@ -16,19 +16,20 @@ import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
 
-public class HostViewDayActivity extends ListActivity
+public class HostViewTimeActivity extends ListActivity
 {
     AccessParkingSpots accessParkingSpots;
-    DaySlotAdapter adapter;
-    long spotID;
+    TimeSlotAdapter adapter;
+    long spotID, slotID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_host_view_day);
+        setContentView(R.layout.activity_host_view_time);
 
-        spotID = getIntent().getLongExtra("spotID",0);
+        slotID = getIntent().getLongExtra("slotID",-1);
+        spotID = getIntent().getLongExtra("spotID",-1);
 
         accessParkingSpots = new AccessParkingSpots();
 
@@ -59,8 +60,8 @@ public class HostViewDayActivity extends ListActivity
             tv = findViewById(R.id.textViewRate);
             tv.setText(String.format(getResources().getString(R.string.hostview_Rate), spot.getRate()));
 
-            ArrayList<TimeSlot> daySlots = accessParkingSpots.getDaySlots(spotID);
-            adapter = new DaySlotAdapter(this, daySlots, spotID);
+            ArrayList<TimeSlot> timeSlots = accessParkingSpots.getTimeSlots(slotID);
+            adapter = new TimeSlotAdapter(this, timeSlots);
             setListAdapter(adapter);
             return adapter.getCount() == 0;
         }

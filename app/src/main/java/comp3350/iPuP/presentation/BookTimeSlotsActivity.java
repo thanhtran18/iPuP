@@ -20,8 +20,6 @@ import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
 
-import static comp3350.iPuP.presentation.ParkerSearchActivity.SELECTED_SPOT;
-
 public class BookTimeSlotsActivity extends AppCompatActivity {
     long testSPOTIDFORSCREEN; //TODO: Make the ID come from previous screen instead
     String userBookingSpot="marker";
@@ -40,7 +38,7 @@ public class BookTimeSlotsActivity extends AppCompatActivity {
         final Intent intent = getIntent();
         if (null != intent)
         {
-            testSPOTIDFORSCREEN = intent.getLongExtra(SELECTED_SPOT,-1);
+            testSPOTIDFORSCREEN = intent.getLongExtra(getResources().getString(R.string.selected_spot),-1);
         }
 
         if (testSPOTIDFORSCREEN != -1) {

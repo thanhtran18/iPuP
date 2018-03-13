@@ -67,7 +67,8 @@
         <activity android:name=".presentation.HostViewDayActivity" />
         <activity
             android:name=".presentation.HostModifyActivity"
-            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity android:name=".presentation.HostViewTimeActivity"></activity>
     </application>
 
 </manifest>

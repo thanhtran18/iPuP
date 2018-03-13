@@ -26,13 +26,25 @@ public class HostViewActivity extends ListActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        String name = getIntent().getStringExtra("name");
         setContentView(R.layout.activity_host_view);
 
         accessParkingSpots = new AccessParkingSpots();
 
-        ListView list = getListView();
+        populateList();
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (resultCode == RESULT_CANCELED)
+        {
+            populateList();
+        }
+    }
+
+    private void populateList()
+    {
+        String name = getIntent().getStringExtra("name");
         try
         {
             ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getMyHostedSpots(name);

@@ -1,16 +1,11 @@
 package comp3350.iPuP.persistence;
 
-import org.hsqldb.Types;
-import org.w3c.dom.DOMException;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLWarning;
 import java.sql.Statement;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -48,7 +43,7 @@ public class DataAccessObject implements DataAccess
 		this.dbName = dbName;
 	}
 
-
+    @Override
 	public void open(String dbPath) throws DAOException
 	{
 		String url;
@@ -69,7 +64,7 @@ public class DataAccessObject implements DataAccess
 		System.out.println("Opened " +dbType +" database " +dbPath);
 	}
 
-
+    @Override
 	public void close() throws DAOException
 	{
 		try
@@ -140,20 +135,19 @@ public class DataAccessObject implements DataAccess
         return result;
     }
 
-
+    @Override
 	public long insertDaySlot(TimeSlot daySlot, long spotID) throws DAOException
     {
         long dayslotID;
 
         try
         {
-            cmdString = "INSERT INTO DAYSLOTS (SPOT_ID,STARTDAYTIME,ENDDAYTIME,DELETED) " +
-                        "VALUES (?,?,?,?)";
+            cmdString = "INSERT INTO DAYSLOTS (SPOT_ID,STARTDAYTIME,ENDDAYTIME) " +
+                        "VALUES (?,?,?)";
             pstmt2 = con.prepareStatement(cmdString);
             pstmt2.setLong(1, spotID);
             pstmt2.setString(2, df.getSqlDateTimeFormat().format(daySlot.getStart()));
             pstmt2.setString(3, df.getSqlDateTimeFormat().format(daySlot.getEnd()));
-            pstmt2.setBoolean(4,false);
             updateCount = pstmt2.executeUpdate();
             checkWarning(pstmt, updateCount);
         }
@@ -184,20 +178,20 @@ public class DataAccessObject implements DataAccess
         return dayslotID;
     }
 
+    @Override
     public long insertTimeSlot(TimeSlot timeSlot, long daySlotID, long spotID) throws DAOException
     {
         long timeslotID;
 
         try
         {
-            cmdString = "INSERT INTO TIMESLOTS (SPOT_ID,DAYSLOT_ID,STARTDATETIME,ENDDATETIME,DELETED) " +
-                        "VALUES (?,?,?,?,?)";
+            cmdString = "INSERT INTO TIMESLOTS (SPOT_ID,DAYSLOT_ID,STARTDATETIME,ENDDATETIME) " +
+                        "VALUES (?,?,?,?)";
             pstmt3 = con.prepareStatement(cmdString);
             pstmt3.setLong(1, spotID);
             pstmt3.setLong(2, daySlotID);
             pstmt3.setString(3, df.getSqlDateTimeFormat().format(timeSlot.getStart()));
             pstmt3.setString(4, df.getSqlDateTimeFormat().format(timeSlot.getEnd()));
-            pstmt3.setBoolean(5,false);
 
             updateCount = pstmt3.executeUpdate();
             checkWarning(pstmt, updateCount);
@@ -228,6 +222,7 @@ public class DataAccessObject implements DataAccess
         return timeslotID;
     }
 
+    @Override
 	public long insertParkingSpot(String username, ParkingSpot currentParkingSpot) throws DAOException
     {
         long spotID;
@@ -235,7 +230,7 @@ public class DataAccessObject implements DataAccess
         try
         {
             if (!doesParkingSpotExists(currentParkingSpot.getAddress(),currentParkingSpot.getName())) {
-                cmdString = "INSERT INTO PARKINGSPOTS (USERNAME,NAME,ADDRESS,PHONE,EMAIL,RATE,DELETED) VALUES(?,?,?,?,?,?,?)";
+                cmdString = "INSERT INTO PARKINGSPOTS (USERNAME,NAME,ADDRESS,PHONE,EMAIL,RATE) VALUES(?,?,?,?,?,?)";
                 pstmt = con.prepareStatement(cmdString);
                 pstmt.setString(1, username);
                 pstmt.setString(2, currentParkingSpot.getName());
@@ -243,7 +238,6 @@ public class DataAccessObject implements DataAccess
                 pstmt.setString(4, currentParkingSpot.getPhone());
                 pstmt.setString(5, currentParkingSpot.getEmail());
                 pstmt.setDouble(6, currentParkingSpot.getRate());
-                pstmt.setBoolean(7,false);
 
                 //System.out.println(cmdString);
                 updateCount = pstmt.executeUpdate();
@@ -277,6 +271,7 @@ public class DataAccessObject implements DataAccess
         return spotID;
     }
 
+    @Override
     public boolean insertUser(String username) throws DAOException
     {
         boolean result = false;
@@ -301,14 +296,43 @@ public class DataAccessObject implements DataAccess
         return result;
     }
 
-    //TODO: need this?
-//    public ArrayList<TimeSlot> getDaySlotsForAParkingSpot(String slotID) throws DAOException
-//    {
-//        ArrayList<TimeSlot> daySlots = new ArrayList<TimeSlot>();
-//
-//        return daySlots;
-//    }
+    @Override
+    public TimeSlot getAvailableTimeForAParkingSpot(long slotID) throws DAOException
+    {
+        Calendar calStart = Calendar.getInstance();
+        Calendar calEnd = Calendar.getInstance();
+        Date start, end;
+        TimeSlot daySlot = null;
 
+        try
+        {
+            cmdString = "SELECT MIN(STARTDAYTIME) STARTTIME, MAX(ENDDAYTIME) ENDTIME FROM DAYSLOTS " +
+                        "WHERE SPOT_ID = ? AND DELETED = FALSE";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setLong(1,slotID);
+            rsp = pstmt.executeQuery();
+
+            if (rsp.next())
+            {
+                start = rsp.getTimestamp("STARTTIME");
+                end = rsp.getTimestamp("ENDTIME");
+
+                calStart.setTime(start);
+                calEnd.setTime(end);
+
+                daySlot = new TimeSlot(calStart.getTime(), calEnd.getTime());
+            }
+
+        } catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error in retrieving the available time for slotID = "+slotID+"!",sqle);
+        }
+
+        return daySlot;
+    }
+
+    @Override
     public ArrayList<ParkingSpot> getParkingSpotsByAddressDate(String address, Date date) throws DAOException
     {
         parkingSpots = new ArrayList<>();
@@ -342,8 +366,7 @@ public class DataAccessObject implements DataAccess
         return parkingSpots;
     }
 
-
-
+    @Override
     public ParkingSpot getParkingSpot(long spotID) throws DAOException
     {
         try
@@ -422,14 +445,14 @@ public class DataAccessObject implements DataAccess
         }
     }
 
-
+    @Override
     public ArrayList<ParkingSpot> getHostedSpotsOfGivenUser(String username) throws DAOException
     {
         parkingSpotsOfAUser = new ArrayList<>();
 
         try
         {
-            cmdString = "SELECT * FROM PARKINGSPOTS WHERE  USERNAME = ? AND DELETED = FALSE";
+            cmdString = "SELECT * FROM PARKINGSPOTS WHERE  USERNAME = ?";
             pstmt = con.prepareStatement(cmdString);
             pstmt.setString(1, username);
             rss = pstmt.executeQuery();
@@ -447,6 +470,7 @@ public class DataAccessObject implements DataAccess
         return parkingSpotsOfAUser;
     }
 
+    @Override
     public void clearSpotList()
     {
         this.parkingSpots.clear();
@@ -471,7 +495,7 @@ public class DataAccessObject implements DataAccess
     }
 
 
-	//added by Kevin
+    @Override
     public ArrayList<Booking> getBookedSpotsOfGivenUser(String username) throws DAOException
     {
         Calendar calStart = Calendar.getInstance();
@@ -488,7 +512,7 @@ public class DataAccessObject implements DataAccess
             cmdString = "SELECT B.USERNAME, B.TIMESLOT_ID, P.SPOT_ID, P.ADDRESS, T.STARTDATETIME, T.ENDDATETIME " +
                         "FROM BOOKINGS B LEFT JOIN PARKINGSPOTS P ON B.SPOT_ID = P.SPOT_ID " +
                         "LEFT JOIN TIMESLOTS T ON B.TIMESLOT_ID = T.TIMESLOT_ID " +
-                        "WHERE B.USERNAME = ? AND B.DELETED = FALSE " +
+                        "WHERE B.USERNAME = ? " +
                             "AND NOT T.DAYSLOT_ID IS NULL ORDER BY T.STARTDATETIME";
             //TODO: remove null check on dayslotID after change in database
             pstmt = con.prepareStatement(cmdString);
@@ -521,21 +545,22 @@ public class DataAccessObject implements DataAccess
         return bookingSpotsOfAUser;
     }
 
-    public void setBookedSpotToDeleted(String username, long timeSlotId) throws DAOException
+    @Override
+    public void deleteBooking(String username, long timeSlotID) throws DAOException
     {
         try
         {
-            cmdString = "UPDATE BOOKINGS SET DELETED = TRUE WHERE USERNAME = ? AND TIMESLOT_ID = ?";
+            cmdString = "DELETE FROM BOOKINGS WHERE USERNAME = ? AND TIMESLOT_ID = ?";
             pstmt = con.prepareStatement(cmdString);
             pstmt.setString(1, username);
-            pstmt.setLong(2, timeSlotId);
+            pstmt.setLong(2, timeSlotID);
             updateCount = pstmt.executeUpdate();
             checkWarning(pstmt, updateCount);
         }
         catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = "+timeSlotId+"!",sqle);
+            throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = "+timeSlotID+"!",sqle);
         }
     }
 
@@ -562,6 +587,7 @@ public class DataAccessObject implements DataAccess
     }
 
     //TODO: Make method to get timeslots from database and return arraylist
+    @Override
     public ArrayList<TimeSlot> getTimeSlotsForParkingSpot(long spotID) throws DAOException
     {
 	    ArrayList<TimeSlot> returnVal;
@@ -575,8 +601,7 @@ public class DataAccessObject implements DataAccess
 	    try {
             cmdString = "SELECT T.TIMESLOT_ID, T.SPOT_ID, T.STARTDATETIME, T.ENDDATETIME, B.USERNAME" +
                     " FROM TIMESLOTS T LEFT JOIN BOOKINGS B ON T.TIMESLOT_ID=B.TIMESLOT_ID " +
-                    "AND B.DELETED=FALSE WHERE T.SPOT_ID=? AND T.DELETED=FALSE" +
-                    " ORDER BY T.STARTDATETIME";
+                    "WHERE T.SPOT_ID=? ORDER BY T.STARTDATETIME";
             pstmt = con.prepareStatement(cmdString);
             pstmt.setLong(1, spotID);
             rss = pstmt.executeQuery();
@@ -623,8 +648,7 @@ public class DataAccessObject implements DataAccess
         try {
             cmdString = "SELECT T.TIMESLOT_ID, T.SPOT_ID, T.STARTDATETIME, T.ENDDATETIME, B.USERNAME" +
                     " FROM TIMESLOTS T LEFT JOIN BOOKINGS B ON T.TIMESLOT_ID=B.TIMESLOT_ID " +
-                    "AND B.DELETED=FALSE WHERE T.SPOT_ID=? AND T.DELETED=FALSE" +
-                    " ORDER BY T.STARTDATETIME";
+                    "WHERE T.SPOT_ID=? ORDER BY T.STARTDATETIME";
             pstmt = con.prepareStatement(cmdString);
             pstmt.setLong(1, spotID);
             rss = pstmt.executeQuery();
@@ -656,7 +680,6 @@ public class DataAccessObject implements DataAccess
         return returnVal;
     }
 
-    //TODO: Make method to set the deleted field for timeslots in the database to true.
     public ParkingSpot getParkingSpotByID(long spotID) throws DAOException
     {
 	   ParkingSpot returnVal = null;
@@ -680,7 +703,7 @@ public class DataAccessObject implements DataAccess
 
             rss.close();
 
-        } catch (Exception SqlEx){ //TODO: Exception catching style here may need to change
+        } catch (SQLException SqlEx){ //TODO: Exception catching style here may need to change
             processSQLError(SqlEx);
             throw new DAOException("Error in getting timeslots from parking spot with SPOT_ID" +
                     " = "+spotID+"!",SqlEx);
@@ -693,7 +716,7 @@ public class DataAccessObject implements DataAccess
         boolean returnVal = false;
 
         try {
-            cmdString = "INSERT INTO BOOKINGS VALUES(?,?,?,FALSE)";
+            cmdString = "INSERT INTO BOOKINGS VALUES(?,?,?)";
             pstmt = con.prepareStatement(cmdString);
             pstmt.setString(1, theUser);
             pstmt.setLong(2, timeSlotID);
@@ -701,12 +724,228 @@ public class DataAccessObject implements DataAccess
             updateCount = pstmt.executeUpdate();
             checkWarning(pstmt,updateCount);
 
-        } catch (Exception SqlEx){ //TODO: Exception catching style here may need to change
+        } catch (SQLException SqlEx){ //TODO: Exception catching style here may need to change
             processSQLError(SqlEx);
             throw new DAOException("Error in booking timeslots for parking spot with SPOT_ID" +
                     " = "+spotID+"!",SqlEx);
         }
 
 	    return returnVal;
+    }
+
+    @Override
+    public ArrayList<TimeSlot> getDaySlots(long spotID) throws DAOException
+    {
+        ArrayList<TimeSlot> slots = new ArrayList<>();
+
+        try {
+            cmdString = "SELECT * FROM DAYSLOTS D WHERE D.SPOT_ID=?";
+            pstmt = con.prepareStatement(cmdString);
+
+            pstmt.setLong(1, spotID);
+
+            rss = pstmt.executeQuery();
+            long daySlotID;
+            Date start, end;
+            boolean isBooked;
+
+            while (rss.next())
+            {
+                daySlotID = rss.getLong("DAYSLOT_ID");
+                start = rss.getTimestamp("STARTDAYTIME");
+                end = rss.getTimestamp("ENDDAYTIME");
+
+                slots.add(new TimeSlot(start, end, daySlotID));
+            }
+
+            rss.close();
+
+            for (TimeSlot daySlot : slots)
+            {
+                cmdString = "SELECT T.TIMESLOT_ID FROM TIMESLOTS T INNER JOIN BOOKINGS B " +
+                        "ON T.TIMESLOT_ID=B.TIMESLOT_ID " +
+                        "WHERE T.DAYSLOT_ID=?";
+                pstmt = con.prepareStatement(cmdString);
+
+                pstmt.setLong(1, daySlot.getSlotID());
+
+                rss = pstmt.executeQuery();
+
+                if (rss.next())
+                {
+                    daySlot.setIsBooked(true);
+                }
+            }
+
+            rss.close();
+
+        } catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error in getting day slot for ParkingSpot with spotID: "+spotID+"!",sqle);
+        }
+
+        return slots;
+    }
+
+    @Override
+    public ArrayList<TimeSlot> getTimeSlots(long daySlotID) throws DAOException
+    {
+        ArrayList<TimeSlot> slots = new ArrayList<>();
+
+        try {
+            cmdString = "SELECT * FROM TIMESLOTS T WHERE T.DAYSLOT_ID=? ";
+            pstmt = con.prepareStatement(cmdString);
+
+            pstmt.setLong(1, daySlotID);
+
+            rss = pstmt.executeQuery();
+            long timeSlotID;
+            Date start, end;
+
+            while (rss.next())
+            {
+                timeSlotID = rss.getLong("TIMESLOT_ID");
+                start = rss.getTimestamp("Startdatetime");
+                end = rss.getTimestamp("Enddatetime");
+
+                slots.add(new TimeSlot(start, end, timeSlotID));
+            }
+
+            rss.close();
+
+            for (TimeSlot timeSlot : slots)
+            {
+                cmdString = "SELECT B.TIMESLOT_ID FROM BOOKINGS B " +
+                        "WHERE B.TIMESLOT_ID=?";
+                pstmt = con.prepareStatement(cmdString);
+
+                pstmt.setLong(1, timeSlot.getSlotID());
+
+                rss = pstmt.executeQuery();
+
+                if (rss.next())
+                {
+                    timeSlot.setIsBooked(true);
+                }
+            }
+
+            rss.close();
+        }
+        catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error in getting time slot for day slot with slotID: "+daySlotID+"!",sqle);
+        }
+
+        return slots;
+    }
+
+    public boolean deleteDaySlot(long slotID) throws DAOException
+    {
+        long spotID = -1;
+        boolean exitOnReturn = false;
+
+        try
+        {
+            cmdString = "DELETE FROM TIMESLOTS T " +
+                "WHERE T.DAYSLOT_ID=?";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setLong(1, slotID);
+            pstmt.execute();
+        }
+        catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error deleting time slot for day slot with slotID: "+slotID+"!",sqle);
+        }
+
+        try
+        {
+            cmdString = "SELECT D.SPOT_ID FROM DAYSLOTS D " +
+                    "WHERE D.DAYSLOT_ID=?";
+            pstmt = con.prepareStatement(cmdString);
+
+            pstmt.setLong(1, slotID);
+
+            rss = pstmt.executeQuery();
+
+            if (rss.next())
+            {
+                spotID = rss.getLong("SPOT_ID");
+            }
+
+            cmdString = "DELETE FROM DAYSLOTS D " +
+                    "WHERE D.DAYSLOT_ID=?";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setLong(1, slotID);
+            pstmt.execute();
+
+            cmdString = "SELECT D.SPOT_ID FROM DAYSLOTS D " +
+                    "WHERE D.SPOT_ID=?";
+            pstmt = con.prepareStatement(cmdString);
+
+            pstmt.setLong(1, spotID);
+
+            rss = pstmt.executeQuery();
+
+            if (!rss.next())
+            {
+                cmdString = "DELETE FROM PARKINGSPOTS P " +
+                        "WHERE P.SPOT_ID=?";
+                pstmt = con.prepareStatement(cmdString);
+                pstmt.setLong(1, spotID);
+                pstmt.execute();
+                exitOnReturn = true;
+            }
+        }
+        catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error deleting day slot with slotID: "+slotID+"!",sqle);
+        }
+        return exitOnReturn;
+    }
+
+    public boolean deleteTimeSlot(long slotID) throws DAOException
+    {
+        boolean exitOnReturn = false;
+        long daySlotID = -1;
+
+        try
+        {
+            cmdString = "SELECT T.DAYSLOT_ID FROM TIMESLOTS T " +
+                    "WHERE T.TIMESLOT_ID=?";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setLong(1, slotID);
+            rss = pstmt.executeQuery();
+
+            if (rss.next())
+                daySlotID = rss.getLong("DAYSLOT_ID");
+
+            cmdString = "DELETE FROM TIMESLOTS T " +
+                    "WHERE T.TIMESLOT_ID=?";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setLong(1, slotID);
+            pstmt.execute();
+
+            cmdString = "SELECT T.DAYSLOT_ID FROM TIMESLOTS T " +
+                    "WHERE T.DAYSLOT_ID=?";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setLong(1, daySlotID);
+            rss = pstmt.executeQuery();
+
+            if (!rss.next())
+            {
+                deleteDaySlot(daySlotID);
+                exitOnReturn = true;
+            }
+        }
+        catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error deleting time slot with slotID: "+slotID+"!",sqle);
+        }
+        return exitOnReturn;
     }
 }

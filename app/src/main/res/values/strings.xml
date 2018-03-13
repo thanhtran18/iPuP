@@ -17,6 +17,8 @@
     <string name="parker_menu_view">VIEW YOUR BOOKED SPOTS</string>
     <string name="hostview_Address">Address: %s</string>
     <string name="hostview_Rate">Rate: $%.2f</string>
+    <string name="hostview_Start">Start: %s</string>
+    <string name="hostview_End">End: %s</string>
 
     <string-array name="repeats_periods">
         <item>Days</item>
@@ -53,6 +55,7 @@
     <string name="host_menu_view">View your parking spots</string>
 
     <string name="next">Next</string>
+    <string name="prev">Prev</string>
     <string name="confirm">Confirm</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
@@ -97,4 +100,6 @@
     <string name="host_repeats">Repeats</string>
 
     <string name="timeSlot_booking_confirm">CONFIRM BOOKING</string>
+    <string name="selected_spot">spot_to_view</string>
+    <string name="search">Search</string>
 </resources>

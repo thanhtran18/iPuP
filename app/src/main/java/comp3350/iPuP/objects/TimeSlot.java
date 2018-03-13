@@ -64,13 +64,7 @@ public class TimeSlot
     @Override
     public boolean equals(Object other)
     {
-        if (other != null && other.getClass() == TimeSlot.class)
-        {
-            TimeSlot otherTime = (TimeSlot) other;
-            if (this.start.equals(otherTime.start) && this.end.equals(otherTime.end))
-                return true;
-        }
-        return false;
+        return this.slotID == ((TimeSlot)other).slotID;
     }
 
     public Date getStart()
@@ -92,7 +86,7 @@ public class TimeSlot
             return "Invalid date";
     }
 
-    public Long getSlotID()
+    public long getSlotID()
     {
         return slotID;
     }
@@ -102,7 +96,13 @@ public class TimeSlot
         this.slotID = slotID;
     }
 
-    public boolean isBooked() {
+    public boolean getIsBooked()
+    {
         return isBooked;
+    }
+
+    public void setIsBooked(boolean booked)
+    {
+        isBooked = booked;
     }
 }

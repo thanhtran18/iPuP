@@ -186,7 +186,7 @@ public class DataAccessObject implements DataAccess
     @Override
     public long insertTimeSlot(TimeSlot timeSlot, long daySlotID, long spotID) throws DAOException
     {
-        long timeslotID;
+        long timeSlotID;
 
         try
         {
@@ -213,7 +213,7 @@ public class DataAccessObject implements DataAccess
 
             if (rss.next())
             {
-                timeslotID = rss.getLong(1);
+                timeSlotID = rss.getLong(1);
             } else
             {
                 throw new DAOException("Could not retrieve last auto generated TimeSlot ID!");
@@ -224,7 +224,7 @@ public class DataAccessObject implements DataAccess
             throw new DAOException("Could not retrieve last auto generated TimeSlot ID!",sqle);
         }
 
-        return timeslotID;
+        return timeSlotID;
     }
 
     @Override
@@ -508,7 +508,7 @@ public class DataAccessObject implements DataAccess
         Calendar calEnd = Calendar.getInstance();
         Date start, end;
         Booking booking;
-        long timeslotID;
+        long timeSlotID;
         String addr;
 
         bookingSpotsOfAUser = new ArrayList<>();
@@ -528,7 +528,7 @@ public class DataAccessObject implements DataAccess
 
             while (rss.next())
             {
-                timeslotID = rss.getLong("TIMESLOT_ID");
+                timeSlotID = rss.getLong("TIMESLOT_ID");
                 addr = rss.getString("Address");
                 start = rss.getTimestamp("Startdatetime");
                 end = rss.getTimestamp("Enddatetime");
@@ -536,7 +536,7 @@ public class DataAccessObject implements DataAccess
                 calStart.setTime(start);
                 calEnd.setTime(end);
 
-                booking = new Booking(username, timeslotID, addr, calStart.getTime(), calEnd.getTime());
+                booking = new Booking(username, timeSlotID, addr, calStart.getTime(), calEnd.getTime());
                 bookingSpotsOfAUser.add(booking);
             }
 

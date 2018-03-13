@@ -66,6 +66,15 @@ public class ParkingSpot
     {
         this.spotID = spotID;
     }
+
+    public void modifySpot(String address, String phone, String email, double rate)
+    {
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.rate = rate;
+    }
+
     @Override
     public String toString()
     {

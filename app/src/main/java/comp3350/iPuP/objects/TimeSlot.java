@@ -105,4 +105,9 @@ public class TimeSlot
     public boolean isBooked() {
         return isBooked;
     }
+
+    public void setBooked()
+    {
+        this.isBooked = true;
+    }
 }

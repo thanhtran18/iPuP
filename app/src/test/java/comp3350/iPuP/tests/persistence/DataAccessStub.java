@@ -6,6 +6,8 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -33,6 +35,7 @@ public class DataAccessStub implements DataAccess
     private ArrayList<TimeSlot> timeSlots;
     private ArrayList<Long> timeSlotsParkingSpotID;
     private ArrayList<Booking> bookings;
+    private ArrayList<Long> bookingsParkingSpotID;
 
 
 	public DataAccessStub(String dbName)
@@ -50,6 +53,7 @@ public class DataAccessStub implements DataAccess
 		timeSlots = new ArrayList<>();
 		timeSlotsParkingSpotID = new ArrayList<>();
 		bookings = new ArrayList<>();
+		bookingsParkingSpotID = new ArrayList<>();
 
 		String address;
 		String name;
@@ -402,7 +406,7 @@ public class DataAccessStub implements DataAccess
     @Override
     public ArrayList<ParkingSpot> getParkingSpotsByAddressDate(String address, Date date) throws DAOException
     {
-        ArrayList<ParkingSpot> parkingSpotsByAddrDate = new ArrayList<ParkingSpot>();
+        ArrayList<ParkingSpot> parkingSpotsByAddrDate = new ArrayList<>();
 
         for (int i = 0; i < parkingSpots.size(); i++)
         {
@@ -454,13 +458,17 @@ public class DataAccessStub implements DataAccess
 
     @Override
     public ParkingSpot getParkingSpot(long spotID) throws DAOException {
-        return null;
+        ParkingSpot aparkingspot = parkingSpots.get((int)spotID);
+
+        return new ParkingSpot(aparkingspot.getSpotID(), aparkingspot.getAddress(),
+                aparkingspot.getName(), aparkingspot.getPhone(), aparkingspot.getEmail(),
+                aparkingspot.getRate());
     }
 
     @Override
     public ArrayList<ParkingSpot> getHostedSpotsOfGivenUser(String username) throws DAOException
     {
-        ArrayList<ParkingSpot> hostedParkingSpotsOfGivenUser = new ArrayList<ParkingSpot>();
+        ArrayList<ParkingSpot> hostedParkingSpotsOfGivenUser = new ArrayList<>();
 
         for(int i = 0; i < parkingSpots.size(); i++)
         {
@@ -491,8 +499,7 @@ public class DataAccessStub implements DataAccess
     @Override
 	public ArrayList<Booking> getBookedSpotsOfGivenUser(String username) throws DAOException
     {
-        ArrayList<Booking> bookedSpotsOfGivenUser = new ArrayList<Booking>();
-        ParkingSpot parkingSpot;
+        ArrayList<Booking> bookedSpotsOfGivenUser = new ArrayList<>();
 
         for(int i = 0; i < bookings.size(); i++)
         {
@@ -528,66 +535,123 @@ public class DataAccessStub implements DataAccess
 
     @Override
     public void modifyParkingSpot(long spotID, String address, String phone, String email, Double rate) throws DAOException {
-
+       (parkingSpots.get((int)spotID)).modifySpot(address, phone, email, rate);
     }
 
     @Override
     public ArrayList<TimeSlot> getTimeSlotsForParkingSpot(long spotID) throws DAOException {
-        return null;
+        ArrayList<TimeSlot> timeSlotsForParkingSpot = new ArrayList<>();
+
+        for (int i = 0; i < timeSlotsParkingSpotID.size(); i++)
+        {
+            if (timeSlotsParkingSpotID.get(i) == spotID)
+            {
+                TimeSlot atimeslot = timeSlots.get(i);
+                timeSlotsForParkingSpot.add(new TimeSlot(atimeslot.getStart(), atimeslot.getEnd(),
+                        atimeslot.getSlotID(), atimeslot.isBooked()));
+            }
+        }
+
+        Collections.sort(timeSlotsForParkingSpot, new Comparator<TimeSlot>() {
+            @Override
+            public int compare(TimeSlot timeSlot1, TimeSlot timeSlot2) {
+                return timeSlot1.getStart().compareTo(timeSlot2.getStart());
+            }
+        });
+
+        return timeSlotsForParkingSpot;
     }
 
     @Override
     public ArrayList<TimeSlot> getUnbookedTimeSlotsForParkingSpot(long spotID) throws DAOException {
-        return null;
+        ArrayList<TimeSlot> unbookedTimeSlotsForParkingSpot = new ArrayList<>();
+
+	    for (int i = 0; i < timeSlotsParkingSpotID.size(); i++)
+        {
+            if (timeSlotsParkingSpotID.get(i) == spotID)
+            {
+                TimeSlot atimeslot = timeSlots.get(i);
+                if (!atimeslot.isBooked()) {
+                    unbookedTimeSlotsForParkingSpot.add(new TimeSlot(atimeslot.getStart(),
+                            atimeslot.getEnd(), atimeslot.getSlotID(), atimeslot.isBooked()));
+                }
+            }
+        }
+
+        return unbookedTimeSlotsForParkingSpot;
     }
 
     @Override
     public ParkingSpot getParkingSpotByID(long spotID) throws DAOException {
-        return null;
+        ParkingSpot aparkingspot = parkingSpots.get((int)spotID);
+	    return new ParkingSpot(aparkingspot.getSpotID(), aparkingspot.getAddress(),
+                aparkingspot.getName(), aparkingspot.getPhone(), aparkingspot.getEmail(),
+                aparkingspot.getRate());
     }
 
     @Override
     public boolean bookTimeSlot(String username, long timeSlotID, long spotID) throws DAOException {
-        return false;
+        int i;
+
+        for (i = 0; i < bookings.size(); i++) {
+            Booking abooking = bookings.get(i);
+            if (timeSlotID == abooking.getTimeSlotId() ||
+                    username.equals(abooking.getUsername()))
+            {
+                break;
+            }
+        }
+
+        if (!(i >= 0))
+        {
+            bookingsParkingSpotID.add(spotID);
+            ParkingSpot parkingSpot = parkingSpots.get((int)spotID);
+            TimeSlot timeSlot = timeSlots.get((int)timeSlotID);
+            timeSlot.setBooked();
+            bookings.add(new Booking(username, timeSlotID, parkingSpot.getAddress(),
+                    timeSlot.getStart(), timeSlot.getEnd()));
+            return true;
+        } else
+        {
+            return false;
+        }
     }
 
     @Override
     public ArrayList<TimeSlot> getDaySlots(long spotID) throws DAOException
     {
-        return null;
+        ArrayList<TimeSlot> daySlotsList = new ArrayList<>();
+
+        for (int i = 0; i < daySlotsParkingSpotID.size(); i++)
+        {
+            if (daySlotsParkingSpotID.get(i) == spotID)
+            {
+                TimeSlot adayslot = daySlots.get(i);
+                daySlotsList.add(new TimeSlot(adayslot.getStart(), adayslot.getEnd(),
+                        adayslot.getSlotID()));
+            }
+        }
+
+        return daySlotsList;
     }
 
     @Override
     public ArrayList<TimeSlot> getTimeSlots(long spotID) throws DAOException
     {
-        return null;
+        ArrayList<TimeSlot> timeSlotsList = new ArrayList<>();
+
+        for (int i = 0; i < timeSlotsParkingSpotID.size(); i++)
+        {
+            if (timeSlotsParkingSpotID.get(i) == spotID)
+            {
+                TimeSlot adayslot = timeSlots.get(i);
+                timeSlotsList.add(new TimeSlot(adayslot.getStart(), adayslot.getEnd(),
+                        adayslot.getSlotID(), adayslot.isBooked()));
+            }
+        }
+
+        return timeSlotsList;
     }
-
-
-//    private boolean addABooking (Booking booking)
-//    {
-//        int i;
-//
-//        for (i = 0; i < bookings.size(); i++) {
-//            Booking abooking = bookings.get(i);
-//            if ((booking.getSlotID()).equals(abooking.getSlotID()) ||
-//                    ((booking.gets()).equals(abooking.getName()) &&
-//                            ()))
-//            {
-//                break;
-//            }
-//        }
-//
-//        if (!(i >= 0))
-//        {
-//            bookings.add(booking);
-//            return true;
-//        } else
-//        {
-//            return false;
-//        }
-//    }
-
 
     private void addDefaultData(String name, String address, String phone, String email,
                                 double rate, Calendar calStart, Calendar calEnd)

@@ -345,7 +345,8 @@ public class DataAccessObject implements DataAccess
         try {
             cmdString = "SELECT * FROM PARKINGSPOTS P WHERE LCASE(P.ADDRESS) LIKE ? " +
                         "AND EXISTS (SELECT * FROM DAYSLOTS D WHERE D.SPOT_ID = P.SPOT_ID " +
-                        "AND ? BETWEEN CAST(D.STARTDAYTIME AS DATE) AND CAST(D.ENDDAYTIME AS DATE))";
+                        "AND ? BETWEEN CAST(D.STARTDAYTIME AS DATE) AND CAST(D.ENDDAYTIME AS DATE)) " +
+                        "ORDER BY LCASE(P.ADDRESS)";
             pstmt = con.prepareStatement(cmdString);
 
             if (address == null)

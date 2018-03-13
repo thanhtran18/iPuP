@@ -305,7 +305,7 @@ public class DataAccessObject implements DataAccess
     }
 
     @Override
-    public TimeSlot getAvailableTimeForAParkingSpot(long slotID) throws DAOException
+    public TimeSlot getAvailableTimeForAParkingSpot(long spotID) throws DAOException
     {
         Calendar calStart = Calendar.getInstance();
         Calendar calEnd = Calendar.getInstance();
@@ -317,7 +317,7 @@ public class DataAccessObject implements DataAccess
             cmdString = "SELECT MIN(STARTDAYTIME) STARTTIME, MAX(ENDDAYTIME) ENDTIME FROM DAYSLOTS " +
                         "WHERE SPOT_ID = ? AND DELETED = FALSE";
             pstmt = con.prepareStatement(cmdString);
-            pstmt.setLong(1,slotID);
+            pstmt.setLong(1,spotID);
             rsp = pstmt.executeQuery();
 
             if (rsp.next())
@@ -334,7 +334,7 @@ public class DataAccessObject implements DataAccess
         } catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Error in retrieving the available time for slotID = "+slotID+"!",sqle);
+            throw new DAOException("Error in retrieving the available time for slotID = "+spotID+"!",sqle);
         }
 
         return daySlot;
@@ -644,6 +644,7 @@ public class DataAccessObject implements DataAccess
     }
 
     //TODO: Confirm if this method should or should not be used.
+    @Override
     public ArrayList<TimeSlot> getUnbookedTimeSlotsForParkingSpot(long spotID) throws DAOException
     {
         ArrayList<TimeSlot> returnVal;
@@ -691,6 +692,7 @@ public class DataAccessObject implements DataAccess
     }
 
     //TODO: Make method to set the deleted field for timeslots in the database to true.
+    @Override
     public ParkingSpot getParkingSpotByID(long spotID) throws DAOException
     {
 	   ParkingSpot returnVal = null;
@@ -722,6 +724,7 @@ public class DataAccessObject implements DataAccess
         return returnVal;
     }
 
+    @Override
     public boolean bookTimeSlot(String theUser, long timeSlotID, long spotID) throws DAOException
     {
         boolean returnVal = false;

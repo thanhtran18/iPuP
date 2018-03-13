@@ -264,9 +264,19 @@ public class DataAccessStub implements DataAccess
     }
 
 
-    private boolean doesParkingSpotExists(long spotID)
+    private boolean doesParkingSpotExists(String address, String name)
     {
-        return daySlotsParkingSpotID.contains(spotID);
+        int i;
+
+        for (i = 0; i < parkingSpots.size(); i++) {
+            ParkingSpot aparkingspot = parkingSpots.get(i);
+            if (address.equals(aparkingspot.getAddress()) && name.equals(aparkingspot.getName()))
+            {
+                break;
+            }
+        }
+
+        return (i >= 0);
     }
 
 
@@ -333,19 +343,9 @@ public class DataAccessStub implements DataAccess
     @Override
     public long insertParkingSpot(String username, ParkingSpot currentParkingSpot) throws DAOException
     {
-        int i;
         long spotID;
 
-        for (i = 0; i < parkingSpots.size(); i++) {
-            ParkingSpot aparkingspot = parkingSpots.get(i);
-            if ((currentParkingSpot.getAddress()).equals(aparkingspot.getAddress()) &&
-                    (currentParkingSpot.getName()).equals(aparkingspot.getName()))
-            {
-                break;
-            }
-        }
-
-        if (!(i >= 0))
+        if (!doesParkingSpotExists(currentParkingSpot.getAddress(), currentParkingSpot.getName()))
         {
             spotID = parkingspotCounter;
             currentParkingSpot.setSpotID(parkingspotCounter++);
@@ -372,8 +372,31 @@ public class DataAccessStub implements DataAccess
 	}
 
     @Override
-    public TimeSlot getAvailableTimeForAParkingSpot(long slotID) throws DAOException {
-        return null;
+    public TimeSlot getAvailableTimeForAParkingSpot(long spotID) throws DAOException {
+        Date minStart = null;
+        Date maxEnd = null;
+
+        for (int i = 0; i < daySlots.size(); i++)
+        {
+            Long aspotid = daySlotsParkingSpotID.get(i);
+
+            if (aspotid == spotID)
+            {
+                TimeSlot adayslot = daySlots.get(i);
+
+                if (minStart == null || (adayslot.getStart()).before(minStart))
+                {
+                    minStart = new Date(adayslot.getStart().getTime());
+                }
+
+                if (maxEnd == null || (adayslot.getEnd()).after(maxEnd))
+                {
+                    maxEnd = new Date(adayslot.getEnd().getTime());
+                }
+            }
+        }
+
+        return new TimeSlot(minStart, maxEnd);
     }
 
     @Override

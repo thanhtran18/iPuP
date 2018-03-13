@@ -514,7 +514,7 @@ public class DataAccessStub implements DataAccess
     }
 
     @Override
-    public void setBookedSpotToDeleted(String username, long timeSlotId)
+    public void deleteBooking(String username, long timeSlotId)
     {
         for(int i = 0; i < bookings.size(); i++)
         {
@@ -549,6 +549,18 @@ public class DataAccessStub implements DataAccess
     @Override
     public boolean bookTimeSlot(String username, long timeSlotID, long spotID) throws DAOException {
         return false;
+    }
+
+    @Override
+    public ArrayList<TimeSlot> getDaySlots(long spotID) throws DAOException
+    {
+        return null;
+    }
+
+    @Override
+    public ArrayList<TimeSlot> getTimeSlots(long spotID) throws DAOException
+    {
+        return null;
     }
 
 

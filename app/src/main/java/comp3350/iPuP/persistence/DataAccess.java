@@ -34,7 +34,7 @@ public interface DataAccess
 
 	ArrayList<ParkingSpot> getHostedSpotsOfGivenUser(String username) throws DAOException;
 
-	void setBookedSpotToDeleted(String username, long timeSlotID) throws  DAOException;
+	void deleteBooking(String username, long timeSlotID) throws  DAOException;
 
     void modifyParkingSpot(long spotID, String address, String phone, String email, Double rate) throws DAOException;
 
@@ -48,4 +48,7 @@ public interface DataAccess
 
     boolean bookTimeSlot(String username, long timeSlotID, long spotID) throws DAOException;
 
+	ArrayList<TimeSlot> getDaySlots(long spotID) throws DAOException;
+
+	ArrayList<TimeSlot> getTimeSlots(long spotID) throws DAOException;
 }

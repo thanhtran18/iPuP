@@ -257,4 +257,9 @@ public class HostActivity extends Activity
         setResult(Activity.RESULT_CANCELED);
         finish();
     }
+
+    public void setDate()
+    {
+
+    }
 }

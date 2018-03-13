@@ -1,6 +1,5 @@
 package comp3350.iPuP.business;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -155,7 +154,7 @@ public class AccessParkingSpots
 
     public void cancelThisSpot(String username, Long timeSlotId) throws DAOException
     {
-        dataAccess.setBookedSpotToDeleted(username, timeSlotId);
+        dataAccess.deleteBooking(username, timeSlotId);
     }
     public ParkingSpot getParkingSpot(long spotID) throws DAOException
     {
@@ -197,4 +196,18 @@ public class AccessParkingSpots
 
 
 
+
+    public void deleteDaySlot(Long slotID)
+    {
+    }
+
+    public ArrayList<TimeSlot> getDaySlots(long spotID) throws DAOException
+    {
+        return dataAccess.getDaySlots(spotID);
+    }
+
+    public ArrayList<TimeSlot> getTimeSlots(long daySlotID) throws DAOException
+    {
+        return dataAccess.getTimeSlots(daySlotID);
+    }
 }

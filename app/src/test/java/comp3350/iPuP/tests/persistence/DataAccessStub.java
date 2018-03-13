@@ -40,7 +40,7 @@ public class DataAccessStub implements DataAccess
         this.dbName = dbName;
 	}
 
-
+    @Override
 	public void open(String dbPath) throws DAOException
 	{
 	    users = new ArrayList<>();
@@ -257,7 +257,7 @@ public class DataAccessStub implements DataAccess
         System.out.println("Opened " +dbType +" database " +dbName);
 	}
 
-
+    @Override
 	public void close()
     {
         System.out.println("Closed " +dbType +" database " +dbName);
@@ -275,7 +275,7 @@ public class DataAccessStub implements DataAccess
         return users.contains(username);
     }
 
-
+    @Override
 	public long insertDaySlot(TimeSlot daySlot, long spotID) throws DAOException
 	{
         int i;
@@ -301,7 +301,7 @@ public class DataAccessStub implements DataAccess
 		return rtn;
 	}
 
-
+    @Override
 	public long insertTimeSlot(TimeSlot timeSlot, long daySlotID, long spotID) throws DAOException
 	{
         int i;
@@ -330,7 +330,7 @@ public class DataAccessStub implements DataAccess
         return rtn;
 	}
 
-
+    @Override
     public long insertParkingSpot(String username, ParkingSpot currentParkingSpot) throws DAOException
     {
         int i;
@@ -357,7 +357,7 @@ public class DataAccessStub implements DataAccess
         return spotID;
     }
 
-
+    @Override
 	public boolean insertUser(String username)
 	{
 		boolean result = false;
@@ -371,14 +371,12 @@ public class DataAccessStub implements DataAccess
 		return result;
 	}
 
+    @Override
+    public TimeSlot getAvailableTimeForAParkingSpot(long slotID) throws DAOException {
+        return null;
+    }
 
-	//TODO: need this?
-//	public ArrayList<TimeSlot> getDaySlotsForAParkingSpot(String slotID)
-//    {
-//        return null;
-//    }
-
-
+    @Override
     public ArrayList<ParkingSpot> getParkingSpotsByAddressDate(String address, Date date) throws DAOException
     {
         ArrayList<ParkingSpot> parkingSpotsByAddrDate = new ArrayList<ParkingSpot>();
@@ -436,7 +434,7 @@ public class DataAccessStub implements DataAccess
         return null;
     }
 
-
+    @Override
     public ArrayList<ParkingSpot> getHostedSpotsOfGivenUser(String username) throws DAOException
     {
         ArrayList<ParkingSpot> hostedParkingSpotsOfGivenUser = new ArrayList<ParkingSpot>();
@@ -461,13 +459,13 @@ public class DataAccessStub implements DataAccess
         return hostedParkingSpotsOfGivenUser;
     }
 
-
+    @Override
     public void clearSpotList()
     {
         parkingSpots.clear();
     }
 
-
+    @Override
 	public ArrayList<Booking> getBookedSpotsOfGivenUser(String username) throws DAOException
     {
         ArrayList<Booking> bookedSpotsOfGivenUser = new ArrayList<Booking>();
@@ -492,7 +490,7 @@ public class DataAccessStub implements DataAccess
         return bookedSpotsOfGivenUser;
     }
 
-
+    @Override
     public void deleteBooking(String username, long timeSlotId)
     {
         for(int i = 0; i < bookings.size(); i++)

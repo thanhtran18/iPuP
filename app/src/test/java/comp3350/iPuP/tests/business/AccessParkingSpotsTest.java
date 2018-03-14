@@ -583,4 +583,16 @@ public class AccessParkingSpotsTest extends TestCase
             fail();
         }
     }
+
+    public void testCancelABookingValid()
+    {
+        Services.closeDataAccess();
+
+        Services.createDataAccess(new DataAccessStub(dbName));
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        String username = "marker";
+        //Long timeSlotId = ""
+    }
 }

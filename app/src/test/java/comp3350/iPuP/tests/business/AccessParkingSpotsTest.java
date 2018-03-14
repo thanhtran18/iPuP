@@ -2,6 +2,7 @@ package comp3350.iPuP.tests.business;
 
 import junit.framework.TestCase;
 
+import java.io.CharArrayReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,29 +45,28 @@ public class AccessParkingSpotsTest extends TestCase
         System.out.println("Finished testAccessParkingSpots: No parking spots inserted.");
     }
 
-    public void testInsertParkingSpot()
+    public void testCreateSpotOneDay()
     {
         Services.closeDataAccess();
         Services.createDataAccess(new DataAccessStub(dbName));
         ParkingSpot spot = null;
 
         //First test================================================
-        parkSpotAccess=new AccessParkingSpots();
+        parkSpotAccess = new AccessParkingSpots();
         parkSpotAccess.clearSpots();
 
         Calendar c = Calendar.getInstance();
         c.set(2018, 3, 24, 10, 30);
         Date start, end;
         start = c.getTime();
-        c.add(Calendar.HOUR_OF_DAY,2);
+        c.add(Calendar.HOUR_OF_DAY, 2);
         end = c.getTime();
 
-        TimeSlot timeSlot = new TimeSlot(start,end);
+        TimeSlot timeSlot = new TimeSlot(start, end);
         try
         {
             parkSpotAccess.insertParkingSpot("testuser", timeSlot, null, "356 testing drive, Winnipeg, MB", "456-6789", "", 42);
-        }
-        catch (DAOException daoe)
+        } catch (DAOException daoe)
         {
             System.out.println(daoe.getMessage());
             fail();
@@ -77,8 +77,7 @@ public class AccessParkingSpotsTest extends TestCase
             assertEquals(parkSpotAccess.getAllParkingSpots().size(), 1);
 
             spot = parkSpotAccess.getAllParkingSpots().get(0);
-        }
-        catch (DAOException daoe)
+        } catch (DAOException daoe)
         {
             fail();
         }
@@ -94,15 +93,14 @@ public class AccessParkingSpotsTest extends TestCase
         try
         {
             daySlots = parkSpotAccess.getDaySlots(spotID);
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             fail();
         }
 
         c.set(2018, 3, 24, 10, 30);
         start = c.getTime();
-        c.add(Calendar.HOUR_OF_DAY,2);
+        c.add(Calendar.HOUR_OF_DAY, 2);
         end = c.getTime();
 
         assertEquals(daySlots.size(), 1);
@@ -115,8 +113,7 @@ public class AccessParkingSpotsTest extends TestCase
         try
         {
             timeSlots = parkSpotAccess.getTimeSlots(daySlotID);
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             fail();
         }
@@ -125,7 +122,7 @@ public class AccessParkingSpotsTest extends TestCase
 
         c.set(2018, 3, 24, 10, 30);
         start = c.getTime();
-        c.add(Calendar.MINUTE,30);
+        c.add(Calendar.MINUTE, 30);
         end = c.getTime();
         timeSlot = timeSlots.get(0);
 
@@ -133,14 +130,31 @@ public class AccessParkingSpotsTest extends TestCase
         assertEquals(timeSlot.getEnd(), end);
 
         start = c.getTime();
-        c.add(Calendar.MINUTE,30);
+        c.add(Calendar.MINUTE, 30);
         end = c.getTime();
         timeSlot = timeSlots.get(1);
 
         assertEquals(timeSlot.getStart(), start);
         assertEquals(timeSlot.getEnd(), end);
+    }
 
-        //Second test================================================
+    public void testCreateSpotRepeatDay()
+    {
+        Services.closeDataAccess();
+        Services.createDataAccess(new DataAccessStub(dbName));
+        ParkingSpot spot = null;
+
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        Calendar c = Calendar.getInstance();
+        Date start, end;
+        long spotID, daySlotID;
+        ArrayList<TimeSlot> daySlots;
+        ArrayList<TimeSlot> timeSlots;
+        TimeSlot daySlot;
+        TimeSlot timeSlot;
+
         c.set(2018, 10, 12, 16, 30);
         start = c.getTime();
         c.add(Calendar.HOUR_OF_DAY,1);
@@ -158,9 +172,9 @@ public class AccessParkingSpotsTest extends TestCase
 
         try
         {
-            assertEquals(parkSpotAccess.getAllParkingSpots().size(), 2);
+            assertEquals(parkSpotAccess.getAllParkingSpots().size(), 1);
 
-            spot = parkSpotAccess.getAllParkingSpots().get(1);
+            spot = parkSpotAccess.getAllParkingSpots().get(0);
         }
         catch (DAOException daoe) {fail();}
 
@@ -241,8 +255,25 @@ public class AccessParkingSpotsTest extends TestCase
 
         assertEquals(start, timeSlot.getStart());
         assertEquals(end, timeSlot.getEnd());
+    }
 
-        //Third test================================================
+    public void testCreateSpotRepeatWeek()
+    {
+        Services.closeDataAccess();
+        Services.createDataAccess(new DataAccessStub(dbName));
+        ParkingSpot spot = null;
+
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        Calendar c = Calendar.getInstance();
+        Date start, end;
+        long spotID, daySlotID;
+        ArrayList<TimeSlot> daySlots = null;
+        ArrayList<TimeSlot> timeSlots = null;
+        TimeSlot daySlot;
+        TimeSlot timeSlot;
+
         c.set(1455, 1, 1, 1, 0);
         start = c.getTime();
         c.add(Calendar.HOUR_OF_DAY,6);
@@ -260,9 +291,9 @@ public class AccessParkingSpotsTest extends TestCase
 
         try
         {
-            assertEquals(parkSpotAccess.getAllParkingSpots().size(), 3);
+            assertEquals(parkSpotAccess.getAllParkingSpots().size(), 1);
 
-            spot = parkSpotAccess.getAllParkingSpots().get(2);
+            spot = parkSpotAccess.getAllParkingSpots().get(0);
         }
         catch (DAOException daoe) {fail();}
 

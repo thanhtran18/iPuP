@@ -26,6 +26,7 @@ public class AccessParkingSpotsTest extends TestCase
     ParkingSpot ps;
     ArrayList<ParkingSpot> spots;
     ArrayList<ParkingSpot> allSpots;
+    ArrayList<ParkingSpot> parkingSpot;
     ArrayList<Booking> bookings;
 
     public AccessParkingSpotsTest(String arg0)
@@ -578,6 +579,122 @@ public class AccessParkingSpotsTest extends TestCase
     }
 
     public void testOneParkingSpotInList()
+
+
+    public void testMyDailyParkingSpotsEmptyList()
+    {
+        Services.closeDataAccess();
+
+        Services.createDataAccess(new DataAccessStub(dbName));
+
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        try
+        {
+            DateFormatter dateFormatter = new DateFormatter();
+            Date date = dateFormatter.getSqlDateFormat().parse("2018-06-10");
+            ParkingSpot newSpots;
+            parkingSpot = parkSpotAccess.getDailySpots("",date );
+            assertEquals(0, parkingSpot.size());
+            parkingSpot = parkSpotAccess.getDailySpots("pembina Hwy",date );
+            assertEquals(0, parkingSpot.size());
+        }
+        catch (DAOException de)
+        {
+            System.out.print(de.getMessage());
+            fail();
+        }
+        catch (ParseException pe)
+        {
+            System.out.print(pe.getMessage());
+            fail();
+        }
+    }
+
+    public void testFullListOfDailyParkingSpots()
+    {
+        Services.closeDataAccess();
+
+        Services.createDataAccess(new DataAccessStub(dbName));
+
+        parkSpotAccess = new AccessParkingSpots();
+//        parkSpotAccess.clearSpots();
+
+        try
+        {
+            ParkingSpot newSpots;
+            parkingSpot = parkSpotAccess.getDailySpots("",null );
+            assertEquals(22, parkingSpot.size());
+            newSpots = parkingSpot.get(0);
+            assertEquals("Jenifer Aniston",newSpots.getName());
+            assertEquals("604-253-1111",newSpots.getPhone());
+            assertEquals("JeniferAniston@hotmail.ca",newSpots.getEmail());
+            assertEquals("1 Kings Drive",newSpots.getAddress());
+            assertEquals(7.0,newSpots.getRate());
+
+            newSpots = parkingSpot.get(11);
+            assertEquals("Tom Brady",newSpots.getName());
+            assertEquals("877-377-4234",newSpots.getPhone());
+            assertEquals("theGoat@gmail.com",newSpots.getEmail());
+            assertEquals("20 Kings Drive",newSpots.getAddress());
+            assertEquals(10.0,newSpots.getRate());
+
+            newSpots = parkingSpot.get(21);
+            assertEquals("Donald Trump",newSpots.getName());
+            assertEquals("877-311-4974",newSpots.getPhone());
+            assertEquals("lolattheUSA@gmail.com",newSpots.getEmail());
+            assertEquals("Brady Road Landfill",newSpots.getAddress());
+            assertEquals(100.0,newSpots.getRate());
+        }
+        catch (DAOException de)
+        {
+            System.out.print(de.getMessage());
+            fail();
+        }
+    }
+
+
+    public void testGettingMyDailyParkingSpots()
+    {
+        Services.closeDataAccess();
+
+        Services.createDataAccess(new DataAccessStub(dbName));
+
+        parkSpotAccess = new AccessParkingSpots();
+       // parkSpotAccess.clearSpots();
+
+        try
+        {
+            DateFormatter dateFormatter = new DateFormatter();
+            Date date = dateFormatter.getSqlDateFormat().parse("2018-06-12");
+            ParkingSpot newSpots;
+            parkingSpot = parkSpotAccess.getDailySpots(null,date );
+            assertEquals(2, parkingSpot.size());
+            newSpots = parkingSpot.get(0);
+            assertEquals("29 St. Mary's Rd", newSpots.getAddress());
+
+
+
+
+
+        }
+        catch (DAOException de)
+        {
+            System.out.print(de.getMessage());
+            fail();
+        }
+        catch (ParseException pe)
+        {
+            System.out.print(pe.getMessage());
+            fail();
+        }
+    }
+
+
+
+
+    public void testGettingMyBookingsValid()
     {
         Services.closeDataAccess();
 

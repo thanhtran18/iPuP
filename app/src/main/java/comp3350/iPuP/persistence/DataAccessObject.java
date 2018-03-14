@@ -609,7 +609,7 @@ public class DataAccessObject implements DataAccess
             returnVal=new ArrayList<TimeSlot>();
             while (rss.next())
             {
-                timeSlotID = rss.getLong("TIMESLOT_ID");
+                timeSlotID = rss.getLong("USERNAME");
                 start = rss.getTimestamp("STARTDATETIME");
                 end = rss.getTimestamp("ENDDATETIME");
 

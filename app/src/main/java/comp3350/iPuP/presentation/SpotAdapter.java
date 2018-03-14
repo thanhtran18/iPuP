@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.objects.ParkingSpot;
+import comp3350.iPuP.objects.TimeSlot;
 
 public class SpotAdapter extends ArrayAdapter<ParkingSpot>
 {

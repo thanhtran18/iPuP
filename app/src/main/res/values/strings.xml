@@ -19,6 +19,8 @@
     <string name="hostview_Rate">Rate: $%.2f</string>
     <string name="hostview_Start">Start: %s</string>
     <string name="hostview_End">End: %s</string>
+    <string name="hostview_Time">Time: %s</string>
+
 
     <string-array name="repeats_periods">
         <item>Days</item>

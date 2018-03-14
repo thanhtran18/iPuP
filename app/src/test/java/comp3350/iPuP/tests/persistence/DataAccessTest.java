@@ -175,7 +175,7 @@ public class DataAccessTest extends TestCase {
         try
         {
             ArrayList<ParkingSpot> parkingSpots = dataAccess.getParkingSpotsByAddressDate("", dateFormatter.getSqlDateFormat().parse("2018-06-11"));
-            assertEquals(22,parkingSpots.size());
+            assertEquals(21,parkingSpots.size());
             assertTrue(parkingSpots.get(0).getAddress().toLowerCase().compareTo(parkingSpots.get(1).getAddress().toLowerCase()) < 0);
         }
         catch (ParseException pe)

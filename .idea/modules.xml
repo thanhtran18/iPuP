@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SRSYS.iml" filepath="$PROJECT_DIR$/SRSYS.iml" />
+      <module fileurl="file://C:\Users\Victory\AndroidStudioProjects\iPuP\SRSYS.iml" filepath="C:\Users\Victory\AndroidStudioProjects\iPuP\SRSYS.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/iPuP.iml" filepath="$PROJECT_DIR$/iPuP.iml" />
     </modules>

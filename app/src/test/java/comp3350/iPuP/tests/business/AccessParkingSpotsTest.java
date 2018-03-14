@@ -25,6 +25,7 @@ public class AccessParkingSpotsTest extends TestCase
     ParkingSpot ps;
     ArrayList<ParkingSpot> spots;
     ArrayList<ParkingSpot> allSpots;
+    ArrayList<ParkingSpot> parkingSpot;
     ArrayList<Booking> bookings;
 
     public AccessParkingSpotsTest(String arg0)
@@ -504,6 +505,83 @@ public class AccessParkingSpotsTest extends TestCase
 //        assertTrue(allSpots.get(3).isBooked());
         System.out.println("Finished testAccessParkingSpots: Booking a spot twice.");
     }
+
+
+
+    public void testMyDailyParkingSpotsEmptyList()
+    {
+        Services.closeDataAccess();
+
+        Services.createDataAccess(new DataAccessStub(dbName));
+
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        try
+        {
+            DateFormatter dateFormatter = new DateFormatter();
+            Date date = dateFormatter.getSqlDateFormat().parse("2018-06-10");
+            ParkingSpot newSpots;
+            parkingSpot = parkSpotAccess.getDailySpots(null,date );
+            assertEquals(0, parkingSpot.size());
+            newSpots = parkingSpot.get(0);
+            assertEquals(null, newSpots.getAddress());
+
+
+
+
+
+        }
+        catch (DAOException de)
+        {
+            System.out.print(de.getMessage());
+            fail();
+        }
+        catch (ParseException pe)
+        {
+            System.out.print(pe.getMessage());
+            fail();
+        }
+    }
+
+
+    public void testGettingMyDailyParkingSpots()
+    {
+        Services.closeDataAccess();
+
+        Services.createDataAccess(new DataAccessStub(dbName));
+
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        try
+        {
+            DateFormatter dateFormatter = new DateFormatter();
+            Date date = dateFormatter.getSqlDateFormat().parse("2018-06-12");
+            ParkingSpot newSpots;
+            parkingSpot = parkSpotAccess.getDailySpots(null,date );
+            assertEquals(2, parkingSpot.size());
+            newSpots = parkingSpot.get(0);
+            assertEquals("29 St. Mary's Rd", newSpots.getAddress());
+
+
+
+
+
+        }
+        catch (DAOException de)
+        {
+            System.out.print(de.getMessage());
+            fail();
+        }
+        catch (ParseException pe)
+        {
+            System.out.print(pe.getMessage());
+            fail();
+        }
+    }
+
+
 
 
     public void testGettingMyBookingsValid()

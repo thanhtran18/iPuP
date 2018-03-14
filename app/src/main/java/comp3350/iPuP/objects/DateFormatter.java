@@ -2,7 +2,8 @@ package comp3350.iPuP.objects;
 
 import java.text.SimpleDateFormat;
 
-public class DateFormatter {
+public class DateFormatter
+{
 
     private SimpleDateFormat date;
     private SimpleDateFormat time;

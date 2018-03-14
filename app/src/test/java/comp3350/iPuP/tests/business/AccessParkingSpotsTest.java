@@ -3,10 +3,13 @@ package comp3350.iPuP.tests.business;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import comp3350.iPuP.application.Main;
 import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.objects.ParkingSpot;
+import comp3350.iPuP.objects.TimeSlot;
 
 public class AccessParkingSpotsTest extends TestCase
 {
@@ -29,10 +32,195 @@ public class AccessParkingSpotsTest extends TestCase
         spots=parkSpotAccess.getAvailableSpots();
         assertTrue(spots.size()==0);
 
-//        parkSpotAccess.bookSpot("fakeId", 0);
-//        assertTrue(parkSpotAccess.bookSpot("fakeId", 0).equals("Not Booked"));
+        parkSpotAccess.bookSpot("fakeId", 0);
+        assertTrue(parkSpotAccess.bookSpot("fakeId", 0).equals("Not Booked"));
         assertTrue(spots.size()==0);
         System.out.println("Finished testAccessParkingSpots: No parking spots inserted.");
+    }
+
+    public void testInsertParkingSpot()
+    {
+        Main.startUp();
+
+        //First test================================================
+        parkSpotAccess=new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        Calendar c = Calendar.getInstance();
+        c.set(2018, 3, 24, 10, 30);
+        Date start, end;
+        start = c.getTime();
+        c.add(Calendar.HOUR_OF_DAY,2);
+        end = c.getTime();
+
+        TimeSlot timeSlot = new TimeSlot(start,end);
+        try
+        {
+            parkSpotAccess.insertParkingSpot("testuser", timeSlot, null, "356 testing drive, Winnipeg, MB", "456-6789", "", 42);
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
+
+        assertEquals(parkSpotAccess.getAllSpots().size(), 1);
+
+        ParkingSpot spot = parkSpotAccess.getAllSpots().get(0);
+
+        assertEquals(spot.getName(), "testuser");
+        assertEquals(spot.getPhone(), "456-6789");
+        assertEquals(spot.getEmail(), "");
+        assertEquals(spot.getAddress(), "356 testing drive, Winnipeg, MB");
+        assertEquals(spot.getRate(), 42);
+
+        long spotID = spot.getSpotID();
+        ArrayList<TimeSlot> daySlots = null;
+        try
+        {
+            daySlots = parkSpotAccess.getDaySlots(spotID);
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
+
+        c.set(2018, 3, 24, 10, 30);
+        start = c.getTime();
+        c.add(Calendar.HOUR_OF_DAY,2);
+        end = c.getTime();
+
+        assertEquals(daySlots.size(), 1);
+        TimeSlot daySlot = daySlots.get(0);
+        assertEquals(daySlot.getStart(), start);
+        assertEquals(daySlot.getEnd(), end);
+
+        long daySlotID = daySlot.getSlotID();
+        ArrayList<TimeSlot> timeSlots = null;
+        try
+        {
+            timeSlots = parkSpotAccess.getTimeSlots(daySlotID);
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
+
+        assertEquals(timeSlots.size(), 4);
+
+        c.set(2018, 3, 24, 10, 30);
+        start = c.getTime();
+        c.add(Calendar.MINUTE,30);
+        end = c.getTime();
+        timeSlot = daySlots.get(0);
+
+        assertEquals(timeSlot.getStart(), start);
+        assertEquals(timeSlot.getEnd(), end);
+
+        start = c.getTime();
+        c.add(Calendar.MINUTE,30);
+        end = c.getTime();
+        timeSlot = daySlots.get(1);
+
+        assertEquals(timeSlot.getStart(), start);
+        assertEquals(timeSlot.getEnd(), end);
+
+        //Second test================================================
+        c.set(2018, 10, 12, 16, 30);
+        start = c.getTime();
+        c.add(Calendar.HOUR_OF_DAY,1);
+        end = c.getTime();
+
+        timeSlot = new TimeSlot(start,end);
+        try
+        {
+            parkSpotAccess.insertParkingSpot("testuser2", timeSlot, "Days 3 4", "whodunnit St.", "555-5555", "hans@hans.hans", 10);
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
+
+        assertEquals(parkSpotAccess.getAllSpots().size(), 2);
+
+        spot = parkSpotAccess.getAllSpots().get(1);
+
+        assertEquals(spot.getName(), "testuser2");
+        assertEquals(spot.getPhone(), "555-5555");
+        assertEquals(spot.getEmail(), "hans@hans.hans");
+        assertEquals(spot.getAddress(), "whodunnit St.");
+        assertEquals(spot.getRate(), 10);
+
+        spotID = spot.getSpotID();
+        daySlots = null;
+        try
+        {
+            daySlots = parkSpotAccess.getDaySlots(spotID);
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
+
+        assertEquals(daySlots.size(), 4);
+
+        c.set(2018, 3, 27, 10, 30);
+        start = c.getTime();
+        c.add(Calendar.HOUR_OF_DAY,1);
+        end = c.getTime();
+
+        daySlot = daySlots.get(1);
+        assertEquals(daySlot.getStart(), start);
+        assertEquals(daySlot.getEnd(), end);
+
+        c.set(2018, 3, 30, 10, 30);
+        start = c.getTime();
+        c.add(Calendar.HOUR_OF_DAY,1);
+        end = c.getTime();
+
+        daySlot = daySlots.get(2);
+        assertEquals(daySlot.getStart(), start);
+        assertEquals(daySlot.getEnd(), end);
+
+
+        c.set(2018, 3, 24, 10, 30);
+        start = c.getTime();
+        c.add(Calendar.HOUR_OF_DAY,2);
+        end = c.getTime();
+
+        assertEquals(daySlots.size(), 4);
+        daySlot = daySlots.get(0);
+        assertEquals(daySlot.getStart(), start);
+        assertEquals(daySlot.getEnd(), end);
+
+        daySlotID = daySlot.getSlotID();
+        timeSlots = null;
+        try
+        {
+            timeSlots = parkSpotAccess.getTimeSlots(daySlotID);
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
+
+        assertEquals(timeSlots.size(), 4);
+
+        c.set(2018, 3, 24, 10, 30);
+        start = c.getTime();
+        c.add(Calendar.MINUTE,30);
+        end = c.getTime();
+        timeSlot = daySlots.get(0);
+
+        assertEquals(timeSlot.getStart(), start);
+        assertEquals(timeSlot.getEnd(), end);
+
+        start = c.getTime();
+        c.add(Calendar.MINUTE,30);
+        end = c.getTime();
+        timeSlot = daySlots.get(1);
+
+        assertEquals(timeSlot.getStart(), start);
+        assertEquals(timeSlot.getEnd(), end);
     }
 
     public void testOneParkingSpotInList()
@@ -104,10 +292,10 @@ public class AccessParkingSpotsTest extends TestCase
         assertTrue(spots.size()==2);
 
         allSpots = parkSpotAccess.getAllSpots();
-//        assertFalse(allSpots.get(0).isBooked());
-//        assertTrue(allSpots.get(1).isBooked());
-//        assertFalse(allSpots.get(2).isBooked());
-//        assertTrue(allSpots.get(3).isBooked());
+        assertFalse(allSpots.get(0).isBooked());
+        assertTrue(allSpots.get(1).isBooked());
+        assertFalse(allSpots.get(2).isBooked());
+        assertTrue(allSpots.get(3).isBooked());
 
         System.out.println("Finished testAccessParkingSpots: regular data in list");
     }
@@ -204,10 +392,10 @@ public class AccessParkingSpotsTest extends TestCase
         assertTrue(spots.size() == 0);
 */
         allSpots = parkSpotAccess.getAllSpots();
-//        assertTrue(allSpots.get(0).isBooked());
-//        assertTrue(allSpots.get(1).isBooked());
-//        assertTrue(allSpots.get(2).isBooked());
-//        assertTrue(allSpots.get(3).isBooked());
+        assertTrue(allSpots.get(0).isBooked());
+        assertTrue(allSpots.get(1).isBooked());
+        assertTrue(allSpots.get(2).isBooked());
+        assertTrue(allSpots.get(3).isBooked());
         System.out.println("Finished testAccessParkingSpots: Booking all spots");
     }
 
@@ -247,10 +435,10 @@ public class AccessParkingSpotsTest extends TestCase
         assertTrue(spots.size()==4);
 */
         allSpots = parkSpotAccess.getAllSpots();
-//        assertFalse(allSpots.get(0).isBooked());
-//        assertFalse(allSpots.get(1).isBooked());
-//        assertFalse(allSpots.get(2).isBooked());
-//        assertFalse(allSpots.get(3).isBooked());
+        assertFalse(allSpots.get(0).isBooked());
+        assertFalse(allSpots.get(1).isBooked());
+        assertFalse(allSpots.get(2).isBooked());
+        assertFalse(allSpots.get(3).isBooked());
         System.out.println("Finished testAccessParkingSpots: regular data in list");
     }
 
@@ -289,22 +477,22 @@ public class AccessParkingSpotsTest extends TestCase
         parkSpotAccess.insertParkingSpot(ps); //pos 3
         ps.setBooked(true);
 */
-//        assertTrue(parkSpotAccess.
-//                bookSpot("788 Plaza PlaceTheGuy", 0)
-//                .equals("Already Booked"));
-//
-//        assertTrue(parkSpotAccess.
-//                bookSpot("588 Markham PlaceTheLady", 0)
-//                .equals("Already Booked"));
+        assertTrue(parkSpotAccess.
+                bookSpot("788 Plaza PlaceTheGuy", 0)
+                .equals("Already Booked"));
+
+        assertTrue(parkSpotAccess.
+                bookSpot("588 Markham PlaceTheLady", 0)
+                .equals("Already Booked"));
 
         spots = parkSpotAccess.getAvailableSpots();
         assertTrue(spots.size()==1);
 
         allSpots = parkSpotAccess.getAllSpots();
-//        assertFalse(allSpots.get(0).isBooked());
-//        assertTrue(allSpots.get(1).isBooked());
-//        assertTrue(allSpots.get(2).isBooked());
-//        assertTrue(allSpots.get(3).isBooked());
+        assertFalse(allSpots.get(0).getisBooked());
+        assertTrue(allSpots.get(1).isBooked());
+        assertTrue(allSpots.get(2).isBooked());
+        assertTrue(allSpots.get(3).isBooked());
         System.out.println("Finished testAccessParkingSpots: Booking a spot twice.");
     }
 }

@@ -17,20 +17,20 @@ public class HostMenuActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_menu);
-        name = getIntent().getStringExtra("name");
+        name = getIntent().getStringExtra(getResources().getString(R.string.extra_name));
     }
 
     public void buttonCreateOnClick(View v)
     {
         Intent hostMenuIntent = new Intent(HostMenuActivity.this, HostActivity.class);
-        hostMenuIntent.putExtra("name", name);
+        hostMenuIntent.putExtra(getResources().getString(R.string.extra_name), name);
         HostMenuActivity.this.startActivity(hostMenuIntent);
     }
 
     public void buttonViewOnClick(View v)
     {
         Intent hostViewIntent = new Intent(HostMenuActivity.this, HostViewActivity.class);
-        hostViewIntent.putExtra("name", name);
+        hostViewIntent.putExtra(getResources().getString(R.string.extra_name), name);
         HostMenuActivity.this.startActivity(hostViewIntent);
     }
 }

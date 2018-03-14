@@ -10,8 +10,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 import comp3350.iPuP.R;
@@ -20,118 +18,132 @@ import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
 
-import static comp3350.iPuP.presentation.ParkerSearchActivity.SELECTED_SPOT;
-
-public class BookTimeSlotsActivity extends AppCompatActivity {
-    long testSPOTIDFORSCREEN; //TODO: Make the ID come from previous screen instead
-    String userBookingSpot="marker";
-    ParkingSpot currSpot; //TODO this parking spot object should come from the prevoius screen instead
+public class BookTimeSlotsActivity extends AppCompatActivity
+{
+    long spotID;
+    String name;
+    ParkingSpot currentSpot;
     private AccessParkingSpots accessParkingSpots = new AccessParkingSpots();
     ArrayList<TimeSlot> timesToShow;
-    ArrayList<TimeSlot> bookedSlots = new ArrayList<TimeSlot>();
-    ArrayAdapter<TimeSlot> timeListAdapter;
-    ListView tSlots;
+    ArrayList<TimeSlot> timesToBook = new ArrayList<TimeSlot>();
+    ArrayAdapter<TimeSlot> timeSlotAdapter;
+    ListView timeSlotList;
+    TextView emptyList;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_time_slots);
 
-        final Intent intent = getIntent();
+        timeSlotList =  findViewById(R.id.timeSlotsList);
+        timeSlotList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        emptyList = findViewById(R.id.emptySlotList);
+
+        Intent intent = getIntent();
         if (null != intent)
         {
-            testSPOTIDFORSCREEN = intent.getLongExtra(SELECTED_SPOT,-1);
+            spotID = intent.getLongExtra(getResources().getString(R.string.extra_spotID),-1);
+            name = intent.getStringExtra(getResources().getString(R.string.extra_name));
         }
 
-        if (testSPOTIDFORSCREEN != -1) {
-            try {
-                currSpot = accessParkingSpots.getSpotBYID(testSPOTIDFORSCREEN);
-                timesToShow = accessParkingSpots.getFreeTimeSlotsByID(testSPOTIDFORSCREEN);
-            } catch (DAOException exd) {
-                Toast.makeText(this, exd.getMessage(), Toast.LENGTH_LONG).show();
+        if (spotID != -1)
+        {
+            try
+            {
+                currentSpot = accessParkingSpots.getSpotByID(spotID);
+                refreshScreen();
             }
-        } else
+            catch (Exception e)
+            {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+        else
         {
             Toast.makeText(this, "Unable to retrieve spotID!", Toast.LENGTH_LONG).show();
         }
 
-        TextView hostName = (TextView)findViewById(R.id.parkingSpotHostName);
-        hostName.setText(currSpot.getName());
-        TextView spotAddress = (TextView)findViewById(R.id.parkingSpotAddress);
-        spotAddress.setText(currSpot.getAddress());
-        TextView hostPhoneNumber = (TextView)findViewById(R.id.parkingSpotPhoneNumber);
-        hostPhoneNumber.setText(currSpot.getPhone());
-        TextView hostEmailAddress = (TextView)findViewById(R.id.parkingSpotHostEmail);
-        hostEmailAddress.setText(currSpot.getEmail());
-        TextView rate = (TextView)findViewById(R.id.parkingSpotChargeRate);
-        rate.setText(Double.toString(currSpot.getRate()));
+        TextView hostName = findViewById(R.id.textViewName);
+        hostName.setText(String.format(getResources().getString(R.string.info_name), currentSpot.getName()));
+        TextView spotAddress = (TextView)findViewById(R.id.textViewAddress);
+        spotAddress.setText(String.format(getResources().getString(R.string.info_address), currentSpot.getAddress()));
+        TextView hostPhoneNumber = (TextView)findViewById(R.id.textViewPhone);
+        hostPhoneNumber.setText(String.format(getResources().getString(R.string.info_phone), currentSpot.getPhone()));
+        TextView hostEmailAddress = (TextView)findViewById(R.id.textViewEmail);
+        hostEmailAddress.setText(String.format(getResources().getString(R.string.info_email), currentSpot.getEmail()));
+        TextView rate = (TextView)findViewById(R.id.textViewRate);
+        rate.setText(String.format(getResources().getString(R.string.info_rate), currentSpot.getRate()));
+        final TextView currentPrice=(TextView)findViewById(R.id.textViewCurrentRate);
+        currentPrice.setText(String.format(getString(R.string.info_current_price), 0.0));
 
-        tSlots = (ListView)findViewById(R.id.timeSlotsList);
-        tSlots.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        timeListAdapter = new ArrayAdapter<TimeSlot>(this,
-                R.layout.time_slot_item_layout,R.id.timeSlotCheckItem, timesToShow);
-        tSlots.setAdapter(timeListAdapter);
-        tSlots.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        timeSlotList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+            {
                 TimeSlot currSlot = timesToShow.get(i);
-                if (bookedSlots.contains(currSlot)){
-                    bookedSlots.remove(currSlot);
-                }else{
-                    bookedSlots.add(currSlot);
+                if (timesToBook.contains(currSlot))
+                {
+                    timesToBook.remove(currSlot);
                 }
-
+                else
+                {
+                    timesToBook.add(currSlot);
+                }
+                currentPrice.setText(String.format(getString(R.string.info_current_price), currentSpot.getRate() * timesToBook.size()/2));
             }
         });
     }
 
 
-    public void buttonPerform(View v){
-        bookSelectedSlotsInDB(bookedSlots);
+    public void bookSlots(View v)
+    {
+        bookSelectedSlotsInDB(timesToBook);
+        timesToBook.clear();
     }
 
 
-    public boolean bookSelectedSlotsInDB(ArrayList<TimeSlot> theArray){
-        //TODO: Add the full functionality for this function!
-        if(theArray.size() > 0) {
-            try {
-                boolean allsPotsBooked = accessParkingSpots.bookTimeSlots(theArray, userBookingSpot,
-                        testSPOTIDFORSCREEN);
-            }catch (Exception ex){
-                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
-            }
-            Toast.makeText(this, theArray.get(0).toString(), Toast.LENGTH_LONG).show();
-
-            timeListAdapter.clear();
+    public void bookSelectedSlotsInDB(ArrayList<TimeSlot> theArray)
+    {
+        boolean allSpotsBooked=false;
+        if(theArray.size() > 0)
+        {
             try
             {
-                currSpot = accessParkingSpots.getSpotBYID(testSPOTIDFORSCREEN);
-                timesToShow = accessParkingSpots.getFreeTimeSlotsByID(testSPOTIDFORSCREEN);
-            }catch (DAOException exd){
-                Toast.makeText(this, exd.getMessage(), Toast.LENGTH_LONG).show();
+                 allSpotsBooked = accessParkingSpots.bookTimeSlots(theArray, name,
+                         spotID);
             }
-            timeListAdapter = new ArrayAdapter<TimeSlot>(this,
-                    R.layout.time_slot_item_layout,R.id.timeSlotCheckItem, timesToShow);
-            tSlots.setAdapter(timeListAdapter);
+            catch (Exception ex)
+            {
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+            }
+            if(allSpotsBooked)
+            {
+                Toast.makeText(this, "SuccessFully Booked Timeslots", Toast.LENGTH_LONG).show();
+            }
+            timeSlotAdapter.clear();
+            refreshScreen();
         }
-        return true;
     }
 
-    @Override
-    protected void onResume()
+    private void refreshScreen()
     {
-        super.onResume();
-        timeListAdapter.clear();
+        //This will set the screen as it needs to be each time
         try
         {
-            currSpot = accessParkingSpots.getSpotBYID(testSPOTIDFORSCREEN);
-            timesToShow = accessParkingSpots.getFreeTimeSlotsByID(testSPOTIDFORSCREEN);
-        }catch (DAOException exd){
-            Toast.makeText(this, exd.getMessage(), Toast.LENGTH_LONG).show();
+            timesToShow = accessParkingSpots.getFreeTimeSlotsByID(spotID);
+            if(timesToShow.size()==0)
+            {
+                emptyList.setText(getResources().getString(R.string.book_no_times));
+            }
         }
-        timeListAdapter = new ArrayAdapter<TimeSlot>(this,
+        catch (DAOException daoe)
+        {
+            Toast.makeText(this, daoe.getMessage(), Toast.LENGTH_LONG).show();
+        }
+        timeSlotAdapter = new ArrayAdapter<TimeSlot>(this,
                 R.layout.time_slot_item_layout,R.id.timeSlotCheckItem, timesToShow);
-        tSlots.setAdapter(timeListAdapter);
+        timeSlotList.setAdapter(timeSlotAdapter);
     }
-
 }

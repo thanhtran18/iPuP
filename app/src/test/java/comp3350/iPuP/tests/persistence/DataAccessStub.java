@@ -387,7 +387,7 @@ public class DataAccessStub implements DataAccess
             timeSlotsParkingSpotID.add(spotID);
         } else
         {
-            throw new DAOException("Error in inserting TimeSlot object with dayslotID = "+daySlotID+" and slotID = "+spotID+"!");
+            throw new DAOException("Error in inserting TimeSlot object with daySlotID = "+daySlotID+" and spotID = "+spotID+"!");
         }
 
         return rtn;
@@ -701,6 +701,18 @@ public class DataAccessStub implements DataAccess
         }
 
         return timeSlotsList;
+    }
+
+    @Override
+    public boolean deleteDaySlot(long daySlotID) throws DAOException
+    {
+        return false;
+    }
+
+    @Override
+    public boolean deleteTimeSlot(long timeSlotID) throws DAOException
+    {
+        return false;
     }
 
     private void addDefaultData(String name, String address, String phone, String email,

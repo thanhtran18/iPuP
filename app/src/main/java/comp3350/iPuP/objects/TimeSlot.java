@@ -9,7 +9,6 @@ public class TimeSlot
     private Date start;
     private Date end;
 
-    //TODO: CONFIRM THIS
     private boolean isBooked;
     protected long slotID;
 
@@ -64,11 +63,9 @@ public class TimeSlot
     @Override
     public boolean equals(Object other)
     {
-        if (other != null && other.getClass() == TimeSlot.class)
+        if (other != null && other.getClass() == this.getClass())
         {
-            TimeSlot otherTime = (TimeSlot) other;
-            if (this.start.equals(otherTime.start) && this.end.equals(otherTime.end))
-                return true;
+            return this.slotID == ((TimeSlot)other).slotID;
         }
         return false;
     }
@@ -102,12 +99,13 @@ public class TimeSlot
         this.slotID = slotID;
     }
 
-    public boolean isBooked() {
+    public boolean getIsBooked()
+    {
         return isBooked;
     }
 
-    public void setBooked()
+    public void setIsBooked(boolean booked)
     {
-        this.isBooked = true;
+        isBooked = booked;
     }
 }

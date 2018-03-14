@@ -1,5 +1,6 @@
 package comp3350.iPuP.presentation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -17,23 +18,25 @@ import comp3350.iPuP.objects.ParkingSpot;
 
 public class SpotAdapter extends ArrayAdapter<ParkingSpot>
 {
+    Activity activity;
+
     SpotAdapter(Context context, ArrayList<ParkingSpot> spots)
     {
         super(context, 0, spots);
+        activity = (Activity)context;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
         ParkingSpot spot = getItem(position);
         if (convertView == null)
-        {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
-        }
 
-        TextView tv = convertView.findViewById(R.id.textViewRow1);
-        tv.setText(String.format(convertView.getResources().getString(R.string.hostview_Address), spot.getAddress()));
-        tv = convertView.findViewById(R.id.textViewRow2);
-        tv.setText(String.format(convertView.getResources().getString(R.string.hostview_Rate), spot.getRate()));
+        TextView tv = convertView.findViewById(R.id.textViewListRow1);
+        tv.setText(String.format(convertView.getResources().getString(R.string.info_address), spot.getAddress()));
+        tv = convertView.findViewById(R.id.textViewListRow2);
+        tv.setText(String.format(convertView.getResources().getString(R.string.info_rate), spot.getRate()));
 
         if (position % 2 == 0)
             convertView.setBackgroundResource(R.color.colorWhite);
@@ -52,7 +55,7 @@ public class SpotAdapter extends ArrayAdapter<ParkingSpot>
                 ParkingSpot spot = getItem(position);
 
                 Intent hostModifyIntent = new Intent(view.getContext(), HostModifyActivity.class);
-                hostModifyIntent.putExtra("spotID", spot.getSpotID());
+                hostModifyIntent.putExtra(activity.getResources().getString(R.string.extra_spotID), spot.getSpotID());
                 view.getContext().startActivity(hostModifyIntent);
             }
         });
@@ -68,8 +71,8 @@ public class SpotAdapter extends ArrayAdapter<ParkingSpot>
                 ParkingSpot spot = getItem(position);
 
                 Intent hostViewDayIntent = new Intent(view.getContext(), HostViewDayActivity.class);
-                hostViewDayIntent.putExtra("spotID", spot.getSpotID());
-                view.getContext().startActivity(hostViewDayIntent);
+                hostViewDayIntent.putExtra(activity.getResources().getString(R.string.extra_spotID), spot.getSpotID());
+                activity.startActivityForResult(hostViewDayIntent,0);
             }
         });
 

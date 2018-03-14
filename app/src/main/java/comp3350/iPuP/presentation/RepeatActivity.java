@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import comp3350.iPuP.R;
+import comp3350.iPuP.objects.DateFormatter;
 
 public class RepeatActivity extends AppCompatActivity
 {
@@ -33,13 +34,13 @@ public class RepeatActivity extends AppCompatActivity
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_repeat);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
+        DateFormatter df = new DateFormatter();
         String dateStr = getIntent().getStringExtra("date");
         calendar = new GregorianCalendar();
 
         try
         {
-            Date date = dateFormat.parse(dateStr);
+            Date date = df.getDateFormat().parse(dateStr);
             calendar.setTime(date);
         }
         catch (ParseException e)
@@ -60,7 +61,7 @@ public class RepeatActivity extends AppCompatActivity
         else if (day % 10 == 3 && day != 13)
             ending = "rd";
 
-        tv.setText("On the " + day + ending + " of the month");
+        tv.setText(String.format(getString(R.string.repeat_onthe), day, ending));
 
         ToggleButton btn = null;
         switch (calendar.get(Calendar.DAY_OF_WEEK))
@@ -123,8 +124,8 @@ public class RepeatActivity extends AppCompatActivity
         Intent resultIntent = new Intent();
         String ret = ((Spinner)findViewById(R.id.spinnerPeriod)).getSelectedItem().toString();
 
-        ret += " " + ((EditText)findViewById(R.id.editPeriod)).getText();
-        ret += " " + ((EditText)findViewById(R.id.editNumReps)).getText() + " ";
+        ret += " " + ((EditText)findViewById(R.id.editTextPeriod)).getText();
+        ret += " " + ((EditText)findViewById(R.id.editTextNumReps)).getText() + " ";
 
         if (ret.startsWith("Weeks"))
         {
@@ -138,7 +139,7 @@ public class RepeatActivity extends AppCompatActivity
             ret += toChar(((ToggleButton)findViewById(R.id.toggleButtonSat)).isChecked());
         }
 
-        resultIntent.putExtra("repetitionInfo", ret);
+        resultIntent.putExtra(getResources().getString(R.string.extra_repetitionInfo), ret);
         setResult(Activity.RESULT_OK, resultIntent);
         finish();
     }

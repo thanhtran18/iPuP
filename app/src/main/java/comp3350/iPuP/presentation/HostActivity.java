@@ -6,32 +6,32 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.app.DialogFragment;
 import android.widget.ToggleButton;
 
-import org.w3c.dom.Text;
-
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.DateFormatter;
-import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.objects.TimeSlot;
 
-public class HostActivity extends Activity
+public class HostActivity extends Activity implements DateFragmentObserver
 {
     protected AccessParkingSpots accessParkingSpots;
     private String repetitionInfo;
     protected String name;
     protected DateFormatter df;
+
+    boolean dateFrom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,7 +42,7 @@ public class HostActivity extends Activity
 
         repetitionInfo = "";
 
-        name = getIntent().getStringExtra("name");
+        name = getIntent().getStringExtra(getResources().getString(R.string.extra_name));
 
         Calendar c = Calendar.getInstance();
         df = new DateFormatter();
@@ -51,29 +51,31 @@ public class HostActivity extends Activity
             c.set(Calendar.MINUTE, 30);
         else c.set(Calendar.MINUTE, 0);
 
-        TextView tv = findViewById(R.id.editFromDate);
+        TextView tv = findViewById(R.id.textViewFromDate);
         tv.setText(df.getDateFormat().format(c.getTime()));
 
-        tv = findViewById(R.id.editFromTime);
+        tv = findViewById(R.id.textViewFromTime);
         tv.setText(df.getTimeFormat().format(c.getTime()));
 
         c.add(Calendar.HOUR_OF_DAY,1);
-        tv = findViewById(R.id.editToDate);
+        tv = findViewById(R.id.textViewToDate);
         tv.setText(df.getDateFormat().format(c.getTime()));
 
-        tv = findViewById(R.id.editToTime);
+        tv = findViewById(R.id.textViewToTime);
         tv.setText(df.getTimeFormat().format(c.getTime()));
     }
 
     public void onFromDateClick(View v)
     {
-        DialogFragment dateFragment = DatePickerFragment.newInstance(R.id.editFromDate);
+        dateFrom = true;
+        DialogFragment dateFragment = DatePickerFragment.newInstance();
         dateFragment.show(getFragmentManager(),"DatePicker");
     }
 
     public void onToDateClick(View v)
     {
-        DialogFragment dateFragment = DatePickerFragment.newInstance(R.id.editToDate);
+        dateFrom = false;
+        DialogFragment dateFragment = DatePickerFragment.newInstance();
         dateFragment.show(getFragmentManager(),"DatePicker");
     }
 
@@ -97,8 +99,8 @@ public class HostActivity extends Activity
     {
         if (((ToggleButton)v).isChecked()) {
             Intent repeatIntent = new Intent(HostActivity.this, RepeatActivity.class);
-            TextView dateFrom = findViewById(R.id.editFromDate);
-            repeatIntent.putExtra("date", dateFrom.getText());
+            TextView dateFrom = findViewById(R.id.textViewFromDate);
+            repeatIntent.putExtra(getResources().getString(R.string.extra_date), dateFrom.getText());
             HostActivity.this.startActivityForResult(repeatIntent, 0);
         }
         else
@@ -110,26 +112,26 @@ public class HostActivity extends Activity
     @TargetApi(Build.VERSION_CODES.O)
     public void buttonConfirmOnClick(View v)
     {
-        EditText edit = findViewById(R.id.editAddress);
+        EditText edit = findViewById(R.id.editTextAddress);
         String address = edit.getText().toString();
-        edit = findViewById(R.id.editEmail);
+        edit = findViewById(R.id.editTextEmail);
         String email = edit.getText().toString();
-        edit = findViewById(R.id.editPhone);
+        edit = findViewById(R.id.editTextPhone);
         String phone = edit.getText().toString();
-        edit = findViewById(R.id.editRate);
+        edit = findViewById(R.id.editTextRate);
         String rateStr = edit.getText().toString();
         Double rate = Double.parseDouble(rateStr.equals("") ? "0": rateStr);
 
         boolean valid = true;
 
         TextView tv;
-        tv = findViewById(R.id.editFromDate);
+        tv = findViewById(R.id.textViewFromDate);
         String fromStr = tv.getText().toString();
-        tv = findViewById(R.id.editFromTime);
+        tv = findViewById(R.id.textViewFromTime);
         fromStr += ", " + tv.getText().toString();
-        tv = findViewById(R.id.editToDate);
+        tv = findViewById(R.id.textViewToDate);
         String toStr = tv.getText().toString();
-        tv = findViewById(R.id.editToTime);
+        tv = findViewById(R.id.textViewToTime);
         toStr += ", " + tv.getText().toString();
         TimeSlot timeSlot = null;
         try
@@ -143,60 +145,74 @@ public class HostActivity extends Activity
         if (address.equals(""))
         {
             valid = false;
-            EditText text = findViewById(R.id.editAddress);
+            EditText text = findViewById(R.id.editTextAddress);
             text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
         }
         else
         {
-            EditText text = findViewById(R.id.editAddress);
+            EditText text = findViewById(R.id.editTextAddress);
             text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         }
 
         if (rate == 0)
         {
             valid = false;
-            EditText text = findViewById(R.id.editRate);
+            EditText text = findViewById(R.id.editTextRate);
             text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
         }
         else
         {
-            EditText text = findViewById(R.id.editRate);
+            EditText text = findViewById(R.id.editTextRate);
             text.setBackgroundColor(getResources().getColor(R.color.colorLightGrey));
         }
 
         if (email.equals("") && phone.equals(""))
         {
             valid = false;
-            EditText text = findViewById(R.id.editPhone);
+            EditText text = findViewById(R.id.editTextPhone);
             text.setHint("Enter either phone");
             text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
-            text = findViewById(R.id.editEmail);
+            text = findViewById(R.id.editTextEmail);
             text.setHint("or email");
             text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
         }
         else
         {
-            EditText text = findViewById(R.id.editPhone);
+            EditText text = findViewById(R.id.editTextPhone);
             text.setHint(getResources().getString(R.string.host_phone));
             text.setBackgroundColor(getResources().getColor(R.color.colorLightGrey));
-            text = findViewById(R.id.editEmail);
+            text = findViewById(R.id.editTextEmail);
             text.setHint(getResources().getString(R.string.host_email));
             text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+        }
+
+        if (!validateEmail(email))
+        {
+            valid = false;
+            EditText text = findViewById(R.id.editTextEmail);
+            text.setText("Invalid Email address");
+            text.setTextColor(getResources().getColor(R.color.colorWarning));
+        }
+        else
+        {
+            EditText text = findViewById(R.id.editTextEmail);
+            text.setHint(getResources().getString(R.string.host_email));
+            text.setTextColor(getResources().getColor(R.color.colorBlack));
         }
 
         if (timeSlot.getStart().compareTo(timeSlot.getEnd()) >= 0)
         {
             valid = false;
-            TextView text = findViewById(R.id.editFromTime);
+            TextView text = findViewById(R.id.textViewFromTime);
             text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
-            text = findViewById(R.id.editFromDate);
+            text = findViewById(R.id.textViewFromDate);
             text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
         }
         else
         {
-            TextView text = findViewById(R.id.editFromTime);
+            TextView text = findViewById(R.id.textViewFromTime);
             text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
-            text = findViewById(R.id.editFromDate);
+            text = findViewById(R.id.textViewFromDate);
             text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         }
 
@@ -204,7 +220,7 @@ public class HostActivity extends Activity
         {
             try
             {
-                accessParkingSpots.insertParkingSpot(name, timeSlot, repetitionInfo, address, name, phone, email, rate);
+                accessParkingSpots.insertParkingSpot(name, timeSlot, repetitionInfo, address, phone, email, rate);
 
                     Toast.makeText(this, "New advertisement created!", Toast.LENGTH_LONG).show();
             }
@@ -227,7 +243,7 @@ public class HostActivity extends Activity
         {
             case (0) :
                 if (resultCode == Activity.RESULT_OK)
-                    repetitionInfo = data.getStringExtra("repetitionInfo");
+                    repetitionInfo = data.getStringExtra(getResources().getString(R.string.extra_repetitionInfo));
                 else
                 {
                     repetitionInfo = "";
@@ -237,15 +253,15 @@ public class HostActivity extends Activity
             case(1):
                 if (resultCode == Activity.RESULT_OK)
                 {
-                    ret = data.getStringExtra("time");
-                    ((TextView) findViewById(R.id.editFromTime)).setText(ret);
+                    ret = data.getStringExtra(getResources().getString(R.string.extra_time));
+                    ((TextView) findViewById(R.id.textViewFromTime)).setText(ret);
                 }
                 break;
             case(2):
                 if (resultCode == Activity.RESULT_OK)
                 {
-                    ret = data.getStringExtra("time");
-                    TextView textView = findViewById(R.id.editToTime);
+                    ret = data.getStringExtra(getResources().getString(R.string.extra_time));
+                    TextView textView = findViewById(R.id.textViewToTime);
                     textView.setText(ret);
                 }
                 break;
@@ -258,8 +274,28 @@ public class HostActivity extends Activity
         finish();
     }
 
-    public void setDate()
+    @Override
+    public void update(Date date)
     {
+        TextView tv;
+        if (dateFrom)
+          tv = findViewById(R.id.textViewFromDate);
+        else
+            tv = findViewById(R.id.textViewToDate);
+        tv.setText(df.getDateFormat().format(date));
+    }
 
+    private boolean validateEmail(String email)
+    {
+        Pattern p = Pattern.compile("^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$");//pattern from https://stackoverflow.com/questions/42266148/email-validation-regex-java
+        Matcher m = p.matcher(email);
+        return m.matches();
+    }
+
+    public boolean validatePhone(String phone)
+    {
+        Pattern p = Pattern.compile("^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");//pattern from https://stackoverflow.com/questions/16699007/regular-expression-to-match-standard-10-digit-phone-number
+        Matcher m = p.matcher(phone);
+        return m.matches();
     }
 }

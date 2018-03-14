@@ -110,7 +110,7 @@ public class ParkerLogViewActivity extends ListActivity
             case R.id.delete:
                 try
                 {
-                    accessParkingSpots.cancelThisSpot(displayBookings.get(obj.position).getUsername(), displayBookings.get(obj.position).getTimeSlotId());
+                    accessParkingSpots.cancelThisSpot(displayBookings.get(obj.position).getName(), displayBookings.get(obj.position).getTimeSlotId());
                 }
                 catch (DAOException daoe)
                 {

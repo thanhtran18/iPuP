@@ -169,7 +169,6 @@ public class AccessParkingSpots
         dataAccess.modifyParkingSpot(spotID,address,phone,email,rate);
     }
 
-    //TODO: Methods added by me for timeslot functionality begin here may be edited.
     public ArrayList<TimeSlot> getFreeTimeSlotsByID(long spotID) throws DAOException{
         return dataAccess.getUnbookedTimeSlotsForParkingSpot(spotID);
     }

@@ -32,10 +32,10 @@ public class AccessParkingSpotsTest extends TestCase
         spots=parkSpotAccess.getAvailableSpots();
         assertTrue(spots.size()==0);
 
-        /*parkSpotAccess.bookSpot("fakeId", 0);
-        assertTrue(parkSpotAccess.bookSpot("fakeId", 0).equals("Not Booked"));
+//        parkSpotAccess.bookSpot("fakeId", 0);
+//        assertTrue(parkSpotAccess.bookSpot("fakeId", 0).equals("Not Booked"));
         assertTrue(spots.size()==0);
-        System.out.println("Finished testAccessParkingSpots: No parking spots inserted.");*/
+        System.out.println("Finished testAccessParkingSpots: No parking spots inserted.");
     }
 
     public void testInsertParkingSpot()
@@ -291,11 +291,11 @@ public class AccessParkingSpotsTest extends TestCase
         spots = parkSpotAccess.getAvailableSpots();
         assertTrue(spots.size()==2);
 
-        allSpots = parkSpotAccess.getAllSpots();/*
-        assertFalse(allSpots.get(0)isBooked());
-        assertTrue(allSpots.get(1).isBooked());
-        assertFalse(allSpots.get(2).isBooked());
-        assertTrue(allSpots.get(3).isBooked());*/
+        allSpots = parkSpotAccess.getAllSpots();
+//        assertFalse(allSpots.get(0).isBooked());
+//        assertTrue(allSpots.get(1).isBooked());
+//        assertFalse(allSpots.get(2).isBooked());
+//        assertTrue(allSpots.get(3).isBooked());
 
         System.out.println("Finished testAccessParkingSpots: regular data in list");
     }
@@ -391,11 +391,11 @@ public class AccessParkingSpotsTest extends TestCase
         spots=parkSpotAccess.getAvailableSpots();
         assertTrue(spots.size() == 0);
 */
-        allSpots = parkSpotAccess.getAllSpots();/*
-        assertTrue(allSpots.get(0).isBooked());
-        assertTrue(allSpots.get(1).isBooked());
-        assertTrue(allSpots.get(2).isBooked());
-        assertTrue(allSpots.get(3).isBooked());*/
+        allSpots = parkSpotAccess.getAllSpots();
+//        assertTrue(allSpots.get(0).isBooked());
+//        assertTrue(allSpots.get(1).isBooked());
+//        assertTrue(allSpots.get(2).isBooked());
+//        assertTrue(allSpots.get(3).isBooked());
         System.out.println("Finished testAccessParkingSpots: Booking all spots");
     }
 
@@ -434,11 +434,11 @@ public class AccessParkingSpotsTest extends TestCase
         spots = parkSpotAccess.getAvailableSpots();
         assertTrue(spots.size()==4);
 */
-        allSpots = parkSpotAccess.getAllSpots();/*
-        assertFalse(allSpots.get(0).isBooked());
-        assertFalse(allSpots.get(1).isBooked());
-        assertFalse(allSpots.get(2).isBooked());
-        assertFalse(allSpots.get(3).isBooked());*/
+        allSpots = parkSpotAccess.getAllSpots();
+//        assertFalse(allSpots.get(0).isBooked());
+//        assertFalse(allSpots.get(1).isBooked());
+//        assertFalse(allSpots.get(2).isBooked());
+//        assertFalse(allSpots.get(3).isBooked());
         System.out.println("Finished testAccessParkingSpots: regular data in list");
     }
 
@@ -476,23 +476,23 @@ public class AccessParkingSpotsTest extends TestCase
                 "theLady@domainname.com", 1.25);
         parkSpotAccess.insertParkingSpot(ps); //pos 3
         ps.setBooked(true);
-*//*
-        assertTrue(parkSpotAccess.
-                bookSpot("788 Plaza PlaceTheGuy", 0)
-                .equals("Already Booked"));
-
-        assertTrue(parkSpotAccess.
-                bookSpot("588 Markham PlaceTheLady", 0)
-                .equals("Already Booked"));
+*/
+//        assertTrue(parkSpotAccess.
+//                bookSpot("788 Plaza PlaceTheGuy", 0)
+//                .equals("Already Booked"));
+//
+//        assertTrue(parkSpotAccess.
+//                bookSpot("588 Markham PlaceTheLady", 0)
+//                .equals("Already Booked"));
 
         spots = parkSpotAccess.getAvailableSpots();
         assertTrue(spots.size()==1);
 
         allSpots = parkSpotAccess.getAllSpots();
-        assertFalse(allSpots.get(0).getisBooked());
-        assertTrue(allSpots.get(1).isBooked());
-        assertTrue(allSpots.get(2).isBooked());
-        assertTrue(allSpots.get(3).isBooked());*/
+//        assertFalse(allSpots.get(0).getisBooked());
+//        assertTrue(allSpots.get(1).isBooked());
+//        assertTrue(allSpots.get(2).isBooked());
+//        assertTrue(allSpots.get(3).isBooked());
         System.out.println("Finished testAccessParkingSpots: Booking a spot twice.");
     }
 }

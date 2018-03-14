@@ -1,7 +1,5 @@
 package comp3350.iPuP.tests.business;
 
-import android.app.Service;
-
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
@@ -9,7 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import comp3350.iPuP.application.Main;
-import comp3350.iPuP.application.Services;
 import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
@@ -43,7 +40,7 @@ public class AccessParkingSpotsTest extends TestCase
 
     public void testInsertParkingSpot()
     {
-        Services.closeDataAccess();
+        Main.startUp();
 
         //First test================================================
         parkSpotAccess=new AccessParkingSpots();

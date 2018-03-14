@@ -127,11 +127,6 @@ public class AccessParkingSpots
         return availableSpots;
     }
 
-    public void bookSpot(long spotID, String slotID)
-    {
-//        return dataAccess.setSpotToBooked(spotID, slotID);
-    }
-
     public void clearSpots()
     {
         dataAccess.clearSpotList();
@@ -204,13 +199,13 @@ public class AccessParkingSpots
         return dataAccess.getTimeSlots(daySlotID);
     }
 
-    public boolean deleteTimeSlot(Long slotID) throws DAOException
+    public boolean deleteTimeSlot(long timeSlotID) throws DAOException
     {
-        return dataAccess.deleteTimeSlot(slotID);
+        return dataAccess.deleteTimeSlot(timeSlotID);
     }
 
-    public boolean deleteDaySlot(long slotID) throws  DAOException
+    public boolean deleteDaySlot(long daySlotID) throws  DAOException
     {
-        return dataAccess.deleteDaySlot(slotID);
+        return dataAccess.deleteDaySlot(daySlotID);
     }
 }

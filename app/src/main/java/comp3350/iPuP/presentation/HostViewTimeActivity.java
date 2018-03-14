@@ -18,7 +18,7 @@ public class HostViewTimeActivity extends ListActivity
 {
     AccessParkingSpots accessParkingSpots;
     TimeSlotAdapter adapter;
-    long spotID, slotID;
+    long spotID, daySlotID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -26,7 +26,7 @@ public class HostViewTimeActivity extends ListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_view_time);
 
-        slotID = getIntent().getLongExtra(getResources().getString(R.string.extra_slotID),-1);
+        daySlotID = getIntent().getLongExtra(getResources().getString(R.string.extra_slotID),-1);
         spotID = getIntent().getLongExtra(getResources().getString(R.string.extra_spotID),-1);
 
         accessParkingSpots = new AccessParkingSpots();
@@ -58,7 +58,7 @@ public class HostViewTimeActivity extends ListActivity
             tv = findViewById(R.id.textViewRate);
             tv.setText(String.format(getResources().getString(R.string.info_rate), spot.getRate()));
 
-            ArrayList<TimeSlot> timeSlots = accessParkingSpots.getTimeSlots(slotID);
+            ArrayList<TimeSlot> timeSlots = accessParkingSpots.getTimeSlots(daySlotID);
             adapter = new TimeSlotAdapter(this, timeSlots);
             setListAdapter(adapter);
             return adapter.getCount() == 0;

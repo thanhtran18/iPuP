@@ -10,6 +10,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import comp3350.iPuP.application.Main;
 import comp3350.iPuP.objects.Booking;
@@ -457,6 +462,28 @@ public class DataAccessStub implements DataAccess
     public ArrayList<ParkingSpot> getParkingSpotsByAddressDate(String address, Date date) throws DAOException
     {
         ArrayList<ParkingSpot> parkingSpotsByAddrDate = new ArrayList<>();
+        Map<Long,TimeSlot> map = new HashMap<>();
+        for (int i=0; i<daySlots.size(); i++) {
+            map.put(daySlotsParkingSpotID.get(i), daySlots.get(i));
+        }
+
+        Set<Map.Entry<Long, TimeSlot>> set = map.entrySet();
+        List<Map.Entry<Long, TimeSlot>> list = new ArrayList<>(set);
+        Collections.sort( list, new Comparator<Map.Entry<Long, TimeSlot>>()
+        {
+            @Override
+            public int compare( Map.Entry<Long, TimeSlot> o1, Map.Entry<Long, TimeSlot> o2 )
+            {
+                TimeSlot ot1 = o1.getValue();
+                TimeSlot ot2 = o2.getValue();
+                return (ot2.getStart().compareTo(ot1.getStart()));
+            }
+        } );
+//        for(Map.Entry<String, Integer> entry:list){
+//            System.out.println(entry.getKey()+" ==== "+entry.getValue());
+//        }
+
+        Map<Long, TimeSlot> map2 = new HashMap<>(list);
 
         for (int i = 0; i < parkingSpots.size(); i++)
         {
@@ -473,20 +500,21 @@ public class DataAccessStub implements DataAccess
 
             if (check)
             {
-                boolean found = false;
-                for (int j = 0; j < daySlotsParkingSpotID.size(); j++)
-                {
-                    if (parkingSpot.getSpotID() == daySlotsParkingSpotID.get(j))
-                    {
-                        TimeSlot daySlot = daySlots.get(j);
+//                boolean found = false;
+//                for (int j = 0; j < daySlotsParkingSpotID.size(); j++)
+//                {
+//                    if (parkingSpot.getSpotID() == daySlotsParkingSpotID.get(j))
+//                    {
+//                        TimeSlot daySlot = daySlots.get(j);
+//
+//                        if (date.after(daySlot.getStart()) && date.before(daySlot.getEnd()))
+//                        {
+//                            found = true;
+//                        }
+//                    }
 
-                        if (date.after(daySlot.getStart()) && date.before(daySlot.getEnd()))
-                        {
-                            found = true;
-                        }
-                    }
-
-                    if (found)
+//                    if (found)
+                    if (list.contains)
                     {
                         try
                         {
@@ -499,8 +527,8 @@ public class DataAccessStub implements DataAccess
                         }
                         break;
                     }
-                }
-            }
+//                }
+//            }
         }
 
         return parkingSpotsByAddrDate;

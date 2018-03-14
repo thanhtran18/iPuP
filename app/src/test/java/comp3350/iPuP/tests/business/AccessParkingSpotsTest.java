@@ -805,7 +805,7 @@ public class AccessParkingSpotsTest extends TestCase
         assertFalse(parkSpotAccess.bookTimeSlots(testSlots, "Jenifer Aniston",
                 0));
         testSlots=new ArrayList<TimeSlot>();
-        assertFalse(parkSpotAccess.bookTimeSlots(testSlots,"Jenifer ANiston",
+        assertFalse(parkSpotAccess.bookTimeSlots(testSlots,"Jenifer Aniston",
                 0));
     }
 

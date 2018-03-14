@@ -38,37 +38,37 @@ public class AccessParkingSpots
         if (repetitionInfo != null && !repetitionInfo.equals(""))
         {
             String[] splits = repetitionInfo.split(" ");
-            if (splits[0].equals("Days"))
+            switch (splits[0])
             {
-                for (int j = 0; j < Integer.parseInt(splits[2]); j++)
-                {
-                    insertDaySlot(start.getTime(), end.getTime(), spot.getSpotID(), dataAccess);
-                    start.add(Calendar.DAY_OF_YEAR, Integer.parseInt(splits[1]));
-                    end.add(Calendar.DAY_OF_YEAR, Integer.parseInt(splits[1]));
-                }
-            }
-            else if (splits[0].equals("Weeks"))
-            {
-                boolean[] days = TimeSlot.weekCodeToBoolArray(splits[3]);
-                for (int j = 0; j < Integer.parseInt(splits[2]); j++)
-                {
-                    for (int i = 0; i < 7; i++)
+                case "Days":
+                    for (int j = 0; j < Integer.parseInt(splits[2]); j++)
                     {
-                        if (days[(start.get(Calendar.DAY_OF_WEEK) - 1) % 7])
-                        {
-                            insertDaySlot(start.getTime(), end.getTime(), spot.getSpotID(), dataAccess);
-                        }
-
-                        start.add(Calendar.DAY_OF_YEAR, 1);
-                        end.add(Calendar.DAY_OF_YEAR, 1);
+                        insertDaySlot(start.getTime(), end.getTime(), spot.getSpotID(), dataAccess);
+                        start.add(Calendar.DAY_OF_YEAR, Integer.parseInt(splits[1]));
+                        end.add(Calendar.DAY_OF_YEAR, Integer.parseInt(splits[1]));
                     }
-                    start.add(Calendar.WEEK_OF_YEAR, Integer.parseInt(splits[1]) - 1);
-                    end.add(Calendar.WEEK_OF_YEAR, Integer.parseInt(splits[1]) - 1);
-                }
-            }
-            else
-            {
+                    break;
+                case "Weeks":
+                    boolean[] days = TimeSlot.weekCodeToBoolArray(splits[3]);
+                    for (int j = 0; j < Integer.parseInt(splits[2]); j++)
+                    {
+                        for (int i = 0; i < 7; i++)
+                        {
+                            if (days[(start.get(Calendar.DAY_OF_WEEK) - 1) % 7])
+                            {
+                                insertDaySlot(start.getTime(), end.getTime(), spot.getSpotID(), dataAccess);
+                            }
 
+                            start.add(Calendar.DAY_OF_YEAR, 1);
+                            end.add(Calendar.DAY_OF_YEAR, 1);
+                        }
+                        start.add(Calendar.WEEK_OF_YEAR, Integer.parseInt(splits[1]) - 1);
+                        end.add(Calendar.WEEK_OF_YEAR, Integer.parseInt(splits[1]) - 1);
+                    }
+                    break;
+                default:
+
+                    break;
             }
         }
         else

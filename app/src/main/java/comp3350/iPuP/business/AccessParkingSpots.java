@@ -115,10 +115,9 @@ public class AccessParkingSpots
         return dataAccess.insertParkingSpot(user, newParkingSpot);
     }
 
-    public ArrayList<ParkingSpot> getAllSpots()
+    public ArrayList<ParkingSpot> getAllParkingSpots() throws DAOException
     {
-        //        returnList.addAll(dataAccess.getParkingSpots());
-        return new ArrayList<>();
+        return dataAccess.getAllParkingSpots();
     }
 
     public ArrayList<ParkingSpot> getAvailableSpots()

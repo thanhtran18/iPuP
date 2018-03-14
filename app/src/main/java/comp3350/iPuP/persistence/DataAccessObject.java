@@ -604,54 +604,6 @@ public class DataAccessObject implements DataAccess
         }
     }
 
-    //TODO: Make method to get timeslots from database and return arraylist
-    @Override
-    public ArrayList<TimeSlot> getTimeSlotsForParkingSpot(long spotID) throws DAOException
-    {
-	    ArrayList<TimeSlot> returnVal;
-	    TimeSlot currSlot;
-        Calendar calStart = Calendar.getInstance();
-        Calendar calEnd = Calendar.getInstance();
-        Date start, end;
-        long timeSlotID;
-        boolean bookedVar = false;
-
-	    try {
-            cmdString = "SELECT T.TIMESLOT_ID, T.SPOT_ID, T.STARTDATETIME, T.ENDDATETIME, B.USERNAME " +
-                        "FROM TIMESLOTS T LEFT JOIN BOOKINGS B ON T.TIMESLOT_ID=B.TIMESLOT_ID " +
-                        "WHERE T.SPOT_ID=? ORDER BY T.STARTDATETIME";
-            pstmt = con.prepareStatement(cmdString);
-            pstmt.setLong(1, spotID);
-            rss = pstmt.executeQuery();
-            returnVal=new ArrayList<>();
-            while (rss.next())
-            {
-                timeSlotID = rss.getLong("TIMESLOT_ID");
-                start = rss.getTimestamp("STARTDATETIME");
-                end = rss.getTimestamp("ENDDATETIME");
-
-                calStart.setTime(start);
-                calEnd.setTime(end);
-
-                if(rss.getString("USERNAME")!=null) {
-                    bookedVar = true;
-                }
-
-                currSlot=new TimeSlot(calStart.getTime(),calEnd.getTime(),timeSlotID, bookedVar);
-                returnVal.add(currSlot);
-            }
-
-            rss.close();
-
-        }catch (SQLException SqlEx){
-	        processSQLError(SqlEx);
-	        throw new DAOException("Error in getting timeslots from parking spot with SPOT_ID" +
-                    " = "+spotID+"!",SqlEx);
-        }
-
-	    return returnVal;
-    }
-
     //TODO: Confirm if this method should or should not be used.
     @Override
     public ArrayList<TimeSlot> getUnbookedTimeSlotsForParkingSpot(long spotID) throws DAOException

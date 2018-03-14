@@ -1,5 +1,7 @@
 package comp3350.iPuP.tests.business;
 
+import android.app.Service;
+
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
@@ -7,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import comp3350.iPuP.application.Main;
+import comp3350.iPuP.application.Services;
 import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
@@ -40,7 +43,7 @@ public class AccessParkingSpotsTest extends TestCase
 
     public void testInsertParkingSpot()
     {
-        Main.startUp();
+        Services.closeDataAccess();
 
         //First test================================================
         parkSpotAccess=new AccessParkingSpots();
@@ -178,6 +181,103 @@ public class AccessParkingSpotsTest extends TestCase
         end = c.getTime();
 
         daySlot = daySlots.get(2);
+        assertEquals(daySlot.getStart(), start);
+        assertEquals(daySlot.getEnd(), end);
+
+
+        c.set(2018, 3, 24, 10, 30);
+        start = c.getTime();
+        c.add(Calendar.HOUR_OF_DAY,2);
+        end = c.getTime();
+
+        assertEquals(daySlots.size(), 4);
+        daySlot = daySlots.get(0);
+        assertEquals(daySlot.getStart(), start);
+        assertEquals(daySlot.getEnd(), end);
+
+        daySlotID = daySlot.getSlotID();
+        timeSlots = null;
+        try
+        {
+            timeSlots = parkSpotAccess.getTimeSlots(daySlotID);
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
+
+        assertEquals(timeSlots.size(), 4);
+
+        c.set(2018, 3, 24, 10, 30);
+        start = c.getTime();
+        c.add(Calendar.MINUTE,30);
+        end = c.getTime();
+        timeSlot = daySlots.get(0);
+
+        assertEquals(timeSlot.getStart(), start);
+        assertEquals(timeSlot.getEnd(), end);
+
+        start = c.getTime();
+        c.add(Calendar.MINUTE,30);
+        end = c.getTime();
+        timeSlot = daySlots.get(1);
+
+        assertEquals(timeSlot.getStart(), start);
+        assertEquals(timeSlot.getEnd(), end);
+
+        //Third test================================================
+        c.set(1455, 1, 1, 1, 0);
+        start = c.getTime();
+        c.add(Calendar.HOUR_OF_DAY,6);
+        end = c.getTime();
+
+        timeSlot = new TimeSlot(start,end);
+        try
+        {
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 5 1100110", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02);
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
+
+        assertEquals(parkSpotAccess.getAllSpots().size(), 3);
+
+        spot = parkSpotAccess.getAllSpots().get(2);
+
+        assertEquals(spot.getName(), "Sir Galavant");
+        assertEquals(spot.getPhone(), "0909090");
+        assertEquals(spot.getEmail(), "galavant@roundtable.brit");
+        assertEquals(spot.getAddress(), "5 Smithy Lane, Camelot");
+        assertEquals(spot.getRate(), 0.02);
+
+        spotID = spot.getSpotID();
+        try
+        {
+            daySlots = parkSpotAccess.getDaySlots(spotID);
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
+
+        assertEquals(daySlots.size(), 5);
+
+        c.set(1455, 1, 1, 1, 0);
+        start = c.getTime();
+        c.add(Calendar.HOUR_OF_DAY,6);
+        end = c.getTime();
+
+        daySlot = daySlots.get(1);
+        assertEquals(daySlot.getStart(), start);
+        assertEquals(daySlot.getEnd(), end);
+
+        c.set(1455, 1, 1, 1, 0);
+        start = c.getTime();
+        c.add(Calendar.HOUR_OF_DAY,6);
+        end = c.getTime();
+
+        daySlot = daySlots.get(1);
         assertEquals(daySlot.getStart(), start);
         assertEquals(daySlot.getEnd(), end);
 

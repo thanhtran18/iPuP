@@ -934,4 +934,10 @@ public class DataAccessObject implements DataAccess
         }
         return exitOnReturn;
     }
+
+    @Override
+    public ArrayList<ParkingSpot> getAllParkingSpots() throws DAOException
+    {
+        return null;
+    }
 }

@@ -52,4 +52,6 @@ public interface DataAccess
 	boolean deleteDaySlot(long daySlotID) throws DAOException;
 
 	boolean deleteTimeSlot(long timeSlotID) throws DAOException;
+
+	ArrayList<ParkingSpot> getAllParkingSpots() throws DAOException;
 }

@@ -1,5 +1,6 @@
 package comp3350.iPuP.business;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -49,21 +50,28 @@ public class AccessParkingSpots
                     }
                     break;
                 case "Weeks":
-                    boolean[] days = TimeSlot.weekCodeToBoolArray(splits[3]);
-                    for (int j = 0; j < Integer.parseInt(splits[2]); j++)
+                    try
                     {
-                        for (int i = 0; i < 7; i++)
+                        boolean[] days = TimeSlot.weekCodeToBoolArray(splits[3]);
+                        for (int j = 0; j < Integer.parseInt(splits[2]); j++)
                         {
-                            if (days[(start.get(Calendar.DAY_OF_WEEK) - 1) % 7])
+                            for (int i = 0; i < 7; i++)
                             {
-                                insertDaySlot(start.getTime(), end.getTime(), spot.getSpotID(), dataAccess);
-                            }
+                                if (days[(start.get(Calendar.DAY_OF_WEEK) - 1) % 7])
+                                {
+                                    insertDaySlot(start.getTime(), end.getTime(), spot.getSpotID(), dataAccess);
+                                }
 
-                            start.add(Calendar.DAY_OF_YEAR, 1);
-                            end.add(Calendar.DAY_OF_YEAR, 1);
+                                start.add(Calendar.DAY_OF_YEAR, 1);
+                                end.add(Calendar.DAY_OF_YEAR, 1);
+                            }
+                            start.add(Calendar.WEEK_OF_YEAR, Integer.parseInt(splits[1]) - 1);
+                            end.add(Calendar.WEEK_OF_YEAR, Integer.parseInt(splits[1]) - 1);
                         }
-                        start.add(Calendar.WEEK_OF_YEAR, Integer.parseInt(splits[1]) - 1);
-                        end.add(Calendar.WEEK_OF_YEAR, Integer.parseInt(splits[1]) - 1);
+                    }
+                    catch (ParseException pe)
+                    {
+                        throw new DAOException("Repeat acivity had some strange error and returned: " + splits[3]);
                     }
                     break;
                 default:
@@ -107,10 +115,9 @@ public class AccessParkingSpots
         return dataAccess.insertParkingSpot(user, newParkingSpot);
     }
 
-    public ArrayList<ParkingSpot> getAllSpots()
+    public ArrayList<ParkingSpot> getAllParkingSpots() throws DAOException
     {
-        //        returnList.addAll(dataAccess.getParkingSpots());
-        return new ArrayList<>();
+        return dataAccess.getAllParkingSpots();
     }
 
     public ArrayList<ParkingSpot> getAvailableSpots()

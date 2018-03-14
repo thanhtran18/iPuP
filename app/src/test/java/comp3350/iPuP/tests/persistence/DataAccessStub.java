@@ -39,6 +39,7 @@ public class DataAccessStub implements DataAccess
     private ArrayList<TimeSlot> daySlots;
     private ArrayList<Long> daySlotsParkingSpotID;
     private ArrayList<TimeSlot> timeSlots;
+    private ArrayList<Long> timeSlotsDaySlotID;
     private ArrayList<Long> timeSlotsParkingSpotID;
     private ArrayList<Booking> bookings;
     private ArrayList<Long> bookingsParkingSpotID;
@@ -61,6 +62,7 @@ public class DataAccessStub implements DataAccess
 		daySlots = new ArrayList<>();
         daySlotsParkingSpotID = new ArrayList<>();
 		timeSlots = new ArrayList<>();
+		timeSlotsDaySlotID = new ArrayList<>();
 		timeSlotsParkingSpotID = new ArrayList<>();
 		bookings = new ArrayList<>();
 		bookingsParkingSpotID = new ArrayList<>();
@@ -73,7 +75,8 @@ public class DataAccessStub implements DataAccess
 		Calendar calStart = Calendar.getInstance();
 		Calendar calEnd = Calendar.getInstance();
 
-		try {
+		try
+        {
             address = "88 Plaza Drive";
             name = "marker";
             phone = "204-855-2342";
@@ -346,25 +349,11 @@ public class DataAccessStub implements DataAccess
     @Override
 	public long insertDaySlot(TimeSlot daySlot, long spotID) throws DAOException
 	{
-        int i;
         long rtn = dayslotCounter;
 
-        for (i = 0; i < daySlots.size(); i++) {
-            if (daySlot.getSlotID() == daySlots.get(i).getSlotID())
-            {
-                break;
-            }
-        }
-
-        if (!(i >= 0))
-        {
-            daySlot.setSlotID(dayslotCounter++);
-            daySlots.add(daySlot);
-            daySlotsParkingSpotID.add(spotID);
-        } else
-        {
-            throw new DAOException("Error in inserting DaySlot object with spotID = "+spotID+"!");
-        }
+        daySlot.setSlotID(dayslotCounter++);
+        daySlots.add(daySlot);
+        daySlotsParkingSpotID.add(spotID);
 
 		return rtn;
 	}
@@ -372,28 +361,12 @@ public class DataAccessStub implements DataAccess
     @Override
 	public long insertTimeSlot(TimeSlot timeSlot, long daySlotID, long spotID) throws DAOException
 	{
-        int i;
         long rtn = timeslotCounter;
 
-        for (i = 0; i < timeSlots.size(); i++) {
-            TimeSlot atimespot = timeSlots.get(i);
-            if (timeSlot.getSlotID() == atimespot.getSlotID() ||
-                    ((timeSlot.getStart()).equals(atimespot.getStart()) &&
-                            (timeSlot.getEnd()).equals(atimespot.getEnd())))
-            {
-                break;
-            }
-        }
-
-        if (!(i >= 0))
-        {
-            timeSlot.setSlotID(timeslotCounter++);
-            timeSlots.add(timeSlot);
-            timeSlotsParkingSpotID.add(spotID);
-        } else
-        {
-            throw new DAOException("Error in inserting TimeSlot object with daySlotID = "+daySlotID+" and spotID = "+spotID+"!");
-        }
+        timeSlot.setSlotID(timeslotCounter++);
+        timeSlots.add(timeSlot);
+        timeSlotsDaySlotID.add(daySlotID);
+        timeSlotsParkingSpotID.add(spotID);
 
         return rtn;
 	}
@@ -563,7 +536,18 @@ public class DataAccessStub implements DataAccess
     @Override
     public void clearSpotList()
     {
+        users.clear();
         parkingSpots.clear();
+        daySlots.clear();
+        daySlotsParkingSpotID.clear();
+        timeSlots.clear();
+        timeSlotsDaySlotID.clear();
+        timeSlotsParkingSpotID.clear();
+        bookings.clear();
+        bookingsParkingSpotID.clear();
+        parkingspotCounter = 0;
+        dayslotCounter = 0;
+        timeslotCounter = 0;
     }
 
     @Override
@@ -682,13 +666,13 @@ public class DataAccessStub implements DataAccess
     }
 
     @Override
-    public ArrayList<TimeSlot> getTimeSlots(long spotID) throws DAOException
+    public ArrayList<TimeSlot> getTimeSlots(long daySlotID) throws DAOException
     {
         ArrayList<TimeSlot> timeSlotsList = new ArrayList<>();
 
-        for (int i = 0; i < timeSlotsParkingSpotID.size(); i++)
+        for (int i = 0; i < timeSlotsDaySlotID.size(); i++)
         {
-            if (timeSlotsParkingSpotID.get(i) == spotID)
+            if (timeSlotsDaySlotID.get(i) == daySlotID)
             {
                 TimeSlot adayslot = timeSlots.get(i);
                 timeSlotsList.add(new TimeSlot(adayslot.getStart(), adayslot.getEnd(),
@@ -733,5 +717,10 @@ public class DataAccessStub implements DataAccess
         }
 
         parkingspotCounter++;
+    }
+
+    public ArrayList<ParkingSpot> getAllParkingSpots()
+    {
+        return parkingSpots;
     }
 }

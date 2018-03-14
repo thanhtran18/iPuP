@@ -10,12 +10,15 @@ public class Services
 
 	public static DataAccess createDataAccess(String dbName)
 	{
-		try {
-			if (dataAccessService == null) {
+		try
+		{
+			if (dataAccessService == null)
+			{
 				dataAccessService = new DataAccessObject(dbName);
 				dataAccessService.open(Main.getDBPathName());
 			}
-		} catch (DAOException daoe)
+		}
+		catch (DAOException daoe)
 		{
             System.out.println(daoe.getMessage());
             System.exit(1);
@@ -58,7 +61,8 @@ public class Services
 		    try
             {
                 dataAccessService.close();
-            } catch (DAOException daoe)
+            }
+            catch (DAOException daoe)
             {
                 System.err.println(daoe.getMessage());
                 System.exit(1);

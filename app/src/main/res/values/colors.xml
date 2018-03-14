@@ -5,6 +5,7 @@
     <color name="colorAccent">#2d2dce</color>
     <color name="colorTransparent">#00000000</color>
     <color name="colorWhite">#fff</color>
+    <color name="colorBlack">#000</color>
     <color name="colorLightGrey">#eaeaea</color>
     <color name="colorButton">#894f99</color>
     <color name="colorButtonText">#fff</color>

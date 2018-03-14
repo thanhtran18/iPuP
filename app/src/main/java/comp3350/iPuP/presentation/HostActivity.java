@@ -15,6 +15,8 @@ import android.widget.ToggleButton;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.objects.DAOException;
@@ -184,6 +186,20 @@ public class HostActivity extends Activity implements DateFragmentObserver
             text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         }
 
+        if (!validateEmail(email))
+        {
+            valid = false;
+            EditText text = findViewById(R.id.editEmail);
+            text.setText("Invalid Email address");
+            text.setTextColor(getResources().getColor(R.color.colorWarning));
+        }
+        else
+        {
+            EditText text = findViewById(R.id.editEmail);
+            text.setHint(getResources().getString(R.string.host_email));
+            text.setTextColor(getResources().getColor(R.color.colorBlack));
+        }
+
         if (timeSlot.getStart().compareTo(timeSlot.getEnd()) >= 0)
         {
             valid = false;
@@ -204,7 +220,7 @@ public class HostActivity extends Activity implements DateFragmentObserver
         {
             try
             {
-                accessParkingSpots.insertParkingSpot(name, timeSlot, repetitionInfo, address, name, phone, email, rate);
+                accessParkingSpots.insertParkingSpot(name, timeSlot, repetitionInfo, address, phone, email, rate);
 
                     Toast.makeText(this, "New advertisement created!", Toast.LENGTH_LONG).show();
             }
@@ -267,5 +283,19 @@ public class HostActivity extends Activity implements DateFragmentObserver
         else
             tv = findViewById(R.id.editToDate);
         tv.setText(df.getDateFormat().format(date));
+    }
+
+    private boolean validateEmail(String email)
+    {
+        Pattern p = Pattern.compile("^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$");//pattern from https://stackoverflow.com/questions/42266148/email-validation-regex-java
+        Matcher m = p.matcher(email);
+        return m.matches();
+    }
+
+    public boolean validatePhone(String phone)
+    {
+        Pattern p = Pattern.compile("^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");//pattern from https://stackoverflow.com/questions/16699007/regular-expression-to-match-standard-10-digit-phone-number
+        Matcher m = p.matcher(phone);
+        return m.matches();
     }
 }

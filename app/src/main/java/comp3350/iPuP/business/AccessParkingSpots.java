@@ -24,7 +24,7 @@ public class AccessParkingSpots
         availableSpots = new ArrayList<>();
     }
 
-    public void insertParkingSpot(String user, TimeSlot timeSlot, String repetitionInfo, String address, String name, String phone, String email, double rate) throws DAOException
+    public void insertParkingSpot(String name, TimeSlot timeSlot, String repetitionInfo, String address, String phone, String email, double rate) throws DAOException
     {
         Calendar start = new GregorianCalendar();
         Calendar end = new GregorianCalendar();
@@ -33,7 +33,7 @@ public class AccessParkingSpots
 
         ParkingSpot spot = new ParkingSpot(address, name, phone, email, rate);
 
-        spot.setSpotID(insertParkingSpot(user, spot));
+        spot.setSpotID(insertParkingSpot(name, spot));
 
         if (repetitionInfo != null && !repetitionInfo.equals(""))
         {

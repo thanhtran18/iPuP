@@ -444,7 +444,7 @@ public class DataAccessStub implements DataAccess
         {
             ParkingSpot parkingSpot = parkingSpots.get(i);
             boolean check = false;
-            if (address != null && !address.equals(""))
+            if (address != null && !address.equals("") && address.trim().length() != 0)
             {
                 if (parkingSpot.getAddress().contains(address))
                     check = true;

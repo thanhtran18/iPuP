@@ -87,6 +87,7 @@
     <string name="fatalError">Fatal error</string>
     <string name="warning">Warning</string>
     <string name="no_available_parking_spots">There are no available spots to display</string>
+    <string name="no_available_times_to_book">There are no available times to display</string>
     <string name="title_activity_available_parking_spots">AvailableParkingSpots</string>
     <string name="title_activity_parking_spot_info">ParkingSpotInfoActivity</string>
     <string name="title_activity_host">ParkingSpotHostActivity</string>
@@ -100,6 +101,8 @@
     <string name="title_activity_parker_search">ParkerSearchActivity</string>
     <string name="host_dnrepeat">Does not repeat</string>
     <string name="host_repeats">Repeats</string>
+
+    <string name="timeSlot_booking_confirm">CONFIRM BOOKING</string>
     <string name="selected_spot">spot_to_view</string>
     <string name="search">Search</string>
 </resources>

@@ -17,7 +17,18 @@ public class ParkerMenuActivity extends AppCompatActivity {
     }
     public void buttonCreateOnClick(View v)
     {
+        String name;
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            name = null;
+        } else {
+            name = extras.getString("name");
+        }
         Intent parkerMenuIntent = new Intent(ParkerMenuActivity.this, ParkerSearchActivity.class);
+
+        Bundle newBundle = new Bundle();
+        newBundle.putString("name", name);
+        parkerMenuIntent.putExtras(newBundle);
         ParkerMenuActivity.this.startActivity(parkerMenuIntent);
     }
 

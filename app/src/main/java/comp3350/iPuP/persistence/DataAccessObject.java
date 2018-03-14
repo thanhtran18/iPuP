@@ -181,7 +181,7 @@ public class DataAccessObject implements DataAccess
     @Override
     public long insertTimeSlot(TimeSlot timeSlot, long daySlotID, long spotID) throws DAOException
     {
-        long timeSlotID;
+        long timeslotID;
 
         try
         {
@@ -208,7 +208,7 @@ public class DataAccessObject implements DataAccess
 
             if (rss.next())
             {
-                timeSlotID = rss.getLong(1);
+                timeslotID = rss.getLong(1);
             } else
             {
                 throw new DAOException("Could not retrieve last auto generated TimeSlot ID!");
@@ -219,7 +219,7 @@ public class DataAccessObject implements DataAccess
             throw new DAOException("Could not retrieve last auto generated TimeSlot ID!",sqle);
         }
 
-        return timeSlotID;
+        return timeslotID;
     }
 
     @Override
@@ -297,7 +297,7 @@ public class DataAccessObject implements DataAccess
     }
 
     @Override
-    public TimeSlot getAvailableTimeForAParkingSpot(long spotID) throws DAOException
+    public TimeSlot getAvailableTimeForAParkingSpot(long slotID) throws DAOException
     {
         Calendar calStart = Calendar.getInstance();
         Calendar calEnd = Calendar.getInstance();
@@ -309,7 +309,7 @@ public class DataAccessObject implements DataAccess
             cmdString = "SELECT MIN(STARTDAYTIME) STARTTIME, MAX(ENDDAYTIME) ENDTIME FROM DAYSLOTS " +
                         "WHERE SPOT_ID = ? AND DELETED = FALSE";
             pstmt = con.prepareStatement(cmdString);
-            pstmt.setLong(1,spotID);
+            pstmt.setLong(1,slotID);
             rsp = pstmt.executeQuery();
 
             if (rsp.next())
@@ -326,7 +326,7 @@ public class DataAccessObject implements DataAccess
         } catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Error in retrieving the available time for spotID = "+spotID+"!",sqle);
+            throw new DAOException("Error in retrieving the available time for slotID = "+slotID+"!",sqle);
         }
 
         return daySlot;
@@ -340,8 +340,7 @@ public class DataAccessObject implements DataAccess
         try {
             cmdString = "SELECT * FROM PARKINGSPOTS P WHERE LCASE(P.ADDRESS) LIKE ? " +
                         "AND EXISTS (SELECT * FROM DAYSLOTS D WHERE D.SPOT_ID = P.SPOT_ID " +
-                        "AND ? BETWEEN CAST(D.STARTDAYTIME AS DATE) AND CAST(D.ENDDAYTIME AS DATE)) " +
-                        "ORDER BY LCASE(P.ADDRESS)";
+                        "AND ? BETWEEN CAST(D.STARTDAYTIME AS DATE) AND CAST(D.ENDDAYTIME AS DATE))";
             pstmt = con.prepareStatement(cmdString);
 
             if (address == null)
@@ -503,7 +502,7 @@ public class DataAccessObject implements DataAccess
         Calendar calEnd = Calendar.getInstance();
         Date start, end;
         Booking booking;
-        long timeSlotID;
+        long timeslotID;
         String addr;
 
         bookingSpotsOfAUser = new ArrayList<>();
@@ -523,7 +522,7 @@ public class DataAccessObject implements DataAccess
 
             while (rss.next())
             {
-                timeSlotID = rss.getLong("TIMESLOT_ID");
+                timeslotID = rss.getLong("TIMESLOT_ID");
                 addr = rss.getString("Address");
                 start = rss.getTimestamp("Startdatetime");
                 end = rss.getTimestamp("Enddatetime");
@@ -531,7 +530,7 @@ public class DataAccessObject implements DataAccess
                 calStart.setTime(start);
                 calEnd.setTime(end);
 
-                booking = new Booking(username, timeSlotID, addr, calStart.getTime(), calEnd.getTime());
+                booking = new Booking(username, timeslotID, addr, calStart.getTime(), calEnd.getTime());
                 bookingSpotsOfAUser.add(booking);
             }
 
@@ -587,59 +586,10 @@ public class DataAccessObject implements DataAccess
         }
     }
 
-    //TODO: Make method to get timeslots from database and return arraylist
-    @Override
-    public ArrayList<TimeSlot> getTimeSlotsForParkingSpot(long spotID) throws DAOException
-    {
-	    ArrayList<TimeSlot> returnVal;
-	    TimeSlot currSlot;
-        Calendar calStart = Calendar.getInstance();
-        Calendar calEnd = Calendar.getInstance();
-        Date start, end;
-        long timeSlotID;
-        boolean bookedVar = false;
-
-	    try {
-            cmdString = "SELECT T.TIMESLOT_ID, T.SPOT_ID, T.STARTDATETIME, T.ENDDATETIME, B.USERNAME" +
-                    " FROM TIMESLOTS T LEFT JOIN BOOKINGS B ON T.TIMESLOT_ID=B.TIMESLOT_ID " +
-                    "WHERE T.SPOT_ID=? ORDER BY T.STARTDATETIME";
-            pstmt = con.prepareStatement(cmdString);
-            pstmt.setLong(1, spotID);
-            rss = pstmt.executeQuery();
-            returnVal=new ArrayList<TimeSlot>();
-            while (rss.next())
-            {
-                timeSlotID = rss.getLong("USERNAME");
-                start = rss.getTimestamp("STARTDATETIME");
-                end = rss.getTimestamp("ENDDATETIME");
-
-                calStart.setTime(start);
-                calEnd.setTime(end);
-
-                if(rss.getString("TIMESLOT_ID")!=null) {
-                    bookedVar = true;
-                }
-
-                currSlot=new TimeSlot(calStart.getTime(),calEnd.getTime(),timeSlotID, bookedVar);
-                returnVal.add(currSlot);
-            }
-
-            rss.close();
-
-        }catch (SQLException SqlEx){
-	        processSQLError(SqlEx);
-	        throw new DAOException("Error in getting timeslots from parking spot with SPOT_ID" +
-                    " = "+spotID+"!",SqlEx);
-        }
-
-	    return returnVal;
-    }
-
     //TODO: Confirm if this method should or should not be used.
-    @Override
     public ArrayList<TimeSlot> getUnbookedTimeSlotsForParkingSpot(long spotID) throws DAOException
     {
-        ArrayList<TimeSlot> returnVal;
+        ArrayList<TimeSlot> returnVal=null;
         TimeSlot currSlot;
         Calendar calStart = Calendar.getInstance();
         Calendar calEnd = Calendar.getInstance();
@@ -682,7 +632,6 @@ public class DataAccessObject implements DataAccess
         return returnVal;
     }
 
-    @Override
     public ParkingSpot getParkingSpotByID(long spotID) throws DAOException
     {
 	   ParkingSpot returnVal = null;
@@ -706,7 +655,7 @@ public class DataAccessObject implements DataAccess
 
             rss.close();
 
-        } catch (SQLException SqlEx){ //TODO: Exception catching style here may need to change
+        } catch (SQLException SqlEx){
             processSQLError(SqlEx);
             throw new DAOException("Error in getting timeslots from parking spot with SPOT_ID" +
                     " = "+spotID+"!",SqlEx);
@@ -714,7 +663,6 @@ public class DataAccessObject implements DataAccess
         return returnVal;
     }
 
-    @Override
     public boolean bookTimeSlot(String theUser, long timeSlotID, long spotID) throws DAOException
     {
         boolean returnVal = false;
@@ -727,13 +675,13 @@ public class DataAccessObject implements DataAccess
             pstmt.setLong(3, spotID);
             updateCount = pstmt.executeUpdate();
             checkWarning(pstmt,updateCount);
+            returnVal=true;
 
         } catch (SQLException SqlEx){ //TODO: Exception catching style here may need to change
             processSQLError(SqlEx);
             throw new DAOException("Error in booking timeslots for parking spot with SPOT_ID" +
                     " = "+spotID+"!",SqlEx);
         }
-
 	    return returnVal;
     }
 

@@ -49,26 +49,25 @@ public class DataAccessObject implements DataAccess
 		String url;
 		try
 		{
-			// Setup for HSQL
 			dbType = "HSQL";
 			Class.forName("org.hsqldb.jdbcDriver").newInstance();
-			url = "jdbc:hsqldb:file:" + dbPath; // stored on disk mode
+			url = "jdbc:hsqldb:file:" + dbPath;
 			con = DriverManager.getConnection(url, "iPuP", "iPuP");
 			stmt = con.createStatement();
 		}
 		catch (Exception e)
 		{
 			processSQLError(e);
-			throw new DAOException("Error in opening "+dbType+" database "+dbPath+"!",e);
+			throw new DAOException("Error in opening " + dbType + " database " + dbPath + "!", e);
 		}
-		System.out.println("Opened " +dbType +" database " +dbPath);
+		System.out.println("Opened " + dbType + " database " + dbPath);
 	}
 
     @Override
 	public void close() throws DAOException
 	{
 		try
-		{	// commit all changes to the database
+		{
 			cmdString = "shutdown compact";
 			rss = stmt.executeQuery(cmdString);
 			con.close();
@@ -76,9 +75,9 @@ public class DataAccessObject implements DataAccess
 		catch (Exception e)
 		{
 			processSQLError(e);
-			throw new DAOException("Error in closing "+dbType+" database "+dbName+"!",e);
+			throw new DAOException("Error in closing " + dbType + " database " + dbName + "!", e);
 		}
-		System.out.println("Closed " +dbType +" database " +dbName);
+		System.out.println("Closed " + dbType + " database " + dbName);
 	}
 
 
@@ -105,7 +104,7 @@ public class DataAccessObject implements DataAccess
         catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Error in checking if ParkingSpot object with address = "+address+" and name = "+name+" exists!",sqle);
+            throw new DAOException("Error in checking if ParkingSpot object with address = " + address + " and name = " + name + " exists!", sqle);
         }
 
         return result;
@@ -120,7 +119,7 @@ public class DataAccessObject implements DataAccess
         {
             cmdString = "SELECT * FROM USERS WHERE USERNAME = ?";
             pstmt = con.prepareStatement(cmdString);
-            pstmt.setString(1,username);
+            pstmt.setString(1, username);
 
             rsp = pstmt.executeQuery();
 
@@ -131,7 +130,7 @@ public class DataAccessObject implements DataAccess
         } catch (Exception e)
         {
             processSQLError(e);
-            throw new DAOException("Error in checking if User ("+username+") exists!",e);
+            throw new DAOException("Error in checking if User (" + username + ") exists!", e);
         }
 
         return result;
@@ -156,7 +155,7 @@ public class DataAccessObject implements DataAccess
         catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Error in inserting DaySlot object with spotID = "+spotID+"!",sqle);
+            throw new DAOException("Error in inserting DaySlot object with spotID = " + spotID + "!", sqle);
         }
 
         try
@@ -167,7 +166,8 @@ public class DataAccessObject implements DataAccess
             if (rss.next())
             {
                 daySlotID = rss.getLong(1);
-            } else
+            }
+            else
             {
                 throw new DAOException("Could not retrieve last auto generated DaySlot ID!");
             }
@@ -175,7 +175,7 @@ public class DataAccessObject implements DataAccess
         catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Could not retrieve last auto generated DaySlot ID!",sqle);
+            throw new DAOException("Could not retrieve last auto generated DaySlot ID!", sqle);
         }
 
         return daySlotID;
@@ -202,7 +202,7 @@ public class DataAccessObject implements DataAccess
         catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Error in inserting TimeSlot object with dayslotID = "+daySlotID+" and spotID = "+spotID+"!",sqle);
+            throw new DAOException("Error in inserting TimeSlot object with dayslotID = " + daySlotID + " and spotID = " + spotID + "!", sqle);
         }
 
         try
@@ -213,7 +213,8 @@ public class DataAccessObject implements DataAccess
             if (rss.next())
             {
                 timeSlotID = rss.getLong(1);
-            } else
+            }
+            else
             {
                 throw new DAOException("Could not retrieve last auto generated TimeSlot ID!");
             }
@@ -221,7 +222,7 @@ public class DataAccessObject implements DataAccess
         catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Could not retrieve last auto generated TimeSlot ID!",sqle);
+            throw new DAOException("Could not retrieve last auto generated TimeSlot ID!", sqle);
         }
 
         return timeSlotID;
@@ -234,7 +235,8 @@ public class DataAccessObject implements DataAccess
 
         try
         {
-            if (!doesParkingSpotExists(currentParkingSpot.getAddress(),currentParkingSpot.getName())) {
+            if (!doesParkingSpotExists(currentParkingSpot.getAddress(),currentParkingSpot.getName()))
+            {
                 cmdString = "INSERT INTO PARKINGSPOTS (USERNAME,NAME,ADDRESS,PHONE,EMAIL,RATE) VALUES(?,?,?,?,?,?)";
                 pstmt = con.prepareStatement(cmdString);
                 pstmt.setString(1, username);
@@ -244,7 +246,6 @@ public class DataAccessObject implements DataAccess
                 pstmt.setString(5, currentParkingSpot.getEmail());
                 pstmt.setDouble(6, currentParkingSpot.getRate());
 
-                //System.out.println(cmdString);
                 updateCount = pstmt.executeUpdate();
                 checkWarning(pstmt, updateCount);
             }
@@ -252,7 +253,7 @@ public class DataAccessObject implements DataAccess
         catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Error in creating ParkingSpot object with SPOT_ID = "+currentParkingSpot.getSpotID()+" for Username: "+username+"!",sqle);
+            throw new DAOException("Error in creating ParkingSpot object with SPOT_ID = " + currentParkingSpot.getSpotID() + " for Username: " + username + "!", sqle);
         }
 
         try
@@ -263,7 +264,8 @@ public class DataAccessObject implements DataAccess
             if (rss.next())
             {
                 spotID = rss.getLong(1);
-            } else
+            }
+            else
             {
                 throw new DAOException("Could not retrieve last auto generated Spot ID!");
             }
@@ -271,7 +273,7 @@ public class DataAccessObject implements DataAccess
         catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Could not retrieve last auto generated Spot ID!",sqle);
+            throw new DAOException("Could not retrieve last auto generated Spot ID!", sqle);
         }
 
         return spotID;
@@ -283,7 +285,7 @@ public class DataAccessObject implements DataAccess
         boolean result = false;
 
         if (!doesUserExists(username))
-        { // if user does not exist
+        {
             try
             {
                 cmdString = "INSERT INTO USERS VALUES(?)";
@@ -296,9 +298,10 @@ public class DataAccessObject implements DataAccess
                 result = true;
 
             }
-            catch (SQLException sqle) {
+            catch (SQLException sqle)
+            {
                 processSQLError(sqle);
-                throw new DAOException("Error in creating new user with USERNAME = "+username+"!",sqle);
+                throw new DAOException("Error in creating new user with USERNAME = " + username + "!", sqle);
             }
         }
 
@@ -318,7 +321,7 @@ public class DataAccessObject implements DataAccess
             cmdString = "SELECT MIN(STARTDAYTIME) STARTTIME, MAX(ENDDAYTIME) ENDTIME FROM DAYSLOTS " +
                         "WHERE SPOT_ID = ? AND DELETED = FALSE";
             pstmt = con.prepareStatement(cmdString);
-            pstmt.setLong(1,spotID);
+            pstmt.setLong(1, spotID);
             rsp = pstmt.executeQuery();
 
             if (rsp.next())
@@ -336,7 +339,7 @@ public class DataAccessObject implements DataAccess
         catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Error in retrieving the available time for spotID = "+spotID+"!",sqle);
+            throw new DAOException("Error in retrieving the available time for spotID = " + spotID + "!", sqle);
         }
 
         return daySlot;
@@ -361,7 +364,7 @@ public class DataAccessObject implements DataAccess
             }
             else
             {
-                pstmt.setString(1,"%"+address.toLowerCase()+"%");
+                pstmt.setString(1,"%" + address.toLowerCase() + "%");
             }
             pstmt.setString(2, df.getSqlDateFormat().format(date));
 
@@ -374,7 +377,7 @@ public class DataAccessObject implements DataAccess
         catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Error in getting ParkingSpots ordered by Date: "+df.getSqlDateFormat().format(date)+"!",sqle);
+            throw new DAOException("Error in getting ParkingSpots ordered by Date: " + df.getSqlDateFormat().format(date) + "!", sqle);
         }
 
         return parkingSpots;
@@ -391,8 +394,6 @@ public class DataAccessObject implements DataAccess
             pstmt.setLong(1, spotID);
 
             rss = pstmt.executeQuery();
-
-
         }
         catch (SQLException sqle)
         {
@@ -438,7 +439,8 @@ public class DataAccessObject implements DataAccess
 
         try
         {
-            while (rs.next()) {
+            while (rs.next())
+            {
                 spotID = rs.getLong("SPOT_ID");
                 name = rs.getString("NAME");
                 addr = rs.getString("ADDRESS");
@@ -473,7 +475,6 @@ public class DataAccessObject implements DataAccess
             pstmt = con.prepareStatement(cmdString);
             pstmt.setString(1, username);
             rss = pstmt.executeQuery();
-            //ResultSetMetaData md = rs.getMetaData();
 
             getParkingSpots(rss, parkingSpotsOfAUser);
 
@@ -508,7 +509,6 @@ public class DataAccessObject implements DataAccess
 	{
 		String result = "*** SQL Error: " + e.getMessage();
 
-		// Remember, this will NOT be seen by the user!
 		e.printStackTrace();
     }
 
@@ -532,11 +532,10 @@ public class DataAccessObject implements DataAccess
                         "LEFT JOIN TIMESLOTS T ON B.TIMESLOT_ID = T.TIMESLOT_ID " +
                         "WHERE B.USERNAME = ? AND NOT T.DAYSLOT_ID IS NULL " +
                         "ORDER BY T.STARTDATETIME";
-            //TODO: remove null check on dayslotID after change in database
+
             pstmt = con.prepareStatement(cmdString);
             pstmt.setString(1, username);
             rss = pstmt.executeQuery();
-            //ResultSetMetaData md = rs.getMetaData();
 
             while (rss.next())
             {
@@ -557,7 +556,7 @@ public class DataAccessObject implements DataAccess
         catch (Exception e)
         {
             processSQLError(e);
-            throw new DAOException("Error in getting bookings list for User: "+username+"!",e);
+            throw new DAOException("Error in getting bookings list for User: " + username + "!", e);
         }
 
         return bookingSpotsOfAUser;
@@ -578,7 +577,7 @@ public class DataAccessObject implements DataAccess
         catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = "+timeSlotID+"!",sqle);
+            throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = " + timeSlotID + "!", sqle);
         }
     }
 
@@ -600,14 +599,14 @@ public class DataAccessObject implements DataAccess
         catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Error in updateing ParkingSpot with id = "+spotID+"!",sqle);
+            throw new DAOException("Error in updateing ParkingSpot with id = " + spotID + "!", sqle);
         }
     }
 
     @Override
     public ArrayList<TimeSlot> getUnbookedTimeSlotsForParkingSpot(long spotID) throws DAOException
     {
-        ArrayList<TimeSlot> returnVal=null;
+        ArrayList<TimeSlot> returnVal = null;
         TimeSlot currSlot;
         Calendar calStart = Calendar.getInstance();
         Calendar calEnd = Calendar.getInstance();
@@ -638,7 +637,7 @@ public class DataAccessObject implements DataAccess
                     bookedVar = true;
                 }
                 else
-                    {
+                {
                     currSlot=new TimeSlot(calStart.getTime(),calEnd.getTime(),timeSlotID, bookedVar);
                     returnVal.add(currSlot);
                 }
@@ -659,9 +658,9 @@ public class DataAccessObject implements DataAccess
     @Override
     public ParkingSpot getParkingSpotByID(long spotID) throws DAOException
     {
-	   ParkingSpot returnVal = null;
-	   String name, address, phone, email ;
-	   Double rate;
+        ParkingSpot returnVal = null;
+        String name, address, phone, email ;
+        Double rate;
 
         try
         {
@@ -678,14 +677,14 @@ public class DataAccessObject implements DataAccess
                 rate=rss.getDouble("RATE");
                 returnVal=new ParkingSpot(spotID,address,name, phone, email, rate);
             }
-
             rss.close();
 
         }
-        catch (SQLException SqlEx){
+        catch (SQLException SqlEx)
+        {
             processSQLError(SqlEx);
             throw new DAOException("Error in getting timeslots from parking spot with SPOT_ID" +
-                    " = "+spotID+"!",SqlEx);
+                    " = " + spotID + "!", SqlEx);
         }
         return returnVal;
     }

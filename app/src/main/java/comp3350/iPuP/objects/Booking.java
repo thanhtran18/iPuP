@@ -11,8 +11,12 @@ public class Booking
     private Date end;
     private DateFormatter df = new DateFormatter();
 
-    public Booking(String name, Long timeSlotId, String address, Date start, Date end)
+    public Booking(String name, Long timeSlotId, String address, Date start, Date end) throws Exception
     {
+        if (name.equals(""))
+            throw new Exception("User must have a username!");
+        if (start.after(end))
+            throw new Exception("Starting time must be after ending time!");
         this.name = name;
         this.timeSlotId = timeSlotId;
         this.address = address;
@@ -30,35 +34,43 @@ public class Booking
         this.name = name;
     }
 
-    public long getTimeSlotId() {
+    public long getTimeSlotId()
+    {
         return timeSlotId;
     }
 
-    public void setTimeSlotId(long timeSlotId) {
+    public void setTimeSlotId(long timeSlotId)
+    {
         this.timeSlotId = timeSlotId;
     }
 
-    public String getAddress() {
+    public String getAddress()
+    {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(String address)
+    {
         this.address = address;
     }
 
-    public Date getStart() {
+    public Date getStart()
+    {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(Date start)
+    {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public Date getEnd()
+    {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(Date end)
+    {
         this.end = end;
     }
 

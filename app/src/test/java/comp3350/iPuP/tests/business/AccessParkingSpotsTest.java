@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.io.CharArrayReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -41,30 +42,27 @@ public class AccessParkingSpotsTest extends TestCase
         spots=parkSpotAccess.getAvailableSpots();
         assertTrue(spots.size()==0);
 
-//        parkSpotAccess.bookSpot("fakeId", 0);
-//        assertTrue(parkSpotAccess.bookSpot("fakeId", 0).equals("Not Booked"));
         assertTrue(spots.size()==0);
         System.out.println("Finished testAccessParkingSpots: No parking spots inserted.");
     }
 
-    public void testInsertParkingSpot()
+    public void testCreateSpotOneDay()
     {
         Services.closeDataAccess();
         Services.createDataAccess(new DataAccessStub(dbName));
         ParkingSpot spot = null;
 
-        //First test================================================
-        parkSpotAccess=new AccessParkingSpots();
+        parkSpotAccess = new AccessParkingSpots();
         parkSpotAccess.clearSpots();
 
         Calendar c = Calendar.getInstance();
         c.set(2018, 3, 24, 10, 30);
         Date start, end;
         start = c.getTime();
-        c.add(Calendar.HOUR_OF_DAY,2);
+        c.add(Calendar.HOUR_OF_DAY, 2);
         end = c.getTime();
 
-        TimeSlot timeSlot = new TimeSlot(start,end);
+        TimeSlot timeSlot = new TimeSlot(start, end);
         try
         {
             parkSpotAccess.insertParkingSpot("testuser", timeSlot, null, "356 testing drive, Winnipeg, MB", "456-6789", "", 42);
@@ -105,7 +103,7 @@ public class AccessParkingSpotsTest extends TestCase
 
         c.set(2018, 3, 24, 10, 30);
         start = c.getTime();
-        c.add(Calendar.HOUR_OF_DAY,2);
+        c.add(Calendar.HOUR_OF_DAY, 2);
         end = c.getTime();
 
         assertEquals(daySlots.size(), 1);
@@ -128,7 +126,7 @@ public class AccessParkingSpotsTest extends TestCase
 
         c.set(2018, 3, 24, 10, 30);
         start = c.getTime();
-        c.add(Calendar.MINUTE,30);
+        c.add(Calendar.MINUTE, 30);
         end = c.getTime();
         timeSlot = timeSlots.get(0);
 
@@ -136,14 +134,31 @@ public class AccessParkingSpotsTest extends TestCase
         assertEquals(timeSlot.getEnd(), end);
 
         start = c.getTime();
-        c.add(Calendar.MINUTE,30);
+        c.add(Calendar.MINUTE, 30);
         end = c.getTime();
         timeSlot = timeSlots.get(1);
 
         assertEquals(timeSlot.getStart(), start);
         assertEquals(timeSlot.getEnd(), end);
+    }
 
-        //Second test================================================
+    public void testCreateSpotRepeatDay()
+    {
+        Services.closeDataAccess();
+        Services.createDataAccess(new DataAccessStub(dbName));
+        ParkingSpot spot = null;
+
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        Calendar c = Calendar.getInstance();
+        Date start, end;
+        long spotID, daySlotID;
+        ArrayList<TimeSlot> daySlots;
+        ArrayList<TimeSlot> timeSlots;
+        TimeSlot daySlot;
+        TimeSlot timeSlot;
+
         c.set(2018, 10, 12, 16, 30);
         start = c.getTime();
         c.add(Calendar.HOUR_OF_DAY,1);
@@ -161,9 +176,9 @@ public class AccessParkingSpotsTest extends TestCase
 
         try
         {
-            assertEquals(parkSpotAccess.getAllParkingSpots().size(), 2);
+            assertEquals(parkSpotAccess.getAllParkingSpots().size(), 1);
 
-            spot = parkSpotAccess.getAllParkingSpots().get(1);
+            spot = parkSpotAccess.getAllParkingSpots().get(0);
         }
         catch (DAOException daoe) {fail();}
 
@@ -244,8 +259,25 @@ public class AccessParkingSpotsTest extends TestCase
 
         assertEquals(start, timeSlot.getStart());
         assertEquals(end, timeSlot.getEnd());
+    }
 
-        //Third test================================================
+    public void testCreateSpotRepeatWeek()
+    {
+        Services.closeDataAccess();
+        Services.createDataAccess(new DataAccessStub(dbName));
+        ParkingSpot spot = null;
+
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        Calendar c = Calendar.getInstance();
+        Date start, end;
+        long spotID, daySlotID;
+        ArrayList<TimeSlot> daySlots = null;
+        ArrayList<TimeSlot> timeSlots = null;
+        TimeSlot daySlot;
+        TimeSlot timeSlot;
+
         c.set(1455, 1, 1, 1, 0);
         start = c.getTime();
         c.add(Calendar.HOUR_OF_DAY,6);
@@ -263,9 +295,9 @@ public class AccessParkingSpotsTest extends TestCase
 
         try
         {
-            assertEquals(parkSpotAccess.getAllParkingSpots().size(), 3);
+            assertEquals(parkSpotAccess.getAllParkingSpots().size(), 1);
 
-            spot = parkSpotAccess.getAllParkingSpots().get(2);
+            spot = parkSpotAccess.getAllParkingSpots().get(0);
         }
         catch (DAOException daoe) {fail();}
 
@@ -379,300 +411,188 @@ public class AccessParkingSpotsTest extends TestCase
         assertEquals(timeSlot.getEnd(), end);
     }
 
+    public void testDeleteTimeSlotsOnDeleteDaySlot()
+    {
+        Services.closeDataAccess();
+        Services.createDataAccess(new DataAccessStub(dbName));
+        ParkingSpot spot = null;
+
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        Calendar c = Calendar.getInstance();
+        Date start, end;
+        long daySlotID;
+        ArrayList<TimeSlot> daySlots = null;
+        TimeSlot timeSlot;
+
+        c.set(1455, 1, 1, 1, 0);
+        start = c.getTime();
+        c.add(Calendar.HOUR_OF_DAY,6);
+        end = c.getTime();
+
+        timeSlot = new TimeSlot(start,end);
+        try
+        {
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 1 0100111", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02);
+            spot = parkSpotAccess.getAllParkingSpots().get(0);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+            daySlotID = daySlots.get(0).getSlotID();
+            boolean ret = parkSpotAccess.deleteDaySlot(daySlotID);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+
+            assertEquals(3, daySlots.size());
+            assertEquals(0, parkSpotAccess.getTimeSlots(daySlotID).size());
+            assertFalse(ret);
+        }
+        catch (DAOException daoe) { fail(); }
+    }
+
+    public void testDeleteDaySlotLast()
+    {
+        Services.closeDataAccess();
+        Services.createDataAccess(new DataAccessStub(dbName));
+        ParkingSpot spot = null;
+
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        Calendar c = Calendar.getInstance();
+        Date start, end;
+        long daySlotID;
+        ArrayList<TimeSlot> daySlots = null;
+        TimeSlot timeSlot;
+
+        c.set(1455, 1, 1, 1, 0);
+        start = c.getTime();
+        c.add(Calendar.HOUR_OF_DAY,6);
+        end = c.getTime();
+
+        timeSlot = new TimeSlot(start,end);
+        try
+        {
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02);
+            spot = parkSpotAccess.getAllParkingSpots().get(0);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+            daySlotID = daySlots.get(0).getSlotID();
+            boolean ret = parkSpotAccess.deleteDaySlot(daySlotID);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+
+            assertEquals(0, daySlots.size());
+            assertTrue(ret);
+            assertEquals(0, parkSpotAccess.getAllParkingSpots().size());
+        }
+        catch (DAOException daoe) { fail(); }
+    }
+
+    public void testDeleteTimeSlotsLastTimeSlot()
+    {
+        Services.closeDataAccess();
+        Services.createDataAccess(new DataAccessStub(dbName));
+        ParkingSpot spot = null;
+
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        Calendar c = Calendar.getInstance();
+        Date start, end;
+        long daySlotID, timeSlotID;
+        ArrayList<TimeSlot> daySlots = null;
+        ArrayList<TimeSlot> timeSlots = null;
+        TimeSlot timeSlot;
+
+        c.set(1455, 1, 1, 1, 0);
+        start = c.getTime();
+        c.add(Calendar.MINUTE, 30);
+        end = c.getTime();
+
+        timeSlot = new TimeSlot(start,end);
+        try
+        {
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 1 0100001", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02);
+            spot = parkSpotAccess.getAllParkingSpots().get(0);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+            daySlotID = daySlots.get(0).getSlotID();
+            timeSlots = parkSpotAccess.getTimeSlots(daySlotID);
+            timeSlotID = timeSlots.get(0).getSlotID();
+            boolean ret = parkSpotAccess.deleteTimeSlot(timeSlotID);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+
+            assertEquals(1, daySlots.size());
+            assertEquals(0, parkSpotAccess.getTimeSlots(daySlotID).size());
+            assertTrue(ret);
+        }
+        catch (DAOException daoe) { fail(); }
+    }
+
+    public void testDeleteTimeSlotLastDaySlot()
+    {
+        Services.closeDataAccess();
+        Services.createDataAccess(new DataAccessStub(dbName));
+        ParkingSpot spot = null;
+
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        Calendar c = Calendar.getInstance();
+        Date start, end;
+        long daySlotID, timeSlotID;
+        ArrayList<TimeSlot> daySlots = null;
+        ArrayList<TimeSlot> timeSlots = null;
+        TimeSlot timeSlot;
+
+        c.set(1455, 1, 1, 1, 0);
+        start = c.getTime();
+        c.add(Calendar.MINUTE, 30);
+        end = c.getTime();
+
+        timeSlot = new TimeSlot(start, end);
+        try
+        {
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 1 0100001", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02);
+            spot = parkSpotAccess.getAllParkingSpots().get(0);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+            daySlotID = daySlots.get(0).getSlotID();
+            timeSlots = parkSpotAccess.getTimeSlots(daySlotID);
+            timeSlotID = timeSlots.get(0).getSlotID();
+            boolean ret = parkSpotAccess.deleteTimeSlot(timeSlotID);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+
+            assertEquals(1, daySlots.size());
+            assertEquals(0, parkSpotAccess.getTimeSlots(daySlotID).size());
+            assertTrue(ret);
+
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+            daySlotID = daySlots.get(0).getSlotID();
+            timeSlots = parkSpotAccess.getTimeSlots(daySlotID);
+            timeSlotID = timeSlots.get(0).getSlotID();
+            ret = parkSpotAccess.deleteTimeSlot(timeSlotID);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+
+            assertEquals(0, daySlots.size());
+            assertEquals(0, parkSpotAccess.getTimeSlots(daySlotID).size());
+            assertEquals(0, parkSpotAccess.getAllParkingSpots().size());
+            assertTrue(ret);
+        }
+        catch (DAOException daoe) { fail(); }
+    }
+
     public void testOneParkingSpotInList()
     {
-        Main.startUp();
-        System.out.println("Starting testAccessParkingSpots: 1 parking spot in list.");
-/*
-        parkSpotAccess=new AccessParkingSpots();
-        parkSpotAccess.clearSpots();
-        ReservationTime time = new ReservationTime(2018, 6, 11, 10, 30,
-                12, 30);
-        ps=new ParkingSpot(time, "70 Plaza Place", "ThePerson", "201789465",
-                "theperson@domainname.com", 0.25);
-        parkSpotAccess.insertParkingSpot(ps);
-        spots=parkSpotAccess.getAvailableSpots();
-        assertTrue(spots.size()==1);
-
-        assertTrue(parkSpotAccess.
-                bookSpot("70 Plaza PlaceThePerson201789465theperson@domainname.com")
-                .equals("Booked"));
-        spots=parkSpotAccess.getAvailableSpots();
-        assertTrue(spots.size()==0);
-
-        allSpots=parkSpotAccess.getAllParkingSpots();
-        assertTrue(allSpots.get(0).isBooked());
-*/
-        System.out.println("Finished testAccessParkingSpots: 1 parking spot in list");
-    }
-
-    public void testRegularParkingSpotData()
-    {
-        Main.startUp();
-        System.out.println("Starting testAccessParkingSpots: regular data in list.");
-
-        parkSpotAccess = new AccessParkingSpots();
-        parkSpotAccess.clearSpots();
-/*
-        ReservationTime time = new ReservationTime(2018, 6, 11, 10, 30,
-                12, 30);
-        ps = new ParkingSpot(time, "70 Plaza Place", "ThePerson", "201789465",
-                "theperson@domainname.com", 0.25);
-        parkSpotAccess.insertParkingSpot(ps); //pos 0
-
-        time = new ReservationTime(2017, 5, 17, 10, 30,
-                12, 30);
-        ps = new ParkingSpot(time, "788 Plaza Place", "TheGuy", "20178978",
-                "theGuy@domainname.com", 0.75);
-        parkSpotAccess.insertParkingSpot(ps); //pos 1
-
-        time = new ReservationTime(2017, 5, 20, 6, 15,
-                10, 40);
-        ps = new ParkingSpot(time, "707 Ave Place", "TheGirl", "204899465",
-                "theGirl@domainname.com", 0.95);
-        parkSpotAccess.insertParkingSpot(ps); //pos 2
-
-        time = new ReservationTime(2016, 7, 20, 10, 30,
-                8, 30);
-        ps = new ParkingSpot(time, "588 Markham Place", "TheLady", "2047589465",
-                "theLady@domainname.com", 1.25);
-        parkSpotAccess.insertParkingSpot(ps); //pos 3
-
-        assertTrue(parkSpotAccess.bookSpot("788 Plaza PlaceTheGuy20178978theGuy@domainname.com")
-                .equals("Booked"));
-        assertTrue(parkSpotAccess.
-                bookSpot("588 Markham PlaceTheLady2047589465theLady@domainname.com")
-                .equals("Booked"));
-*/
-        spots = parkSpotAccess.getAvailableSpots();
-        assertTrue(spots.size()==2);
-
-        //allSpots = parkSpotAccess.getAllParkingSpots();
-//        assertFalse(allSpots.get(0).isBooked());
-//        assertTrue(allSpots.get(1).isBooked());
-//        assertFalse(allSpots.get(2).isBooked());
-//        assertTrue(allSpots.get(3).isBooked());
-
-        System.out.println("Finished testAccessParkingSpots: regular data in list");
-    }
-
-    public void testBookNonExistingParkingSpot()
-    {
-        Main.startUp();
-        System.out.println("Starting testAccessParkingSpots: Booking a spot that does not exist.");
-
-        parkSpotAccess=new AccessParkingSpots();
-        parkSpotAccess.clearSpots();
-/*
-        ReservationTime time = new ReservationTime(2018, 6, 11, 10, 30,
-                12, 30);
-        ps = new ParkingSpot(time, "70 Plaza Place", "ThePerson", "201789465",
-                "theperson@domainname.com", 0.25);
-        parkSpotAccess.insertParkingSpot(ps); //pos 0
-
-        time = new ReservationTime(2017, 5, 17, 10, 30,
-                12, 30);
-        ps = new ParkingSpot(time, "788 Plaza Place", "TheGuy", "20178978",
-                "theGuy@domainname.com", 0.75);
-        parkSpotAccess.insertParkingSpot(ps); //pos 1
-
-        time = new ReservationTime(2017, 5, 20, 6, 15,
-                10, 40);
-        ps = new ParkingSpot(time, "707 Ave Place", "TheGirl", "204899465",
-                "theGirl@domainname.com", 0.95);
-        parkSpotAccess.insertParkingSpot(ps); //pos 2
-
-        time = new ReservationTime(2016, 7, 20, 10, 30,
-                8, 30);
-        ps = new ParkingSpot(time, "588 Markham Place", "TheLady", "2047589465",
-                "theLady@domainname.com", 1.25);
-        parkSpotAccess.insertParkingSpot(ps); //pos 3
-
-        //book using incorrect id's
-        assertTrue(parkSpotAccess.bookSpot("789 Plaza PlaceTheGuy20178978theGuy@domainname.com")
-                .equals("Not Booked"));
-        assertTrue(parkSpotAccess.
-                bookSpot("588 Markham PlaceTheLady2047589465theLady@domainname.comkj")
-                .equals("Not Booked"));
-*/
-        spots = parkSpotAccess.getAvailableSpots();
-        assertTrue(spots.size() == 4);
-        System.out.println("Finished testAccessParkingSpots: Booking a spot that does not exist");
-    }
-
-    public void testBookingAllSpots()
-    {
-        Main.startUp();
-        System.out.println("Starting testAccessParkingSpots: Booking all spots.");
-
-        parkSpotAccess = new AccessParkingSpots();
-        parkSpotAccess.clearSpots();
-/*
-        ReservationTime time = new ReservationTime(2018, 6, 11, 10, 30,
-                12, 30);
-        ps = new ParkingSpot(time, "70 Plaza Place", "ThePerson", "201789465",
-                "theperson@domainname.com", 0.25);
-        parkSpotAccess.insertParkingSpot(ps); //pos 0
-
-        time = new ReservationTime(2017, 5, 17, 10, 30,
-                12, 30);
-        ps = new ParkingSpot(time, "788 Plaza Place", "TheGuy", "20178978",
-                "theGuy@domainname.com", 0.75);
-        parkSpotAccess.insertParkingSpot(ps); //pos 1
-
-        time = new ReservationTime(2017, 5, 20, 6, 15,
-                10, 40);
-        ps = new ParkingSpot(time, "707 Ave Place", "TheGirl", "204899465",
-                "theGirl@domainname.com", 0.95);
-        parkSpotAccess.insertParkingSpot(ps); //pos 2
-
-        time = new ReservationTime(2016, 7, 20, 10, 30,
-                8, 30);
-        ps = new ParkingSpot(time, "588 Markham Place", "TheLady", "2047589465",
-                "theLady@domainname.com", 1.25);
-        parkSpotAccess.insertParkingSpot(ps); //pos 3
-
-        assertTrue(parkSpotAccess.
-                bookSpot("70 Plaza PlaceThePerson201789465theperson@domainname.com")
-                .equals("Booked"));
-        assertTrue(parkSpotAccess.
-                bookSpot("788 Plaza PlaceTheGuy20178978theGuy@domainname.com")
-                .equals("Booked"));
-        assertTrue(parkSpotAccess.
-                bookSpot("707 Ave PlaceTheGirl204899465theGirl@domainname.com")
-                .equals("Booked"));
-        assertTrue(parkSpotAccess.
-                bookSpot("588 Markham PlaceTheLady2047589465theLady@domainname.com")
-                .equals("Booked"));
-        spots=parkSpotAccess.getAvailableSpots();
-        assertTrue(spots.size() == 0);
-*/
- //       allSpots = parkSpotAccess.getAllParkingSpots();
-//        assertTrue(allSpots.get(0).isBooked());
-//        assertTrue(allSpots.get(1).isBooked());
-//        assertTrue(allSpots.get(2).isBooked());
-//        assertTrue(allSpots.get(3).isBooked());
-        System.out.println("Finished testAccessParkingSpots: Booking all spots");
-    }
-
-    public void testBookingNoSpots()
-    {
-        Main.startUp();
-        System.out.println("Starting testAccessParkingSpots: regular data in list.");
-
-        parkSpotAccess = new AccessParkingSpots();
-        parkSpotAccess.clearSpots();
-/*
-        ReservationTime time = new ReservationTime(2018, 6, 11, 10, 30,
-                12, 30);
-        ps = new ParkingSpot(time, "70 Plaza Place", "ThePerson", "201789465",
-                "theperson@domainname.com", 0.25);
-        parkSpotAccess.insertParkingSpot(ps); //pos 0
-
-        time = new ReservationTime(2017, 5, 17, 10, 30,
-                12, 30);
-        ps = new ParkingSpot(time, "788 Plaza Place", "TheGuy", "20178978",
-                "theGuy@domainname.com", 0.75);
-        parkSpotAccess.insertParkingSpot(ps); //pos 1
-
-        time = new ReservationTime(2017, 5, 20, 6, 15,
-                10, 40);
-        ps = new ParkingSpot(time, "707 Ave Place", "TheGirl", "204899465",
-                "theGirl@domainname.com", 0.95);
-        parkSpotAccess.insertParkingSpot(ps); //pos 2
-
-        time = new ReservationTime(2016, 7, 20, 10, 30,
-                8, 30);
-        ps = new ParkingSpot(time, "588 Markham Place", "TheLady", "2047589465",
-                "theLady@domainname.com", 1.25);
-        parkSpotAccess.insertParkingSpot(ps); //pos 3
-
-        spots = parkSpotAccess.getAvailableSpots();
-        assertTrue(spots.size()==4);
-*/
-//        allSpots = parkSpotAccess.getAllParkingSpots();
-//        assertFalse(allSpots.get(0).isBooked());
-//        assertFalse(allSpots.get(1).isBooked());
-//        assertFalse(allSpots.get(2).isBooked());
-//        assertFalse(allSpots.get(3).isBooked());
-        System.out.println("Finished testAccessParkingSpots: regular data in list");
-    }
-
-    public void testBookingTwice()
-    {
-        Main.startUp();
-        System.out.println("Starting testAccessParkingSpots: Booking a spot twice.");
-
-        parkSpotAccess = new AccessParkingSpots();
-        parkSpotAccess.clearSpots();
-/*
-        ReservationTime time = new ReservationTime(2018, 6, 11, 10, 30,
-                12, 30);
-        ps = new ParkingSpot(time, "70 Plaza Place", "ThePerson", "201789465",
-                "theperson@domainname.com", 0.25);
-        parkSpotAccess.insertParkingSpot(ps); //pos 0
-
-        time = new ReservationTime(2017, 5, 17, 10, 30,
-                12, 30);
-        ps = new ParkingSpot(time, "788 Plaza Place", "TheGuy", "20178978",
-                "theGuy@domainname.com", 0.75);
-        parkSpotAccess.insertParkingSpot(ps); //pos 1
-        ps.setBooked(true);
-
-        time = new ReservationTime(2017, 5, 20, 6, 15,
-                10, 40);
-        ps = new ParkingSpot(time, "707 Ave Place", "TheGirl", "204899465",
-                "theGirl@domainname.com", 0.95);
-        parkSpotAccess.insertParkingSpot(ps); //pos 2
-        ps.setBooked(true);
-
-        time = new ReservationTime(2016, 7, 20, 10, 30,
-                8, 30);
-        ps = new ParkingSpot(time, "588 Markham Place", "TheLady", "2047589465",
-                "theLady@domainname.com", 1.25);
-        parkSpotAccess.insertParkingSpot(ps); //pos 3
-        ps.setBooked(true);
-*/
-//        assertTrue(parkSpotAccess.
-//                bookSpot("788 Plaza PlaceTheGuy", 0)
-//                .equals("Already Booked"));
-//
-//        assertTrue(parkSpotAccess.
-//                bookSpot("588 Markham PlaceTheLady", 0)
-//                .equals("Already Booked"));
-
-        spots = parkSpotAccess.getAvailableSpots();
-        assertTrue(spots.size()==1);
-
-//        allSpots = parkSpotAccess.getAllParkingSpots();
-//        assertFalse(allSpots.get(0).getisBooked());
-//        assertTrue(allSpots.get(1).isBooked());
-//        assertTrue(allSpots.get(2).isBooked());
-//        assertTrue(allSpots.get(3).isBooked());
-        System.out.println("Finished testAccessParkingSpots: Booking a spot twice.");
-    }
-
-
-    public void testGettingMyBookingsValid()
-    {
-//        Main.startUp();
-//        System.out.println("Starting testAccessParkingSpots: No parking spots inserted.");
-//        parkSpotAccess=new AccessParkingSpots();
-//        parkSpotAccess.clearSpots();
         Services.closeDataAccess();
 
         Services.createDataAccess(new DataAccessStub(dbName));
 
         parkSpotAccess = new AccessParkingSpots();
-        parkSpotAccess.clearSpots();
+        //parkSpotAccess.clearSpots();
 
         String username = "marker";
         try
         {
             Booking abooking;
             DateFormatter dateFormatter = new DateFormatter();
-            bookings = parkSpotAccess.getMyBookedSpots("marker");
-            assertEquals(4,bookings.size());
+            bookings = parkSpotAccess.getMyBookedSpots(username);
+            assertEquals(4, bookings.size());
             abooking = bookings.get(0);
             assertEquals("marker",abooking.getName());
             assertEquals((long)173,abooking.getTimeSlotId());
@@ -737,7 +657,7 @@ public class AccessParkingSpotsTest extends TestCase
 
         Services.createDataAccess(new DataAccessStub(dbName));
         parkSpotAccess = new AccessParkingSpots();
-        parkSpotAccess.clearSpots();
+        //parkSpotAccess.clearSpots();
 
         String username = "marker";
         long timeSlotId = 91;
@@ -766,11 +686,12 @@ public class AccessParkingSpotsTest extends TestCase
         parkSpotAccess.clearSpots();
         String username = "Donald Trump";
         long timeSlotId = 91;
+
         try
         {
             parkSpotAccess.cancelThisSpot(username, timeSlotId);
             bookings = parkSpotAccess.getMyBookedSpots(username);
-            assertEquals(4, bookings.size());
+            assertEquals(0, bookings.size());
         }
         catch (DAOException de)
         {

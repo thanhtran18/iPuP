@@ -122,15 +122,7 @@ public class AccessParkingSpots
 
     public ArrayList<ParkingSpot> getAvailableSpots()
     {
-//        List<ParkingSpot> temp = dataAccess.getParkingSpots();
         availableSpots = new ArrayList<>();
-//        for (int i = 0; i < temp.size(); i++)
-//        {
-//            if (!(temp.get(i).isBooked()))
-//            {
-//                availableSpots.add(temp.get(i));
-//            }
-//        }
         return availableSpots;
     }
 
@@ -158,6 +150,7 @@ public class AccessParkingSpots
     {
         dataAccess.deleteBooking(username, timeSlotId);
     }
+
     public ParkingSpot getParkingSpot(long spotID) throws DAOException
     {
         return dataAccess.getParkingSpot(spotID);
@@ -168,27 +161,33 @@ public class AccessParkingSpots
         dataAccess.modifyParkingSpot(spotID,address,phone,email,rate);
     }
 
-    public ArrayList<TimeSlot> getFreeTimeSlotsByID(long spotID) throws DAOException{
+    public ArrayList<TimeSlot> getFreeTimeSlotsByID(long spotID) throws DAOException
+    {
         return dataAccess.getUnbookedTimeSlotsForParkingSpot(spotID);
     }
 
-    public ParkingSpot getSpotByID(long spotID) throws DAOException{
+    public ParkingSpot getSpotByID(long spotID) throws DAOException
+    {
         return dataAccess.getParkingSpotByID(spotID);
     }
 
-    public boolean bookTimeSlots(ArrayList<TimeSlot> timeSlots, String userBooking, long pSpotID) throws DAOException{
+    public boolean bookTimeSlots(ArrayList<TimeSlot> timeSlots, String userBooking, long pSpotID) throws DAOException
+    {
         boolean returnVal = false;
         int checkLoop=0;
 
-        for(TimeSlot currSlot:timeSlots){
+        for (TimeSlot currSlot: timeSlots)
+        {
             long timeSLotID = currSlot.getSlotID();
             boolean bookingWorked = dataAccess.bookTimeSlot(userBooking, timeSLotID, pSpotID);
 
-            if(bookingWorked) {
+            if(bookingWorked)
+            {
                 checkLoop++;
             }
         }
-        if(checkLoop == timeSlots.size()){
+        if (checkLoop == timeSlots.size())
+        {
             returnVal = false;
         }
 

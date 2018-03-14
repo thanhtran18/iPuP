@@ -1,19 +1,13 @@
 package comp3350.iPuP.tests.objects;
 
 import android.support.v4.app.NavUtils;
-
 import junit.framework.TestCase;
-
 import org.junit.rules.ExpectedException;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import comp3350.iPuP.objects.Booking;
 
-/**
- * Created by ThanhTran on 2018-03-10.
- */
+
 public class BookingTest extends TestCase
 {
     public ExpectedException thrown = ExpectedException.none();

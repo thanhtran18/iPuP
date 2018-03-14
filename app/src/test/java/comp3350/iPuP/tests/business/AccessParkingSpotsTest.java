@@ -571,7 +571,16 @@ public class AccessParkingSpotsTest extends TestCase
         parkSpotAccess = new AccessParkingSpots();
         parkSpotAccess.clearSpots();
 
-
-
+        String username = "tester";
+        try
+        {
+            bookings = parkSpotAccess.getMyBookedSpots(username);
+            assertEquals(0, bookings.size());
+        }
+        catch (DAOException de)
+        {
+            System.out.print(de.getMessage());
+            fail();
+        }
     }
 }

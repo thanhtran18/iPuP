@@ -172,6 +172,20 @@ public class DataAccessTest extends TestCase {
     public void testInsertAndGetParkingSpots()
     {
 
+        try
+        {
+            ArrayList<ParkingSpot> parkingSpots = dataAccess.getParkingSpotsByAddressDate("", dateFormatter.getSqlDateFormat().parse("2018-06-11"));
+            assertEquals(22,parkingSpots.size());
+            assertTrue(parkingSpots.get(0).getAddress().toLowerCase().compareTo(parkingSpots.get(1).getAddress().toLowerCase()) < 0);
+        }
+        catch (ParseException pe)
+        {
+
+        }
+        catch (DAOException daoe)
+        {
+
+        }
 
         ParkingSpot parkingSpot = new ParkingSpot(-1, "1 Tester Street", "tester", "testing@tester.ca", "2042222222", 101);
 

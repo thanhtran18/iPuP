@@ -530,8 +530,8 @@ public class DataAccessObject implements DataAccess
             cmdString = "SELECT B.USERNAME, B.TIMESLOT_ID, P.SPOT_ID, P.ADDRESS, T.STARTDATETIME, T.ENDDATETIME " +
                         "FROM BOOKINGS B LEFT JOIN PARKINGSPOTS P ON B.SPOT_ID = P.SPOT_ID " +
                         "LEFT JOIN TIMESLOTS T ON B.TIMESLOT_ID = T.TIMESLOT_ID " +
-                        "WHERE B.USERNAME = ? " +
-                            "AND NOT T.DAYSLOT_ID IS NULL ORDER BY T.STARTDATETIME";
+                        "WHERE B.USERNAME = ? AND NOT T.DAYSLOT_ID IS NULL " +
+                        "ORDER BY T.STARTDATETIME";
             //TODO: remove null check on dayslotID after change in database
             pstmt = con.prepareStatement(cmdString);
             pstmt.setString(1, username);

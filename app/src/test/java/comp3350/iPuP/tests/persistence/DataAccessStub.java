@@ -460,7 +460,7 @@ public class DataAccessStub implements DataAccess
 
     @Override
     public ArrayList<ParkingSpot> getParkingSpotsByAddressDate(String address, Date date) throws DAOException
-//    {
+    {
 //        ArrayList<ParkingSpot> parkingSpotsByAddrDate = new ArrayList<>();
 //        Map<Long,TimeSlot> map = new HashMap<>();
 //        for (int i=0; i<daySlots.size(); i++) {

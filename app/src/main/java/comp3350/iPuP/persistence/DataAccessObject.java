@@ -607,7 +607,7 @@ public class DataAccessObject implements DataAccess
     @Override
     public ArrayList<TimeSlot> getUnbookedTimeSlotsForParkingSpot(long spotID) throws DAOException
     {
-        ArrayList<TimeSlot> returnVal=null;
+        ArrayList<TimeSlot> returnVal=new ArrayList<TimeSlot>();
         TimeSlot currSlot;
         Calendar calStart = Calendar.getInstance();
         Calendar calEnd = Calendar.getInstance();
@@ -623,7 +623,6 @@ public class DataAccessObject implements DataAccess
             pstmt = con.prepareStatement(cmdString);
             pstmt.setLong(1, spotID);
             rss = pstmt.executeQuery();
-            returnVal=new ArrayList<TimeSlot>();
             while (rss.next())
             {
                 timeSlotID = rss.getLong("TIMESLOT_ID");

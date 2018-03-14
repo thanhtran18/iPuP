@@ -2,6 +2,7 @@ package comp3350.iPuP.tests.business;
 
 import junit.framework.TestCase;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -495,4 +496,24 @@ public class AccessParkingSpotsTest extends TestCase
         assertTrue(allSpots.get(3).isBooked());
         System.out.println("Finished testAccessParkingSpots: Booking a spot twice.");
     }
+
+    /*public void testFreeNoTimeSLots() throws Exception{
+        parkSpotAccess=new AccessParkingSpots();
+        assertEquals(0, parkSpotAccess.getFreeTimeSlotsByID(885000).size());
+    }
+
+    public void testInvalidSlotIDs() throws Exception{
+        parkSpotAccess=new AccessParkingSpots();
+        //negative slotID
+        assertEquals(0, parkSpotAccess.getFreeTimeSlotsByID(-1500).size());
+        assertEquals(0, parkSpotAccess.getFreeTimeSlotsByID(-1).size());
+        assertEquals(0, parkSpotAccess.getFreeTimeSlotsByID(100000).size());
+        ass
+    }
+
+    public void testRegularSlotIDs() throws Exception{
+        parkSpotAccess=new AccessParkingSpots();
+        assertEquals(2, parkSpotAccess.getFreeTimeSlotsByID(1).size());
+
+    }*/
 }

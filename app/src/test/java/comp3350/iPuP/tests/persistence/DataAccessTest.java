@@ -2,6 +2,7 @@ package comp3350.iPuP.tests.persistence;
 
 import junit.framework.TestCase;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -44,6 +45,15 @@ public class DataAccessTest extends TestCase {
 
     public void testDefaultData()
     {
+        try
+        {
+            dataAccess = new DataAccessStub();
+            dataAccess.open("Stub");
+        } catch (DAOException daoe)
+        {
+            System.err.println(daoe.getMessage());
+        }
+
         Booking abooking;
         ArrayList<Booking> bookings;
         TimeSlot adayslot, atimeslot;
@@ -160,6 +170,15 @@ public class DataAccessTest extends TestCase {
     {
         try
         {
+            dataAccess = new DataAccessStub();
+            dataAccess.open("Stub");
+        } catch (DAOException daoe)
+        {
+            System.err.println(daoe.getMessage());
+        }
+
+        try
+        {
             assertFalse(dataAccess.insertUser("marker"));
             assertFalse(dataAccess.insertUser("tester"));
             assertFalse(dataAccess.insertUser("tester2"));
@@ -171,8 +190,16 @@ public class DataAccessTest extends TestCase {
         }
     }
 
-    public void testInsertAndGetParkingSpots()
+    public void testGetParkingSpotsWithoutNewInsertion()
     {
+        try
+        {
+            dataAccess = new DataAccessStub();
+            dataAccess.open("Stub");
+        } catch (DAOException daoe)
+        {
+            System.err.println(daoe.getMessage());
+        }
 
         try
         {
@@ -191,6 +218,18 @@ public class DataAccessTest extends TestCase {
         catch (DAOException daoe)
         {
             fail("DAOException Caught with message: "+daoe.getMessage());
+        }
+    }
+
+    public void testInsertThenGetParkingSpots()
+    {
+        try
+        {
+            dataAccess = new DataAccessStub();
+            dataAccess.open("Stub");
+        } catch (DAOException daoe)
+        {
+            System.err.println(daoe.getMessage());
         }
 
         ParkingSpot parkingSpot = new ParkingSpot(-1, "1 Tester Street", "tester", "2042222222", "testing@tester.ca", 101);
@@ -253,18 +292,227 @@ public class DataAccessTest extends TestCase {
 
     }
 
-    public void testInsertAndGetDayslots()
+    public void testInsertAndDeleteDayslots()
     {
+        try
+        {
+            dataAccess = new DataAccessStub();
+            dataAccess.open("Stub");
+        } catch (DAOException daoe)
+        {
+            System.err.println(daoe.getMessage());
+        }
 
+        ArrayList<TimeSlot> daySlots;
+
+        try
+        {
+            daySlots = dataAccess.getDaySlots(0);
+            assertEquals(2,daySlots.size());
+
+            daySlots = dataAccess.getDaySlots(15);
+            assertEquals(1, daySlots.size());
+
+            daySlots = dataAccess.getDaySlots(21);
+            assertEquals(1, daySlots.size());
+        }
+        catch (DAOException daoe)
+        {
+            fail("DAOException Caught with message: "+daoe.getMessage());
+        }
     }
 
     public void testInsertAndGetTimeslots()
     {
+        try
+        {
+            dataAccess = new DataAccessStub();
+            dataAccess.open("Stub");
+        } catch (DAOException daoe)
+        {
+            System.err.println(daoe.getMessage());
+        }
 
+        ArrayList<TimeSlot> timeSlots;
+
+        try
+        {
+            timeSlots = dataAccess.getTimeSlots(0);
+            assertEquals(4,timeSlots.size());
+
+            timeSlots = dataAccess.getTimeSlots(15);
+            assertEquals(19, timeSlots.size());
+
+            timeSlots = dataAccess.getTimeSlots(21);
+            assertEquals(3, timeSlots.size());
+        }
+        catch (DAOException daoe)
+        {
+            fail("DAOException Caught with message: "+daoe.getMessage());
+        }
     }
 
     public void testInsertAndGetBookings()
     {
+        try
+        {
+            dataAccess = new DataAccessStub();
+            dataAccess.open("Stub");
+        } catch (DAOException daoe)
+        {
+            System.err.println(daoe.getMessage());
+        }
+        ArrayList<Booking> bookings;
+        Booking abooking;
+        try {
+            bookings = dataAccess.getBookedSpotsOfGivenUser("marker");
+            assertEquals(4, bookings.size());
+            abooking = bookings.get(0);
+            assertEquals("marker", abooking.getName());
+            assertEquals((long) 173, abooking.getTimeSlotId());
+            assertEquals("1000 St. Mary's Rd", abooking.getAddress());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 18:30:00"), abooking.getStart());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 19:00:00"), abooking.getEnd());
+            abooking = bookings.get(1);
+            assertEquals("marker", abooking.getName());
+            assertEquals((long) 91, abooking.getTimeSlotId());
+            assertEquals("1338 Chancellor Drive", abooking.getAddress());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 14:00:00"), abooking.getStart());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"), abooking.getEnd());
+            abooking = bookings.get(2);
+            assertEquals("marker", abooking.getName());
+            assertEquals((long) 94, abooking.getTimeSlotId());
+            assertEquals("91 Dalhousie Drive", abooking.getAddress());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"), abooking.getStart());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 11:00:00"), abooking.getEnd());
+            abooking = bookings.get(3);
+            assertEquals("marker", abooking.getName());
+            assertEquals((long) 145, abooking.getTimeSlotId());
+            assertEquals("1 Pembina Hwy", abooking.getAddress());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 12:30:00"), abooking.getStart());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 13:00:00"), abooking.getEnd());
+        }
+        catch (ParseException pe)
+        {
+            fail("ParseException Caught with message: "+pe.getMessage());
+        }
+        catch (DAOException daoe)
+        {
+            fail("DAOException Caught with message: "+daoe.getMessage());
+        }
+    }
 
+    public void testGettingAUserBookingsEmptyList()
+    {
+        try
+        {
+            dataAccess = new DataAccessStub();
+            dataAccess.open("Stub");
+        } catch (DAOException daoe)
+        {
+            System.err.println(daoe.getMessage());
+        }
+
+        dataAccess.clearSpotList();
+
+        String username = "tester";
+        ArrayList<Booking> bookings;
+        try
+        {
+            bookings = dataAccess.getBookedSpotsOfGivenUser(username);
+            assertEquals(0, bookings.size());
+        }
+        catch (DAOException de)
+        {
+            System.out.print(de.getMessage());
+            fail();
+        }
+    }
+
+    public void testDeleteAValidBooking()
+    {
+        try
+        {
+            dataAccess = new DataAccessStub();
+            dataAccess.open("Stub");
+        } catch (DAOException daoe)
+        {
+            System.err.println(daoe.getMessage());
+        }
+
+        String username = "marker";
+        ArrayList<Booking> bookings;
+        long timeSlotId = 91;
+        try
+        {
+            bookings = dataAccess.getBookedSpotsOfGivenUser(username);
+            Booking removed = bookings.get(1);
+            dataAccess.deleteBooking(username, timeSlotId);
+            bookings = dataAccess.getBookedSpotsOfGivenUser(username);
+            assertEquals(3, bookings.size());
+            assertEquals(false, bookings.contains(removed));
+        }
+        catch (DAOException de)
+        {
+            System.out.print(de.getMessage());
+            fail();
+        }
+    }
+
+    public void testDeleteABookingOfAnotherUser()
+    {
+        try
+        {
+            dataAccess = new DataAccessStub();
+            dataAccess.open("Stub");
+        } catch (DAOException daoe)
+        {
+            System.err.println(daoe.getMessage());
+        }
+
+        dataAccess.clearSpotList();
+        String username = "Donald Trump";
+        ArrayList<Booking> bookings;
+        long timeSlotId = 91;
+        try
+        {
+            dataAccess.deleteBooking(username, timeSlotId);
+            bookings = dataAccess.getBookedSpotsOfGivenUser(username);
+            assertEquals(0, bookings.size());
+        }
+        catch (DAOException de)
+        {
+            System.out.print(de.getMessage());
+            fail();
+        }
+    }
+
+    public void testDeleteABookingOfEmptyList()
+    {
+        try
+        {
+            dataAccess = new DataAccessStub();
+            dataAccess.open("Stub");
+        } catch (DAOException daoe)
+        {
+            System.err.println(daoe.getMessage());
+        }
+
+        dataAccess.clearSpotList();
+
+        String username = "tester";
+        ArrayList<Booking> bookings;
+        long timeSlotId = 91;
+        try
+        {
+            dataAccess.deleteBooking(username, timeSlotId);
+            bookings = dataAccess.getBookedSpotsOfGivenUser(username);
+            assertEquals(0, bookings.size());
+        }
+        catch (DAOException de)
+        {
+            System.out.print(de.getMessage());
+            fail();
+        }
     }
 }

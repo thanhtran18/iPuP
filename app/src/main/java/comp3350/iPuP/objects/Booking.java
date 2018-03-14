@@ -3,20 +3,16 @@ package comp3350.iPuP.objects;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * Created by ThanhTran on 2018-03-05.
- */
-
 public class Booking
 {
     private String username; //the unique username of each user
-    private Long timeSlotId;
+    private long timeSlotId;
     private String address;
     private Date start;
     private Date end;
     private DateFormatter dateFormatter = new DateFormatter();
 
-    public Booking(String username, Long timeSlotId, String address, Date start, Date end)
+    public Booking(String username, long timeSlotId, String address, Date start, Date end)
     {
         this.username = username;
         this.timeSlotId = timeSlotId;
@@ -35,11 +31,11 @@ public class Booking
         this.username = username;
     }
 
-    public Long getTimeSlotId() {
+    public long getTimeSlotId() {
         return timeSlotId;
     }
 
-    public void setTimeSlotId(Long timeSlotId) {
+    public void setTimeSlotId(long timeSlotId) {
         this.timeSlotId = timeSlotId;
     }
 

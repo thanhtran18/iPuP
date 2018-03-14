@@ -92,7 +92,7 @@ public class TimeSlot
             return "Invalid date";
     }
 
-    public Long getSlotID()
+    public long getSlotID()
     {
         return slotID;
     }

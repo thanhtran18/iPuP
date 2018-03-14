@@ -6,6 +6,7 @@ import junit.framework.TestSuite;
 import comp3350.iPuP.tests.business.AccessParkingSpotsTest;
 import comp3350.iPuP.tests.objects.ParkingSpotTest;
 import comp3350.iPuP.tests.objects.TimeSlotTest;
+import comp3350.iPuP.tests.persistence.DataAccessTest;
 
 public class AllTests
 {
@@ -16,6 +17,7 @@ public class AllTests
         suite = new TestSuite("All tests");
         testObjects();
         testBusiness();
+        testPersistence();
         return suite;
     }
 
@@ -28,5 +30,10 @@ public class AllTests
     private static void testBusiness()
     {
         suite.addTestSuite(AccessParkingSpotsTest.class);
+    }
+
+    private static void testPersistence()
+    {
+        suite.addTestSuite(DataAccessTest.class);
     }
 }

@@ -2,10 +2,6 @@ package comp3350.iPuP.objects;
 
 import java.text.SimpleDateFormat;
 
-/**
- * Created by Amanjyot on 2018-02-25.
- */
-
 public class DateFormatter {
 
     private SimpleDateFormat date;

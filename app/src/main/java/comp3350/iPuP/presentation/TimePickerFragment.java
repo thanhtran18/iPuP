@@ -17,10 +17,6 @@ import java.util.GregorianCalendar;
 import android.widget.TimePicker;
 import comp3350.iPuP.R;
 
-/**
- * Created by kram1 on 2/23/2018.
- */
-
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener
 {
     public static TimePickerFragment newInstance(int id)

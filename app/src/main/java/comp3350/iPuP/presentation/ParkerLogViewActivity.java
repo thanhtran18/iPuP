@@ -29,10 +29,6 @@ import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.ParkingSpot;
 
-/**
- * Created by ThanhTran on 2018-03-05.
- */
-
 public class ParkerLogViewActivity extends ListActivity
 {
     private AccessParkingSpots accessParkingSpots;

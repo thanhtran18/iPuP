@@ -605,13 +605,13 @@ public class DataAccessObject implements DataAccess
         boolean bookedVar = false;
 
 	    try {
-            cmdString = "SELECT T.TIMESLOT_ID, T.SPOT_ID, T.STARTDATETIME, T.ENDDATETIME, B.USERNAME" +
-                    " FROM TIMESLOTS T LEFT JOIN BOOKINGS B ON T.TIMESLOT_ID=B.TIMESLOT_ID " +
-                    "WHERE T.SPOT_ID=? ORDER BY T.STARTDATETIME";
+            cmdString = "SELECT T.TIMESLOT_ID, T.SPOT_ID, T.STARTDATETIME, T.ENDDATETIME, B.USERNAME " +
+                        "FROM TIMESLOTS T LEFT JOIN BOOKINGS B ON T.TIMESLOT_ID=B.TIMESLOT_ID " +
+                        "WHERE T.SPOT_ID=? ORDER BY T.STARTDATETIME";
             pstmt = con.prepareStatement(cmdString);
             pstmt.setLong(1, spotID);
             rss = pstmt.executeQuery();
-            returnVal=new ArrayList<TimeSlot>();
+            returnVal=new ArrayList<>();
             while (rss.next())
             {
                 timeSlotID = rss.getLong("TIMESLOT_ID");
@@ -621,7 +621,7 @@ public class DataAccessObject implements DataAccess
                 calStart.setTime(start);
                 calEnd.setTime(end);
 
-                if(rss.getString("TIMESLOT_ID")!=null) {
+                if(rss.getString("USERNAME")!=null) {
                     bookedVar = true;
                 }
 

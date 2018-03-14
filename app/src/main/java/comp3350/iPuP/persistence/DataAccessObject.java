@@ -604,7 +604,6 @@ public class DataAccessObject implements DataAccess
         }
     }
 
-    //TODO: Confirm if this method should or should not be used.
     @Override
     public ArrayList<TimeSlot> getUnbookedTimeSlotsForParkingSpot(long spotID) throws DAOException
     {
@@ -709,7 +708,7 @@ public class DataAccessObject implements DataAccess
 
         }
         catch (SQLException SqlEx)
-        { //TODO: Exception catching style here may need to change
+        {
             processSQLError(SqlEx);
             throw new DAOException("Error in booking timeslots for parking spot with SPOT_ID" +
                     " = "+spotID+"!",SqlEx);

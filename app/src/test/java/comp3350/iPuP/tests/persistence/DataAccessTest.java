@@ -171,6 +171,8 @@ public class DataAccessTest extends TestCase {
 
     public void testInsertAndGetParkingSpots()
     {
+
+
         ParkingSpot parkingSpot = new ParkingSpot(-1, "1 Tester Street", "tester", "testing@tester.ca", "2042222222", 101);
 
         try
@@ -202,16 +204,15 @@ public class DataAccessTest extends TestCase {
 
         try
         {
-            ArrayList<ParkingSpot> parkingSpots = dataAccess.getParkingSpotsByAddressDate("", dateFormatter.getSqlDateFormat().parse("2018-06-11"));
+            ArrayList<ParkingSpot> parkingSpots = dataAccess.getParkingSpotsByAddressDate("", null);
             assertEquals(24,parkingSpots.size());
             assertTrue(parkingSpots.get(0).getAddress().toLowerCase().compareTo(parkingSpots.get(1).getAddress().toLowerCase()) < 0);
-        } catch (ParseException pe)
-        {
-
-        } catch (DAOException daoe)
+        }
+        catch (DAOException daoe)
         {
 
         }
+
     }
 
     public void testInsertAndGetDayslots()

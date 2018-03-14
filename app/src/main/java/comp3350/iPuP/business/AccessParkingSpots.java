@@ -148,7 +148,7 @@ public class AccessParkingSpots
         return dataAccess.getParkingSpotsByAddressDate(address, today);
     }
 
-    public void cancelThisSpot(String username, Long timeSlotId) throws DAOException
+    public void cancelThisSpot(String username, long timeSlotId) throws DAOException
     {
         dataAccess.deleteBooking(username, timeSlotId);
     }

@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 
 import comp3350.iPuP.application.Main;
 import comp3350.iPuP.application.Services;
-import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.business.AccessUsers;
 import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.tests.persistence.DataAccessStub;

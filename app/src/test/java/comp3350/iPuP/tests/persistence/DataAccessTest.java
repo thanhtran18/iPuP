@@ -2,7 +2,6 @@ package comp3350.iPuP.tests.persistence;
 
 import junit.framework.TestCase;
 
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 

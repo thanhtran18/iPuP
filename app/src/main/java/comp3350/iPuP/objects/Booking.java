@@ -5,7 +5,7 @@ import java.util.Date;
 public class Booking
 {
     private String name; //the unique username of each user
-    private Long timeSlotId;
+    private long timeSlotId;
     private String address;
     private Date start;
     private Date end;
@@ -20,21 +20,21 @@ public class Booking
         this.end = end;
     }
 
-    public String getUsername()
+    public String getName()
     {
         return name;
     }
 
-    public void setName(String username)
+    public void setName(String name)
     {
-        this.name = username;
+        this.name = name;
     }
 
-    public Long getTimeSlotId() {
+    public long getTimeSlotId() {
         return timeSlotId;
     }
 
-    public void setTimeSlotId(Long timeSlotId) {
+    public void setTimeSlotId(long timeSlotId) {
         this.timeSlotId = timeSlotId;
     }
 

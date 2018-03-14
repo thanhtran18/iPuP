@@ -4,10 +4,6 @@ import comp3350.iPuP.application.Services;
 import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.persistence.DataAccess;
 
-/**
- * Created by Amanjyot on 2018-03-04.
- */
-
 public class AccessUsers {
 
     private DataAccess dataAccess;

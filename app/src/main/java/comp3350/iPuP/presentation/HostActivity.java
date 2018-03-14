@@ -81,16 +81,12 @@ public class HostActivity extends Activity implements DateFragmentObserver
 
     public void onFromTimeClick(View v)
     {
-        //DialogFragment timeFragment = TimePickerFragment.newInstance(R.id.editFromTime);
-        //timeFragment.show(getFragmentManager(),"TimePicker");
         Intent fromTimeIntent = new Intent(HostActivity.this, TimePickerActivity.class);
         HostActivity.this.startActivityForResult(fromTimeIntent, 1);
     }
 
     public void onToTimeClick(View v)
     {
-        //DialogFragment timeFragment = TimePickerFragment.newInstance(R.id.editToTime);
-        //timeFragment.show(getFragmentManager(),"TimePicker");
         Intent toTimeIntent = new Intent(HostActivity.this, TimePickerActivity.class);
         HostActivity.this.startActivityForResult(toTimeIntent, 2);
     }
@@ -142,6 +138,7 @@ public class HostActivity extends Activity implements DateFragmentObserver
         {
             valid = false;
         }
+
         if (address.equals(""))
         {
             valid = false;
@@ -239,7 +236,7 @@ public class HostActivity extends Activity implements DateFragmentObserver
         super.onActivityResult(requestCode, resultCode, data);
 
         String ret;
-        switch(requestCode)
+        switch (requestCode)
         {
             case (0) :
                 if (resultCode == Activity.RESULT_OK)
@@ -250,14 +247,14 @@ public class HostActivity extends Activity implements DateFragmentObserver
                     ((ToggleButton)findViewById(R.id.toggleButtonRepeat)).setChecked(false);
                 }
                 break;
-            case(1):
+            case (1):
                 if (resultCode == Activity.RESULT_OK)
                 {
                     ret = data.getStringExtra(getResources().getString(R.string.extra_time));
                     ((TextView) findViewById(R.id.textViewFromTime)).setText(ret);
                 }
                 break;
-            case(2):
+            case (2):
                 if (resultCode == Activity.RESULT_OK)
                 {
                     ret = data.getStringExtra(getResources().getString(R.string.extra_time));

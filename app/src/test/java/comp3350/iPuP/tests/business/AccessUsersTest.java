@@ -2,7 +2,8 @@ package comp3350.iPuP.tests.business;
 
 import junit.framework.TestCase;
 
-public class AccessUsersTest extends TestCase {
+public class AccessUsersTest extends TestCase
+{
 
     public AccessUsersTest(String arg0)
     {

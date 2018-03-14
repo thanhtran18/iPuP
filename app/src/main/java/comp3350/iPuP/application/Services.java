@@ -31,12 +31,14 @@ public class Services
     {
         try
         {
-            if (dataAccessService == null) {
+            if (dataAccessService == null)
+            {
                 dataAccessService = alternateDataAccessService;
                 dataAccessService.open(Main.getDBPathName());
             }
         }
-        catch (DAOException daoe) {
+        catch (DAOException daoe)
+        {
             System.err.println(daoe.getMessage());
         }
         return dataAccessService;

@@ -14,7 +14,8 @@ import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
 import comp3350.iPuP.persistence.DataAccess;
 
-public class DataAccessTest extends TestCase {
+public class DataAccessTest extends TestCase
+{
 
     private DataAccess dataAccess;
     private DateFormatter dateFormatter;
@@ -33,7 +34,8 @@ public class DataAccessTest extends TestCase {
             dateFormatter = new DateFormatter();
             dataAccess = new DataAccessStub();
             dataAccess.open("Stub");
-        } catch (DAOException daoe)
+        }
+        catch (DAOException daoe)
         {
             System.err.println(daoe.getMessage());
         }
@@ -148,10 +150,12 @@ public class DataAccessTest extends TestCase {
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 12:30:00"),abooking.getStart());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 13:00:00"),abooking.getEnd());
 
-        } catch (DAOException daoe)
+        }
+        catch (DAOException daoe)
         {
             fail("DAOException Caught with message: "+daoe.getMessage());
-        } catch (ParseException pe)
+        }
+        catch (ParseException pe)
         {
             fail("ParseException Caught with message: "+pe.getMessage());
         }
@@ -163,7 +167,8 @@ public class DataAccessTest extends TestCase {
         try
         {
             dataAccess.insertUser("tester");
-        } catch (DAOException daoe)
+        }
+        catch (DAOException daoe)
         {
 
         }
@@ -178,7 +183,8 @@ public class DataAccessTest extends TestCase {
         try
         {
             assertEquals((long)22, dataAccess.insertParkingSpot("tester", parkingSpot));
-        } catch (DAOException daoe)
+        }
+        catch (DAOException daoe)
         {
             fail("DAOException Caught with message: "+daoe.getMessage());
         }
@@ -187,7 +193,8 @@ public class DataAccessTest extends TestCase {
         {
             Long spotID = dataAccess.insertParkingSpot("tester", parkingSpot);
             fail("Error: Duplicate ParkingSpot created with spotID = "+spotID);
-        } catch (DAOException daoe)
+        }
+        catch (DAOException daoe)
         {
             assertEquals("Error in creating ParkingSpot object with SPOT_ID = -1 for Username: tester!",daoe.getMessage());
         }
@@ -197,7 +204,8 @@ public class DataAccessTest extends TestCase {
         try
         {
             assertEquals((long)23, dataAccess.insertParkingSpot("tester", parkingSpot));
-        } catch (DAOException daoe)
+        }
+        catch (DAOException daoe)
         {
             fail("DAOException Caught with message: "+daoe.getMessage());
         }

@@ -40,7 +40,6 @@ public interface DataAccess
 
     ArrayList<TimeSlot> getUnbookedTimeSlotsForParkingSpot(long spotID) throws DAOException;
 
-    //TODO: COnfirm if returning ParkingSpot is ideal here.
     ParkingSpot getParkingSpotByID(long spotID) throws DAOException;
 
     boolean bookTimeSlot(String username, long timeSlotID, long spotID) throws DAOException;

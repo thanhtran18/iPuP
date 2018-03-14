@@ -19,7 +19,7 @@ public class TimeSlot
         start = newStart;
         end = newEnd;
         slotID = -1;
-        isBooked=false;
+        isBooked = false;
     }
 
     public TimeSlot(Date newStart, Date newEnd, long slotID)
@@ -31,14 +31,14 @@ public class TimeSlot
     public TimeSlot(Date newStart, Date newEnd, long slotID, boolean bookedOrNot)
     {
         this(newStart, newEnd);
-        this.slotID=slotID;
-        this.isBooked=bookedOrNot;
+        this.slotID = slotID;
+        this.isBooked = bookedOrNot;
     }
 
     public static TimeSlot parseString(String s) throws ParseException
     {
         if (s == null)
-            throw new ParseException("Cannot parse a null string",0);
+            throw new ParseException("Cannot parse a null string", 0);
         if (s.split("-").length == 2)
         {
             String start = s.split("-")[0].trim();

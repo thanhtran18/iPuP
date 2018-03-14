@@ -8,8 +8,8 @@ import java.util.Objects;
 
 public class ParkingSpot
 {
-    private String address;
     private String name;
+    private String address;
     private String phone;
     private String email;
     private long spotID;
@@ -87,9 +87,7 @@ public class ParkingSpot
         if (other != null && other.getClass() == ParkingSpot.class)
         {
             ParkingSpot otherSpot = (ParkingSpot) other;
-            if (this.name.equals(otherSpot.name) && this.address.equals(otherSpot.address) &&
-                    this.phone.equals(otherSpot.phone) && this.email.equals(otherSpot.email) &&
-                    this.rate == otherSpot.rate)
+            if (this.spotID == otherSpot.spotID)
                 return true;
         }
         return false;

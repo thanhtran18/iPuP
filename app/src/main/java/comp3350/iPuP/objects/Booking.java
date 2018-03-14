@@ -1,45 +1,40 @@
 package comp3350.iPuP.objects;
 
-import java.util.ArrayList;
 import java.util.Date;
-
-/**
- * Created by ThanhTran on 2018-03-05.
- */
 
 public class Booking
 {
-    private String username; //the unique username of each user
-    private Long timeSlotId;
+    private String name; //the unique username of each user
+    private long timeSlotId;
     private String address;
     private Date start;
     private Date end;
-    private DateFormatter dateFormatter = new DateFormatter();
+    private DateFormatter df = new DateFormatter();
 
-    public Booking(String username, Long timeSlotId, String address, Date start, Date end)
+    public Booking(String name, Long timeSlotId, String address, Date start, Date end)
     {
-        this.username = username;
+        this.name = name;
         this.timeSlotId = timeSlotId;
         this.address = address;
         this.start = start;
         this.end = end;
     }
 
-    public String getUsername()
+    public String getName()
     {
-        return username;
+        return name;
     }
 
-    public void setUsername(String username)
+    public void setName(String name)
     {
-        this.username = username;
+        this.name = name;
     }
 
-    public Long getTimeSlotId() {
+    public long getTimeSlotId() {
         return timeSlotId;
     }
 
-    public void setTimeSlotId(Long timeSlotId) {
+    public void setTimeSlotId(long timeSlotId) {
         this.timeSlotId = timeSlotId;
     }
 
@@ -70,9 +65,9 @@ public class Booking
     public String toString()
     {
         if (start.after(new Date()))
-            return "\n" + this.address + " (hold to cancel this booking) \n" + dateFormatter.getDateTimeFormat().format(start) + " - " + dateFormatter.getDateTimeFormat().format(end) + "\n";
+            return "\n" + this.address + " (hold to cancel this booking) \n" + df.getDateTimeFormat().format(start) + " - " + df.getDateTimeFormat().format(end) + "\n";
         else
-            return "\n" + this.address + "\n" + dateFormatter.getDateTimeFormat().format(start) + " - " + dateFormatter.getDateTimeFormat().format(end) + "\n";
+            return "\n" + this.address + "\n" + df.getDateTimeFormat().format(start) + " - " + df.getDateTimeFormat().format(end) + "\n";
     }
 }
 

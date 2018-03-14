@@ -34,7 +34,7 @@ public class TimePickerActivity extends AppCompatActivity
         String amPm = ((Spinner)findViewById(R.id.spinnerAMPM)).getSelectedItem().toString();
         String ret = hour + ":" + minute + " " + amPm;
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("time", ret);
+        resultIntent.putExtra(getResources().getString(R.string.extra_time), ret);
         setResult(Activity.RESULT_OK, resultIntent);
         finish();
     }

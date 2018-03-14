@@ -29,7 +29,7 @@ public class BookingTest extends TestCase
         Date start = timeFormat.parse("Tue, 19 Jun 2018, 2:18 AM");
         Date end = timeFormat.parse("Tue, 19 Jun 2018, 6:19 AM");
         Booking booking = new Booking("goat", Long.parseLong("02"), "1 address avenue", start, end);
-        assertTrue("goat".equals(booking.getUsername()));
+        assertTrue("goat".equals(booking.getName()));
         assertTrue("1 address avenue".equals(booking.getAddress()));
         assertTrue(02 == booking.getTimeSlotId());
         assertTrue(start.equals(booking.getStart()));
@@ -44,6 +44,7 @@ public class BookingTest extends TestCase
         try
         {
             booking = new Booking("", Long.parseLong("02"), "1 address avenue", start, end);
+            fail();
         }
         catch (Exception e)
         {
@@ -76,6 +77,7 @@ public class BookingTest extends TestCase
         try
         {
             Booking booking = new Booking("goat", Long.parseLong("02"), "1 address avenue", start, end);
+            fail();
         }
         catch (Exception e)
         {

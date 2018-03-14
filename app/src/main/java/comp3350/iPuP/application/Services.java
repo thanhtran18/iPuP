@@ -27,6 +27,22 @@ public class Services
 	}
 
 
+    public static DataAccess createDataAccess(DataAccess alternateDataAccessService)
+    {
+        try
+        {
+            if (dataAccessService == null) {
+                dataAccessService = alternateDataAccessService;
+                dataAccessService.open(Main.getDBPathName());
+            }
+        }
+        catch (DAOException daoe) {
+            System.err.println(daoe.getMessage());
+        }
+        return dataAccessService;
+    }
+
+    
     public static DataAccess getDataAccess()
     {
         if (dataAccessService == null)

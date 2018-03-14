@@ -632,4 +632,27 @@ public class AccessParkingSpotsTest extends TestCase
         }
     }
 
+    public void testCancelABookingOfEmptyList()
+    {
+        Services.closeDataAccess();
+
+        Services.createDataAccess(new DataAccessStub(dbName));
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        String username = "tester";
+        long timeSlotId = 91;
+        try
+        {
+            parkSpotAccess.cancelThisSpot(username, timeSlotId);
+            bookings = parkSpotAccess.getMyBookedSpots(username);
+            assertEquals(0, bookings.size());
+        }
+        catch (DAOException de)
+        {
+            System.out.print(de.getMessage());
+            fail();
+        }
+    }
+
 }

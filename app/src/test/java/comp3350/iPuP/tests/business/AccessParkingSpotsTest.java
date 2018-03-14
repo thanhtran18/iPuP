@@ -593,6 +593,43 @@ public class AccessParkingSpotsTest extends TestCase
         parkSpotAccess.clearSpots();
 
         String username = "marker";
-        //Long timeSlotId = ""
+        long timeSlotId = 91;
+        try
+        {
+            bookings = parkSpotAccess.getMyBookedSpots(username);
+            Booking removed = bookings.get(1);
+            parkSpotAccess.cancelThisSpot(username, timeSlotId);
+            bookings = parkSpotAccess.getMyBookedSpots(username);
+            assertEquals(3, bookings.size());
+            assertEquals(false, bookings.contains(removed));
+        }
+        catch (DAOException de)
+        {
+            System.out.print(de.getMessage());
+            fail();
+        }
     }
+
+    public void testCancelABookingOfAnotherUser()
+    {
+        Services.closeDataAccess();
+
+        Services.createDataAccess(new DataAccessStub(dbName));
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+        String username = "Donald Trump";
+        long timeSlotId = 91;
+        try
+        {
+            parkSpotAccess.cancelThisSpot(username, timeSlotId);
+            bookings = parkSpotAccess.getMyBookedSpots(username);
+            assertEquals(4, bookings.size());
+        }
+        catch (DAOException de)
+        {
+            System.out.print(de.getMessage());
+            fail();
+        }
+    }
+
 }

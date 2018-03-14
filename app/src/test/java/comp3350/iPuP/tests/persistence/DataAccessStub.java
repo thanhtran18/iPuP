@@ -77,7 +77,7 @@ public class DataAccessStub implements DataAccess
             address = "88 Plaza Drive";
             name = "marker";
             phone = "204-855-2342";
-            email = "poor&Homeless@gmail.com";
+            email = "theBestMarker@gmail.com";
             rate = 2;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 12:30:00"));

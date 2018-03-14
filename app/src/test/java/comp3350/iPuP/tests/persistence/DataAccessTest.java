@@ -2,10 +2,8 @@ package comp3350.iPuP.tests.persistence;
 
 import junit.framework.TestCase;
 
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.DAOException;
@@ -60,7 +58,7 @@ public class DataAccessTest extends TestCase {
             daySlotsOfParkingSpot = dataAccess.getDaySlots(parkingSpot.getSpotID());
             assertEquals(2,daySlotsOfParkingSpot.size());
             timeSlotsOfParkingSpot = dataAccess.getTimeSlots(parkingSpot.getSpotID());
-            assertEquals(8,timeSlotsOfParkingSpot.size());
+            assertEquals(4,timeSlotsOfParkingSpot.size());
 
             parkingSpot = dataAccess.getParkingSpot(2);
             assertEquals((long)2,parkingSpot.getSpotID());
@@ -162,10 +160,14 @@ public class DataAccessTest extends TestCase {
     {
         try
         {
-            dataAccess.insertUser("tester");
+            assertFalse(dataAccess.insertUser("marker"));
+            assertFalse(dataAccess.insertUser("tester"));
+            assertFalse(dataAccess.insertUser("tester2"));
+            assertTrue(dataAccess.insertUser("tester3"));
+            assertTrue(dataAccess.insertUser("tester4"));
         } catch (DAOException daoe)
         {
-
+            fail("DAOException Caught with message: "+daoe.getMessage());
         }
     }
 
@@ -177,21 +179,32 @@ public class DataAccessTest extends TestCase {
             ArrayList<ParkingSpot> parkingSpots = dataAccess.getParkingSpotsByAddressDate("", dateFormatter.getSqlDateFormat().parse("2018-06-11"));
             assertEquals(21,parkingSpots.size());
             assertTrue(parkingSpots.get(0).getAddress().toLowerCase().compareTo(parkingSpots.get(1).getAddress().toLowerCase()) < 0);
+            assertTrue(parkingSpots.get(16).getAddress().toLowerCase().compareTo(parkingSpots.get(17).getAddress().toLowerCase()) < 0);
+            assertFalse(parkingSpots.get(20).getAddress().toLowerCase().compareTo(parkingSpots.get(12).getAddress().toLowerCase()) < 0);
+            assertTrue(parkingSpots.get(19).getAddress().toLowerCase().compareTo(parkingSpots.get(20).getAddress().toLowerCase()) < 0);
+            assertTrue(parkingSpots.get(0).getAddress().toLowerCase().compareTo(parkingSpots.get(20).getAddress().toLowerCase()) < 0);
         }
         catch (ParseException pe)
         {
-
+            fail("ParseException Caught with message: "+pe.getMessage());
         }
         catch (DAOException daoe)
         {
-
+            fail("DAOException Caught with message: "+daoe.getMessage());
         }
 
-        ParkingSpot parkingSpot = new ParkingSpot(-1, "1 Tester Street", "tester", "testing@tester.ca", "2042222222", 101);
+        ParkingSpot parkingSpot = new ParkingSpot(-1, "1 Tester Street", "tester", "2042222222", "testing@tester.ca", 101);
 
         try
         {
             assertEquals((long)22, dataAccess.insertParkingSpot("tester", parkingSpot));
+            parkingSpot = dataAccess.getParkingSpotByID((long)22);
+            assertEquals((long)22,parkingSpot.getSpotID());
+            assertEquals("1 Tester Street",parkingSpot.getAddress());
+            assertEquals("tester",parkingSpot.getName());
+            assertEquals("testing@tester.ca",parkingSpot.getEmail());
+            assertEquals("2042222222",parkingSpot.getPhone());
+            assertEquals(101.0,parkingSpot.getRate());
         } catch (DAOException daoe)
         {
             fail("DAOException Caught with message: "+daoe.getMessage());
@@ -203,14 +216,21 @@ public class DataAccessTest extends TestCase {
             fail("Error: Duplicate ParkingSpot created with spotID = "+spotID);
         } catch (DAOException daoe)
         {
-            assertEquals("Error in creating ParkingSpot object with SPOT_ID = -1 for Username: tester!",daoe.getMessage());
+            assertEquals("Error in creating ParkingSpot object with SPOT_ID = 22 for Username: tester!",daoe.getMessage());
         }
 
-        parkingSpot = new ParkingSpot(-1, "2 Tester Street", "tester", "testing@tester.ca", "2042222222", 101);
+        parkingSpot = new ParkingSpot(-1, "2 Tester Street", "tester", "2042222222", "testing@tester.ca", 101);
 
         try
         {
             assertEquals((long)23, dataAccess.insertParkingSpot("tester", parkingSpot));
+            parkingSpot = dataAccess.getParkingSpotByID((long)23);
+            assertEquals((long)23,parkingSpot.getSpotID());
+            assertEquals("2 Tester Street",parkingSpot.getAddress());
+            assertEquals("tester",parkingSpot.getName());
+            assertEquals("testing@tester.ca",parkingSpot.getEmail());
+            assertEquals("2042222222",parkingSpot.getPhone());
+            assertEquals(101.0,parkingSpot.getRate());
         } catch (DAOException daoe)
         {
             fail("DAOException Caught with message: "+daoe.getMessage());
@@ -221,10 +241,14 @@ public class DataAccessTest extends TestCase {
             ArrayList<ParkingSpot> parkingSpots = dataAccess.getParkingSpotsByAddressDate("", null);
             assertEquals(24,parkingSpots.size());
             assertTrue(parkingSpots.get(0).getAddress().toLowerCase().compareTo(parkingSpots.get(1).getAddress().toLowerCase()) < 0);
+            assertTrue(parkingSpots.get(16).getAddress().toLowerCase().compareTo(parkingSpots.get(17).getAddress().toLowerCase()) < 0);
+            assertFalse(parkingSpots.get(23).getAddress().toLowerCase().compareTo(parkingSpots.get(13).getAddress().toLowerCase()) < 0);
+            assertTrue(parkingSpots.get(22).getAddress().toLowerCase().compareTo(parkingSpots.get(23).getAddress().toLowerCase()) < 0);
+            assertTrue(parkingSpots.get(0).getAddress().toLowerCase().compareTo(parkingSpots.get(23).getAddress().toLowerCase()) < 0);
         }
         catch (DAOException daoe)
         {
-
+            fail("DAOException Caught with message: "+daoe.getMessage());
         }
 
     }
@@ -235,6 +259,11 @@ public class DataAccessTest extends TestCase {
     }
 
     public void testInsertAndGetTimeslots()
+    {
+
+    }
+
+    public void testInsertAndGetBookings()
     {
 
     }

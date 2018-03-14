@@ -51,4 +51,8 @@ public interface DataAccess
 	ArrayList<TimeSlot> getDaySlots(long spotID) throws DAOException;
 
 	ArrayList<TimeSlot> getTimeSlots(long spotID) throws DAOException;
+
+	boolean deleteDaySlot(long slotID) throws DAOException;
+
+	boolean deleteTimeSlot(long slotID) throws DAOException;
 }

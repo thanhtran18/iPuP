@@ -2,54 +2,41 @@ package comp3350.iPuP.presentation;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.business.AccessParkingSpots;
-import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.objects.ParkingSpot;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.SearchView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
 
+import java.text.ParseException;
 import java.util.Date;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-/**
- * Created by Victory on 2018-03-01.
- */
-
-public class ParkerSearchActivity extends ListActivity {
-
-    public static final String SELECTED_SPOT = "spot_to_view";
-    private DateFormatter setDate;//for setting the date
+public class ParkerSearchActivity extends ListActivity implements DateFragmentObserver
+{
+    private DateFormatter df;//for setting the date
 
     private AccessParkingSpots accessParkingSpots;
     ArrayAdapter<ParkingSpot> adapter;
     ArrayList<ParkingSpot> parkingSpots = new ArrayList<>();
-    ArrayList<ParkingSpot> arrayList = new ArrayList<>();
-    String dayTime;
-    protected void onCreate(Bundle savedInstanceState) {
+
+    Calendar current;
+
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parker_search);
 
@@ -58,99 +45,93 @@ public class ParkerSearchActivity extends ListActivity {
         //todo change button and screen colors
         //todo try implementing without the start seach button
         //todo write test
-        final Calendar c = Calendar.getInstance();
-        setDate = new DateFormatter();
+        current = Calendar.getInstance();
+        df = new DateFormatter();
 
         TextView tv = (TextView)findViewById(R.id.editDate);
-        tv.setText(setDate.getDateFormat().format(c.getTime()));
-        dayTime = tv.getText().toString();
-        populateScreen(null,dayTime);
-        final Button prev = findViewById(R.id.leftButton);
-        prev.setOnClickListener(new OnClickListener() {
+        tv.setText(df.getDateFormat().format(current.getTime()));
 
+        populateScreen();
+
+        final Button prev = findViewById(R.id.leftButton);
+        prev.setOnClickListener(new OnClickListener()
+        {
             @Override
             public void onClick(View v) {
 
-                c.add(Calendar.DATE, -1);
-                TextView tv = (TextView)findViewById(R.id.editDate);
-                tv.setText(setDate.getDateFormat().format(c.getTime()));
-                String searchText = getSearchText();
-                dayTime = tv.getText().toString();
-                populateScreen(searchText,dayTime);
+                current.add(Calendar.DATE, -1);
+                TextView tv = findViewById(R.id.editDate);
+                tv.setText(df.getDateFormat().format(current.getTime()));
+                populateScreen();
             }
         });
 
+        SearchView sv = findViewById(R.id.showSearchIcon);
+        sv.setSubmitButtonEnabled(true);
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
+
+            @Override
+            public boolean onQueryTextSubmit(String s)
+            {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s)
+            {
+                    populateScreen();
+                return false;
+            }
+        });
 
         final Button next = findViewById(R.id.rightButton);
-        next.setOnClickListener(new OnClickListener() {
-
+        next.setOnClickListener(new OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-
-                c.add(Calendar.DATE, +1);
-                TextView tv = (TextView)findViewById(R.id.editDate);
-                tv.setText(setDate.getDateFormat().format(c.getTime()));
-                String searchText = getSearchText();
-                dayTime = tv.getText().toString();
-                populateScreen(searchText,dayTime);
+            public void onClick(View v)
+            {
+                current.add(Calendar.DATE, +1);
+                TextView tv = findViewById(R.id.editDate);
+                tv.setText(df.getDateFormat().format(current.getTime()));
+                populateScreen();
             }
         });
 
     }
 
-
-    public void onDateClick(View v) {
-        DialogFragment dateFragment = DatePickerFragment.newInstance(R.id.editDate);
-        dateFragment.show(getFragmentManager(), "DatePicker");
-    }
-    public void startSearch(View v)
+    public void onDateClick(View v)
     {
-        setDate = new DateFormatter();
-        TextView tv = (TextView)findViewById(R.id.editDate);
-        String searchText = getSearchText();
-        dayTime = tv.getText().toString();
-        populateScreen(searchText,dayTime);
+        DialogFragment dateFragment = DatePickerFragment.newInstance();
+        dateFragment.show(getFragmentManager(), "DatePicker");
     }
 
     public String getSearchText()
     {
-        SearchView streetName = (SearchView)findViewById(R.id.showSearchIcon);
+        SearchView streetName = findViewById(R.id.showSearchIcon);
         CharSequence charName = streetName.getQuery();
         String searchText = charName.toString();
         if(searchText.trim().length() == 0 )
         {
-            searchText = null;
-            return searchText;
+            return null;
         }
         return searchText;
     }
 
 
-    public void populateScreen( String name, String dayTime)
+    public void populateScreen()
     {
         accessParkingSpots = new AccessParkingSpots();
         ListView list = findViewById(android.R.id.list);
         //String name = ((SearchView)findViewById(R.id.showSearchIcon)).getQuery().toString();
         try
         {
-            arrayList.clear();
-            SimpleDateFormat currForm = new SimpleDateFormat("E, dd MMM yyyy");
-            // parse the string into Date object
-            Date date = currForm.parse(dayTime);
-            // create SimpleDateFormat object with desired date format
-            SimpleDateFormat newForm = new SimpleDateFormat("yyyy-MM-dd");
-            // parse the date into another format
-            dayTime = newForm.format(date);
-            Date today= new Date(setDate.getSqlDateFormat().parse(dayTime).getTime());
+            parkingSpots.clear();
             //TODO: Victory, replace null with address search string
-            parkingSpots = accessParkingSpots.getDailySpots(name, today);
+            parkingSpots = accessParkingSpots.getDailySpots(getSearchText(), current.getTime());
             //ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getAllSpots();
-            for (final ParkingSpot spot : parkingSpots)
-            {
-                arrayList.add(spot);
-            }
 
-            adapter = new ArrayAdapter<ParkingSpot>(this, android.R.layout.simple_list_item_1, arrayList);
+            adapter = new ArrayAdapter<ParkingSpot>(this, android.R.layout.simple_list_item_1, parkingSpots);
             //setListAdapter(adapter);
             list.setAdapter(adapter);
 //            int first = list.getFirstVisiblePosition();
@@ -159,10 +140,8 @@ public class ParkerSearchActivity extends ListActivity {
 
 
             registerForContextMenu(list);
-        } catch (ParseException pe)
-        {
-            Toast.makeText(this, pe.getMessage(), Toast.LENGTH_LONG).show();
-        } catch (DAOException daoe)
+        }
+        catch (DAOException daoe)
         {
             Toast.makeText(this, daoe.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -177,13 +156,22 @@ public class ParkerSearchActivity extends ListActivity {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id){
+    public void onListItemClick(ListView l, View v, int position, long id)
+    {
         super.onListItemClick(l, v, position, id);
-        ParkingSpot currItem=arrayList.get(position);
+        ParkingSpot currItem = parkingSpots.get(position);
 
         Intent intent = new Intent(getApplicationContext(), BookTimeSlotsActivity.class);
-        intent.putExtra(SELECTED_SPOT, currItem.getSpotID());
+        intent.putExtra(getResources().getString(R.string.selected_spot), currItem.getSpotID());
         startActivity(intent);
     }
 
+    @Override
+    public void update(Date date)
+    {
+        TextView tv = findViewById(R.id.editDate);
+        tv.setText(df.getDateFormat().format(date));
+        current.setTime(date);
+        populateScreen();
+    }
 }

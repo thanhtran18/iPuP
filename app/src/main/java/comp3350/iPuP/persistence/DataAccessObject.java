@@ -1,16 +1,11 @@
 package comp3350.iPuP.persistence;
 
-import org.hsqldb.Types;
-import org.w3c.dom.DOMException;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLWarning;
 import java.sql.Statement;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -748,7 +743,7 @@ public class DataAccessObject implements DataAccess
         ArrayList<TimeSlot> slots = new ArrayList<>();
 
         try {
-            cmdString = "SELECT * FROM DAYSLOTS D WHERE D.SPOT_ID=? ";
+            cmdString = "SELECT * FROM DAYSLOTS D WHERE D.SPOT_ID=?";
             pstmt = con.prepareStatement(cmdString);
 
             pstmt.setLong(1, spotID);
@@ -756,6 +751,7 @@ public class DataAccessObject implements DataAccess
             rss = pstmt.executeQuery();
             long daySlotID;
             Date start, end;
+            boolean isBooked;
 
             while (rss.next())
             {
@@ -767,6 +763,26 @@ public class DataAccessObject implements DataAccess
             }
 
             rss.close();
+
+            for (TimeSlot daySlot : slots)
+            {
+                cmdString = "SELECT T.TIMESLOT_ID FROM TIMESLOTS T INNER JOIN BOOKINGS B " +
+                        "ON T.TIMESLOT_ID=B.TIMESLOT_ID " +
+                        "WHERE T.DAYSLOT_ID=?";
+                pstmt = con.prepareStatement(cmdString);
+
+                pstmt.setLong(1, daySlot.getSlotID());
+
+                rss = pstmt.executeQuery();
+
+                if (rss.next())
+                {
+                    daySlot.setIsBooked(true);
+                }
+            }
+
+            rss.close();
+
         } catch (SQLException sqle)
         {
             processSQLError(sqle);
@@ -801,12 +817,139 @@ public class DataAccessObject implements DataAccess
             }
 
             rss.close();
-        } catch (SQLException sqle)
+
+            for (TimeSlot timeSlot : slots)
+            {
+                cmdString = "SELECT B.TIMESLOT_ID FROM BOOKINGS B " +
+                        "WHERE B.TIMESLOT_ID=?";
+                pstmt = con.prepareStatement(cmdString);
+
+                pstmt.setLong(1, timeSlot.getSlotID());
+
+                rss = pstmt.executeQuery();
+
+                if (rss.next())
+                {
+                    timeSlot.setIsBooked(true);
+                }
+            }
+
+            rss.close();
+        }
+        catch (SQLException sqle)
         {
             processSQLError(sqle);
             throw new DAOException("Error in getting time slot for day slot with slotID: "+daySlotID+"!",sqle);
         }
 
         return slots;
+    }
+
+    public boolean deleteDaySlot(long slotID) throws DAOException
+    {
+        long spotID = -1;
+        boolean exitOnReturn = false;
+
+        try
+        {
+            cmdString = "DELETE FROM TIMESLOTS T " +
+                "WHERE T.DAYSLOT_ID=?";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setLong(1, slotID);
+            pstmt.execute();
+        }
+        catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error deleting time slot for day slot with slotID: "+slotID+"!",sqle);
+        }
+
+        try
+        {
+            cmdString = "SELECT D.SPOT_ID FROM DAYSLOTS D " +
+                    "WHERE D.DAYSLOT_ID=?";
+            pstmt = con.prepareStatement(cmdString);
+
+            pstmt.setLong(1, slotID);
+
+            rss = pstmt.executeQuery();
+
+            if (rss.next())
+            {
+                spotID = rss.getLong("SPOT_ID");
+            }
+
+            cmdString = "DELETE FROM DAYSLOTS D " +
+                    "WHERE D.DAYSLOT_ID=?";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setLong(1, slotID);
+            pstmt.execute();
+
+            cmdString = "SELECT D.SPOT_ID FROM DAYSLOTS D " +
+                    "WHERE D.SPOT_ID=?";
+            pstmt = con.prepareStatement(cmdString);
+
+            pstmt.setLong(1, spotID);
+
+            rss = pstmt.executeQuery();
+
+            if (!rss.next())
+            {
+                cmdString = "DELETE FROM PARKINGSPOTS P " +
+                        "WHERE P.SPOT_ID=?";
+                pstmt = con.prepareStatement(cmdString);
+                pstmt.setLong(1, spotID);
+                pstmt.execute();
+                exitOnReturn = true;
+            }
+        }
+        catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error deleting day slot with slotID: "+slotID+"!",sqle);
+        }
+        return exitOnReturn;
+    }
+
+    public boolean deleteTimeSlot(long slotID) throws DAOException
+    {
+        boolean exitOnReturn = false;
+        long daySlotID = -1;
+
+        try
+        {
+            cmdString = "SELECT T.DAYSLOT_ID FROM TIMESLOTS T " +
+                    "WHERE T.TIMESLOT_ID=?";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setLong(1, slotID);
+            rss = pstmt.executeQuery();
+
+            if (rss.next())
+                daySlotID = rss.getLong("DAYSLOT_ID");
+
+            cmdString = "DELETE FROM TIMESLOTS T " +
+                    "WHERE T.TIMESLOT_ID=?";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setLong(1, slotID);
+            pstmt.execute();
+
+            cmdString = "SELECT T.DAYSLOT_ID FROM TIMESLOTS T " +
+                    "WHERE T.DAYSLOT_ID=?";
+            pstmt = con.prepareStatement(cmdString);
+            pstmt.setLong(1, daySlotID);
+            rss = pstmt.executeQuery();
+
+            if (!rss.next())
+            {
+                deleteDaySlot(daySlotID);
+                exitOnReturn = true;
+            }
+        }
+        catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error deleting time slot with slotID: "+slotID+"!",sqle);
+        }
+        return exitOnReturn;
     }
 }

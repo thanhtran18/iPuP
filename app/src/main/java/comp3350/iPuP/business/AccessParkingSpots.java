@@ -194,13 +194,6 @@ public class AccessParkingSpots
         return returnVal;
     }
 
-
-
-
-    public void deleteDaySlot(Long slotID)
-    {
-    }
-
     public ArrayList<TimeSlot> getDaySlots(long spotID) throws DAOException
     {
         return dataAccess.getDaySlots(spotID);
@@ -209,5 +202,15 @@ public class AccessParkingSpots
     public ArrayList<TimeSlot> getTimeSlots(long daySlotID) throws DAOException
     {
         return dataAccess.getTimeSlots(daySlotID);
+    }
+
+    public boolean deleteTimeSlot(Long slotID) throws DAOException
+    {
+        return dataAccess.deleteTimeSlot(slotID);
+    }
+
+    public boolean deleteDaySlot(long slotID) throws  DAOException
+    {
+        return dataAccess.deleteDaySlot(slotID);
     }
 }

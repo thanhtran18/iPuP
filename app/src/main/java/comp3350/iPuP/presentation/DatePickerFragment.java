@@ -18,12 +18,9 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 {
     private DateFormatter df;
 
-    public static DatePickerFragment newInstance(int id)
+    public static DatePickerFragment newInstance()
     {
-        Bundle b = new Bundle();
-        b.putInt("id", id);
         DatePickerFragment newFragment = new DatePickerFragment();
-        newFragment.setArguments(b);
         return newFragment;
     }
 
@@ -40,10 +37,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     public void onDateSet(DatePicker view, int year, int month, int day)
     {
-        ((HostActivity)getActivity()).setDate();
-        TextView tv = (TextView) getActivity().findViewById(getArguments().getInt("id"));
         Calendar c = new GregorianCalendar(year, month, day, 1, 1);
-        SimpleDateFormat time = new SimpleDateFormat("EEE, d MMM yyyy");
-        tv.setText(time.format(c.getTime()));
+        ((DateFragmentObserver)getActivity()).update(c.getTime());
     }
 }

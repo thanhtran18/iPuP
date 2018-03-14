@@ -1,5 +1,6 @@
 package comp3350.iPuP.presentation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -9,34 +10,45 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.business.AccessParkingSpots;
+import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.DateFormatter;
-import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
 
 public class DaySlotAdapter extends ArrayAdapter<TimeSlot>
 {
     DateFormatter df;
+    long spotID;
     AccessParkingSpots dataAccess;
+    ListView list;
+    Activity activity;
 
-    DaySlotAdapter(Context context, ArrayList<TimeSlot> slots)
+    DaySlotAdapter(Context context, ArrayList<TimeSlot> slots, long spotID)
     {
         super(context, 0, slots);
         df = new DateFormatter();
         dataAccess = new AccessParkingSpots();
+        this.spotID = spotID;
+        this.activity = (Activity)context;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
         TimeSlot slot = getItem(position);
+
         if (convertView == null)
         {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
+
+        list = (ListView)parent;
 
         TextView tv = convertView.findViewById(R.id.textViewRow1);
         tv.setText(String.format(convertView.getResources().getString(R.string.hostview_Start), df.getDateTimeFormat().format(slot.getStart())));
@@ -50,17 +62,40 @@ public class DaySlotAdapter extends ArrayAdapter<TimeSlot>
 
         Button b = convertView.findViewById(R.id.buttonListItem);
         b.setText(convertView.getResources().getString(R.string.delete));
-        b.setTag(position);
-        b.setOnClickListener(new View.OnClickListener()
+        if (slot.getIsBooked())
         {
-            @Override
-            public void onClick(View view)
+            b.setBackgroundResource(R.color.colorTextHint);
+        }
+        else
+        {
+            b.setTag(position);
+            b.setOnClickListener(new View.OnClickListener()
             {
-                int position = (int) view.getTag();
-                TimeSlot slot = getItem(position);
-                dataAccess.deleteDaySlot(slot.getSlotID());
-            }
-        });
+                @Override
+                public void onClick(View view)
+                {
+                    int position = (int) view.getTag();
+                    TimeSlot slot = getItem(position);
+                    try
+                    {
+                        if (!dataAccess.deleteDaySlot(slot.getSlotID()))
+                        {
+                            ArrayAdapter<TimeSlot> adapter = (ArrayAdapter<TimeSlot>) list.getAdapter();
+                            adapter.remove(slot);
+                        }
+                        else
+                        {
+                            activity.setResult(Activity.RESULT_CANCELED);
+                            activity.finish();
+                        }
+                    }
+                    catch (DAOException daoe)
+                    {
+                        Toast.makeText(view.getContext(), daoe.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
 
         LinearLayout lo = convertView.findViewById(R.id.list_item_layout);
         lo.setTag(position);
@@ -72,9 +107,10 @@ public class DaySlotAdapter extends ArrayAdapter<TimeSlot>
                 int position = (int) view.getTag();
                 TimeSlot slot = getItem(position);
 
-                Intent hostViewDayIntent = new Intent(view.getContext(), HostViewTimeActivity.class);
-                hostViewDayIntent.putExtra("slotID", slot.getSlotID());
-                view.getContext().startActivity(hostViewDayIntent);
+                Intent hostViewTimeIntent = new Intent(view.getContext(), HostViewTimeActivity.class);
+                hostViewTimeIntent.putExtra("slotID", slot.getSlotID());
+                hostViewTimeIntent.putExtra("spotID", spotID);
+                activity.startActivityForResult(hostViewTimeIntent, 0);
             }
         });
 

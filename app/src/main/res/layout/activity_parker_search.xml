@@ -4,19 +4,17 @@
     android:layout_height="match_parent"
     tools:context="comp3350.iPuP.presentation.ParkerSearchActivity">
 
-    <!-- More GUI components go here  -->
     <SearchView
-
         android:id="@+id/showSearchIcon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:actionViewClass="android.widget.SearchView"
         android:iconifiedByDefault="false"
         android:orientation="horizontal"
         android:showAsAction="always"
-        android:title="Search">
-
+        android:title="@string/search">
     </SearchView>
 
     <TextView
@@ -27,11 +25,12 @@
         android:layout_below="@+id/showSearchIcon"
         android:layout_toRightOf="@+id/leftButton"
         android:layout_toLeftOf="@id/rightButton"
-        android:layout_weight="1"
+        android:layout_toEndOf="@+id/leftButton"
+        android:layout_toStartOf="@id/rightButton"
         android:ems="10"
         android:onClick="onDateClick"
         android:gravity="center_horizontal"
-        android:textSize="25sp" />
+        android:textSize="25sp"/>
 
     <ListView
         android:id="@android:id/list"
@@ -40,7 +39,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignRight="@id/rightButton"
-        android:layout_below="@+id/startSearch"></ListView>
+        android:layout_alignEnd="@id/rightButton"
+        android:layout_below="@+id/editDate" />
 
     <TextView
         android:id="@android:id/empty"
@@ -54,33 +54,24 @@
 
     <Button
         android:id="@+id/rightButton"
+        style="@style/AppTheme.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/startSearch"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/showSearchIcon"
-        android:text="NEXT" />
+        android:text="@string/next" />
 
 
     <Button
         android:id="@+id/leftButton"
+        style="@style/AppTheme.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/showSearchIcon"
-        android:text="PREV" />
-
-    <Button
-        android:id="@+id/startSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/editDate"
-        android:onClick="startSearch"
-        android:text="Update search" />
+        android:text="@string/prev" />
 
 
 </RelativeLayout>

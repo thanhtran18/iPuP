@@ -407,6 +407,172 @@ public class AccessParkingSpotsTest extends TestCase
         assertEquals(timeSlot.getEnd(), end);
     }
 
+    public void testDeleteTimeSlotsOnDeleteDaySlot()
+    {
+        Services.closeDataAccess();
+        Services.createDataAccess(new DataAccessStub(dbName));
+        ParkingSpot spot = null;
+
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        Calendar c = Calendar.getInstance();
+        Date start, end;
+        long daySlotID;
+        ArrayList<TimeSlot> daySlots = null;
+        TimeSlot timeSlot;
+
+        c.set(1455, 1, 1, 1, 0);
+        start = c.getTime();
+        c.add(Calendar.HOUR_OF_DAY,6);
+        end = c.getTime();
+
+        timeSlot = new TimeSlot(start,end);
+        try
+        {
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 1 0100111", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02);
+            spot = parkSpotAccess.getAllParkingSpots().get(0);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+            daySlotID = daySlots.get(0).getSlotID();
+            boolean ret = parkSpotAccess.deleteDaySlot(daySlotID);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+
+            assertEquals(3, daySlots.size());
+            assertEquals(0, parkSpotAccess.getTimeSlots(daySlotID).size());
+            assertFalse(ret);
+        }
+        catch (DAOException daoe) { fail(); }
+    }
+
+    public void testDeleteDaySlotLast()
+    {
+        Services.closeDataAccess();
+        Services.createDataAccess(new DataAccessStub(dbName));
+        ParkingSpot spot = null;
+
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        Calendar c = Calendar.getInstance();
+        Date start, end;
+        long daySlotID;
+        ArrayList<TimeSlot> daySlots = null;
+        TimeSlot timeSlot;
+
+        c.set(1455, 1, 1, 1, 0);
+        start = c.getTime();
+        c.add(Calendar.HOUR_OF_DAY,6);
+        end = c.getTime();
+
+        timeSlot = new TimeSlot(start,end);
+        try
+        {
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02);
+            spot = parkSpotAccess.getAllParkingSpots().get(0);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+            daySlotID = daySlots.get(0).getSlotID();
+            boolean ret = parkSpotAccess.deleteDaySlot(daySlotID);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+
+            assertEquals(0, daySlots.size());
+            assertTrue(ret);
+            assertEquals(0, parkSpotAccess.getAllParkingSpots().size());
+        }
+        catch (DAOException daoe) { fail(); }
+    }
+
+    public void testDeleteTimeSlotsLastTimeSlot()
+    {
+        Services.closeDataAccess();
+        Services.createDataAccess(new DataAccessStub(dbName));
+        ParkingSpot spot = null;
+
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        Calendar c = Calendar.getInstance();
+        Date start, end;
+        long daySlotID, timeSlotID;
+        ArrayList<TimeSlot> daySlots = null;
+        ArrayList<TimeSlot> timeSlots = null;
+        TimeSlot timeSlot;
+
+        c.set(1455, 1, 1, 1, 0);
+        start = c.getTime();
+        c.add(Calendar.MINUTE, 30);
+        end = c.getTime();
+
+        timeSlot = new TimeSlot(start,end);
+        try
+        {
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 1 0100001", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02);
+            spot = parkSpotAccess.getAllParkingSpots().get(0);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+            daySlotID = daySlots.get(0).getSlotID();
+            timeSlots = parkSpotAccess.getTimeSlots(daySlotID);
+            timeSlotID = timeSlots.get(0).getSlotID();
+            boolean ret = parkSpotAccess.deleteTimeSlot(timeSlotID);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+
+            assertEquals(1, daySlots.size());
+            assertEquals(0, parkSpotAccess.getTimeSlots(daySlotID).size());
+            assertTrue(ret);
+        }
+        catch (DAOException daoe) { fail(); }
+    }
+
+    public void testDeleteTimeSlotLastDaySlot()
+    {
+        Services.closeDataAccess();
+        Services.createDataAccess(new DataAccessStub(dbName));
+        ParkingSpot spot = null;
+
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        Calendar c = Calendar.getInstance();
+        Date start, end;
+        long daySlotID, timeSlotID;
+        ArrayList<TimeSlot> daySlots = null;
+        ArrayList<TimeSlot> timeSlots = null;
+        TimeSlot timeSlot;
+
+        c.set(1455, 1, 1, 1, 0);
+        start = c.getTime();
+        c.add(Calendar.MINUTE, 30);
+        end = c.getTime();
+
+        timeSlot = new TimeSlot(start, end);
+        try
+        {
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 1 0100001", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02);
+            spot = parkSpotAccess.getAllParkingSpots().get(0);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+            daySlotID = daySlots.get(0).getSlotID();
+            timeSlots = parkSpotAccess.getTimeSlots(daySlotID);
+            timeSlotID = timeSlots.get(0).getSlotID();
+            boolean ret = parkSpotAccess.deleteTimeSlot(timeSlotID);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+
+            assertEquals(1, daySlots.size());
+            assertEquals(0, parkSpotAccess.getTimeSlots(daySlotID).size());
+            assertTrue(ret);
+
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+            daySlotID = daySlots.get(0).getSlotID();
+            timeSlots = parkSpotAccess.getTimeSlots(daySlotID);
+            timeSlotID = timeSlots.get(0).getSlotID();
+            ret = parkSpotAccess.deleteTimeSlot(timeSlotID);
+            daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
+
+            assertEquals(0, daySlots.size());
+            assertEquals(0, parkSpotAccess.getTimeSlots(daySlotID).size());
+            assertEquals(0, parkSpotAccess.getAllParkingSpots().size());
+            assertTrue(ret);
+        }
+        catch (DAOException daoe) { fail(); }
+    }
+
     public void testOneParkingSpotInList()
     {
         Main.startUp();

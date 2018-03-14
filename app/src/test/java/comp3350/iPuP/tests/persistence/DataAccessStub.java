@@ -695,13 +695,90 @@ public class DataAccessStub implements DataAccess
     @Override
     public boolean deleteDaySlot(long daySlotID) throws DAOException
     {
-        return false;
+        long spotID = -1;
+        boolean exitOnReturn = false;
+
+        for (int i = timeSlots.size() - 1; i >=0; i--)
+        {
+            if (timeSlotsDaySlotID.get(i) == daySlotID)
+            {
+                timeSlots.remove(i);
+                timeSlotsDaySlotID.remove(i);
+                timeSlotsParkingSpotID.remove(i);
+            }
+        }
+
+        boolean removed = false;
+        for (int i = 0; i < daySlots.size() && !removed; i++)
+        {
+            if (daySlots.get(i).getSlotID() == daySlotID)
+            {
+                spotID = daySlotsParkingSpotID.get(i);
+                daySlots.remove(i);
+                daySlotsParkingSpotID.remove(i);
+                removed = true;
+            }
+        }
+
+        boolean empty = true;
+        for (int i = 0; i < daySlots.size(); i++)
+        {
+            if (daySlotsParkingSpotID.get(i) == spotID)
+                empty = false;
+        }
+
+        if (empty)
+        {
+            removed = false;
+            for (int i = 0; i < parkingSpots.size() && !removed; i++)
+            {
+                if (parkingSpots.get(i).getSpotID() == spotID)
+                {
+                    parkingSpots.remove(i);
+                    removed = true;
+                }
+            }
+            exitOnReturn = true;
+        }
+
+        return exitOnReturn;
     }
 
     @Override
     public boolean deleteTimeSlot(long timeSlotID) throws DAOException
     {
-        return false;
+        boolean exitOnReturn = false;
+        long daySlotID = -1;
+
+        boolean removed = false;
+        for (int i = 0; i < timeSlots.size() && !removed; i++)
+        {
+            if (timeSlotID == timeSlots.get(i).getSlotID())
+            {
+                daySlotID = timeSlotsDaySlotID.get(i);
+                timeSlots.remove(i);
+                timeSlotsDaySlotID.remove(i);
+                timeSlotsParkingSpotID.remove(i);
+                removed = true;
+            }
+        }
+
+        boolean empty = true;
+        for (int i = 0; i < timeSlots.size(); i++)
+        {
+            if (daySlotID == timeSlotsDaySlotID.get(i))
+            {
+                empty = false;
+            }
+        }
+
+        if (empty)
+        {
+            deleteDaySlot(daySlotID);
+            exitOnReturn = true;
+        }
+
+        return exitOnReturn;
     }
 
     private void addDefaultData(String name, String address, String phone, String email,

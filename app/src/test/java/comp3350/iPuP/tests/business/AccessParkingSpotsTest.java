@@ -578,8 +578,6 @@ public class AccessParkingSpotsTest extends TestCase
         catch (DAOException daoe) { fail(); }
     }
 
-    public void testOneParkingSpotInList()
-
 
     public void testMyDailyParkingSpotsEmptyList()
     {

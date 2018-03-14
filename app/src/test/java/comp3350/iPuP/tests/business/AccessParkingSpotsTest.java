@@ -723,4 +723,117 @@ public class AccessParkingSpotsTest extends TestCase
         }
     }
 
+
+    public void testFreeNoTimeSLots() throws Exception{
+        Services.closeDataAccess();
+
+        Services.createDataAccess(new DataAccessStub(dbName));
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        assertEquals(0, parkSpotAccess.getFreeTimeSlotsByID(885000).size());
+        assertEquals(null,parkSpotAccess.getSpotByID(88500));
+
+    }
+
+    public void testInvalidSlotIDs() throws Exception{
+        Services.closeDataAccess();
+
+        Services.createDataAccess(new DataAccessStub(dbName));
+        parkSpotAccess = new AccessParkingSpots();
+
+        //negative slotID
+        assertEquals(0, parkSpotAccess.getFreeTimeSlotsByID(-1500).size());
+        assertEquals(null, parkSpotAccess.getSpotByID(-1500));
+        assertEquals(0, parkSpotAccess.getFreeTimeSlotsByID(-1).size());
+        assertEquals(null, parkSpotAccess.getSpotByID(-1));
+        //non-existing slotID
+        assertEquals(0, parkSpotAccess.getFreeTimeSlotsByID(100000).size());
+        assertEquals(null,parkSpotAccess.getSpotByID(100000));
+
+        ArrayList<TimeSlot> testTimeSlots=parkSpotAccess.getFreeTimeSlotsByID(0);
+        //passing different slot id from the one used to get time slots
+        assertFalse(parkSpotAccess.bookTimeSlots(testTimeSlots,"Jenifer Aniston",
+                -1));
+        testTimeSlots=parkSpotAccess.getFreeTimeSlotsByID(0);
+        assertFalse(parkSpotAccess.bookTimeSlots(testTimeSlots,"Jenifer Aniston",
+                1000000));
+
+    }
+
+    public void testRegularSlotIDs() throws Exception{
+        Services.closeDataAccess();
+
+        Services.createDataAccess(new DataAccessStub(dbName));
+        parkSpotAccess = new AccessParkingSpots();
+
+        assertEquals(8, parkSpotAccess.getFreeTimeSlotsByID(0).size());
+        assertEquals("marker", parkSpotAccess.getSpotByID(0).getName());
+        assertEquals(0, parkSpotAccess.getSpotByID(0).getSpotID());
+        assertEquals("88 Plaza Drive", parkSpotAccess.getSpotByID(0).getAddress());
+        assertEquals("204-855-2342", parkSpotAccess.getSpotByID(0).getPhone());
+        assertEquals("poor&Homeless@gmail.com", parkSpotAccess.getSpotByID(0).
+                getEmail());
+        assertEquals(2.0, parkSpotAccess.getSpotByID(0).getRate());
+
+        assertEquals(19, parkSpotAccess.getFreeTimeSlotsByID(5).size());
+
+        assertEquals("Jenifer Aniston", parkSpotAccess.getSpotByID(5).getName());
+        assertEquals(5, parkSpotAccess.getSpotByID(5).getSpotID());
+        assertEquals("1 Kings Drive", parkSpotAccess.getSpotByID(5).getAddress());
+        assertEquals("604-253-1111", parkSpotAccess.getSpotByID(5).getPhone());
+        assertEquals("JeniferAniston@hotmail.ca", parkSpotAccess.getSpotByID(5).
+                getEmail());
+        assertEquals(7.0, parkSpotAccess.getSpotByID(5).getRate());
+
+        ArrayList<TimeSlot> testTimeSlots=parkSpotAccess.getFreeTimeSlotsByID(0);
+        assertTrue(parkSpotAccess.bookTimeSlots(testTimeSlots,"Jenifer Aniston",
+                0));
+        testTimeSlots=parkSpotAccess.getFreeTimeSlotsByID(5);
+        assertTrue(parkSpotAccess.bookTimeSlots(testTimeSlots,"Jenifer Aniston",
+                5));
+
+    }
+
+    public void testInvalidTimeSlotList() throws Exception{
+        Services.closeDataAccess();
+
+        Services.createDataAccess(new DataAccessStub(dbName));
+        parkSpotAccess = new AccessParkingSpots();
+
+        ArrayList<TimeSlot> testSlots=null;
+        assertFalse(parkSpotAccess.bookTimeSlots(testSlots, "Jenifer Aniston",
+                0));
+        testSlots=new ArrayList<TimeSlot>();
+        assertFalse(parkSpotAccess.bookTimeSlots(testSlots,"Jenifer ANiston",
+                0));
+    }
+
+    public void testRegularTimeSlotList() throws Exception{
+        Services.closeDataAccess();
+
+        Services.createDataAccess(new DataAccessStub(dbName));
+        parkSpotAccess = new AccessParkingSpots();
+
+        ArrayList<TimeSlot> testTimeSlots=parkSpotAccess.getFreeTimeSlotsByID(0);
+        assertTrue(parkSpotAccess.bookTimeSlots(testTimeSlots,"Jenifer Aniston",
+                0));
+    }
+
+    public void testInvalidUsernames() throws Exception{
+        Services.closeDataAccess();
+
+        Services.createDataAccess(new DataAccessStub(dbName));
+        parkSpotAccess = new AccessParkingSpots();
+
+        ArrayList<TimeSlot> testTimeSlots=parkSpotAccess.getFreeTimeSlotsByID(0);
+        assertFalse(parkSpotAccess.bookTimeSlots(testTimeSlots,null,
+                0));
+        testTimeSlots=parkSpotAccess.getFreeTimeSlotsByID(0);
+        assertFalse(parkSpotAccess.bookTimeSlots(testTimeSlots,"",
+                0));
+    }
+
+
+
 }

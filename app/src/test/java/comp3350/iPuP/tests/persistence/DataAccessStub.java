@@ -467,9 +467,16 @@ public class DataAccessStub implements DataAccess
                     if (map.containsKey(parkingSpot.getSpotID()))
                     {
                         TimeSlot daySlot = map.get(parkingSpot.getSpotID());
-                        if (daySlot.getStart().compareTo(date) * date.compareTo(daySlot.getEnd()) >= 0)
+                        try
                         {
-                            found = true;
+                            if (df.getSqlDateFormat().parse(df.getSqlDateFormat().format(daySlot.getStart())).compareTo(date) <= 0 &&
+                                    date.compareTo(df.getSqlDateFormat().parse(df.getSqlDateFormat().format(daySlot.getEnd()))) <= 0) {
+                                found = true;
+                            }
+                        }
+                        catch (ParseException pe)
+                        {
+                            throw new DAOException("Error in comparing given date between start and end dates of a TimeSlot!");
                         }
                     }
                 }
@@ -809,7 +816,7 @@ public class DataAccessStub implements DataAccess
 
         parkingSpots.add(new ParkingSpot(parkingspotCounter, address, name, phone, email, rate));
 
-        daySlots.add(new TimeSlot(calStart.getTime(), calEnd.getTime(), dayslotCounter++));
+        daySlots.add(new TimeSlot(calStart.getTime(), calEnd.getTime(), dayslotCounter));
         daySlotsParkingSpotID.add(parkingspotCounter);
 
         int numSlots = (int)(calEnd.getTimeInMillis() - calStart.getTimeInMillis()) / 1000 / 60 / 30;
@@ -821,8 +828,9 @@ public class DataAccessStub implements DataAccess
             Date endTime = calStart.getTime();
             timeSlots.add(new TimeSlot(startTime, endTime, timeslotCounter++));
             timeSlotsParkingSpotID.add(parkingspotCounter);
+            timeSlotsDaySlotID.add(dayslotCounter);
         }
-
+        dayslotCounter++;
         parkingspotCounter++;
     }
 

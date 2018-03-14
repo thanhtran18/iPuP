@@ -141,6 +141,7 @@ public class AccessParkingSpots
         return dataAccess.getBookedSpotsOfGivenUser(name);
     }
 
+
     public ArrayList<ParkingSpot> getDailySpots(String address, Date today) throws DAOException
     {
         return dataAccess.getParkingSpotsByAddressDate(address, today);

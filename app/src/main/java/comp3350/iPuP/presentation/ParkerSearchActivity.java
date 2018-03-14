@@ -39,8 +39,6 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parker_search);
-
-
         //todo get current date from onclick listen
         //todo change button and screen colors
         //todo try implementing without the start seach button
@@ -159,11 +157,20 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
     @Override
     public void onListItemClick(ListView l, View v, int position, long id)
     {
+        String name;
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            name = null;
+        } else {
+            name = extras.getString("name");
+        }
+
         super.onListItemClick(l, v, position, id);
         ParkingSpot currItem = parkingSpots.get(position);
 
         Intent intent = new Intent(getApplicationContext(), BookTimeSlotsActivity.class);
         intent.putExtra(getResources().getString(R.string.selected_spot), currItem.getSpotID());
+        intent.putExtra("name", name);
         startActivity(intent);
     }
 

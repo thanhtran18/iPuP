@@ -7,16 +7,22 @@ import java.util.Calendar;
 import java.util.Date;
 
 import comp3350.iPuP.application.Main;
+import comp3350.iPuP.application.Services;
 import comp3350.iPuP.business.AccessParkingSpots;
+import comp3350.iPuP.objects.Booking;
+import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
+import comp3350.iPuP.tests.persistence.DataAccessStub;
 
 public class AccessParkingSpotsTest extends TestCase
 {
+    private static String dbName = Main.dbName;
     AccessParkingSpots parkSpotAccess;
     ParkingSpot ps;
     ArrayList<ParkingSpot> spots;
     ArrayList<ParkingSpot> allSpots;
+    ArrayList<Booking> bookings;
 
     public AccessParkingSpotsTest(String arg0)
     {
@@ -494,5 +500,38 @@ public class AccessParkingSpotsTest extends TestCase
 //        assertTrue(allSpots.get(2).isBooked());
 //        assertTrue(allSpots.get(3).isBooked());
         System.out.println("Finished testAccessParkingSpots: Booking a spot twice.");
+    }
+
+
+    public void testGettingMyBookingsValid()
+    {
+//        Main.startUp();
+//        System.out.println("Starting testAccessParkingSpots: No parking spots inserted.");
+//        parkSpotAccess=new AccessParkingSpots();
+//        parkSpotAccess.clearSpots();
+        Services.closeDataAccess();
+
+        Services.createDataAccess(new DataAccessStub(dbName));
+
+        parkSpotAccess = new AccessParkingSpots();
+        parkSpotAccess.clearSpots();
+
+        String username = "marker";
+        try
+        {
+            bookings = parkSpotAccess.getMyBookedSpots(username);
+            assertEquals(4, bookings.size());
+            assertEquals("1000 St.Mary's Rd", bookings.get(0).getAddress());
+            assertEquals("91 Dalhousie Drive", bookings.get(1).getAddress());
+            assertEquals("1 Pembina Hwy", bookings.get(2).getAddress());
+            assertEquals("1338 Chancellor Drive", bookings.get(3).getAddress());
+
+
+        }
+        catch (DAOException de)
+        {
+            System.out.print(de.getMessage());
+            fail();
+        }
     }
 }

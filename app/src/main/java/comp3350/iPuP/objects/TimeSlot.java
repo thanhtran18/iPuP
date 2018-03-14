@@ -41,7 +41,7 @@ public class TimeSlot
     {
         start = newStart;
         end = newEnd;
-        slotID = 0;
+        slotID = -1;
 
         isBooked=false;
     }

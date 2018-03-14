@@ -129,7 +129,6 @@ public class BookTimeSlotsActivity extends AppCompatActivity
 
     private void refreshScreen()
     {
-        //This will set the screen as it needs to be each time
         try
         {
             timesToShow = accessParkingSpots.getFreeTimeSlotsByID(spotID);

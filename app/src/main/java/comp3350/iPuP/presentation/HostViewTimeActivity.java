@@ -3,9 +3,7 @@ package comp3350.iPuP.presentation;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +18,7 @@ public class HostViewTimeActivity extends ListActivity
 {
     AccessParkingSpots accessParkingSpots;
     TimeSlotAdapter adapter;
-    long spotID, slotID;
+    long spotID, daySlotID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,8 +26,8 @@ public class HostViewTimeActivity extends ListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_view_time);
 
-        slotID = getIntent().getLongExtra("slotID",-1);
-        spotID = getIntent().getLongExtra("spotID",-1);
+        daySlotID = getIntent().getLongExtra(getResources().getString(R.string.extra_slotID),-1);
+        spotID = getIntent().getLongExtra(getResources().getString(R.string.extra_spotID),-1);
 
         accessParkingSpots = new AccessParkingSpots();
 
@@ -56,11 +54,11 @@ public class HostViewTimeActivity extends ListActivity
             ParkingSpot spot = accessParkingSpots.getParkingSpot(spotID);
 
             TextView tv = findViewById(R.id.textViewAddress);
-            tv.setText(String.format(getResources().getString(R.string.hostview_Address), spot.getAddress()));
+            tv.setText(String.format(getResources().getString(R.string.info_address), spot.getAddress()));
             tv = findViewById(R.id.textViewRate);
-            tv.setText(String.format(getResources().getString(R.string.hostview_Rate), spot.getRate()));
+            tv.setText(String.format(getResources().getString(R.string.info_rate), spot.getRate()));
 
-            ArrayList<TimeSlot> timeSlots = accessParkingSpots.getTimeSlots(slotID);
+            ArrayList<TimeSlot> timeSlots = accessParkingSpots.getTimeSlots(daySlotID);
             adapter = new TimeSlotAdapter(this, timeSlots);
             setListAdapter(adapter);
             return adapter.getCount() == 0;

@@ -12,7 +12,7 @@
 
         <TextView
             style="@style/AppTheme.TextViewSmallStyle"
-            android:id="@+id/textViewRow1"
+            android:id="@+id/textViewListRow1"
             android:background="@color/colorTransparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
         <TextView
             style="@style/AppTheme.TextViewSmallStyle"
             android:background="@color/colorTransparent"
-            android:id="@+id/textViewRow2"
+            android:id="@+id/textViewListRow2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="" />

@@ -1,9 +1,5 @@
 package comp3350.iPuP.objects;
 
-/**
- * Created by Amanjyot on 2018-03-08.
- */
-
 public class DAOException extends Exception{
 
     public DAOException() {

@@ -3,6 +3,7 @@ package comp3350.iPuP.presentation;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +24,11 @@ import comp3350.iPuP.objects.TimeSlot;
 
 public class DaySlotAdapter extends ArrayAdapter<TimeSlot>
 {
-    DateFormatter df;
-    long spotID;
-    AccessParkingSpots dataAccess;
-    ListView list;
-    Activity activity;
+    private DateFormatter df;
+    private long spotID;
+    private AccessParkingSpots dataAccess;
+    private ListView list;
+    private Activity activity;
 
     DaySlotAdapter(Context context, ArrayList<TimeSlot> slots, long spotID)
     {
@@ -38,10 +39,11 @@ public class DaySlotAdapter extends ArrayAdapter<TimeSlot>
         this.activity = (Activity)context;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
+    public View getView(int position, View convertView, @NonNull ViewGroup parent)
     {
-        TimeSlot slot = getItem(position);
+        TimeSlot daySlot = getItem(position);
 
         if (convertView == null)
         {
@@ -50,10 +52,11 @@ public class DaySlotAdapter extends ArrayAdapter<TimeSlot>
 
         list = (ListView)parent;
 
-        TextView tv = convertView.findViewById(R.id.textViewRow1);
-        tv.setText(String.format(convertView.getResources().getString(R.string.hostview_Start), df.getDateTimeFormat().format(slot.getStart())));
-        tv = convertView.findViewById(R.id.textViewRow2);
-        tv.setText(String.format(convertView.getResources().getString(R.string.hostview_End), df.getDateTimeFormat().format(slot.getEnd())));
+        TextView tv = convertView.findViewById(R.id.textViewListRow1);
+        assert daySlot != null;
+        tv.setText(String.format(convertView.getResources().getString(R.string.info_start), df.getDateTimeFormat().format(daySlot.getStart())));
+        tv = convertView.findViewById(R.id.textViewListRow2);
+        tv.setText(String.format(convertView.getResources().getString(R.string.info_end), df.getDateTimeFormat().format(daySlot.getEnd())));
 
         if (position % 2 == 0)
             convertView.setBackgroundResource(R.color.colorWhite);
@@ -62,7 +65,7 @@ public class DaySlotAdapter extends ArrayAdapter<TimeSlot>
 
         Button b = convertView.findViewById(R.id.buttonListItem);
         b.setText(convertView.getResources().getString(R.string.delete));
-        if (slot.getIsBooked())
+        if (daySlot.getIsBooked())
         {
             b.setBackgroundResource(R.color.colorTextHint);
         }
@@ -78,6 +81,7 @@ public class DaySlotAdapter extends ArrayAdapter<TimeSlot>
                     TimeSlot slot = getItem(position);
                     try
                     {
+                        assert slot != null;
                         if (!dataAccess.deleteDaySlot(slot.getSlotID()))
                         {
                             ArrayAdapter<TimeSlot> adapter = (ArrayAdapter<TimeSlot>) list.getAdapter();
@@ -108,8 +112,8 @@ public class DaySlotAdapter extends ArrayAdapter<TimeSlot>
                 TimeSlot slot = getItem(position);
 
                 Intent hostViewTimeIntent = new Intent(view.getContext(), HostViewTimeActivity.class);
-                hostViewTimeIntent.putExtra("slotID", slot.getSlotID());
-                hostViewTimeIntent.putExtra("spotID", spotID);
+                hostViewTimeIntent.putExtra(activity.getResources().getString(R.string.extra_slotID), slot.getSlotID());
+                hostViewTimeIntent.putExtra(activity.getResources().getString(R.string.extra_spotID), spotID);
                 activity.startActivityForResult(hostViewTimeIntent, 0);
             }
         });

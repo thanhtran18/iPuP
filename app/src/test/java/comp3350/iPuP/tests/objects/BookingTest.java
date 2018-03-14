@@ -44,6 +44,7 @@ public class BookingTest extends TestCase
         try
         {
             booking = new Booking("", Long.parseLong("02"), "1 address avenue", start, end);
+            fail();
         }
         catch (Exception e)
         {
@@ -76,6 +77,7 @@ public class BookingTest extends TestCase
         try
         {
             Booking booking = new Booking("goat", Long.parseLong("02"), "1 address avenue", start, end);
+            fail();
         }
         catch (Exception e)
         {

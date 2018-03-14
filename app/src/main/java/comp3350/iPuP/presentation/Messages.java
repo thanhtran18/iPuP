@@ -5,7 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import comp3350.iPuP.R;
 
-public class Messages {
+public class Messages
+{
     public static void fatalError(final Activity owner, String message)
     {
         AlertDialog alertDialog = new AlertDialog.Builder(owner).create();

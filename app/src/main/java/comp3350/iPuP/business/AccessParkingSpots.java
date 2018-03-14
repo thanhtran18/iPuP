@@ -24,7 +24,7 @@ public class AccessParkingSpots
         availableSpots = new ArrayList<>();
     }
 
-    public void insertParkingSpot(String user, TimeSlot timeSlot, String repetitionInfo, String address, String name, String phone, String email, double rate) throws DAOException
+    public void insertParkingSpot(String name, TimeSlot timeSlot, String repetitionInfo, String address, String phone, String email, double rate) throws DAOException
     {
         Calendar start = new GregorianCalendar();
         Calendar end = new GregorianCalendar();
@@ -33,42 +33,42 @@ public class AccessParkingSpots
 
         ParkingSpot spot = new ParkingSpot(address, name, phone, email, rate);
 
-        spot.setSpotID(insertParkingSpot(user, spot));
+        spot.setSpotID(insertParkingSpot(name, spot));
 
         if (repetitionInfo != null && !repetitionInfo.equals(""))
         {
             String[] splits = repetitionInfo.split(" ");
-            if (splits[0].equals("Days"))
+            switch (splits[0])
             {
-                for (int j = 0; j < Integer.parseInt(splits[2]); j++)
-                {
-                    insertDaySlot(start.getTime(), end.getTime(), spot.getSpotID(), dataAccess);
-                    start.add(Calendar.DAY_OF_YEAR, Integer.parseInt(splits[1]));
-                    end.add(Calendar.DAY_OF_YEAR, Integer.parseInt(splits[1]));
-                }
-            }
-            else if (splits[0].equals("Weeks"))
-            {
-                boolean[] days = TimeSlot.weekCodeToBoolArray(splits[3]);
-                for (int j = 0; j < Integer.parseInt(splits[2]); j++)
-                {
-                    for (int i = 0; i < 7; i++)
+                case "Days":
+                    for (int j = 0; j < Integer.parseInt(splits[2]); j++)
                     {
-                        if (days[(start.get(Calendar.DAY_OF_WEEK) - 1) % 7])
-                        {
-                            insertDaySlot(start.getTime(), end.getTime(), spot.getSpotID(), dataAccess);
-                        }
-
-                        start.add(Calendar.DAY_OF_YEAR, 1);
-                        end.add(Calendar.DAY_OF_YEAR, 1);
+                        insertDaySlot(start.getTime(), end.getTime(), spot.getSpotID(), dataAccess);
+                        start.add(Calendar.DAY_OF_YEAR, Integer.parseInt(splits[1]));
+                        end.add(Calendar.DAY_OF_YEAR, Integer.parseInt(splits[1]));
                     }
-                    start.add(Calendar.WEEK_OF_YEAR, Integer.parseInt(splits[1]) - 1);
-                    end.add(Calendar.WEEK_OF_YEAR, Integer.parseInt(splits[1]) - 1);
-                }
-            }
-            else
-            {
+                    break;
+                case "Weeks":
+                    boolean[] days = TimeSlot.weekCodeToBoolArray(splits[3]);
+                    for (int j = 0; j < Integer.parseInt(splits[2]); j++)
+                    {
+                        for (int i = 0; i < 7; i++)
+                        {
+                            if (days[(start.get(Calendar.DAY_OF_WEEK) - 1) % 7])
+                            {
+                                insertDaySlot(start.getTime(), end.getTime(), spot.getSpotID(), dataAccess);
+                            }
 
+                            start.add(Calendar.DAY_OF_YEAR, 1);
+                            end.add(Calendar.DAY_OF_YEAR, 1);
+                        }
+                        start.add(Calendar.WEEK_OF_YEAR, Integer.parseInt(splits[1]) - 1);
+                        end.add(Calendar.WEEK_OF_YEAR, Integer.parseInt(splits[1]) - 1);
+                    }
+                    break;
+                default:
+
+                    break;
             }
         }
         else
@@ -127,11 +127,6 @@ public class AccessParkingSpots
         return availableSpots;
     }
 
-    public void bookSpot(long spotID, String slotID)
-    {
-//        return dataAccess.setSpotToBooked(spotID, slotID);
-    }
-
     public void clearSpots()
     {
         dataAccess.clearSpotList();
@@ -171,7 +166,7 @@ public class AccessParkingSpots
         return dataAccess.getUnbookedTimeSlotsForParkingSpot(spotID);
     }
 
-    public ParkingSpot getSpotBYID(long spotID) throws DAOException{
+    public ParkingSpot getSpotByID(long spotID) throws DAOException{
         return dataAccess.getParkingSpotByID(spotID);
     }
 
@@ -204,13 +199,13 @@ public class AccessParkingSpots
         return dataAccess.getTimeSlots(daySlotID);
     }
 
-    public boolean deleteTimeSlot(Long slotID) throws DAOException
+    public boolean deleteTimeSlot(long timeSlotID) throws DAOException
     {
-        return dataAccess.deleteTimeSlot(slotID);
+        return dataAccess.deleteTimeSlot(timeSlotID);
     }
 
-    public boolean deleteDaySlot(long slotID) throws  DAOException
+    public boolean deleteDaySlot(long daySlotID) throws  DAOException
     {
-        return dataAccess.deleteDaySlot(slotID);
+        return dataAccess.deleteDaySlot(daySlotID);
     }
 }

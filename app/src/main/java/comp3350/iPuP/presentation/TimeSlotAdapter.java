@@ -2,19 +2,16 @@ package comp3350.iPuP.presentation;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.sql.Time;
 import java.util.ArrayList;
 
 import comp3350.iPuP.R;
@@ -26,12 +23,12 @@ import comp3350.iPuP.objects.TimeSlot;
 class TimeSlotAdapter extends ArrayAdapter<TimeSlot>
 {
 
-    DateFormatter df;
-    AccessParkingSpots dataAccess;
-    ListView list;
+    private DateFormatter df;
+    private AccessParkingSpots dataAccess;
+    private ListView list;
     Activity activity;
 
-    public TimeSlotAdapter(@NonNull Context context, ArrayList<TimeSlot> slots)
+    TimeSlotAdapter(@NonNull Context context, ArrayList<TimeSlot> slots)
     {
         super(context, 0, slots);
         df = new DateFormatter();
@@ -39,8 +36,9 @@ class TimeSlotAdapter extends ArrayAdapter<TimeSlot>
         this.activity = (Activity)context;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
+    public View getView(int position, View convertView, @NonNull ViewGroup parent)
     {
         TimeSlot slot = getItem(position);
 
@@ -51,10 +49,11 @@ class TimeSlotAdapter extends ArrayAdapter<TimeSlot>
 
         list = (ListView)parent;
 
-        TextView tv = convertView.findViewById(R.id.textViewRow1);
-        tv.setText(String.format(convertView.getResources().getString(R.string.hostview_Start), df.getDateTimeFormat().format(slot.getStart())));
-        tv = convertView.findViewById(R.id.textViewRow2);
-        tv.setText(String.format(convertView.getResources().getString(R.string.hostview_End), df.getDateTimeFormat().format(slot.getEnd())));
+        TextView tv = convertView.findViewById(R.id.textViewListRow1);
+        assert slot != null;
+        tv.setText(String.format(convertView.getResources().getString(R.string.info_start), df.getDateTimeFormat().format(slot.getStart())));
+        tv = convertView.findViewById(R.id.textViewListRow2);
+        tv.setText(String.format(convertView.getResources().getString(R.string.info_end), df.getDateTimeFormat().format(slot.getEnd())));
 
         if (position % 2 == 0)
             convertView.setBackgroundResource(R.color.colorWhite);
@@ -79,6 +78,7 @@ class TimeSlotAdapter extends ArrayAdapter<TimeSlot>
                     TimeSlot slot = getItem(position);
                     try
                     {
+                        assert slot != null;
                         if (!dataAccess.deleteTimeSlot(slot.getSlotID()))
                         {
                             ArrayAdapter<TimeSlot> adapter = (ArrayAdapter<TimeSlot>) list.getAdapter();

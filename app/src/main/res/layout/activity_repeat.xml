@@ -13,72 +13,72 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textViewRepeatsEvery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginTop="16dp"
-            android:text="@string/period_text"
+            android:text="@string/repeat_period_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <EditText
-            android:id="@+id/editPeriod"
+            android:id="@+id/editTextPeriod"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/textView2"
-            android:layout_toEndOf="@+id/textView2"
-            android:layout_toRightOf="@+id/textView2"
+            android:layout_alignTop="@+id/textViewRepeatsEvery"
+            android:layout_toEndOf="@+id/textViewRepeatsEvery"
+            android:layout_toRightOf="@+id/textViewRepeatsEvery"
             android:ems="10"
             android:inputType="number"
             android:paddingTop="0dp"
-            android:text="@string/period_default"
+            android:text="@string/repeat_period_default"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <Spinner
             android:id="@+id/spinnerPeriod"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView2"
-            android:layout_toEndOf="@+id/editPeriod"
-            android:layout_toRightOf="@+id/editPeriod"
+            android:layout_alignBottom="@+id/textViewRepeatsEvery"
+            android:layout_toEndOf="@+id/editTextPeriod"
+            android:layout_toRightOf="@+id/editTextPeriod"
             android:entries="@array/repeats_periods"
             tools:layout_editor_absoluteX="373dp"
             tools:layout_editor_absoluteY="29dp" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/textViewRepeats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/spinnerPeriod"
             android:layout_toEndOf="@+id/spinnerPeriod"
             android:layout_toRightOf="@+id/spinnerPeriod"
-            android:text="@string/repeats"
+            android:text="@string/repeat_repeats"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
 
         <EditText
-            android:id="@+id/editNumReps"
+            android:id="@+id/editTextNumReps"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/spinnerPeriod"
             android:layout_alignBottom="@+id/spinnerPeriod"
-            android:layout_toEndOf="@+id/textView4"
-            android:layout_toRightOf="@+id/textView4"
+            android:layout_toEndOf="@+id/textViewRepeats"
+            android:layout_toRightOf="@+id/textViewRepeats"
             android:ems="10"
             android:inputType="number"
-            android:text="@string/reps_default"
+            android:text="@string/repeat_reps_default"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/textViewTimes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/spinnerPeriod"
             android:layout_alignBottom="@+id/spinnerPeriod"
-            android:layout_toEndOf="@+id/editNumReps"
-            android:layout_toRightOf="@+id/editNumReps"
-            android:text="@string/times"
+            android:layout_toEndOf="@+id/editTextNumReps"
+            android:layout_toRightOf="@+id/editTextNumReps"
+            android:text="@string/repeat_times"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <RelativeLayout
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:text="@string/monthDate"
+                android:text="@string/repeat_month_date"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
         </RelativeLayout>
 
@@ -104,7 +104,7 @@
             android:id="@+id/layoutWeekly"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:layout_below="@+id/editPeriod"
+            android:layout_below="@+id/editTextPeriod"
             android:layout_marginTop="31dp"
             android:visibility="visible">
 
@@ -177,13 +177,13 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/textViewRepeatsOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:text="@string/week_title"
+                android:text="@string/repeat_week_title"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         </RelativeLayout>
@@ -211,7 +211,4 @@
                 android:text="@string/confirm" />
         </LinearLayout>
     </RelativeLayout>
-
-
-
 </android.support.constraint.ConstraintLayout>

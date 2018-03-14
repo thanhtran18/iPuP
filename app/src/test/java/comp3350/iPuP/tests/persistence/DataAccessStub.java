@@ -638,6 +638,9 @@ public class DataAccessStub implements DataAccess
 
     @Override
     public ParkingSpot getParkingSpotByID(long spotID) throws DAOException {
+        if((int)spotID>parkingSpots.size() || (int)spotID<0){
+            return null;
+        }
         ParkingSpot aparkingspot = parkingSpots.get((int)spotID);
 	    return new ParkingSpot(aparkingspot.getSpotID(), aparkingspot.getAddress(),
                 aparkingspot.getName(), aparkingspot.getPhone(), aparkingspot.getEmail(),
@@ -646,7 +649,11 @@ public class DataAccessStub implements DataAccess
 
     @Override
     public boolean bookTimeSlot(String username, long timeSlotID, long spotID) throws DAOException {
+
         boolean found = false;
+        if(spotID<0 || spotID>bookings.size()){
+            return found;
+        }
 
         for (int i = 0; i < bookings.size(); i++) {
             Booking abooking = bookings.get(i);

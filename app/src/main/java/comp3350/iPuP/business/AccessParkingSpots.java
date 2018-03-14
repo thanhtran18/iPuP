@@ -173,18 +173,19 @@ public class AccessParkingSpots
         boolean returnVal = false;
         int checkLoop=0;
 
-        for(TimeSlot currSlot:timeSlots){
-            long timeSLotID = currSlot.getSlotID();
-            boolean bookingWorked = dataAccess.bookTimeSlot(userBooking, timeSLotID, pSpotID);
+        if(timeSlots!=null && userBooking!=null && userBooking!="") {
+            for (TimeSlot currSlot : timeSlots) {
+                long timeSLotID = currSlot.getSlotID();
+                boolean bookingWorked = dataAccess.bookTimeSlot(userBooking, timeSLotID, pSpotID);
 
-            if(bookingWorked) {
-                checkLoop++;
+                if (bookingWorked) {
+                    checkLoop++;
+                }
+            }
+            if (checkLoop == timeSlots.size()) {
+                returnVal = true;
             }
         }
-        if(checkLoop == timeSlots.size()){
-            returnVal = false;
-        }
-
         return returnVal;
     }
 

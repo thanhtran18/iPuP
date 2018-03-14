@@ -467,24 +467,6 @@ public class DataAccessStub implements DataAccess
             map.put(daySlotsParkingSpotID.get(i), daySlots.get(i));
         }
 
-        Set<Map.Entry<Long, TimeSlot>> set = map.entrySet();
-        List<Map.Entry<Long, TimeSlot>> list = new ArrayList<>(set);
-        Collections.sort( list, new Comparator<Map.Entry<Long, TimeSlot>>()
-        {
-            @Override
-            public int compare( Map.Entry<Long, TimeSlot> o1, Map.Entry<Long, TimeSlot> o2 )
-            {
-                TimeSlot ot1 = o1.getValue();
-                TimeSlot ot2 = o2.getValue();
-                return (ot2.getStart().compareTo(ot1.getStart()));
-            }
-        } );
-//        for(Map.Entry<String, Integer> entry:list){
-//            System.out.println(entry.getKey()+" ==== "+entry.getValue());
-//        }
-
-        Map<Long, TimeSlot> map2 = new HashMap<>(list);
-
         for (int i = 0; i < parkingSpots.size(); i++)
         {
             ParkingSpot parkingSpot = parkingSpots.get(i);
@@ -500,36 +482,46 @@ public class DataAccessStub implements DataAccess
 
             if (check)
             {
-//                boolean found = false;
-//                for (int j = 0; j < daySlotsParkingSpotID.size(); j++)
-//                {
-//                    if (parkingSpot.getSpotID() == daySlotsParkingSpotID.get(j))
-//                    {
-//                        TimeSlot daySlot = daySlots.get(j);
-//
-//                        if (date.after(daySlot.getStart()) && date.before(daySlot.getEnd()))
-//                        {
-//                            found = true;
-//                        }
-//                    }
+                boolean found = false;
 
-//                    if (found)
-                    if (list.contains)
+                if (date != null)
+                {
+                    if (map.containsKey(parkingSpot.getSpotID()))
                     {
-                        try
+                        TimeSlot daySlot = map.get(parkingSpot.getSpotID());
+                        if (daySlot.getStart().compareTo(date) * date.compareTo(daySlot.getEnd()) >= 0)
                         {
-                            parkingSpotsByAddrDate.add(new ParkingSpot(parkingSpot.getSpotID(),
-                                    parkingSpot.getAddress(), parkingSpot.getName(), parkingSpot.getPhone(),
-                                    parkingSpot.getEmail(), parkingSpot.getRate()));
-                        } catch (Exception e)
-                        {
-                            throw new DAOException("Error in getting ParkingSpots ordered by Date: "+df.getSqlDateFormat().format(date)+"!",e);
+                            found = true;
                         }
-                        break;
                     }
-//                }
-//            }
+                } else
+                {
+                    found = true;
+                }
+
+                try
+                {
+                    if (found)
+                    {
+                        parkingSpotsByAddrDate.add(new ParkingSpot(parkingSpot.getSpotID(),
+                                parkingSpot.getAddress(), parkingSpot.getName(), parkingSpot.getPhone(),
+                                parkingSpot.getEmail(), parkingSpot.getRate()));
+                    }
+                } catch (Exception e)
+                {
+                    throw new DAOException("Error in getting ParkingSpots ordered by Date: "+df.getSqlDateFormat().format(date)+"!",e);
+                }
+            }
         }
+
+        Collections.sort( parkingSpotsByAddrDate, new Comparator<ParkingSpot>()
+        {
+            @Override
+            public int compare( ParkingSpot p1, ParkingSpot p2 )
+            {
+                return (p1.getAddress().compareTo(p2.getAddress()));
+            }
+        } );
 
         return parkingSpotsByAddrDate;
     }

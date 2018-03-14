@@ -65,6 +65,7 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
         });
 
         SearchView sv = findViewById(R.id.showSearchIcon);
+        sv.setQueryHint("Search by street name");
         sv.setSubmitButtonEnabled(true);
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener()
         {

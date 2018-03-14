@@ -81,7 +81,8 @@ public class ParkerLogViewActivity extends ListActivity
                 @Override
                 public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                     View row = super.getView(position, convertView, parent);
-                    if (arrayList.get(position).getStart().before(new Date()))
+                    Date currentDate = new Date();
+                    if (arrayList.get(position).getStart().before(currentDate))
                         row.setBackgroundColor(Color.parseColor("#E0E0E0"));
 
                     return row;

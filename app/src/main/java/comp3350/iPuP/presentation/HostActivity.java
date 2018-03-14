@@ -186,6 +186,20 @@ public class HostActivity extends Activity implements DateFragmentObserver
             text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         }
 
+        if (!validatePhone(phone))
+        {
+            valid = false;
+            EditText text = findViewById(R.id.editTextPhone);
+            text.setText("Invalid phone number");
+            text.setTextColor(getResources().getColor(R.color.colorWarning));
+        }
+        else
+        {
+            EditText text = findViewById(R.id.editTextPhone);
+            text.setHint(getResources().getString(R.string.host_phone));
+            text.setTextColor(getResources().getColor(R.color.colorBlack));
+        }
+
         if (!validateEmail(email))
         {
             valid = false;

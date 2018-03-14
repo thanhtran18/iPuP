@@ -21,7 +21,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class HomeActivity extends Activity {
+public class HomeActivity extends Activity
+{
 
     AccessUsers accessUsers;
 
@@ -48,9 +49,7 @@ public class HomeActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        return true;
+        return false;
     }
 
     @Override
@@ -73,20 +72,22 @@ public class HomeActivity extends Activity {
         File dataDirectory = context.getDir(DB_PATH, Context.MODE_PRIVATE);
         AssetManager assetManager = getAssets();
 
-        try {
+        try
+        {
 
             assetNames = assetManager.list(DB_PATH);
-            for (int i = 0; i < assetNames.length; i++) {
+            for (int i = 0; i < assetNames.length; i++)
+            {
                 assetNames[i] = DB_PATH + "/" + assetNames[i];
             }
-
-//            System.out.println("First Asset Name: "+assetNames[0]);
 
             copyAssetsToDirectory(assetNames, dataDirectory);
 
             Main.setDBPathName(dataDirectory.toString() + "/" + Main.dbName);
 
-        } catch (IOException ioe) {
+        }
+        catch (IOException ioe)
+        {
             Messages.warning(this, "Unable to access application data: " + ioe.getMessage());
         }
     }
@@ -95,7 +96,8 @@ public class HomeActivity extends Activity {
     {
         AssetManager assetManager = getAssets();
 
-        for (String asset : assets) {
+        for (String asset : assets)
+        {
             String[] components = asset.split("/");
             String copyPath = directory.toString() + "/" + components[components.length - 1];
             char[] buffer = new char[1024];
@@ -103,12 +105,14 @@ public class HomeActivity extends Activity {
 
             File outFile = new File(copyPath);
 
-            if (!outFile.exists()) {
+            if (!outFile.exists())
+            {
                 InputStreamReader in = new InputStreamReader(assetManager.open(asset));
                 FileWriter out = new FileWriter(outFile);
 
                 count = in.read(buffer);
-                while (count != -1) {
+                while (count != -1)
+                {
                     out.write(buffer, 0, count);
                     count = in.read(buffer);
                 }
@@ -122,11 +126,13 @@ public class HomeActivity extends Activity {
     public void buttonParkerOnClick(View v)
     {
         String name = ((EditText)findViewById(R.id.editTextName)).getText().toString();
-        if (name != null && !name.equals(""))
+        if (!name.equals(""))
         {
-            try {
+            try
+            {
                 boolean userCreated = accessUsers.createUser(name);
-                if (userCreated) {
+                if (userCreated)
+                {
                     toastNewUserCreated(name);
                 }
                 Intent parkerIntent = new Intent(HomeActivity.this, ParkerMenuActivity.class);
@@ -134,7 +140,8 @@ public class HomeActivity extends Activity {
                 bundle.putString("name", name);
                 parkerIntent.putExtras(bundle);
                 HomeActivity.this.startActivity(parkerIntent);
-            } catch (DAOException daoe)
+            }
+            catch (DAOException daoe)
             {
                 toastMessage(daoe.getMessage());
             }
@@ -149,15 +156,16 @@ public class HomeActivity extends Activity {
     public void buttonHostOnClick(View v)
     {
         String name = ((EditText)findViewById(R.id.editTextName)).getText().toString();
-        if (name != null && !name.equals(""))
+        if (!name.equals(""))
         {
-            try {
+            try
+            {
                 boolean userCreated = accessUsers.createUser(name);
                 if (userCreated) {
                     toastNewUserCreated(name);
                 }
                 Intent hostMenuIntent = new Intent(HomeActivity.this, HostMenuActivity.class);
-                hostMenuIntent.putExtra("name", name);
+                hostMenuIntent.putExtra(getResources().getString(R.string.extra_name), name);
                 HomeActivity.this.startActivity(hostMenuIntent);
             } catch (DAOException daoe)
             {
@@ -166,7 +174,7 @@ public class HomeActivity extends Activity {
         }
         else
         {
-            ((EditText)findViewById(R.id.editTextName)).setHint("Enter a name");
+            ((EditText)findViewById(R.id.editTextName)).setHint(getResources().getString(R.string.home_enter_name));
             ((EditText)findViewById(R.id.editTextName)).setHintTextColor(getResources().getColor(R.color.colorWarning));
         }
     }

@@ -171,7 +171,7 @@ public class AccessParkingSpots
         return dataAccess.getUnbookedTimeSlotsForParkingSpot(spotID);
     }
 
-    public ParkingSpot getSpotBYID(long spotID) throws DAOException{
+    public ParkingSpot getSpotByID(long spotID) throws DAOException{
         return dataAccess.getParkingSpotByID(spotID);
     }
 

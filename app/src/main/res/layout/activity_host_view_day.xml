@@ -11,14 +11,14 @@
         style="@style/AppTheme.TextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hostview_Address" />
+        android:text="@string/info_address" />
 
     <TextView
         android:id="@+id/textViewRate"
         style="@style/AppTheme.TextViewSmallStyleAlt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hostview_Rate"/>
+        android:text="@string/info_rate"/>
 
     <View
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="@string/no_available_parking_spots"
+            android:text="@string/search_no_spots"
             android:textColor="@color/colorWarning"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

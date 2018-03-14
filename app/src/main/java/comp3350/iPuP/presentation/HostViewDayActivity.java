@@ -3,9 +3,7 @@ package comp3350.iPuP.presentation;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,9 +53,9 @@ public class HostViewDayActivity extends ListActivity
             ParkingSpot spot = accessParkingSpots.getParkingSpot(spotID);
 
             TextView tv = findViewById(R.id.textViewAddress);
-            tv.setText(String.format(getResources().getString(R.string.hostview_Address), spot.getAddress()));
+            tv.setText(String.format(getResources().getString(R.string.info_address), spot.getAddress()));
             tv = findViewById(R.id.textViewRate);
-            tv.setText(String.format(getResources().getString(R.string.hostview_Rate), spot.getRate()));
+            tv.setText(String.format(getResources().getString(R.string.info_rate), spot.getRate()));
 
             ArrayList<TimeSlot> daySlots = accessParkingSpots.getDaySlots(spotID);
             adapter = new DaySlotAdapter(this, daySlots, spotID);

@@ -8,7 +8,7 @@
     tools:context="comp3350.iPuP.presentation.HostActivity">
 
     <EditText
-        android:id="@+id/editAddress"
+        android:id="@+id/editTextAddress"
         style="@style/AppTheme.EditTextStyle"
         android:ems="12"
         android:enabled="true"
@@ -16,7 +16,7 @@
         android:inputType="textPostalAddress" />
 
     <EditText
-        android:id="@+id/editPhone"
+        android:id="@+id/editTextPhone"
         style="@style/AppTheme.EditTextStyleAlt"
         android:ems="12"
         android:enabled="true"
@@ -24,7 +24,7 @@
         android:inputType="phone" />
 
     <EditText
-        android:id="@+id/editEmail"
+        android:id="@+id/editTextEmail"
         style="@style/AppTheme.EditTextStyle"
         android:ems="12"
         android:enabled="true"
@@ -32,7 +32,7 @@
         android:inputType="textEmailAddress" />
 
     <EditText
-        android:id="@+id/editRate"
+        android:id="@+id/editTextRate"
         style="@style/AppTheme.EditTextStyleAlt"
         android:ems="12"
         android:enabled="true"
@@ -41,14 +41,14 @@
 
 
     <LinearLayout
-        android:id="@+id/fromLayout"
+        android:id="@+id/layoutFrom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:weightSum="3">
 
         <TextView
-            android:id="@+id/textFrom"
+            android:id="@+id/textViewFrom"
             style="@style/AppTheme.EntryTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             android:text="@string/host_from"/>
 
         <TextView
-            android:id="@+id/editFromDate"
+            android:id="@+id/textViewFromDate"
             style="@style/AppTheme.EntryTextStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -66,7 +66,7 @@
             android:textSize="20sp"/>
 
         <TextView
-            android:id="@+id/editFromTime"
+            android:id="@+id/textViewFromTime"
             style="@style/AppTheme.EntryTextStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -78,14 +78,14 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/toLayout"
+        android:id="@+id/layoutTo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:weightSum="3">
 
         <TextView
-            android:id="@+id/textTo"
+            android:id="@+id/textViewTo"
             style="@style/AppTheme.EntryTextStyleAlt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -93,7 +93,7 @@
             android:text="@string/host_to" />
 
         <TextView
-            android:id="@+id/editToDate"
+            android:id="@+id/textViewToDate"
             style="@style/AppTheme.EntryTextStyleAlt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -103,7 +103,7 @@
             android:textSize="20sp"/>
 
         <TextView
-            android:id="@+id/editToTime"
+            android:id="@+id/textViewToTime"
             style="@style/AppTheme.EntryTextStyleAlt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -119,7 +119,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textOff="@string/host_dnrepeat"
-        android:textOn="@string/host_repeats"
+        android:textOn="@string/host_repeat"
         android:onClick="onRepeatClick"/>
 
 <LinearLayout

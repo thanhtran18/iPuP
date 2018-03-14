@@ -34,10 +34,10 @@ public class SpotAdapter extends ArrayAdapter<ParkingSpot>
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
 
-        TextView tv = convertView.findViewById(R.id.textViewRow1);
-        tv.setText(String.format(convertView.getResources().getString(R.string.hostview_Address), spot.getAddress()));
-        tv = convertView.findViewById(R.id.textViewRow2);
-        tv.setText(String.format(convertView.getResources().getString(R.string.hostview_Rate), spot.getRate()));
+        TextView tv = convertView.findViewById(R.id.textViewListRow1);
+        tv.setText(String.format(convertView.getResources().getString(R.string.info_address), spot.getAddress()));
+        tv = convertView.findViewById(R.id.textViewListRow2);
+        tv.setText(String.format(convertView.getResources().getString(R.string.info_rate), spot.getRate()));
 
         if (position % 2 == 0)
             convertView.setBackgroundResource(R.color.colorWhite);

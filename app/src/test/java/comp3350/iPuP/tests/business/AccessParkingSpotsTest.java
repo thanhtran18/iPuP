@@ -193,7 +193,7 @@ public class AccessParkingSpotsTest extends TestCase
         assertEquals(daySlot.getEnd(), end);
 
         daySlotID = daySlot.getSlotID();
-        ArrayList<TimeSlot> timeSlots = null;
+        timeSlots = null;
         try
         {
             timeSlots = parkSpotAccess.getTimeSlots(daySlotID);
@@ -489,7 +489,7 @@ public class AccessParkingSpotsTest extends TestCase
         assertTrue(spots.size()==1);
 
         allSpots = parkSpotAccess.getAllSpots();
-        assertFalse(allSpots.get(0).isBooked());
+        assertFalse(allSpots.get(0).getisBooked());
         assertTrue(allSpots.get(1).isBooked());
         assertTrue(allSpots.get(2).isBooked());
         assertTrue(allSpots.get(3).isBooked());

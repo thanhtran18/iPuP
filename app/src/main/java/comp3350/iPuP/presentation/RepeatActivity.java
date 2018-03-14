@@ -123,8 +123,8 @@ public class RepeatActivity extends AppCompatActivity
         Intent resultIntent = new Intent();
         String ret = ((Spinner)findViewById(R.id.spinnerPeriod)).getSelectedItem().toString();
 
-        ret += " " + ((EditText)findViewById(R.id.editPeriod)).getText();
-        ret += " " + ((EditText)findViewById(R.id.editNumReps)).getText() + " ";
+        ret += " " + ((EditText)findViewById(R.id.editTextPeriod)).getText();
+        ret += " " + ((EditText)findViewById(R.id.editTextNumReps)).getText() + " ";
 
         if (ret.startsWith("Weeks"))
         {

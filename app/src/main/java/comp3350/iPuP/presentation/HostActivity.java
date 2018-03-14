@@ -42,7 +42,7 @@ public class HostActivity extends Activity implements DateFragmentObserver
 
         repetitionInfo = "";
 
-        name = getIntent().getStringExtra("name");
+        name = getIntent().getStringExtra(getResources().getString(R.string.extra_name));
 
         Calendar c = Calendar.getInstance();
         df = new DateFormatter();
@@ -51,17 +51,17 @@ public class HostActivity extends Activity implements DateFragmentObserver
             c.set(Calendar.MINUTE, 30);
         else c.set(Calendar.MINUTE, 0);
 
-        TextView tv = findViewById(R.id.editFromDate);
+        TextView tv = findViewById(R.id.textViewFromDate);
         tv.setText(df.getDateFormat().format(c.getTime()));
 
-        tv = findViewById(R.id.editFromTime);
+        tv = findViewById(R.id.textViewFromTime);
         tv.setText(df.getTimeFormat().format(c.getTime()));
 
         c.add(Calendar.HOUR_OF_DAY,1);
-        tv = findViewById(R.id.editToDate);
+        tv = findViewById(R.id.textViewToDate);
         tv.setText(df.getDateFormat().format(c.getTime()));
 
-        tv = findViewById(R.id.editToTime);
+        tv = findViewById(R.id.textViewToTime);
         tv.setText(df.getTimeFormat().format(c.getTime()));
     }
 
@@ -99,7 +99,7 @@ public class HostActivity extends Activity implements DateFragmentObserver
     {
         if (((ToggleButton)v).isChecked()) {
             Intent repeatIntent = new Intent(HostActivity.this, RepeatActivity.class);
-            TextView dateFrom = findViewById(R.id.editFromDate);
+            TextView dateFrom = findViewById(R.id.textViewFromDate);
             repeatIntent.putExtra("date", dateFrom.getText());
             HostActivity.this.startActivityForResult(repeatIntent, 0);
         }
@@ -112,26 +112,26 @@ public class HostActivity extends Activity implements DateFragmentObserver
     @TargetApi(Build.VERSION_CODES.O)
     public void buttonConfirmOnClick(View v)
     {
-        EditText edit = findViewById(R.id.editAddress);
+        EditText edit = findViewById(R.id.editTextAddress);
         String address = edit.getText().toString();
-        edit = findViewById(R.id.editEmail);
+        edit = findViewById(R.id.editTextEmail);
         String email = edit.getText().toString();
-        edit = findViewById(R.id.editPhone);
+        edit = findViewById(R.id.editTextPhone);
         String phone = edit.getText().toString();
-        edit = findViewById(R.id.editRate);
+        edit = findViewById(R.id.editTextRate);
         String rateStr = edit.getText().toString();
         Double rate = Double.parseDouble(rateStr.equals("") ? "0": rateStr);
 
         boolean valid = true;
 
         TextView tv;
-        tv = findViewById(R.id.editFromDate);
+        tv = findViewById(R.id.textViewFromDate);
         String fromStr = tv.getText().toString();
-        tv = findViewById(R.id.editFromTime);
+        tv = findViewById(R.id.textViewFromTime);
         fromStr += ", " + tv.getText().toString();
-        tv = findViewById(R.id.editToDate);
+        tv = findViewById(R.id.textViewToDate);
         String toStr = tv.getText().toString();
-        tv = findViewById(R.id.editToTime);
+        tv = findViewById(R.id.textViewToTime);
         toStr += ", " + tv.getText().toString();
         TimeSlot timeSlot = null;
         try
@@ -145,43 +145,43 @@ public class HostActivity extends Activity implements DateFragmentObserver
         if (address.equals(""))
         {
             valid = false;
-            EditText text = findViewById(R.id.editAddress);
+            EditText text = findViewById(R.id.editTextAddress);
             text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
         }
         else
         {
-            EditText text = findViewById(R.id.editAddress);
+            EditText text = findViewById(R.id.editTextAddress);
             text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         }
 
         if (rate == 0)
         {
             valid = false;
-            EditText text = findViewById(R.id.editRate);
+            EditText text = findViewById(R.id.editTextRate);
             text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
         }
         else
         {
-            EditText text = findViewById(R.id.editRate);
+            EditText text = findViewById(R.id.editTextRate);
             text.setBackgroundColor(getResources().getColor(R.color.colorLightGrey));
         }
 
         if (email.equals("") && phone.equals(""))
         {
             valid = false;
-            EditText text = findViewById(R.id.editPhone);
+            EditText text = findViewById(R.id.editTextPhone);
             text.setHint("Enter either phone");
             text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
-            text = findViewById(R.id.editEmail);
+            text = findViewById(R.id.editTextEmail);
             text.setHint("or email");
             text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
         }
         else
         {
-            EditText text = findViewById(R.id.editPhone);
+            EditText text = findViewById(R.id.editTextPhone);
             text.setHint(getResources().getString(R.string.host_phone));
             text.setBackgroundColor(getResources().getColor(R.color.colorLightGrey));
-            text = findViewById(R.id.editEmail);
+            text = findViewById(R.id.editTextEmail);
             text.setHint(getResources().getString(R.string.host_email));
             text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         }
@@ -189,13 +189,13 @@ public class HostActivity extends Activity implements DateFragmentObserver
         if (!validateEmail(email))
         {
             valid = false;
-            EditText text = findViewById(R.id.editEmail);
+            EditText text = findViewById(R.id.editTextEmail);
             text.setText("Invalid Email address");
             text.setTextColor(getResources().getColor(R.color.colorWarning));
         }
         else
         {
-            EditText text = findViewById(R.id.editEmail);
+            EditText text = findViewById(R.id.editTextEmail);
             text.setHint(getResources().getString(R.string.host_email));
             text.setTextColor(getResources().getColor(R.color.colorBlack));
         }
@@ -203,16 +203,16 @@ public class HostActivity extends Activity implements DateFragmentObserver
         if (timeSlot.getStart().compareTo(timeSlot.getEnd()) >= 0)
         {
             valid = false;
-            TextView text = findViewById(R.id.editFromTime);
+            TextView text = findViewById(R.id.textViewFromTime);
             text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
-            text = findViewById(R.id.editFromDate);
+            text = findViewById(R.id.textViewFromDate);
             text.setBackgroundColor(getResources().getColor(R.color.colorWarning));
         }
         else
         {
-            TextView text = findViewById(R.id.editFromTime);
+            TextView text = findViewById(R.id.textViewFromTime);
             text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
-            text = findViewById(R.id.editFromDate);
+            text = findViewById(R.id.textViewFromDate);
             text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         }
 
@@ -254,14 +254,14 @@ public class HostActivity extends Activity implements DateFragmentObserver
                 if (resultCode == Activity.RESULT_OK)
                 {
                     ret = data.getStringExtra("time");
-                    ((TextView) findViewById(R.id.editFromTime)).setText(ret);
+                    ((TextView) findViewById(R.id.textViewFromTime)).setText(ret);
                 }
                 break;
             case(2):
                 if (resultCode == Activity.RESULT_OK)
                 {
                     ret = data.getStringExtra("time");
-                    TextView textView = findViewById(R.id.editToTime);
+                    TextView textView = findViewById(R.id.textViewToTime);
                     textView.setText(ret);
                 }
                 break;
@@ -279,9 +279,9 @@ public class HostActivity extends Activity implements DateFragmentObserver
     {
         TextView tv;
         if (dateFrom)
-          tv = findViewById(R.id.editFromDate);
+          tv = findViewById(R.id.textViewFromDate);
         else
-            tv = findViewById(R.id.editToDate);
+            tv = findViewById(R.id.textViewToDate);
         tv.setText(df.getDateFormat().format(date));
     }
 

@@ -653,6 +653,18 @@ public class DataAccessStub implements DataAccess
         return timeSlotsList;
     }
 
+    @Override
+    public boolean deleteDaySlot(long slotID) throws DAOException
+    {
+        return false;
+    }
+
+    @Override
+    public boolean deleteTimeSlot(long slotID) throws DAOException
+    {
+        return false;
+    }
+
     private void addDefaultData(String name, String address, String phone, String email,
                                 double rate, Calendar calStart, Calendar calEnd)
     {

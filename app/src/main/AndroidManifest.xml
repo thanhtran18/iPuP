@@ -21,31 +21,17 @@
         <activity
             android:name=".presentation.HostActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/title_activity_host"
             android:theme="@style/Theme.AppCompat.Light.Dialog">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="comp3350.iPuP.presentation.HomeActivity" />
         </activity>
         <activity
-            android:name=".presentation.AvailableParkingSpots"
-            android:configChanges="orientation|screenSize" />
-        <activity
             android:name=".presentation.HostMenuActivity"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".presentation.HostViewActivity"
             android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".presentation.ParkingSpotInfoActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/title_activity_parking_spot_info"
-            android:parentActivityName=".presentation.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="comp3350.iPuP.presentation.AvailableParkingSpots" />
-        </activity>
         <activity
             android:name=".presentation.RepeatActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
@@ -54,21 +40,19 @@
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity
             android:name=".presentation.ParkerMenuActivity"
-            android:label="@string/title_activity_parker_menu"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".presentation.ParkerSearchActivity"
-            android:label="@string/title_activity_parker_search"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".presentation.ParkerLogViewActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".presentation.BookTimeSlotsActivity"></activity>
+        <activity android:name=".presentation.BookTimeSlotsActivity" />
         <activity android:name=".presentation.HostViewDayActivity" />
         <activity
             android:name=".presentation.HostModifyActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
-        <activity android:name=".presentation.HostViewTimeActivity"></activity>
+        <activity android:name=".presentation.HostViewTimeActivity" />
     </application>
 
 </manifest>

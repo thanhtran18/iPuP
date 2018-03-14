@@ -2,19 +2,16 @@ package comp3350.iPuP.presentation;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.sql.Time;
 import java.util.ArrayList;
 
 import comp3350.iPuP.R;
@@ -51,10 +48,10 @@ class TimeSlotAdapter extends ArrayAdapter<TimeSlot>
 
         list = (ListView)parent;
 
-        TextView tv = convertView.findViewById(R.id.textViewRow1);
-        tv.setText(String.format(convertView.getResources().getString(R.string.hostview_Start), df.getDateTimeFormat().format(slot.getStart())));
-        tv = convertView.findViewById(R.id.textViewRow2);
-        tv.setText(String.format(convertView.getResources().getString(R.string.hostview_End), df.getDateTimeFormat().format(slot.getEnd())));
+        TextView tv = convertView.findViewById(R.id.textViewListRow1);
+        tv.setText(String.format(convertView.getResources().getString(R.string.info_start), df.getDateTimeFormat().format(slot.getStart())));
+        tv = convertView.findViewById(R.id.textViewListRow2);
+        tv.setText(String.format(convertView.getResources().getString(R.string.info_end), df.getDateTimeFormat().format(slot.getEnd())));
 
         if (position % 2 == 0)
             convertView.setBackgroundResource(R.color.colorWhite);

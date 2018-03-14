@@ -100,7 +100,7 @@ public class HostActivity extends Activity implements DateFragmentObserver
         if (((ToggleButton)v).isChecked()) {
             Intent repeatIntent = new Intent(HostActivity.this, RepeatActivity.class);
             TextView dateFrom = findViewById(R.id.textViewFromDate);
-            repeatIntent.putExtra("date", dateFrom.getText());
+            repeatIntent.putExtra(getResources().getString(R.string.extra_date), dateFrom.getText());
             HostActivity.this.startActivityForResult(repeatIntent, 0);
         }
         else
@@ -243,7 +243,7 @@ public class HostActivity extends Activity implements DateFragmentObserver
         {
             case (0) :
                 if (resultCode == Activity.RESULT_OK)
-                    repetitionInfo = data.getStringExtra("repetitionInfo");
+                    repetitionInfo = data.getStringExtra(getResources().getString(R.string.extra_repetitionInfo));
                 else
                 {
                     repetitionInfo = "";
@@ -253,14 +253,14 @@ public class HostActivity extends Activity implements DateFragmentObserver
             case(1):
                 if (resultCode == Activity.RESULT_OK)
                 {
-                    ret = data.getStringExtra("time");
+                    ret = data.getStringExtra(getResources().getString(R.string.extra_time));
                     ((TextView) findViewById(R.id.textViewFromTime)).setText(ret);
                 }
                 break;
             case(2):
                 if (resultCode == Activity.RESULT_OK)
                 {
-                    ret = data.getStringExtra("time");
+                    ret = data.getStringExtra(getResources().getString(R.string.extra_time));
                     TextView textView = findViewById(R.id.textViewToTime);
                     textView.setText(ret);
                 }

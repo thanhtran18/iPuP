@@ -27,12 +27,11 @@ public class SpotAdapter extends ArrayAdapter<ParkingSpot>
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
         ParkingSpot spot = getItem(position);
         if (convertView == null)
-        {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
-        }
 
         TextView tv = convertView.findViewById(R.id.textViewListRow1);
         tv.setText(String.format(convertView.getResources().getString(R.string.info_address), spot.getAddress()));
@@ -56,7 +55,7 @@ public class SpotAdapter extends ArrayAdapter<ParkingSpot>
                 ParkingSpot spot = getItem(position);
 
                 Intent hostModifyIntent = new Intent(view.getContext(), HostModifyActivity.class);
-                hostModifyIntent.putExtra("spotID", spot.getSpotID());
+                hostModifyIntent.putExtra(activity.getResources().getString(R.string.extra_spotID), spot.getSpotID());
                 view.getContext().startActivity(hostModifyIntent);
             }
         });
@@ -72,7 +71,7 @@ public class SpotAdapter extends ArrayAdapter<ParkingSpot>
                 ParkingSpot spot = getItem(position);
 
                 Intent hostViewDayIntent = new Intent(view.getContext(), HostViewDayActivity.class);
-                hostViewDayIntent.putExtra("spotID", spot.getSpotID());
+                hostViewDayIntent.putExtra(activity.getResources().getString(R.string.extra_spotID), spot.getSpotID());
                 activity.startActivityForResult(hostViewDayIntent,0);
             }
         });

@@ -23,6 +23,7 @@
     <string name="fatalError">Fatal error</string>
     <string name="warning">Warning</string>
     <string name="search">Search</string>
+    <string name="colon">:</string>
 
     <!-- Strings for the HomeActivity -->
     <string name="home_parker">I am looking for parking</string>
@@ -57,6 +58,7 @@
     <string name="repeat_repeats">Repeats</string>
     <string name="repeat_times">times</string>
     <string name="repeat_month_date">Every month on the </string>
+    <string name="repeat_onthe">On the %d%s of the month</string>
     <string-array name="repeats_periods">
         <item>Days</item>
         <item>Weeks</item>
@@ -97,6 +99,9 @@
     <string name="extra_spotID">spotID</string>
     <string name="extra_name">name</string>
     <string name="extra_slotID">slotID</string>
+    <string name="extra_repetitionInfo">repetitionInfo</string>
+    <string name="extra_time">time</string>
+    <string name="extra_date">date</string>
 
     <!-- Strings for displaying info-->
     <string name="info_current_price">Current price: $%.2f</string>
@@ -107,5 +112,4 @@
     <string name="info_rate">Rate: $%.2f</string>
     <string name="info_start">Start: %s</string>
     <string name="info_end">End: %s</string>
-    <string name="colon">:</string>
 </resources>

@@ -26,7 +26,7 @@ public class HostModifyActivity extends AppCompatActivity
 
         accessParkingSpots = new AccessParkingSpots();
 
-        spotID = getIntent().getLongExtra("spotID", -1);
+        spotID = getIntent().getLongExtra(getResources().getString(R.string.extra_spotID), -1);
         if (spotID != -1)
         {
             try
@@ -120,7 +120,7 @@ public class HostModifyActivity extends AppCompatActivity
             {
                 accessParkingSpots.modifyParkingSpot(spotID, address, phone, email, rate);
 
-                Toast.makeText(this, "Advertisement updated created!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Advertisement updated!", Toast.LENGTH_LONG).show();
             }
             catch (DAOException daoe)
             {

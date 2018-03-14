@@ -26,8 +26,8 @@ public class HostViewTimeActivity extends ListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_view_time);
 
-        slotID = getIntent().getLongExtra("slotID",-1);
-        spotID = getIntent().getLongExtra("spotID",-1);
+        slotID = getIntent().getLongExtra(getResources().getString(R.string.extra_slotID),-1);
+        spotID = getIntent().getLongExtra(getResources().getString(R.string.extra_spotID),-1);
 
         accessParkingSpots = new AccessParkingSpots();
 

@@ -23,12 +23,12 @@ import comp3350.iPuP.objects.TimeSlot;
 class TimeSlotAdapter extends ArrayAdapter<TimeSlot>
 {
 
-    DateFormatter df;
-    AccessParkingSpots dataAccess;
-    ListView list;
+    private DateFormatter df;
+    private AccessParkingSpots dataAccess;
+    private ListView list;
     Activity activity;
 
-    public TimeSlotAdapter(@NonNull Context context, ArrayList<TimeSlot> slots)
+    TimeSlotAdapter(@NonNull Context context, ArrayList<TimeSlot> slots)
     {
         super(context, 0, slots);
         df = new DateFormatter();
@@ -36,8 +36,9 @@ class TimeSlotAdapter extends ArrayAdapter<TimeSlot>
         this.activity = (Activity)context;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
+    public View getView(int position, View convertView, @NonNull ViewGroup parent)
     {
         TimeSlot slot = getItem(position);
 
@@ -49,6 +50,7 @@ class TimeSlotAdapter extends ArrayAdapter<TimeSlot>
         list = (ListView)parent;
 
         TextView tv = convertView.findViewById(R.id.textViewListRow1);
+        assert slot != null;
         tv.setText(String.format(convertView.getResources().getString(R.string.info_start), df.getDateTimeFormat().format(slot.getStart())));
         tv = convertView.findViewById(R.id.textViewListRow2);
         tv.setText(String.format(convertView.getResources().getString(R.string.info_end), df.getDateTimeFormat().format(slot.getEnd())));
@@ -76,6 +78,7 @@ class TimeSlotAdapter extends ArrayAdapter<TimeSlot>
                     TimeSlot slot = getItem(position);
                     try
                     {
+                        assert slot != null;
                         if (!dataAccess.deleteTimeSlot(slot.getSlotID()))
                         {
                             ArrayAdapter<TimeSlot> adapter = (ArrayAdapter<TimeSlot>) list.getAdapter();

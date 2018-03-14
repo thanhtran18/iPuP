@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.business.AccessParkingSpots;
+import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.ParkingSpot;
 
 public class HostViewActivity extends ListActivity
@@ -44,16 +45,16 @@ public class HostViewActivity extends ListActivity
 
     private void populateList()
     {
-        String name = getIntent().getStringExtra("name");
+        String name = getIntent().getStringExtra(getResources().getString(R.string.extra_name));
         try
         {
             ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getMyHostedSpots(name);
             adapter = new SpotAdapter(this, parkingSpots);
             setListAdapter(adapter);
         }
-        catch (Exception e)
+        catch (DAOException daoe)
         {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, daoe.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.business.AccessParkingSpots;
+import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
 
@@ -26,7 +27,7 @@ public class HostViewDayActivity extends ListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_view_day);
 
-        spotID = getIntent().getLongExtra("spotID",0);
+        spotID = getIntent().getLongExtra(getResources().getString(R.string.extra_spotID),0);
 
         accessParkingSpots = new AccessParkingSpots();
 
@@ -62,9 +63,9 @@ public class HostViewDayActivity extends ListActivity
             setListAdapter(adapter);
             return adapter.getCount() == 0;
         }
-        catch (Exception e)
+        catch (DAOException daoe)
         {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, daoe.getMessage(), Toast.LENGTH_LONG).show();
         }
         return true;
     }

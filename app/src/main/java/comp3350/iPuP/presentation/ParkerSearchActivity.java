@@ -26,7 +26,7 @@ import java.util.Calendar;
 
 public class ParkerSearchActivity extends ListActivity implements DateFragmentObserver
 {
-    private DateFormatter df;//for setting the date
+    private DateFormatter df;
 
     private AccessParkingSpots accessParkingSpots;
     ArrayAdapter<ParkingSpot> adapter;
@@ -45,7 +45,7 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
         current = Calendar.getInstance();
         df = new DateFormatter();
 
-        TextView tv = (TextView)findViewById(R.id.textViewDate);
+        TextView tv = findViewById(R.id.textViewDate);
         tv.setText(df.getDateFormat().format(current.getTime()));
 
         populateScreen();
@@ -54,7 +54,8 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
         prev.setOnClickListener(new OnClickListener()
         {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
 
                 current.add(Calendar.DATE, -1);
                 TextView tv = findViewById(R.id.textViewDate);
@@ -121,21 +122,16 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
     {
         accessParkingSpots = new AccessParkingSpots();
         ListView list = findViewById(android.R.id.list);
-        //String name = ((SearchView)findViewById(R.id.showSearchIcon)).getQuery().toString();
+
         try
         {
             parkingSpots.clear();
-            //TODO: Victory, replace null with address search string
+
             parkingSpots = accessParkingSpots.getDailySpots(getSearchText(), current.getTime());
-            //ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getAllSpots();
+
 
             adapter = new ArrayAdapter<ParkingSpot>(this, android.R.layout.simple_list_item_1, parkingSpots);
-            //setListAdapter(adapter);
             list.setAdapter(adapter);
-//            int first = list.getFirstVisiblePosition();
-//            for (int i : disabledIndices)
-//                list.getChildAt(0).setEnabled(false);
-
 
             registerForContextMenu(list);
         }
@@ -143,14 +139,6 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
         {
             Toast.makeText(this, daoe.getMessage(), Toast.LENGTH_LONG).show();
         }
-    }
-    public void prevDayClick(View v)
-    {
-
-    }
-    public void nextDayClick(View v)
-    {
-
     }
 
     @Override
@@ -161,7 +149,7 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
         if(extras == null) {
             name = null;
         } else {
-            name = extras.getString("name");
+            name = extras.getString(getResources().getString(R.string.extra_name));
         }
 
         super.onListItemClick(l, v, position, id);
@@ -169,7 +157,7 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
 
         Intent intent = new Intent(getApplicationContext(), BookTimeSlotsActivity.class);
         intent.putExtra(getResources().getString(R.string.extra_spotID), currItem.getSpotID());
-        intent.putExtra("name", name);
+        intent.putExtra(getResources().getString(R.string.extra_name), name);
         startActivity(intent);
     }
 

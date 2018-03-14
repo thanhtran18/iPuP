@@ -296,7 +296,7 @@ public class DataAccessStub implements DataAccess
         long rtn = dayslotCounter;
 
         for (i = 0; i < daySlots.size(); i++) {
-            if ((daySlot.getSlotID()).equals(daySlots.get(i).getSlotID()))
+            if (daySlot.getSlotID() == daySlots.get(i).getSlotID())
             {
                 break;
             }
@@ -323,7 +323,7 @@ public class DataAccessStub implements DataAccess
 
         for (i = 0; i < timeSlots.size(); i++) {
             TimeSlot atimespot = timeSlots.get(i);
-            if ((timeSlot.getSlotID()).equals(atimespot.getSlotID()) ||
+            if (timeSlot.getSlotID() == atimespot.getSlotID() ||
                     ((timeSlot.getStart()).equals(atimespot.getStart()) &&
                             (timeSlot.getEnd()).equals(atimespot.getEnd())))
             {
@@ -539,30 +539,6 @@ public class DataAccessStub implements DataAccess
     }
 
     @Override
-    public ArrayList<TimeSlot> getTimeSlotsForParkingSpot(long spotID) throws DAOException {
-        ArrayList<TimeSlot> timeSlotsForParkingSpot = new ArrayList<>();
-
-        for (int i = 0; i < timeSlotsParkingSpotID.size(); i++)
-        {
-            if (timeSlotsParkingSpotID.get(i) == spotID)
-            {
-                TimeSlot atimeslot = timeSlots.get(i);
-                timeSlotsForParkingSpot.add(new TimeSlot(atimeslot.getStart(), atimeslot.getEnd(),
-                        atimeslot.getSlotID(), atimeslot.isBooked()));
-            }
-        }
-
-        Collections.sort(timeSlotsForParkingSpot, new Comparator<TimeSlot>() {
-            @Override
-            public int compare(TimeSlot timeSlot1, TimeSlot timeSlot2) {
-                return timeSlot1.getStart().compareTo(timeSlot2.getStart());
-            }
-        });
-
-        return timeSlotsForParkingSpot;
-    }
-
-    @Override
     public ArrayList<TimeSlot> getUnbookedTimeSlotsForParkingSpot(long spotID) throws DAOException {
         ArrayList<TimeSlot> unbookedTimeSlotsForParkingSpot = new ArrayList<>();
 
@@ -571,9 +547,9 @@ public class DataAccessStub implements DataAccess
             if (timeSlotsParkingSpotID.get(i) == spotID)
             {
                 TimeSlot atimeslot = timeSlots.get(i);
-                if (!atimeslot.isBooked()) {
+                if (!atimeslot.getIsBooked()) {
                     unbookedTimeSlotsForParkingSpot.add(new TimeSlot(atimeslot.getStart(),
-                            atimeslot.getEnd(), atimeslot.getSlotID(), atimeslot.isBooked()));
+                            atimeslot.getEnd(), atimeslot.getSlotID(), atimeslot.getIsBooked()));
                 }
             }
         }
@@ -607,7 +583,7 @@ public class DataAccessStub implements DataAccess
             bookingsParkingSpotID.add(spotID);
             ParkingSpot parkingSpot = parkingSpots.get((int)spotID);
             TimeSlot timeSlot = timeSlots.get((int)timeSlotID);
-            timeSlot.setBooked();
+            timeSlot.setIsBooked(true);
             bookings.add(new Booking(username, timeSlotID, parkingSpot.getAddress(),
                     timeSlot.getStart(), timeSlot.getEnd()));
             return true;
@@ -646,7 +622,7 @@ public class DataAccessStub implements DataAccess
             {
                 TimeSlot adayslot = timeSlots.get(i);
                 timeSlotsList.add(new TimeSlot(adayslot.getStart(), adayslot.getEnd(),
-                        adayslot.getSlotID(), adayslot.isBooked()));
+                        adayslot.getSlotID(), adayslot.getIsBooked()));
             }
         }
 

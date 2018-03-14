@@ -62,7 +62,6 @@
     <string-array name="repeats_periods">
         <item>Days</item>
         <item>Weeks</item>
-        <item>Months</item>
     </string-array>
     <string-array name="reapeat_hours">
         <item>1</item>

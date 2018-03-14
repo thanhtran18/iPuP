@@ -2,7 +2,11 @@ package comp3350.iPuP.tests.objects;
 
 import junit.framework.TestCase;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import comp3350.iPuP.objects.ParkingSpot;
+import comp3350.iPuP.objects.TimeSlot;
 
 public class ParkingSpotTest extends TestCase
 {
@@ -14,22 +18,77 @@ public class ParkingSpotTest extends TestCase
 
     public void testParkingSpots()
     {
-        /*ReservationTime time = new ReservationTime(2017,3, 4, 8,30,2017,3, 4,9,30, false);
-        assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getStartTime(), time.getStart());
-        assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getEndTime(), time.getEnd());
-        assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getAddress(), "34 software drive");
-        assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getName(), "Braico");
-        assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getPhone(), "5555555");
-        assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getEmail(), "m@m.m");
-        assertEquals((new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34)).getRate(), 34.0);
+        ParkingSpot spot;
 
-        ParkingSpot spot = new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34);
-        assertEquals(spot, new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 34));
-        assertFalse(spot.equals(new ParkingSpot(time, "35 software drive", "Braico", "5555555", "m@m.m", 34)));
-        assertFalse(spot.equals(new ParkingSpot(time, "34 software drive", "Braico", "5555556", "m@m.m", 34)));
-        assertFalse(spot.equals(new ParkingSpot(time, "34 software drive", "Braico", "5555555", "m@m.m", 1000)));
-        assertFalse(spot.equals(new ParkingSpot(time, "", "", "", "", 0)));
+        spot = new ParkingSpot("Camelot", "King Arthur", "888-9999", "king@roundtable.com", 10000);
+        assertEquals("Camelot", spot.getAddress());
+        assertEquals("King Arthur", spot.getName());
+        assertEquals("888-9999", spot.getPhone());
+        assertEquals("king@roundtable.com", spot.getEmail());
+        assertEquals(10000.0, spot.getRate());
+
+        spot.modifySpot("British Countryside", "222-5555", "king@roundtable.com", 10);
+        assertEquals("British Countryside", spot.getAddress());
+        assertEquals("King Arthur", spot.getName());
+        assertEquals("222-5555", spot.getPhone());
+        assertEquals("king@roundtable.com", spot.getEmail());
+        assertEquals(10.0, spot.getRate());
+
+        spot.modifySpot("British Countryside", "222-5555", "formerking@roundtable.com", 1);
+        assertEquals("British Countryside", spot.getAddress());
+        assertEquals("King Arthur", spot.getName());
+        assertEquals("222-5555", spot.getPhone());
+        assertEquals("formerking@roundtable.com", spot.getEmail());
+        assertEquals(1.0, spot.getRate());
+
+        spot.modifySpot(null, "222-5555", "king@roundtable.com", -9);
+        assertNull(spot.getAddress());
+        assertEquals("King Arthur", spot.getName());
+        assertEquals("222-5555", spot.getPhone());
+        assertEquals("king@roundtable.com", spot.getEmail());
+        assertEquals(-9.0, spot.getRate());
+
+        spot.modifySpot("Camelot", "222-5555", "", -9);
+        assertEquals("Camelot", spot.getAddress());
+        assertEquals("King Arthur", spot.getName());
+        assertEquals("222-5555", spot.getPhone());
+        assertEquals("", spot.getEmail());
+        assertEquals(-9.0, spot.getRate());
+
+        spot = new ParkingSpot(100,"Millenium Falcon", "Han Solo", "", "han@solo.com", 77);
+        assertEquals("Millenium Falcon", spot.getAddress());
+        assertEquals("Millenium Falcon", spot.toString());
+        assertEquals("Han Solo", spot.getName());
+        assertEquals("", spot.getPhone());
+        assertEquals("han@solo.com", spot.getEmail());
+        assertEquals(77.0, spot.getRate());
+        assertFalse(spot.equals(new ParkingSpot(9001,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138)));
+        assertTrue(spot.equals(new ParkingSpot(100,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138)));
         assertFalse(spot.equals(null));
-        assertFalse(spot.equals("some string"));*/
+        assertFalse(spot.equals(this));
+
+        spot = new ParkingSpot(9001,"Death Star", "Darth Vader", "", "vader@sith.com", 39);
+        assertEquals("Death Star", spot.getAddress());
+        assertEquals("Death Star", spot.toString());
+        assertEquals("Darth Vader", spot.getName());
+        assertEquals("", spot.getPhone());
+        assertEquals("vader@sith.com", spot.getEmail());
+        assertEquals(39.0, spot.getRate());
+        assertTrue(spot.equals(new ParkingSpot(9001,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138)));
+        assertFalse(spot.equals(new ParkingSpot(100,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138)));
+        assertFalse(spot.equals(null));
+        assertFalse(spot.equals(this));
+
+        spot.modifySpot("Death Star",  "555-5555", null, 1);
+        assertEquals("Death Star", spot.getAddress());
+        assertEquals("Death Star", spot.toString());
+        assertEquals("Darth Vader", spot.getName());
+        assertEquals("555-5555", spot.getPhone());
+        assertNull(spot.getEmail());
+        assertEquals(1.0, spot.getRate());
+        assertTrue(spot.equals(new ParkingSpot(9001,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138)));
+        assertFalse(spot.equals(new ParkingSpot(100,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138)));
+        assertFalse(spot.equals(null));
+        assertFalse(spot.equals(this));
     }
 }

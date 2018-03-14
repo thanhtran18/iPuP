@@ -33,9 +33,6 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
     private AccessParkingSpots accessParkingSpots;
     ArrayAdapter<ParkingSpot> adapter;
     ArrayList<ParkingSpot> parkingSpots = new ArrayList<>();
-    ArrayList<TimeSlot> newTime = new ArrayList<>();
-    ArrayList<TimeSlot> finalTimeSlot = new ArrayList<>();
-    TimeSlot timeSlots;
 
     Calendar current;
 
@@ -130,16 +127,8 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
         try
         {
             parkingSpots.clear();
-            newTime.clear();
             //TODO: Victory, replace null with address search string
             parkingSpots = accessParkingSpots.getDailySpots(getSearchText(), current.getTime());
-            for(int i = 0; i < parkingSpots.size(); i++)
-            {
-                newTime = accessParkingSpots.getTimeSlotForParkingSpots(parkingSpots.get(i).getSpotID());
-                TimeSlot newTimeSlot = new TimeSlot(newTime.get(0).getStart(), newTime.get(newTime.size() - 1).getEnd());
-                finalTimeSlot.add(newTimeSlot);
-
-            }
             // timeSlots = accessParkingSpots.getTimeSlotForParkingSpots();
             //ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getAllSpots();
 

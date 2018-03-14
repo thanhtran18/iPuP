@@ -147,10 +147,6 @@ public class AccessParkingSpots
         return dataAccess.getBookedSpotsOfGivenUser(name);
     }
 
-    public ArrayList<TimeSlot> getTimeSlotForParkingSpots(long spotID) throws DAOException
-    {
-        return dataAccess.getTimeSlotsForParkingSpot(spotID);
-    }
 
     public ArrayList<ParkingSpot> getDailySpots(String address, Date today) throws DAOException
     {

@@ -1,8 +1,10 @@
 package comp3350.iPuP.objects;
 
-public class DAOException extends Exception{
+public class DAOException extends Exception
+{
 
-    public DAOException() {
+    public DAOException()
+    {
         super();
     }
 

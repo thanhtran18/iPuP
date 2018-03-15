@@ -79,9 +79,11 @@ public class RepeatActivity extends AppCompatActivity
 
         Spinner s = findViewById(R.id.spinnerPeriod);
 
-        s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
                 Spinner s = (Spinner)parent;
                 if (s.getSelectedItem().toString().equals("Weeks"))
                 {

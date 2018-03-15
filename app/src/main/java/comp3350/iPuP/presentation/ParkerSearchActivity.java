@@ -38,10 +38,7 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parker_search);
-        //todo get current date from onclick listen
-        //todo change button and screen colors
-        //todo try implementing without the start seach button
-        //todo write test
+
         current = Calendar.getInstance();
         df = new DateFormatter();
 
@@ -129,7 +126,6 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
 
             parkingSpots = accessParkingSpots.getDailySpots(getSearchText(), current.getTime());
 
-
             adapter = new ArrayAdapter<ParkingSpot>(this, android.R.layout.simple_list_item_1, parkingSpots);
             list.setAdapter(adapter);
 
@@ -146,9 +142,12 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
     {
         String name;
         Bundle extras = getIntent().getExtras();
-        if(extras == null) {
+        if(extras == null)
+        {
             name = null;
-        } else {
+        }
+        else
+        {
             name = extras.getString(getResources().getString(R.string.extra_name));
         }
 

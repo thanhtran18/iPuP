@@ -887,7 +887,7 @@ public class AccessParkingSpotsTest extends TestCase
         assertEquals(0, parkSpotAccess.getSpotByID(0).getSpotID());
         assertEquals("88 Plaza Drive", parkSpotAccess.getSpotByID(0).getAddress());
         assertEquals("204-855-2342", parkSpotAccess.getSpotByID(0).getPhone());
-        assertEquals("poor&Homeless@gmail.com", parkSpotAccess.getSpotByID(0).
+        assertEquals("theBestMarker@gmail.com", parkSpotAccess.getSpotByID(0).
                 getEmail());
         assertEquals(2.0, parkSpotAccess.getSpotByID(0).getRate());
 

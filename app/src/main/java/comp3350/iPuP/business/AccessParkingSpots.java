@@ -177,7 +177,7 @@ public class AccessParkingSpots
         boolean returnVal = false;
         int checkLoop=0;
 
-        if(timeSlots!=null && userBooking!=null && userBooking!="") {
+        if(pSpotID >= 0 && timeSlots!=null && userBooking!=null && userBooking!="") {
             for (TimeSlot currSlot : timeSlots) {
                 long timeSLotID = currSlot.getSlotID();
                 boolean bookingWorked = dataAccess.bookTimeSlot(userBooking, timeSLotID, pSpotID);
@@ -186,7 +186,7 @@ public class AccessParkingSpots
                     checkLoop++;
                 }
             }
-            if (checkLoop == timeSlots.size()) {
+            if (timeSlots.size() > 0 && checkLoop == timeSlots.size()) {
                 returnVal = true;
             }
         }

@@ -646,7 +646,7 @@ public class DataAccessStub implements DataAccess
     public boolean bookTimeSlot(String username, long timeSlotID, long spotID) throws DAOException {
 
         boolean found = false;
-        if(spotID<0 || spotID>bookings.size()){
+        if(spotID<0 || spotID >= parkingSpots.size()){
             return found;
         }
 
@@ -711,9 +711,9 @@ public class DataAccessStub implements DataAccess
         {
             if (timeSlotsDaySlotID.get(i) == daySlotID)
             {
-                TimeSlot adayslot = timeSlots.get(i);
-                timeSlotsList.add(new TimeSlot(adayslot.getStart(), adayslot.getEnd(),
-                        adayslot.getSlotID(), adayslot.getIsBooked()));
+                TimeSlot atimeslot = timeSlots.get(i);
+                timeSlotsList.add(new TimeSlot(atimeslot.getStart(), atimeslot.getEnd(),
+                        atimeslot.getSlotID(), atimeslot.getIsBooked()));
             }
         }
 

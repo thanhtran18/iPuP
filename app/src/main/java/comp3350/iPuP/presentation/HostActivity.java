@@ -197,6 +197,20 @@ public class HostActivity extends Activity implements DateFragmentObserver
             text.setTextColor(getResources().getColor(R.color.colorBlack));
         }
 
+        if (!validatePhone(phone))
+        {
+            valid = false;
+            EditText text = findViewById(R.id.editTextPhone);
+            text.setText("Invalid phone number");
+            text.setTextColor(getResources().getColor(R.color.colorWarning));
+        }
+        else
+        {
+            EditText text = findViewById(R.id.editTextPhone);
+            text.setHint(getResources().getString(R.string.host_phone));
+            text.setTextColor(getResources().getColor(R.color.colorBlack));
+        }
+
         if (timeSlot.getStart().compareTo(timeSlot.getEnd()) >= 0)
         {
             valid = false;
@@ -262,6 +276,11 @@ public class HostActivity extends Activity implements DateFragmentObserver
                     textView.setText(ret);
                 }
                 break;
+            case (3):
+                if (resultCode == Activity.RESULT_OK)
+                {
+                }
+                break;
         }
     }
 
@@ -269,17 +288,6 @@ public class HostActivity extends Activity implements DateFragmentObserver
     {
         setResult(Activity.RESULT_CANCELED);
         finish();
-    }
-
-    @Override
-    public void update(Date date)
-    {
-        TextView tv;
-        if (dateFrom)
-          tv = findViewById(R.id.textViewFromDate);
-        else
-            tv = findViewById(R.id.textViewToDate);
-        tv.setText(df.getDateFormat().format(date));
     }
 
     private boolean validateEmail(String email)
@@ -294,5 +302,22 @@ public class HostActivity extends Activity implements DateFragmentObserver
         Pattern p = Pattern.compile("^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");//pattern from https://stackoverflow.com/questions/16699007/regular-expression-to-match-standard-10-digit-phone-number
         Matcher m = p.matcher(phone);
         return m.matches();
+    }
+
+    public void onMapClick(View view)
+    {
+        Intent mapIntent = new Intent(HostActivity.this, HostMapActivity.class);
+        HostActivity.this.startActivityForResult(mapIntent, 3);
+    }
+
+    @Override
+    public void update(Date date)
+    {
+        TextView tv;
+        if (dateFrom)
+            tv = findViewById(R.id.textViewFromDate);
+        else
+            tv = findViewById(R.id.textViewToDate);
+        tv.setText(df.getDateFormat().format(date));
     }
 }

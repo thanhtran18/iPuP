@@ -114,13 +114,20 @@
     </LinearLayout>
 
     <ToggleButton
-        android:id="@+id/toggleButtonRepeat"
-        style="@style/AppTheme.ToggleButton"
+    android:id="@+id/toggleButtonRepeat"
+    style="@style/AppTheme.ToggleButton"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textOff="@string/host_dnrepeat"
+    android:textOn="@string/host_repeat"
+    android:onClick="onRepeatClick"/>
+    <Button
+        android:id="@+id/buttonMap"
+        style="@style/AppTheme.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textOff="@string/host_dnrepeat"
-        android:textOn="@string/host_repeat"
-        android:onClick="onRepeatClick"/>
+        android:text="Map"
+        android:onClick="onMapClick"/>
 
 <LinearLayout
     android:layout_width="match_parent"

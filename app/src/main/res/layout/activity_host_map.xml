@@ -13,14 +13,14 @@
             style="@style/AppTheme.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/prev"
+            android:text="@string/cancel"
             android:onClick="buttonCancelOnClick"/>
         <Button
             android:id="@+id/buttonOk"
             style="@style/AppTheme.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/prev"
+            android:text="@string/confirm"
             android:onClick="buttonConfirmOnClick"/>
     </LinearLayout>
 

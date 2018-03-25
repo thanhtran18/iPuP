@@ -1,20 +1,13 @@
 package comp3350.iPuP.tests.persistence;
 
-import java.lang.reflect.Array;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import comp3350.iPuP.application.Main;
 import comp3350.iPuP.objects.Booking;
@@ -605,7 +598,7 @@ public class DataAccessStub implements DataAccess
     }
 
     @Override
-    public void modifyParkingSpot(long spotID, String address, String phone, String email, Double rate) throws DAOException
+    public void modifyParkingSpot(long spotID, String address, String phone, String email, Double rate, double latitude, double longitude) throws DAOException
     {
        (parkingSpots.get((int)spotID)).modifySpot(address, phone, email, rate);
     }

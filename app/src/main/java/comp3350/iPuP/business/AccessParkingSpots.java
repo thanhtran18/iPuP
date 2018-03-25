@@ -1,5 +1,7 @@
 package comp3350.iPuP.business;
 
+import org.osmdroid.util.GeoPoint;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,14 +27,14 @@ public class AccessParkingSpots
         availableSpots = new ArrayList<>();
     }
 
-    public void insertParkingSpot(String name, TimeSlot timeSlot, String repetitionInfo, String address, String phone, String email, double rate) throws DAOException
+    public void insertParkingSpot(String name, TimeSlot timeSlot, String repetitionInfo, String address, String phone, String email, double rate, double latitude, double longitude) throws DAOException
     {
         Calendar start = new GregorianCalendar();
         Calendar end = new GregorianCalendar();
         start.setTime(timeSlot.getStart());
         end.setTime(timeSlot.getEnd());
 
-        ParkingSpot spot = new ParkingSpot(address, name, phone, email, rate);
+        ParkingSpot spot = new ParkingSpot(address, name, phone, email, rate, latitude, longitude);
 
         spot.setSpotID(insertParkingSpot(name, spot));
 
@@ -147,6 +149,14 @@ public class AccessParkingSpots
         return dataAccess.getParkingSpotsByAddressDate(address, today);
     }
 
+    public ArrayList<GeoPoint> getGeoPointsByTime(Date time) throws  DAOException
+    {
+        ArrayList<GeoPoint> points = new ArrayList<>();
+        for (ParkingSpot spot : dataAccess.getParkingSpotsByTime(time))
+            points.add(new GeoPoint(spot.getLatitude(),spot.getLongitude()));
+        return points;
+    }
+
     public void cancelThisSpot(String username, long timeSlotId) throws DAOException
     {
         dataAccess.deleteBooking(username, timeSlotId);
@@ -157,9 +167,9 @@ public class AccessParkingSpots
         return dataAccess.getParkingSpot(spotID);
     }
 
-    public void modifyParkingSpot(long spotID, String address, String phone, String email, Double rate) throws DAOException
+    public void modifyParkingSpot(long spotID, String address, String phone, String email, Double rate, double latitude, double longitude) throws DAOException
     {
-        dataAccess.modifyParkingSpot(spotID,address,phone,email,rate);
+        dataAccess.modifyParkingSpot(spotID,address,phone,email,rate, latitude, longitude);
     }
 
     public ArrayList<TimeSlot> getFreeTimeSlotsByID(long spotID) throws DAOException

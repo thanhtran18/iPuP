@@ -52,14 +52,24 @@
         <activity
             android:name=".presentation.ParkerLogViewActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".presentation.BookTimeSlotsActivity" />
-        <activity android:name=".presentation.HostViewDayActivity" />
+        <activity
+            android:name=".presentation.BookTimeSlotsActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".presentation.HostViewDayActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".presentation.HostModifyActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
-        <activity android:name=".presentation.HostViewTimeActivity" />
-        <activity android:name=".presentation.HostMapActivity" />
-        <activity android:name=".presentation.ParkerMapActivity"></activity>
+        <activity
+            android:name=".presentation.HostViewTimeActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".presentation.HostMapActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".presentation.ParkerMapActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -85,7 +86,7 @@ public class HostMapActivity extends AppCompatActivity implements MapObserver
         }
         catch (Exception e)
         {
-
+            Toast.makeText(this,"Unable to load map data",Toast.LENGTH_LONG).show();
         }
     }
 

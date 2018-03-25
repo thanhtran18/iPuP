@@ -17,6 +17,7 @@ public class HostModifyActivity extends AppCompatActivity
 {
     protected AccessParkingSpots accessParkingSpots;
     private long spotID;
+    ParkingSpot ps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -32,7 +33,7 @@ public class HostModifyActivity extends AppCompatActivity
         {
             try
             {
-                ParkingSpot ps = accessParkingSpots.getParkingSpot(spotID);
+                ps = accessParkingSpots.getParkingSpot(spotID);
                 EditText editText = findViewById(R.id.editTextAddress);
                 editText.setText(ps.getAddress());
                 editText = findViewById(R.id.editTextRate);
@@ -119,7 +120,7 @@ public class HostModifyActivity extends AppCompatActivity
         {
             try
             {
-                accessParkingSpots.modifyParkingSpot(spotID, address, phone, email, rate);
+                accessParkingSpots.modifyParkingSpot(spotID, address, phone, email, rate, ps.getLatitude(), ps.getLongitude());
 
                 Toast.makeText(this, "Advertisement updated!", Toast.LENGTH_LONG).show();
             }

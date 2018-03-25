@@ -7,24 +7,31 @@ import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.style.UpdateAppearance;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.modules.IArchiveFile;
+import org.osmdroid.tileprovider.modules.OfflineTileProvider;
+import org.osmdroid.tileprovider.tilesource.FileBasedTileSource;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.tileprovider.util.SimpleRegisterReceiver;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Set;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.objects.DateFormatter;
+import comp3350.iPuP.objects.ParkingSpot;
 
 public class ParkerMapActivity extends AppCompatActivity implements DateFragmentObserver
 {
@@ -46,28 +53,83 @@ public class ParkerMapActivity extends AppCompatActivity implements DateFragment
 
         current = Calendar.getInstance();
         df = new DateFormatter();
+        if (current.get(Calendar.MINUTE) > 30)
+            current.set(Calendar.MINUTE, 30);
+        else current.set(Calendar.MINUTE, 0);
 
         TextView tv = findViewById(R.id.textViewDate);
         tv.setText(df.getDateFormat().format(current.getTime()));
+        tv = findViewById(R.id.textViewTime);
+        tv.setText(df.getTimeFormat().format(current.getTime()));
 
-        points = new ArrayList<>();
-        points.add(new GeoPoint(49.841347, -97.244210));
-        points.add(new GeoPoint(49.924305, -97.079415));
-
+        try
+        {
+            points = accessParkingSpots.getGeoPointsByTime(current.getTime());
+        }
+        catch (Exception daoe)
+        {
+            Toast.makeText(this, daoe.getMessage(), Toast.LENGTH_LONG).show();
+        }
         map = findViewById(R.id.map);
-        map.setTileSource(TileSourceFactory.MAPNIK);
-        map.setBuiltInZoomControls(true);
-        map.setMultiTouchControls(true);
-        IMapController mapController = map.getController();
-        mapController.setZoom(12.0);
-        GeoPoint startPoint = new GeoPoint(49.899444, -97.139167);
-        mapController.setCenter(startPoint);
+        map.setUseDataConnection(false);
+        try
+        {
+
+            final String MAP_PATH = "tiles";
+
+            Context context = getApplicationContext();
+            File dataDirectory = context.getDir(MAP_PATH, Context.MODE_PRIVATE);
+            File[] files = dataDirectory.listFiles();
+            OfflineTileProvider tileProvider = new OfflineTileProvider(new SimpleRegisterReceiver(this),files);
+            map.setTileProvider(tileProvider);
+
+            String source = "";
+            IArchiveFile[] archives = tileProvider.getArchives();
+            if (archives.length > 0)
+            {
+                Set<String> tileSources = archives[0].getTileSources();
+                if (!tileSources.isEmpty())
+                {
+                    source = tileSources.iterator().next();
+                    this.map.setTileSource(FileBasedTileSource.getSource(source));
+                }
+                else
+                {
+                    this.map.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
+                }
+
+            }
+            else
+            {
+                this.map.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
+            }
+
+            map.setBuiltInZoomControls(true);
+            map.setMultiTouchControls(true);
+            IMapController mapController = map.getController();
+            mapController.setZoom(12.0);
+            GeoPoint startPoint = new GeoPoint(49.899444, -97.139167);
+            mapController.setCenter(startPoint);
+            map.invalidate();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this,"Unable to load map data",Toast.LENGTH_LONG).show();
+        }
 
         updateMap();
     }
 
     private void updateMap()
     {
+        try
+        {
+            points = accessParkingSpots.getGeoPointsByTime(current.getTime());
+        }
+        catch (Exception daoe)
+        {
+
+        }
         map.getOverlays().clear();
         for (int i = 0; i < points.size(); i++)
         {
@@ -85,24 +147,7 @@ public class ParkerMapActivity extends AppCompatActivity implements DateFragment
             });
             map.getOverlays().add(marker);
         }
-        //map.invalidate();
-    }
-
-    public void onPrevClick(View v)
-    {
-
-        current.add(Calendar.DATE, -1);
-        TextView tv = findViewById(R.id.textViewDate);
-        tv.setText(df.getDateFormat().format(current.getTime()));
-        updateMap();
-    }
-
-    public void onNextClick(View v)
-    {
-        current.add(Calendar.DATE, +1);
-        TextView tv = findViewById(R.id.textViewDate);
-        tv.setText(df.getDateFormat().format(current.getTime()));
-        updateMap();
+        map.invalidate();
     }
 
     public void onDateClick(View v)
@@ -141,6 +186,42 @@ public class ParkerMapActivity extends AppCompatActivity implements DateFragment
         TextView tv = findViewById(R.id.textViewDate);
         tv.setText(df.getDateFormat().format(date));
         current.setTime(date);
+        updateMap();
+    }
+
+    public void onPrevClick(View v)
+    {
+        current.add(Calendar.DATE, -1);
+        TextView tv = findViewById(R.id.textViewDate);
+        tv.setText(df.getDateFormat().format(current.getTime()));
+        updateMap();
+    }
+
+    public void onNextClick(View v)
+    {
+        current.add(Calendar.DATE, +1);
+        TextView tv = findViewById(R.id.textViewDate);
+        tv.setText(df.getDateFormat().format(current.getTime()));
+        updateMap();
+    }
+
+    public void onPrevTimeClick(View view)
+    {
+        current.add(Calendar.MINUTE, -30);
+        TextView tv = findViewById(R.id.textViewDate);
+        tv.setText(df.getDateFormat().format(current.getTime()));
+        tv = findViewById(R.id.textViewTime);
+        tv.setText(df.getTimeFormat().format(current.getTime()));
+        updateMap();
+    }
+
+    public void onNextTimeClick(View view)
+    {
+        current.add(Calendar.MINUTE, 30);
+        TextView tv = findViewById(R.id.textViewDate);
+        tv.setText(df.getDateFormat().format(current.getTime()));
+        tv = findViewById(R.id.textViewTime);
+        tv.setText(df.getTimeFormat().format(current.getTime()));
         updateMap();
     }
 }

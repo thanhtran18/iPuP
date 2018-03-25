@@ -15,6 +15,25 @@
         android:hint="@string/host_address"
         android:inputType="textPostalAddress" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/buttonMap"
+            style="@style/AppTheme.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Map"
+            android:onClick="onMapClick"/>
+        <Button
+            android:id="@+id/buttonCancelMap"
+            style="@style/AppTheme.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cancel Location"
+            android:onClick="onMapCancelClick"/>
+    </LinearLayout>
+
     <EditText
         android:id="@+id/editTextPhone"
         style="@style/AppTheme.EditTextStyleAlt"
@@ -121,14 +140,6 @@
     android:textOff="@string/host_dnrepeat"
     android:textOn="@string/host_repeat"
     android:onClick="onRepeatClick"/>
-    <Button
-        android:id="@+id/buttonMap"
-        style="@style/AppTheme.Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Map"
-        android:onClick="onMapClick"/>
-
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

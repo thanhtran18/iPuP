@@ -60,7 +60,7 @@ public class DataAccessObject implements DataAccess
 			processSQLError(e);
 			throw new DAOException("Error in opening " + dbType + " database " + dbPath + "!", e);
 		}
-		System.out.println("Opened " + dbType + " database " + dbPath);
+		System.out.println("\nOpened " + dbType + " database " + dbPath);
 	}
 
     @Override

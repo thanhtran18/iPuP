@@ -699,6 +699,32 @@ public class DataAccessStub implements DataAccess
             }
         }
 
+        boolean foundBooking;
+
+        for (TimeSlot dayslot : daySlotsList)
+        {
+            foundBooking = false;
+            ArrayList<TimeSlot> timeslots = getTimeSlots(dayslot.getSlotID());
+
+            for (TimeSlot timeslot : timeslots)
+            {
+                for (Booking booking : bookings)
+                {
+                    if (booking.getTimeSlotId() == timeslot.getSlotID())
+                    {
+                        dayslot.setIsBooked(true);
+                        foundBooking = true;
+                        break;
+                    }
+                }
+
+                if (foundBooking)
+                {
+                    break;
+                }
+            }
+        }
+
         return daySlotsList;
     }
 

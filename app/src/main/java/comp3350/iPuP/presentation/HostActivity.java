@@ -22,6 +22,7 @@ import comp3350.iPuP.R;
 import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.business.AccessParkingSpots;
+import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
 
 public class HostActivity extends Activity implements DateFragmentObserver
@@ -184,7 +185,7 @@ public class HostActivity extends Activity implements DateFragmentObserver
             text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         }
 
-        if (!validateEmail(email))
+        if (!ParkingSpot.validateEmail(email))
         {
             valid = false;
             EditText text = findViewById(R.id.editTextEmail);
@@ -198,7 +199,7 @@ public class HostActivity extends Activity implements DateFragmentObserver
             text.setTextColor(getResources().getColor(R.color.colorBlack));
         }
 
-        if (!validatePhone(phone))
+        if (!ParkingSpot.validatePhone(phone))
         {
             valid = false;
             EditText text = findViewById(R.id.editTextPhone);
@@ -291,20 +292,6 @@ public class HostActivity extends Activity implements DateFragmentObserver
     {
         setResult(Activity.RESULT_CANCELED);
         finish();
-    }
-
-    private boolean validateEmail(String email)
-    {
-        Pattern p = Pattern.compile("^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$");//pattern from https://stackoverflow.com/questions/42266148/email-validation-regex-java
-        Matcher m = p.matcher(email);
-        return m.matches();
-    }
-
-    public boolean validatePhone(String phone)
-    {
-        Pattern p = Pattern.compile("^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");//pattern from https://stackoverflow.com/questions/16699007/regular-expression-to-match-standard-10-digit-phone-number
-        Matcher m = p.matcher(phone);
-        return m.matches();
     }
 
     @Override

@@ -27,12 +27,12 @@ import java.util.Calendar;
 public class ParkerSearchActivity extends ListActivity implements DateFragmentObserver
 {
     private DateFormatter df;
+    Calendar current;
 
     private AccessParkingSpots accessParkingSpots;
     ArrayAdapter<ParkingSpot> adapter;
     ArrayList<ParkingSpot> parkingSpots = new ArrayList<>();
 
-    Calendar current;
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -46,20 +46,6 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
         tv.setText(df.getDateFormat().format(current.getTime()));
 
         populateScreen();
-
-        final Button prev = findViewById(R.id.buttonLeft);
-        prev.setOnClickListener(new OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-
-                current.add(Calendar.DATE, -1);
-                TextView tv = findViewById(R.id.textViewDate);
-                tv.setText(df.getDateFormat().format(current.getTime()));
-                populateScreen();
-            }
-        });
 
         SearchView sv = findViewById(R.id.searchViewAddress);
         sv.setQueryHint("Search by street name");
@@ -81,19 +67,24 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
             }
         });
 
-        final Button next = findViewById(R.id.buttonRight);
-        next.setOnClickListener(new OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                current.add(Calendar.DATE, +1);
-                TextView tv = findViewById(R.id.textViewDate);
-                tv.setText(df.getDateFormat().format(current.getTime()));
-                populateScreen();
-            }
-        });
+    }
 
+
+    public void onPrevClick(View v)
+    {
+
+        current.add(Calendar.DATE, -1);
+        TextView tv = findViewById(R.id.textViewDate);
+        tv.setText(df.getDateFormat().format(current.getTime()));
+        populateScreen();
+    }
+
+    public void onNextClick(View v)
+    {
+        current.add(Calendar.DATE, +1);
+        TextView tv = findViewById(R.id.textViewDate);
+        tv.setText(df.getDateFormat().format(current.getTime()));
+        populateScreen();
     }
 
     public void onDateClick(View v)
@@ -167,5 +158,11 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
         tv.setText(df.getDateFormat().format(date));
         current.setTime(date);
         populateScreen();
+    }
+
+    public void onMapClick(View view)
+    {
+        Intent mapIntent = new Intent(ParkerSearchActivity.this, ParkerMapActivity.class);
+        ParkerSearchActivity.this.startActivity(mapIntent);
     }
 }

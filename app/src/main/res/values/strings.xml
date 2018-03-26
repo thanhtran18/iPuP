@@ -101,6 +101,8 @@
     <string name="extra_repetitionInfo">repetitionInfo</string>
     <string name="extra_time">time</string>
     <string name="extra_date">date</string>
+    <string name="extra_lat">latitude</string>
+    <string name="extra_long">longitude</string>
 
     <!-- Strings for displaying info-->
     <string name="info_current_price">Current price: $%.2f</string>

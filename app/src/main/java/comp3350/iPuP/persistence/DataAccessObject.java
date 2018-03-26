@@ -237,7 +237,7 @@ public class DataAccessObject implements DataAccess
         {
             if (!doesParkingSpotExists(currentParkingSpot.getAddress(),currentParkingSpot.getName()))
             {
-                cmdString = "INSERT INTO PARKINGSPOTS (USERNAME,NAME,ADDRESS,PHONE,EMAIL,RATE) VALUES(?,?,?,?,?,?)";
+                cmdString = "INSERT INTO PARKINGSPOTS (USERNAME,NAME,ADDRESS,PHONE,EMAIL,RATE,LATITUDE,LONGITUDE) VALUES(?,?,?,?,?,?,?,?)";
                 pstmt = con.prepareStatement(cmdString);
                 pstmt.setString(1, username);
                 pstmt.setString(2, currentParkingSpot.getName());
@@ -245,6 +245,8 @@ public class DataAccessObject implements DataAccess
                 pstmt.setString(4, currentParkingSpot.getPhone());
                 pstmt.setString(5, currentParkingSpot.getEmail());
                 pstmt.setDouble(6, currentParkingSpot.getRate());
+                pstmt.setDouble(7, currentParkingSpot.getLatitude());
+                pstmt.setDouble(8, currentParkingSpot.getLongitude());
 
                 updateCount = pstmt.executeUpdate();
                 checkWarning(pstmt, updateCount);
@@ -385,6 +387,40 @@ public class DataAccessObject implements DataAccess
     }
 
     @Override
+    public ArrayList<ParkingSpot> getParkingSpotsByTime(Date time) throws DAOException
+    {
+        parkingSpots = new ArrayList<>();
+
+        try
+        {
+            Calendar c = Calendar.getInstance();
+            c.setTime(time);
+            c.add(Calendar.MINUTE, 15);
+            cmdString = "SELECT * FROM PARKINGSPOTS P WHERE " +
+                    "EXISTS (SELECT * FROM TIMESLOTS T WHERE T.SPOT_ID = P.SPOT_ID " +
+                    "AND ? BETWEEN T.STARTDATETIME AND T.ENDDATETIME )" /*+
+                    "AND EXISTS (SELECT * FROM BOOKINGS B WHERE B.TIMESLOT_ID=T.TIMESLOT_ID)) " +
+                    "AND P.LATITUDE!=0E0 AND P.LONGITUDE!=0E0"*/;
+            pstmt = con.prepareStatement(cmdString);
+
+            pstmt.setString(1, df.getSqlDateTimeFormat().format(c.getTime()));
+
+            rss = pstmt.executeQuery();
+
+            getParkingSpots(rss, parkingSpots);
+
+            rss.close();
+        }
+        catch (SQLException sqle)
+        {
+            processSQLError(sqle);
+            throw new DAOException("Error in getting ParkingSpots for timeslots: " + df.getSqlDateFormat().format(time) + "!", sqle);
+        }
+
+        return parkingSpots;
+    }
+
+    @Override
     public ParkingSpot getParkingSpot(long spotID) throws DAOException
     {
         try
@@ -402,7 +438,7 @@ public class DataAccessObject implements DataAccess
             throw new DAOException("Error in getting ParkingSpot!", sqle);
         }
 
-        Double rate;
+        Double rate, latitude, longitude;
         ParkingSpot ps;
         String name, addr, phone, email;
 
@@ -414,8 +450,10 @@ public class DataAccessObject implements DataAccess
             phone = rss.getString("PHONE");
             email = rss.getString("EMAIL");
             rate = rss.getDouble("RATE");
+            latitude = rss.getDouble("LATITUDE");
+            longitude = rss.getDouble("LONGITUDE");
 
-            ps = new ParkingSpot(spotID, addr, name, phone, email, rate);
+            ps = new ParkingSpot(spotID, addr, name, phone, email, rate, latitude, longitude);
             rss.close();
         }
         catch (SQLException sqle)
@@ -433,7 +471,7 @@ public class DataAccessObject implements DataAccess
 
     private void getParkingSpots(ResultSet rs, ArrayList<ParkingSpot> parkingSpots) throws DAOException
     {
-        Double rate;
+        Double rate, latitude, longitude;
         long spotID;
         ParkingSpot ps;
         String name, addr, phone, email;
@@ -448,8 +486,10 @@ public class DataAccessObject implements DataAccess
                 phone = rs.getString("PHONE");
                 email = rs.getString("EMAIL");
                 rate = rs.getDouble("RATE");
+                latitude = rss.getDouble("LATITUDE");
+                longitude = rss.getDouble("LONGITUDE");
 
-                ps = new ParkingSpot(spotID, addr, name, phone, email, rate);
+                ps = new ParkingSpot(spotID, addr, name, phone, email, rate, latitude, longitude);
                 parkingSpots.add(ps);
             }
         }
@@ -496,7 +536,6 @@ public class DataAccessObject implements DataAccess
         this.parkingSpots.clear();
     }
 
-
 	private void checkWarning(Statement st, int updateCount) throws DAOException
 	{
 		if (updateCount != 1)
@@ -505,14 +544,12 @@ public class DataAccessObject implements DataAccess
 		}
 	}
 
-
 	private void processSQLError(Exception e)
 	{
 		String result = "*** SQL Error: " + e.getMessage();
 
 		e.printStackTrace();
     }
-
 
     @Override
     public ArrayList<Booking> getBookedSpotsOfGivenUser(String username) throws DAOException
@@ -583,24 +620,26 @@ public class DataAccessObject implements DataAccess
     }
 
     @Override
-    public void modifyParkingSpot(long spotID, String address, String phone, String email, Double rate) throws DAOException
+    public void modifyParkingSpot(long spotID, String address, String phone, String email, Double rate, double latitude, double longitude) throws DAOException
     {
         try
         {
-            cmdString = "UPDATE PARKINGSPOTS SET ADDRESS=?, PHONE=?, EMAIL=?, RATE=? WHERE SPOT_ID=?";
+            cmdString = "UPDATE PARKINGSPOTS SET ADDRESS=?, PHONE=?, EMAIL=?, RATE=?, LATITUDE=?, LONGITUDE=? WHERE SPOT_ID=?";
             pstmt = con.prepareStatement(cmdString);
             pstmt.setString(1, address);
             pstmt.setString(2, phone);
             pstmt.setString(3, email);
             pstmt.setDouble(4, rate);
             pstmt.setLong(5, spotID);
+            pstmt.setDouble(6, latitude);
+            pstmt.setDouble(7, longitude);
             updateCount = pstmt.executeUpdate();
             checkWarning(pstmt, updateCount);
         }
         catch (SQLException sqle)
         {
             processSQLError(sqle);
-            throw new DAOException("Error in updateing ParkingSpot with id = " + spotID + "!", sqle);
+            throw new DAOException("Error in updating ParkingSpot with id = " + spotID + "!", sqle);
         }
     }
 
@@ -660,7 +699,7 @@ public class DataAccessObject implements DataAccess
     {
         ParkingSpot returnVal = null;
         String name, address, phone, email ;
-        Double rate;
+        Double rate, latitude, longitude;
 
         try
         {
@@ -675,7 +714,9 @@ public class DataAccessObject implements DataAccess
                 phone=rss.getString("PHONE");
                 email=rss.getString("EMAIL");
                 rate=rss.getDouble("RATE");
-                returnVal=new ParkingSpot(spotID,address,name, phone, email, rate);
+                latitude = rss.getDouble("LATITUDE");
+                longitude = rss.getDouble("LONGITUDE");
+                returnVal=new ParkingSpot(spotID,address,name, phone, email, rate, latitude, longitude);
             }
             rss.close();
 

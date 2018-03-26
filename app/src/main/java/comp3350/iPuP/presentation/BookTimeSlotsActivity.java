@@ -146,4 +146,3 @@ public class BookTimeSlotsActivity extends AppCompatActivity
         timeSlotList.setAdapter(timeSlotAdapter);
     }
 }
-//test commit

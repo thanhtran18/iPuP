@@ -12,6 +12,7 @@ import android.view.View;
 public class HostMenuActivity extends Activity
 {
     private String name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

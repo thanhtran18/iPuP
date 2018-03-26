@@ -17,6 +17,7 @@ public class HostModifyActivity extends AppCompatActivity
 {
     protected AccessParkingSpots accessParkingSpots;
     private long spotID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

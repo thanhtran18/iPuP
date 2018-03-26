@@ -309,7 +309,8 @@ public class DataAccessStub implements DataAccess
             users.add("tester");
             users.add("tester2");
 
-        } catch (ParseException e)
+        }
+        catch (ParseException e)
         {
             throw new DAOException("Failed to open " + dbType +" database " + dbName + "!",e);
         }
@@ -328,7 +329,8 @@ public class DataAccessStub implements DataAccess
     {
         boolean found = false;
 
-        for (int i = 0; i < parkingSpots.size(); i++) {
+        for (int i = 0; i < parkingSpots.size(); i++)
+        {
             ParkingSpot aparkingspot = parkingSpots.get(i);
             if (address.equals(aparkingspot.getAddress()) && name.equals(aparkingspot.getName()))
             {
@@ -382,7 +384,8 @@ public class DataAccessStub implements DataAccess
             parkingSpots.add(new ParkingSpot(spotID,currentParkingSpot.getAddress(),
                     currentParkingSpot.getName(),currentParkingSpot.getPhone(),
                     currentParkingSpot.getEmail(),currentParkingSpot.getRate()));
-        } else
+        }
+        else
         {
             throw new DAOException("Error in creating ParkingSpot object with SPOT_ID = "+currentParkingSpot.getSpotID()+" for Username: "+username+"!");
         }
@@ -436,7 +439,8 @@ public class DataAccessStub implements DataAccess
     {
         ArrayList<ParkingSpot> parkingSpotsByAddrDate = new ArrayList<>();
         Map<Long,TimeSlot> map = new HashMap<>();
-        for (int i=0; i<daySlots.size(); i++) {
+        for (int i=0; i<daySlots.size(); i++)
+        {
             map.put(daySlotsParkingSpotID.get(i), daySlots.get(i));
         }
 
@@ -448,7 +452,8 @@ public class DataAccessStub implements DataAccess
             {
                 if (parkingSpot.getAddress().contains(address))
                     check = true;
-            } else
+            }
+            else
             {
                 check = true;
             }
@@ -474,7 +479,8 @@ public class DataAccessStub implements DataAccess
                             throw new DAOException("Error in comparing given date between start and end dates of a TimeSlot!");
                         }
                     }
-                } else
+                }
+                else
                 {
                     found = true;
                 }
@@ -487,7 +493,8 @@ public class DataAccessStub implements DataAccess
                                 parkingSpot.getAddress(), parkingSpot.getName(), parkingSpot.getPhone(),
                                 parkingSpot.getEmail(), parkingSpot.getRate()));
                     }
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     throw new DAOException("Error in getting ParkingSpots ordered by Date: "+df.getSqlDateFormat().format(date)+"!",e);
                 }
@@ -507,7 +514,8 @@ public class DataAccessStub implements DataAccess
     }
 
     @Override
-    public ParkingSpot getParkingSpot(long spotID) throws DAOException {
+    public ParkingSpot getParkingSpot(long spotID) throws DAOException
+    {
         ParkingSpot aparkingspot = parkingSpots.get((int)spotID);
 
         return new ParkingSpot(aparkingspot.getSpotID(), aparkingspot.getAddress(),
@@ -530,7 +538,8 @@ public class DataAccessStub implements DataAccess
                     hostedParkingSpotsOfGivenUser.add(new ParkingSpot(parkingSpot.getSpotID(),
                             parkingSpot.getAddress(), parkingSpot.getName(), parkingSpot.getPhone(),
                             parkingSpot.getEmail(), parkingSpot.getRate()));
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     throw new DAOException("Error in getting hosted Parking Spots by "+username+"!",e);
                 }
@@ -571,7 +580,8 @@ public class DataAccessStub implements DataAccess
                 {
                     bookedSpotsOfGivenUser.add(new Booking(booking.getName(), booking.getTimeSlotId(),
                             booking.getAddress(), booking.getStart(), booking.getEnd()));
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     throw new DAOException("Error in getting bookings list for User: "+username+"!",e);
                 }
@@ -595,12 +605,14 @@ public class DataAccessStub implements DataAccess
     }
 
     @Override
-    public void modifyParkingSpot(long spotID, String address, String phone, String email, Double rate) throws DAOException {
+    public void modifyParkingSpot(long spotID, String address, String phone, String email, Double rate) throws DAOException
+    {
        (parkingSpots.get((int)spotID)).modifySpot(address, phone, email, rate);
     }
 
     @Override
-    public ArrayList<TimeSlot> getUnbookedTimeSlotsForParkingSpot(long spotID) throws DAOException {
+    public ArrayList<TimeSlot> getUnbookedTimeSlotsForParkingSpot(long spotID) throws DAOException
+    {
         ArrayList<TimeSlot> unbookedTimeSlotsForParkingSpot = new ArrayList<>();
 
 	    for (int i = 0; i < timeSlotsParkingSpotID.size(); i++)
@@ -608,7 +620,8 @@ public class DataAccessStub implements DataAccess
             if (timeSlotsParkingSpotID.get(i) == spotID)
             {
                 TimeSlot atimeslot = timeSlots.get(i);
-                if (!atimeslot.getIsBooked()) {
+                if (!atimeslot.getIsBooked())
+                {
                     unbookedTimeSlotsForParkingSpot.add(new TimeSlot(atimeslot.getStart(),
                             atimeslot.getEnd(), atimeslot.getSlotID(), atimeslot.getIsBooked()));
                 }
@@ -620,6 +633,9 @@ public class DataAccessStub implements DataAccess
 
     @Override
     public ParkingSpot getParkingSpotByID(long spotID) throws DAOException {
+        if((int)spotID>parkingSpots.size() || (int)spotID<0){
+            return null;
+        }
         ParkingSpot aparkingspot = parkingSpots.get((int)spotID);
 	    return new ParkingSpot(aparkingspot.getSpotID(), aparkingspot.getAddress(),
                 aparkingspot.getName(), aparkingspot.getPhone(), aparkingspot.getEmail(),
@@ -628,9 +644,14 @@ public class DataAccessStub implements DataAccess
 
     @Override
     public boolean bookTimeSlot(String username, long timeSlotID, long spotID) throws DAOException {
-        boolean found = false;
 
-        for (int i = 0; i < bookings.size(); i++) {
+        boolean found = false;
+        if(spotID<0 || spotID >= parkingSpots.size()){
+            return found;
+        }
+
+        for (int i = 0; i < bookings.size(); i++)
+        {
             Booking abooking = bookings.get(i);
             if (timeSlotID == abooking.getTimeSlotId())
             {
@@ -645,10 +666,19 @@ public class DataAccessStub implements DataAccess
             ParkingSpot parkingSpot = parkingSpots.get((int)spotID);
             TimeSlot timeSlot = timeSlots.get((int)timeSlotID);
             timeSlot.setIsBooked(true);
-            bookings.add(new Booking(username, timeSlotID, parkingSpot.getAddress(),
-                    timeSlot.getStart(), timeSlot.getEnd()));
+            try
+            {
+                bookings.add(new Booking(username, timeSlotID, parkingSpot.getAddress(),
+                        timeSlot.getStart(), timeSlot.getEnd()));
+            }
+            catch (Exception e)
+            {
+                System.out.print(e.getMessage());
+            }
+
             return true;
-        } else
+        }
+        else
         {
             return false;
         }
@@ -681,9 +711,9 @@ public class DataAccessStub implements DataAccess
         {
             if (timeSlotsDaySlotID.get(i) == daySlotID)
             {
-                TimeSlot adayslot = timeSlots.get(i);
-                timeSlotsList.add(new TimeSlot(adayslot.getStart(), adayslot.getEnd(),
-                        adayslot.getSlotID(), adayslot.getIsBooked()));
+                TimeSlot atimeslot = timeSlots.get(i);
+                timeSlotsList.add(new TimeSlot(atimeslot.getStart(), atimeslot.getEnd(),
+                        atimeslot.getSlotID(), atimeslot.getIsBooked()));
             }
         }
 
@@ -693,13 +723,90 @@ public class DataAccessStub implements DataAccess
     @Override
     public boolean deleteDaySlot(long daySlotID) throws DAOException
     {
-        return false;
+        long spotID = -1;
+        boolean exitOnReturn = false;
+
+        for (int i = timeSlots.size() - 1; i >=0; i--)
+        {
+            if (timeSlotsDaySlotID.get(i) == daySlotID)
+            {
+                timeSlots.remove(i);
+                timeSlotsDaySlotID.remove(i);
+                timeSlotsParkingSpotID.remove(i);
+            }
+        }
+
+        boolean removed = false;
+        for (int i = 0; i < daySlots.size() && !removed; i++)
+        {
+            if (daySlots.get(i).getSlotID() == daySlotID)
+            {
+                spotID = daySlotsParkingSpotID.get(i);
+                daySlots.remove(i);
+                daySlotsParkingSpotID.remove(i);
+                removed = true;
+            }
+        }
+
+        boolean empty = true;
+        for (int i = 0; i < daySlots.size(); i++)
+        {
+            if (daySlotsParkingSpotID.get(i) == spotID)
+                empty = false;
+        }
+
+        if (empty)
+        {
+            removed = false;
+            for (int i = 0; i < parkingSpots.size() && !removed; i++)
+            {
+                if (parkingSpots.get(i).getSpotID() == spotID)
+                {
+                    parkingSpots.remove(i);
+                    removed = true;
+                }
+            }
+            exitOnReturn = true;
+        }
+
+        return exitOnReturn;
     }
 
     @Override
     public boolean deleteTimeSlot(long timeSlotID) throws DAOException
     {
-        return false;
+        boolean exitOnReturn = false;
+        long daySlotID = -1;
+
+        boolean removed = false;
+        for (int i = 0; i < timeSlots.size() && !removed; i++)
+        {
+            if (timeSlotID == timeSlots.get(i).getSlotID())
+            {
+                daySlotID = timeSlotsDaySlotID.get(i);
+                timeSlots.remove(i);
+                timeSlotsDaySlotID.remove(i);
+                timeSlotsParkingSpotID.remove(i);
+                removed = true;
+            }
+        }
+
+        boolean empty = true;
+        for (int i = 0; i < timeSlots.size(); i++)
+        {
+            if (daySlotID == timeSlotsDaySlotID.get(i))
+            {
+                empty = false;
+            }
+        }
+
+        if (empty)
+        {
+            deleteDaySlot(daySlotID);
+            exitOnReturn = true;
+        }
+
+        return exitOnReturn;
     }
 
     private void addDefaultData(String name, String address, String phone, String email,

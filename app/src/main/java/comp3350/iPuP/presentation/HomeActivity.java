@@ -16,9 +16,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.apache.commons.io.FileUtils;
+import org.hsqldb.lib.FileUtil;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class HomeActivity extends Activity
@@ -31,6 +35,7 @@ public class HomeActivity extends Activity
     {
         super.onCreate(savedInstanceState);
 
+        copyMapToDevice();
         copyDatabaseToDevice();
 
         Main.startUp();
@@ -60,6 +65,32 @@ public class HomeActivity extends Activity
         return super.onOptionsItemSelected(item);
     }
 
+    private void copyMapToDevice()
+    {
+        final String MAP_PATH = "tiles";
+
+        String[] assetNames;
+        Context context = getApplicationContext();
+        File dataDirectory = context.getDir(MAP_PATH, Context.MODE_PRIVATE);
+        AssetManager assetManager = getAssets();
+
+        try
+        {
+
+            assetNames = assetManager.list(MAP_PATH);
+            for (int i = 0; i < assetNames.length; i++)
+            {
+                assetNames[i] = MAP_PATH + "/" + assetNames[i];
+            }
+
+            copyAssetsToDirectory(assetNames, dataDirectory.toString());
+        }
+        catch (IOException ioe)
+        {
+            Messages.warning(this, "Unable to access application data: " + ioe.getMessage());
+        }
+    }
+
     private void copyDatabaseToDevice()
     {
         final String DB_PATH = "db";
@@ -78,7 +109,7 @@ public class HomeActivity extends Activity
                 assetNames[i] = DB_PATH + "/" + assetNames[i];
             }
 
-            copyAssetsToDirectory(assetNames, dataDirectory);
+            copyAssetsToDirectory(assetNames, dataDirectory.toString());
 
             Main.setDBPathName(dataDirectory.toString() + "/" + Main.dbName);
 
@@ -89,32 +120,21 @@ public class HomeActivity extends Activity
         }
     }
 
-    public void copyAssetsToDirectory(String[] assets, File directory) throws IOException
+    public void copyAssetsToDirectory(String[] assets, String directory) throws IOException
     {
         AssetManager assetManager = getAssets();
 
         for (String asset : assets)
         {
             String[] components = asset.split("/");
-            String copyPath = directory.toString() + "/" + components[components.length - 1];
-            char[] buffer = new char[1024];
-            int count;
+            String copyPath = directory + "/" + components[components.length - 1];
 
             File outFile = new File(copyPath);
 
             if (!outFile.exists())
             {
-                InputStreamReader in = new InputStreamReader(assetManager.open(asset));
-                FileWriter out = new FileWriter(outFile);
-
-                count = in.read(buffer);
-                while (count != -1)
-                {
-                    out.write(buffer, 0, count);
-                    count = in.read(buffer);
-                }
-
-                out.close();
+                InputStream in = assetManager.open(asset);
+                FileUtils.copyInputStreamToFile(in, outFile);
                 in.close();
             }
         }

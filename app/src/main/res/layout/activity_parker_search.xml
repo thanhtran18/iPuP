@@ -1,73 +1,79 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="comp3350.iPuP.presentation.ParkerSearchActivity">
 
-    <SearchView
-        android:id="@+id/searchViewAddress"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:actionViewClass="android.widget.SearchView"
-        android:iconifiedByDefault="false"
         android:orientation="horizontal"
-        android:showAsAction="always"
-        android:title="@string/search">
-    </SearchView>
+        android:weightSum="5"
+        android:layout_gravity="end">
 
-    <TextView
-        android:id="@+id/textViewDate"
-        style="@style/AppTheme.EntryTextStyle"
-        android:layout_width="wrap_content"
+        <SearchView
+            android:id="@+id/searchViewAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:actionViewClass="android.widget.SearchView"
+            android:iconifiedByDefault="false"
+            android:orientation="horizontal"
+            android:showAsAction="always"
+            android:title="@string/search"
+            android:layout_weight="4"/>
+        <Button
+            android:id="@+id/buttonMap"
+            style="@style/AppTheme.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:onClick="onMapClick"
+            android:text="Map"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/searchViewAddress"
-        android:layout_toRightOf="@+id/buttonLeft"
-        android:layout_toLeftOf="@id/buttonRight"
-        android:layout_toEndOf="@+id/buttonLeft"
-        android:layout_toStartOf="@id/buttonRight"
-        android:ems="10"
-        android:onClick="onDateClick"
-        android:gravity="center_horizontal"
-        android:textSize="25sp"/>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonLeft"
+            style="@style/AppTheme.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/prev"
+            android:onClick="onPrevClick"/>
+        <TextView
+            android:id="@+id/textViewDate"
+            style="@style/AppTheme.EntryTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:onClick="onDateClick"
+            android:gravity="center_horizontal"
+            android:textSize="25sp"/>
+
+        <Button
+            android:id="@+id/buttonRight"
+            style="@style/AppTheme.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next"
+            android:onClick="onNextClick"/>
+
+    </LinearLayout>
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@id/buttonRight"
-        android:layout_alignEnd="@id/buttonRight"
-        android:layout_below="@+id/textViewDate" />
+        android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@android:id/empty"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:text="@string/search_no_spots"
         android:textColor="@color/colorWarning" />
-
-    <Button
-        android:id="@+id/buttonRight"
-        style="@style/AppTheme.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/searchViewAddress"
-        android:text="@string/next" />
-
-    <Button
-        android:id="@+id/buttonLeft"
-        style="@style/AppTheme.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/searchViewAddress"
-        android:text="@string/prev" />
-</RelativeLayout>
+</LinearLayout>

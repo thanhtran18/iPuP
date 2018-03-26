@@ -14,8 +14,9 @@ public class ParkingSpot
     private String email;
     private long spotID;
     private double rate;
+    private double longitude, latitude;
 
-    public ParkingSpot(String address, String name, String phone, String email, double rate)
+    public ParkingSpot(String address, String name, String phone, String email, double rate, double latitude, double longitude)
     {
         this.address = address;
         this.name = name;
@@ -24,11 +25,14 @@ public class ParkingSpot
         this.email = email;
 
         this.rate = rate;
+
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-    public ParkingSpot(long id, String address, String name, String phone, String email, double rate)
+    public ParkingSpot(long id, String address, String name, String phone, String email, double rate, double latitude, double longitude)
     {
-        this(address, name, phone, email, rate);
+        this(address, name, phone, email, rate, latitude, longitude);
         this.spotID = id;
     }
 
@@ -91,5 +95,15 @@ public class ParkingSpot
                 return true;
         }
         return false;
+    }
+
+    public double getLatitude()
+    {
+        return latitude;
+    }
+
+    public double getLongitude()
+    {
+        return longitude;
     }
 }

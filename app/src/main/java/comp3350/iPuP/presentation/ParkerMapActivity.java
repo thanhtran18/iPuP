@@ -117,7 +117,7 @@ public class ParkerMapActivity extends AppCompatActivity implements DateFragment
     {
         try
         {
-            ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getParkingSpotByTime(current.getTime());
+            ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getParkingSpotsByTime(current.getTime());
             map.getOverlays().clear();
             for (final ParkingSpot spot : parkingSpots)
             {

@@ -149,7 +149,7 @@ public class AccessParkingSpots
         return dataAccess.getParkingSpotsByAddressDate(address, today);
     }
 
-    public ArrayList<ParkingSpot> getParkingSpotByTime(Date time) throws  DAOException
+    public ArrayList<ParkingSpot> getParkingSpotsByTime(Date time) throws  DAOException
     {
         return dataAccess.getParkingSpotsByTime(time);
     }

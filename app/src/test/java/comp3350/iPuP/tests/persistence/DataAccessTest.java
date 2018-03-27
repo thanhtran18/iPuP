@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.DAOException;
@@ -231,7 +232,7 @@ public class DataAccessTest extends TestCase {
             System.err.println(daoe.getMessage());
         }
 
-        ParkingSpot parkingSpot = new ParkingSpot(-1, "1 Tester Street", "tester", "2042222222", "testing@tester.ca", 101);
+        ParkingSpot parkingSpot = new ParkingSpot(-1, "1 Tester Street", "tester", "2042222222", "testing@tester.ca", 101, 0, 0);
 
         try
         {
@@ -257,7 +258,7 @@ public class DataAccessTest extends TestCase {
             assertEquals("Error in creating ParkingSpot object with SPOT_ID = 22 for Username: tester!",daoe.getMessage());
         }
 
-        parkingSpot = new ParkingSpot(-1, "2 Tester Street", "tester", "2042222222", "testing@tester.ca", 101);
+        parkingSpot = new ParkingSpot(-1, "2 Tester Street", "tester", "2042222222", "testing@tester.ca", 101, 0, 0);
 
         try
         {
@@ -511,6 +512,40 @@ public class DataAccessTest extends TestCase {
         catch (DAOException de)
         {
             System.out.print(de.getMessage());
+            fail();
+        }
+    }
+
+    public void testParkingSpotsInTimeSlot()
+    {
+        try
+        {
+            dataAccess = new DataAccessStub();
+            dataAccess.open("Stub");
+        }
+        catch (DAOException daoe)
+        {
+            System.err.println(daoe.getMessage());
+        }
+
+        Calendar c = Calendar.getInstance();
+        try
+        {
+            c.set(2018, 5, 11, 11,31);
+            assertEquals(16,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+            c.set(2018, 5, 11, 12,31);
+            assertEquals(14,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+            c.set(2018, 5, 11, 18,31);
+            assertEquals(3,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+            c.set(2018, 5, 11, 0,0);
+            assertEquals(0,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+            c.set(0, 0, 0, 0,0);
+            assertEquals(0,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+            c.set(1, 2, 3, 4,5);
+            assertEquals(0,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+        }
+        catch (Exception e)
+        {
             fail();
         }
     }

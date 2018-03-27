@@ -73,12 +73,14 @@ public class ParkingSpot
         this.spotID = spotID;
     }
 
-    public void modifySpot(String address, String phone, String email, double rate)
+    public void modifySpot(String address, String phone, String email, double rate, double latitude, double longitude)
     {
         this.address = address;
         this.phone = phone;
         this.email = email;
         this.rate = rate;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     @Override

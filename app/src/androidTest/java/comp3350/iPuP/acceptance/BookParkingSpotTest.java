@@ -103,6 +103,7 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
         solo.clickOnButton("I am looking for parking");
         solo.waitForActivity("ParkerMenuActivity");
         solo.assertCurrentActivity("Expected activity Parker Menu Activity", "ParkerMenuActivity");
+        solo.sleep(3000);
 
         solo.clickOnButton("View your booked spots");
         solo.waitForActivity("ParkerLogViewActivity");
@@ -131,6 +132,7 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
 
 
         solo.enterText(0, "St. ");
+        solo.sleep(3000);
         solo.clickOnButton("Next");
 
         Assert.assertTrue(solo.searchText("29 St. Mary's Rd"));
@@ -201,6 +203,7 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
         solo.clickOnButton("I am looking for parking");
         solo.waitForActivity("ParkerMenuActivity");
         solo.assertCurrentActivity("Expected activity Parker Menu Activity", "ParkerMenuActivity");
+        solo.sleep(3000);
 
         solo.clickOnButton("View your booked spots");
         solo.waitForActivity("ParkerLogViewActivity");
@@ -228,6 +231,7 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
 
 
         solo.enterText(0, "St. ");
+        solo.sleep(3000);
         solo.clickOnButton("Next");
 
         Assert.assertTrue(solo.searchText("29 St. Mary's Rd"));

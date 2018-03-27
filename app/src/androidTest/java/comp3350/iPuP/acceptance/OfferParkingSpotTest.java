@@ -55,7 +55,7 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
         solo.assertCurrentActivity("Expected activity Host  Activity", "HostActivity");
 
 
-        
+
         solo.enterText((EditText) solo.getView(R.id.editTextAddress), "325 Author V. Mauro");
         solo.waitForText("325 Author V. Mauro");
         solo.enterText((EditText) solo.getView(R.id.editTextPhone), "204-234-5678");

@@ -55,27 +55,37 @@ public class ModifyParkingSpotTest extends ActivityInstrumentationTestCase2<Home
             solo.assertCurrentActivity("Expected activity Host View Activity", "HostViewActivity");
 
             solo.waitForText("Address: 88 Plaza Drive");
-            Assert.assertTrue(solo.searchText("Address: 325 Author V. Mauro"));
+            Assert.assertTrue(solo.searchText("Address: 88 Plaza Drive"));
 
+            solo.clickOnButton("Modify");
+            Assert.assertTrue(solo.searchText("theBestMarker@gmail.com"));
 
-            //solo.clickOnButton("Modify");
-            //todo modify test
+            solo.clearEditText((EditText) solo.getView(R.id.editTextAddress));
+            solo.sleep(2000);
+            solo.enterText((EditText) solo.getView(R.id.editTextAddress), "1000 Plaza Drive");
+            solo.clearEditText((EditText) solo.getView(R.id.editTextRate));
+            solo.sleep(2000);
+            solo.enterText((EditText) solo.getView(R.id.editTextRate), "4.5");
 
-            solo.clickOnText("Address: 88 Plaza Drive");
-            solo.waitForText("Start: Tue, 12 Jun 2018, 2:30 PM");
-            solo.clickOnText("Start: Tue, 12 Jun 2018, 2:30 PM");
-            solo.waitForText("Start: Tue, 12 Jun 2018, 3:00 PM");
-            //solo.clickOnText("Delete", 0);
+            solo.clickOnButton("Confirm");
 
-            solo.goBack();
+            solo.clickLongInList(1);
+            Assert.assertTrue(solo.searchText("Address: 1000 Plaza Drive"));
+            Assert.assertTrue(solo.searchText(Pattern.quote("Rate: $4.50")));
+            Assert.assertTrue(solo.searchText("Start: Mon, 11 Jun 2018, 10:30 AM"));
+            Assert.assertTrue(solo.searchText("End: Tue, 12 Jun 2018, 4:30 PM"));
 
-            //solo.waitForText("Start: Mon, 11 Jun 2018, 10:30 AM");
-            //solo.clickOnText("Delete", 0);
+            solo.clickOnText("End: Mon, 11 Jun 2018, 12:30 AM");
+            Assert.assertTrue(solo.searchText("Address: 1000 Plaza Drive"));
+            Assert.assertTrue(solo.searchText(Pattern.quote("Rate: $4.50")));
+            Assert.assertTrue(solo.searchText("Start: Mon, 11 Jun 2018, 10:30 AM"));
+            Assert.assertTrue(solo.searchText("End: Mon, 11 Jun 2018, 11:00 AM"));
+            Assert.assertTrue(solo.searchText("Start: Mon, 11 Jun 2018, 11:00 AM"));
+            Assert.assertTrue(solo.searchText("Start: Mon, 11 Jun 2018, 12:00 PM"));
+            Assert.assertTrue(solo.searchText("End: Mon, 11 Jun 2018, 11:30 AM"));
+            Assert.assertTrue(solo.searchText("End: Mon, 11 Jun 2018, 12:00 PM"));
 
-            solo.waitForText("Start: Tue, 12 Jun 2018, 2:30 AM");
-            solo.clickOnButton("Delete");
-
-
+            solo.clickOnText("Delete");
 
         }
 }

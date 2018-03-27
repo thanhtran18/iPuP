@@ -92,7 +92,7 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
 
 
         solo.clickOnView((TextView) solo.getView(R.id.textViewToDate));
-        solo.setDatePicker(0, 2018, 2, 27);
+        solo.setDatePicker(0, 2018, 2, 28);
         solo.clickOnText("OK");
 
 
@@ -104,7 +104,7 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
         solo.enterText((EditText) solo.getView(R.id.editTextPeriod), "4");
 
         solo.clickOnButton("Confirm");
-        //solo.goBackToActivity("HostActivity");
+        solo.goBackToActivity("HostActivity");
         solo.clickOnButton("Confirm");
         solo.goBackToActivity("HostMenuActivity");
 
@@ -130,6 +130,7 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
         solo.clickOnButton("I have available parking to advertise");
         solo.waitForActivity("HostMenuActivity");
         solo.assertCurrentActivity("Expected activity HostMenuActivity", "HostMenuActivity");
+        solo.sleep(3000);
 
         solo.clickOnButton("Create a new parking spot");
         solo.waitForActivity("HostActivity");

@@ -1,16 +1,18 @@
-package comp3350.iPuP.acceptance;
+package comp3350.iPuP;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-public class AcceptanceTests
+import comp3350.iPuP.acceptance.AcceptanceTests;
+
+public class RunAcceptanceTests
 {
     public static TestSuite suite;
 
     public static Test suite()
     {
         suite = new TestSuite("Acceptance tests");
-        suite.addTestSuite(BookParkingSpotTest.class);
+        suite.addTest(AcceptanceTests.suite());
         return suite;
     }
 }

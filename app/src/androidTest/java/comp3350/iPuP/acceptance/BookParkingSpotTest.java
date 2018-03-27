@@ -16,10 +16,6 @@ import java.util.regex.Pattern;
 import comp3350.iPuP.R;
 import comp3350.iPuP.presentation.HomeActivity;
 
-/**
- * Created by ThanhTran on 2018-03-26.
- */
-
 public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeActivity>
 {
     private Solo solo;

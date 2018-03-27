@@ -485,8 +485,8 @@ public class DataAccessObject implements DataAccess
                 phone = rs.getString("PHONE");
                 email = rs.getString("EMAIL");
                 rate = rs.getDouble("RATE");
-                latitude = rss.getDouble("LATITUDE");
-                longitude = rss.getDouble("LONGITUDE");
+                latitude = rs.getDouble("LATITUDE");
+                longitude = rs.getDouble("LONGITUDE");
 
                 ps = new ParkingSpot(spotID, addr, name, phone, email, rate, latitude, longitude);
                 parkingSpots.add(ps);

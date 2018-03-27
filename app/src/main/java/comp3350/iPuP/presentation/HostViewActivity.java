@@ -33,14 +33,11 @@ public class HostViewActivity extends ListActivity
 
         populateList();
     }
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    public void onResume()
     {
-        if (resultCode == RESULT_CANCELED)
-        {
-            populateList();
-        }
+        super.onResume();
+        populateList();
     }
 
     private void populateList()

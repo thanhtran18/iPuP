@@ -376,7 +376,8 @@ public class DataAccessStub implements DataAccess
             spotID = parkingspotCounter++;
             parkingSpots.add(new ParkingSpot(spotID,currentParkingSpot.getAddress(),
                     currentParkingSpot.getName(),currentParkingSpot.getPhone(),
-                    currentParkingSpot.getEmail(),currentParkingSpot.getRate()));
+                    currentParkingSpot.getEmail(),currentParkingSpot.getRate(),0,0));
+            //TODO: GET LONGITUDE AND LATUTUDE VALUES
         }
         else
         {
@@ -475,7 +476,10 @@ public class DataAccessStub implements DataAccess
                 }
                 else
                 {
-                    found = true;
+                    if (daySlotsParkingSpotID.contains(parkingSpot.getSpotID()))
+                    {
+                        found = true;
+                    }
                 }
 
                 try
@@ -484,7 +488,8 @@ public class DataAccessStub implements DataAccess
                     {
                         parkingSpotsByAddrDate.add(new ParkingSpot(parkingSpot.getSpotID(),
                                 parkingSpot.getAddress(), parkingSpot.getName(), parkingSpot.getPhone(),
-                                parkingSpot.getEmail(), parkingSpot.getRate()));
+                                parkingSpot.getEmail(), parkingSpot.getRate(),0,0));
+                        //TODO: GET LONGITUDE AND LATUTUDE VALUES
                     }
                 }
                 catch (Exception e)
@@ -507,13 +512,19 @@ public class DataAccessStub implements DataAccess
     }
 
     @Override
+    public ArrayList<ParkingSpot> getParkingSpotsByTime(Date time) throws DAOException {
+        return null;
+    }
+
+    @Override
     public ParkingSpot getParkingSpot(long spotID) throws DAOException
     {
         ParkingSpot aparkingspot = parkingSpots.get((int)spotID);
 
         return new ParkingSpot(aparkingspot.getSpotID(), aparkingspot.getAddress(),
                 aparkingspot.getName(), aparkingspot.getPhone(), aparkingspot.getEmail(),
-                aparkingspot.getRate());
+                aparkingspot.getRate(),0,0);
+        //TODO: GET LONGITUDE AND LATUTUDE VALUES
     }
 
     @Override
@@ -530,7 +541,8 @@ public class DataAccessStub implements DataAccess
                 {
                     hostedParkingSpotsOfGivenUser.add(new ParkingSpot(parkingSpot.getSpotID(),
                             parkingSpot.getAddress(), parkingSpot.getName(), parkingSpot.getPhone(),
-                            parkingSpot.getEmail(), parkingSpot.getRate()));
+                            parkingSpot.getEmail(), parkingSpot.getRate(),0,0));
+                    //TODO: GET LONGITUDE AND LATUTUDE VALUES
                 }
                 catch (Exception e)
                 {
@@ -581,19 +593,30 @@ public class DataAccessStub implements DataAccess
             }
         }
 
+        Collections.sort( bookedSpotsOfGivenUser, new Comparator<Booking>() {
+            public int compare (Booking b1, Booking b2) {
+                return b1.getStart().compareTo(b2.getStart());
+            }
+        });
+
         return bookedSpotsOfGivenUser;
     }
 
     @Override
-    public void deleteBooking(String username, long timeSlotId)
+    public void deleteBooking(String username, long timeSlotID) throws DAOException
     {
         for(int i = 0; i < bookings.size(); i++)
         {
             Booking booking = bookings.get(i);
-            if ((booking.getName()).equals(username) && (booking.getTimeSlotId()) == timeSlotId)
+            if ((booking.getName()).equals(username) && (booking.getTimeSlotId()) == timeSlotID)
             {
                 bookings.remove(i);
             }
+        }
+
+        if (bookings.size() < 1)
+        {
+            throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = " + timeSlotID + "!");
         }
     }
 
@@ -632,7 +655,8 @@ public class DataAccessStub implements DataAccess
         ParkingSpot aparkingspot = parkingSpots.get((int)spotID);
 	    return new ParkingSpot(aparkingspot.getSpotID(), aparkingspot.getAddress(),
                 aparkingspot.getName(), aparkingspot.getPhone(), aparkingspot.getEmail(),
-                aparkingspot.getRate());
+                aparkingspot.getRate(),0,0);
+        //TODO: GET LONGITUDE AND LATUTUDE VALUES
     }
 
     @Override
@@ -833,7 +857,8 @@ public class DataAccessStub implements DataAccess
     {
         users.add(name);
 
-        parkingSpots.add(new ParkingSpot(parkingspotCounter, address, name, phone, email, rate));
+        parkingSpots.add(new ParkingSpot(parkingspotCounter, address, name, phone, email, rate,0,0));
+        //TODO: SET LONGITUDE AND LATUTUDE VALUES
 
         daySlots.add(new TimeSlot(calStart.getTime(), calEnd.getTime(), dayslotCounter));
         daySlotsParkingSpotID.add(parkingspotCounter);

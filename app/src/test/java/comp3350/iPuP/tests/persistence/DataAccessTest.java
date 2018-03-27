@@ -5,9 +5,14 @@ import android.content.res.AssetManager;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -58,10 +63,10 @@ public class DataAccessTest extends TestCase {
     public static void dataAccessTest(String dbname, String dbpathname)
     {
         DataAccessTest dataAccessTest = new DataAccessTest("IntegrationTest");
-//        dataAccessTest.dataAccess = dataAccess;
+
         dbName = dbname;
-        dbPathName = dbpathname;
-//        origHSQLDB = orighsqldb;
+        dbPathName = dbpathname.replace('/', '\\');
+
         dataAccessTest.testDefaultData();
         dataAccessTest.testInsertAndGetUsers();
         dataAccessTest.testGetParkingSpotsWithoutNewInsertion();
@@ -75,59 +80,38 @@ public class DataAccessTest extends TestCase {
         dataAccessTest.testDeleteABookingOfEmptyList();
     }
 
-    public void replaceDB(String dbPath, File directory) throws IOException
+    private void replaceDbWithDefault() throws DAOException
     {
-//        AssetManager assetManager = getAssets();
-
-            String[] components = dbPath.split("/");
-            String copyPath = directory.toString() + "/" + components[components.length - 1];
-            char[] buffer = new char[1024];
-            int count;
-
-            File outFile = new File(copyPath);
-
-            if (!outFile.exists())
-            {
-                InputStreamReader in = new InputStreamReader(assetManager.open(asset));
-                FileWriter out = new FileWriter(outFile);
-
-                count = in.read(buffer);
-                while (count != -1)
-                {
-                    out.write(buffer, 0, count);
-                    count = in.read(buffer);
-                }
-
-                out.close();
-                in.close();
-            }
-    }
-
-    private void replaceDbWithDefault()
-    {
-        final String DB_PATH = "db";
-
-        String[] assetNames;
-        File dataDirectory = context.getDir(DB_PATH, Context.MODE_PRIVATE);
-        AssetManager assetManager = getAssets();
-
         try
         {
+            String dbFilePath = System.getProperty("user.dir") + "\\" + dbPathName + ".script";
+//            String dbFileDirectory = System.getProperty("user.dir") + "\\" + dbPathName.substring(0,dbPathName.lastIndexOf("\\"));
+            String defaultDbFilePath = System.getProperty("user.dir") + "\\app\\src\\main\\assets\\db\\" + dbName + ".script";
 
-            assetNames = assetManager.list(DB_PATH);
-            for (int i = 0; i < assetNames.length; i++)
+            File dbFile = new File(dbFilePath);
+//            File dbFileDir = new File(dbFileDirectory);
+            File defaultDbFile = new File(defaultDbFilePath);
+
+//            FileUtils.cleanDirectory(dbFileDir);
+
+            if (defaultDbFile.exists())
             {
-                assetNames[i] = DB_PATH + "/" + assetNames[i];
+                InputStream in = new FileInputStream(defaultDbFile);
+                FileUtils.copyInputStreamToFile(in, dbFile);
+                in.close();
+            } else
+            {
+                throw new DAOException("Error in locating default database files!");
             }
 
-            copyAssetsToDirectory(dbPathName, dataDirectory);
-
-            Main.setDBPathName(dataDirectory.toString() + "/" + Main.dbName);
-
+        }
+        catch (FileNotFoundException fnfe)
+        {
+            throw new DAOException("Unable to open default database file!", fnfe);
         }
         catch (IOException ioe)
         {
-            Messages.warning(this, "Unable to access application data: " + ioe.getMessage());
+            throw new DAOException("Unable to access database: ", ioe);
         }
     }
 
@@ -138,9 +122,9 @@ public class DataAccessTest extends TestCase {
         {
             if (this.getName().equals("IntegrationTest"))
             {
-                dataAccess = origHSQLDB;
-//                dataAccess = new DataAccessObject(dbName);
-//                dataAccess.open(dbPathName);
+                replaceDbWithDefault();
+                dataAccess = new DataAccessObject(dbName);
+                dataAccess.open(dbPathName);
             } else
             {
                 dataAccess = new DataAccessStub();
@@ -149,17 +133,18 @@ public class DataAccessTest extends TestCase {
         } catch (DAOException daoe)
         {
             System.err.println(daoe.getMessage());
+            System.exit(1);
         }
     }
 
     private void closeDataAccess()
     {
-        try
+        if (this.getName().equals("IntegrationTest"))
         {
-            dataAccess.close();
-        } catch (DAOException daoe)
+            System.out.println("Closed HSQL database " + dbName);
+        } else
         {
-            System.err.println(daoe.getMessage());
+            System.out.println("Closed stub database " + dbName);
         }
     }
 
@@ -336,7 +321,8 @@ public class DataAccessTest extends TestCase {
         openDataAccess();
         System.out.println("Starting testDataAccess: Insert Then Get ParkingSpots");
 
-        ParkingSpot parkingSpot = new ParkingSpot(-1, "1 Tester Street", "tester", "2042222222", "testing@tester.ca", 101);
+        ParkingSpot parkingSpot = new ParkingSpot(-1, "1 Tester Street", "tester", "2042222222", "testing@tester.ca", 101,0,0);
+        //TODO: GET LONGITUDE AND LATUTUDE VALUES
 
         try
         {
@@ -359,10 +345,11 @@ public class DataAccessTest extends TestCase {
             fail("Error: Duplicate ParkingSpot created with spotID = "+spotID);
         } catch (DAOException daoe)
         {
-            assertEquals("Error in creating ParkingSpot object with SPOT_ID = 22 for Username: tester!",daoe.getMessage());
+            assertEquals("ParkingSpot object already exists with HostName = tester and Address = 1 Tester Street!",daoe.getMessage());
         }
 
-        parkingSpot = new ParkingSpot(-1, "2 Tester Street", "tester", "2042222222", "testing@tester.ca", 101);
+        parkingSpot = new ParkingSpot(-1, "2 Tester Street", "tester", "2042222222", "testing@tester.ca", 101,0,0);
+        //TODO: GET LONGITUDE AND LATUTUDE VALUES
 
         try
         {
@@ -382,12 +369,12 @@ public class DataAccessTest extends TestCase {
         try
         {
             ArrayList<ParkingSpot> parkingSpots = dataAccess.getParkingSpotsByAddressDate("", null);
-            assertEquals(24,parkingSpots.size());
+            assertEquals(22,parkingSpots.size());
             assertTrue(parkingSpots.get(0).getAddress().toLowerCase().compareTo(parkingSpots.get(1).getAddress().toLowerCase()) < 0);
             assertTrue(parkingSpots.get(16).getAddress().toLowerCase().compareTo(parkingSpots.get(17).getAddress().toLowerCase()) < 0);
-            assertFalse(parkingSpots.get(23).getAddress().toLowerCase().compareTo(parkingSpots.get(13).getAddress().toLowerCase()) < 0);
-            assertTrue(parkingSpots.get(22).getAddress().toLowerCase().compareTo(parkingSpots.get(23).getAddress().toLowerCase()) < 0);
-            assertTrue(parkingSpots.get(0).getAddress().toLowerCase().compareTo(parkingSpots.get(23).getAddress().toLowerCase()) < 0);
+            assertFalse(parkingSpots.get(21).getAddress().toLowerCase().compareTo(parkingSpots.get(13).getAddress().toLowerCase()) < 0);
+            assertTrue(parkingSpots.get(20).getAddress().toLowerCase().compareTo(parkingSpots.get(21).getAddress().toLowerCase()) < 0);
+            assertTrue(parkingSpots.get(0).getAddress().toLowerCase().compareTo(parkingSpots.get(21).getAddress().toLowerCase()) < 0);
         }
         catch (DAOException daoe)
         {
@@ -464,28 +451,29 @@ public class DataAccessTest extends TestCase {
             assertEquals(4, bookings.size());
             abooking = bookings.get(0);
             assertEquals("marker", abooking.getName());
-            assertEquals((long) 173, abooking.getTimeSlotId());
-            assertEquals("1000 St. Mary's Rd", abooking.getAddress());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 18:30:00"), abooking.getStart());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 19:00:00"), abooking.getEnd());
-            abooking = bookings.get(1);
-            assertEquals("marker", abooking.getName());
-            assertEquals((long) 91, abooking.getTimeSlotId());
-            assertEquals("1338 Chancellor Drive", abooking.getAddress());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 14:00:00"), abooking.getStart());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"), abooking.getEnd());
-            abooking = bookings.get(2);
-            assertEquals("marker", abooking.getName());
             assertEquals((long) 94, abooking.getTimeSlotId());
             assertEquals("91 Dalhousie Drive", abooking.getAddress());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"), abooking.getStart());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 11:00:00"), abooking.getEnd());
-            abooking = bookings.get(3);
+            abooking = bookings.get(1);
             assertEquals("marker", abooking.getName());
             assertEquals((long) 145, abooking.getTimeSlotId());
             assertEquals("1 Pembina Hwy", abooking.getAddress());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 12:30:00"), abooking.getStart());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 13:00:00"), abooking.getEnd());
+            abooking = bookings.get(2);
+            assertEquals("marker", abooking.getName());
+            assertEquals((long) 91, abooking.getTimeSlotId());
+            assertEquals("1338 Chancellor Drive", abooking.getAddress());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 14:00:00"), abooking.getStart());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"), abooking.getEnd());
+            abooking = bookings.get(3);
+            assertEquals("marker", abooking.getName());
+            assertEquals((long) 173, abooking.getTimeSlotId());
+            assertEquals("1000 St. Mary's Rd", abooking.getAddress());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 18:30:00"), abooking.getStart());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 19:00:00"), abooking.getEnd());
+
         }
         catch (ParseException pe)
         {
@@ -514,10 +502,9 @@ public class DataAccessTest extends TestCase {
             bookings = dataAccess.getBookedSpotsOfGivenUser(username);
             assertEquals(0, bookings.size());
         }
-        catch (DAOException de)
+        catch (DAOException daoe)
         {
-            System.out.print(de.getMessage());
-            fail();
+            fail("DAOException Caught with message: "+daoe.getMessage());
         }
 
         System.out.println("Finished testDataAccess: Getting a User Bookings Empty List");
@@ -541,10 +528,9 @@ public class DataAccessTest extends TestCase {
             assertEquals(3, bookings.size());
             assertEquals(false, bookings.contains(removed));
         }
-        catch (DAOException de)
+        catch (DAOException daoe)
         {
-            System.out.print(de.getMessage());
-            fail();
+            fail("DAOException Caught with message: "+daoe.getMessage());
         }
 
         System.out.println("Finished testDataAccess: Delete a Valid Booking");
@@ -556,20 +542,36 @@ public class DataAccessTest extends TestCase {
         openDataAccess();
         System.out.println("Starting testDataAccess: Delete a Booking of Another User");
 
-        dataAccess.clearSpotList();
         String username = "Donald Trump";
         ArrayList<Booking> bookings;
         long timeSlotId = 91;
+
+        try
+        {
+            bookings = dataAccess.getBookedSpotsOfGivenUser(username);
+            assertEquals(4, bookings.size());
+        } catch (DAOException daoe)
+        {
+            fail("DAOException Caught with message: "+daoe.getMessage());
+        }
+
         try
         {
             dataAccess.deleteBooking(username, timeSlotId);
-            bookings = dataAccess.getBookedSpotsOfGivenUser(username);
-            assertEquals(0, bookings.size());
+            fail("Error: Deleted a booking that does not exist!");
         }
-        catch (DAOException de)
+        catch (DAOException daoe)
         {
-            System.out.print(de.getMessage());
-            fail();
+            assertEquals("Tuple not inserted correctly.",daoe.getMessage());
+        }
+
+        try
+        {
+            bookings = dataAccess.getBookedSpotsOfGivenUser(username);
+            assertEquals(4, bookings.size());
+        } catch (DAOException daoe)
+        {
+            fail("DAOException Caught with message: "+daoe.getMessage());
         }
 
         System.out.println("Finished testDataAccess: Delete a Booking of Another User");
@@ -592,10 +594,9 @@ public class DataAccessTest extends TestCase {
             bookings = dataAccess.getBookedSpotsOfGivenUser(username);
             assertEquals(0, bookings.size());
         }
-        catch (DAOException de)
+        catch (DAOException daoe)
         {
-            System.out.print(de.getMessage());
-            fail();
+            fail("DAOException Caught with message: "+daoe.getMessage());
         }
 
         System.out.println("Finished testDataAccess: Delete a Booking of Empty List");

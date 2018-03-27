@@ -250,6 +250,9 @@ public class DataAccessObject implements DataAccess
 
                 updateCount = pstmt.executeUpdate();
                 checkWarning(pstmt, updateCount);
+            } else
+            {
+                throw new DAOException("ParkingSpot object already exists with HostName = "+username+" and Address = "+currentParkingSpot.getAddress()+"!");
             }
         }
         catch (SQLException sqle)
@@ -355,12 +358,19 @@ public class DataAccessObject implements DataAccess
         try
         {
             cmdString = "SELECT * FROM PARKINGSPOTS P WHERE LCASE(P.ADDRESS) LIKE ? " +
-                        "AND EXISTS (SELECT * FROM DAYSLOTS D WHERE D.SPOT_ID = P.SPOT_ID " +
-                        "AND ? BETWEEN CAST(D.STARTDAYTIME AS DATE) AND CAST(D.ENDDAYTIME AS DATE)) " +
-                        "ORDER BY LCASE(P.ADDRESS)";
+                        "AND EXISTS (SELECT * FROM DAYSLOTS D WHERE D.SPOT_ID = P.SPOT_ID ";
+            if (date != null)
+            {
+                cmdString += "AND ? BETWEEN CAST(D.STARTDAYTIME AS DATE) AND CAST(D.ENDDAYTIME AS DATE)) ";
+            } else
+            {
+                cmdString += ") ";
+            }
+            cmdString += "ORDER BY LCASE(P.ADDRESS)";
+
             pstmt = con.prepareStatement(cmdString);
 
-            if (address == null)
+            if (address == null || address.isEmpty())
             {
                 pstmt.setString(1,"%");
             }
@@ -368,7 +378,11 @@ public class DataAccessObject implements DataAccess
             {
                 pstmt.setString(1,"%" + address.toLowerCase() + "%");
             }
-            pstmt.setString(2, df.getSqlDateFormat().format(date));
+
+            if (date != null)
+            {
+                pstmt.setString(2, df.getSqlDateFormat().format(date));
+            }
 
             rss = pstmt.executeQuery();
 
@@ -532,7 +546,8 @@ public class DataAccessObject implements DataAccess
     @Override
     public void clearSpotList()
     {
-        this.parkingSpots.clear();
+        if (this.parkingSpots != null)
+            this.parkingSpots.clear();
     }
 
 	private void checkWarning(Statement st, int updateCount) throws DAOException

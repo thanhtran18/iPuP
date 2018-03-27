@@ -84,9 +84,9 @@ public class DataAccessTest extends TestCase {
     {
         try
         {
-            String dbFilePath = System.getProperty("user.dir") + "\\" + dbPathName + ".script";
+            String dbFilePath = System.getProperty("user.dir") + "/" + dbPathName + ".script";
 //            String dbFileDirectory = System.getProperty("user.dir") + "\\" + dbPathName.substring(0,dbPathName.lastIndexOf("\\"));
-            String defaultDbFilePath = System.getProperty("user.dir") + "\\app\\src\\main\\assets\\db\\" + dbName + ".script";
+            String defaultDbFilePath = System.getProperty("user.dir") + "/app/src/main/assets/db/" + dbName + ".script";
 
             File dbFile = new File(dbFilePath);
 //            File dbFileDir = new File(dbFileDirectory);

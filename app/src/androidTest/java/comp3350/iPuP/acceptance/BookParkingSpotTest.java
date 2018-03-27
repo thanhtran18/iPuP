@@ -1,5 +1,8 @@
 package comp3350.iPuP.acceptance;
 
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.content.res.AssetManager;
 import android.os.Environment;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
@@ -30,7 +33,12 @@ import static comp3350.iPuP.application.Main.getDBPathName;
 
 public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeActivity>
 {
+    private final String DB_PATH = "db";
+    private final String DB_FILE_NAME = "SC.script";
+    private AssetManager assetManager;
     private Solo solo;
+    private ContextWrapper c;
+    private String dbAsset = null;
 
     public BookParkingSpotTest()
     {
@@ -40,6 +48,24 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
     @Override
     protected void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
+        c = getActivity().getHomeContext();
+        assetManager = c.getAssets();
+        String[] assetNames = assetManager.list(DB_PATH);
+
+        for(int i = 0; i < assetNames.length; i++)
+        {
+            if (assetNames[i].equals(DB_FILE_NAME))
+            {
+                dbAsset = DB_PATH + "/" + assetNames[i];
+                break;
+            }
+        }
+
+        if (dbAsset == null)
+        {
+            System.err.println("HSQL Database (SC.script) does not exist in assets!");
+            System.exit(1);
+        }
     }
 
     @Override
@@ -50,36 +76,22 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
 
     private void replaceDbWithDefault() throws DAOException
     {
-        try
-        {
+        try {
+            File dataDirectory = c.getDir(DB_PATH, Context.MODE_PRIVATE);
+            String[] components = dbAsset.split("/");
+            String copyPath = dataDirectory + "/" + components[components.length - 1];
 
-            String dbFilePath = Environment.getDataDirectory() + "/" + getDBPathName() + ".script";
-//            String dbFileDirectory = System.getProperty("user.dir") + "\\" + dbPathName.substring(0,dbPathName.lastIndexOf("\\"));
-            String defaultDbFilePath = System.getProperty("user.dir") + "/app/src/main/assets/db/" + dbName + ".script";
+            File outFile = new File(copyPath);
 
-            File dbFile = new File(dbFilePath);
-//            File dbFileDir = new File(dbFileDirectory);
-            File defaultDbFile = new File(defaultDbFilePath);
-
-//            FileUtils.cleanDirectory(dbFileDir);
-
-            if (defaultDbFile.exists())
-            {
-                InputStream in = new FileInputStream(defaultDbFile);
-                FileUtils.copyInputStreamToFile(in, dbFile);
+            if (!outFile.exists()) {
+                InputStream in = assetManager.open(dbAsset);
+                FileUtils.copyInputStreamToFile(in, outFile);
                 in.close();
-            } else
-            {
-                throw new DAOException("Error in locating default database files!");
+            } else {
+                throw new DAOException("Error in locating database file in assets!");
             }
 
-        }
-        catch (FileNotFoundException fnfe)
-        {
-            throw new DAOException("Unable to open default database file!", fnfe);
-        }
-        catch (IOException ioe)
-        {
+        }catch (IOException ioe) {
             throw new DAOException("Unable to access database: ", ioe);
         }
     }

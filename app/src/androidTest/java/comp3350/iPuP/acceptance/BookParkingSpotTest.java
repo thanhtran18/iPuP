@@ -166,6 +166,8 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
         solo.assertCurrentActivity("Expected activity Parker Menu Activity", "ParkerMenuActivity");
 
         solo.clickOnButton("View your booked spots");
+        solo.waitForActivity("ParkerLogViewActivity");
+        solo.assertCurrentActivity("Expected activity Parker Log View Activity", "ParkerLogViewActivity");
         Assert.assertFalse(solo.searchText("1000 St. Mary's Rd (hold to cancel this booking"));
         Assert.assertTrue(solo.searchText("1000 St. Mary's Rd"));
         Assert.assertTrue(solo.searchText("91 Dalhousie Drive (hold to cancel this booking"));
@@ -184,7 +186,8 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
         solo.clickLongInList(3);
         Assert.assertFalse(solo.searchText("1338 Chancellor Drive (hold to cancel this booking"));
 
-        solo.goBackToActivity("MainActivity");
+        solo.goBackToActivity("HomeActivity");
+        solo.assertCurrentActivity("Expected activity HomeActivity", "HomeActivity");
 
     }
 
@@ -203,7 +206,7 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
         solo.assertCurrentActivity("Expected activity ParkerLogViewActivity", "ParkerLogViewActivity");
         Assert.assertFalse(solo.searchText("1000 St. Mary's Rd"));
         Assert.assertFalse(solo.searchText("1338 Chancellor Drive"));
-        Assert.assertFalse(solo.searchText("There are no available spots to display"));
+        Assert.assertTrue(solo.searchText("There are no available spots to display"));
 
         solo.goBack();
         solo.waitForActivity("ParkerMenuActivity");
@@ -259,6 +262,8 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
         solo.assertCurrentActivity("Expected activity Parker Menu Activity", "ParkerMenuActivity");
 
         solo.clickOnButton("View your booked spots");
+        solo.waitForActivity("ParkerLogViewActivity");
+        solo.assertCurrentActivity("Expected activity Parker Log View Activity", "ParkerLogViewActivity");
         Assert.assertFalse(solo.searchText("1000 St. Mary's Rd (hold to cancel this booking"));
         Assert.assertFalse(solo.searchText("1000 St. Mary's Rd"));
         Assert.assertFalse(solo.searchText("91 Dalhousie Drive (hold to cancel this booking"));
@@ -266,14 +271,39 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
         Assert.assertTrue(solo.searchText("Mon, 11 Jun 2018, 10:00"));
         Assert.assertTrue(solo.searchText("Mon, 11 Jun 2018, 10:30"));
 
-//        solo.clickLongInList(1);
-//        Assert.assertTrue(solo.searchText("1000 St. Mary's Rd"));
-//        solo.clickLongInList(2);
-//        Assert.assertTrue(solo.searchText("Delete this reservation"));
-//        solo.clickOnText("Delete this reservation");
-//        Assert.assertFalse(solo.searchText("91 Dalhousie Drive (hold to cancel this booking"));
-//        solo.clickLongInList(3);
-//        Assert.assertFalse(solo.searchText("1338 Chancellor Drive (hold to cancel this booking"));
+
+        Assert.assertTrue(solo.searchText("29 St. Mary's Rd"));
+        solo.clickLongInList(1);
+        Assert.assertTrue(solo.searchText("Delete this reservation"));
+        solo.clickOnText("Delete this reservation");
+        Assert.assertFalse(solo.searchText("Mon, 11 Jun 2018, 8:30 PM"));
+
+        solo.clickLongInList(1);
+        Assert.assertTrue(solo.searchText("Delete this reservation"));
+        solo.clickOnText("Delete this reservation");
+        Assert.assertFalse(solo.searchText("Mon, 11 Jun 2018, 9:00 PM"));
+
+        solo.goBack();
+
+        solo.clickOnButton("View your booked spots");
+        solo.waitForActivity("ParkerLogViewActivity");
+        solo.assertCurrentActivity("Expected activity Parker Log View Activity", "ParkerLogViewActivity");
+
+        solo.clickLongInList(1);
+        Assert.assertTrue(solo.searchText("Delete this reservation"));
+        solo.clickOnText("Delete this reservation");
+        Assert.assertFalse(solo.searchText("Mon, 11 Jun 2018, 9:30 PM"));
+
+        solo.clickLongInList(1);
+        Assert.assertTrue(solo.searchText("Delete this reservation"));
+        solo.clickOnText("Delete this reservation");
+        Assert.assertFalse(solo.searchText("Mon, 11 Jun 2018, 10:00 PM"));
+
+        Assert.assertFalse(solo.searchText("29 St. Mary's Rd"));
+        Assert.assertTrue(solo.searchText("There are no available spots to display"));
+
+        solo.goBackToActivity("HomeActivity");
+        solo.assertCurrentActivity("Expected activity HomeActivity", "HomeActivity");
     }
 
 

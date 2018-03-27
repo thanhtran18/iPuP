@@ -20,7 +20,7 @@ public class ParkingSpotTest extends TestCase
     {
         ParkingSpot spot;
 
-        spot = new ParkingSpot("Camelot", "King Arthur", "888-9999", "king@roundtable.com", 10000);
+        spot = new ParkingSpot("Camelot", "King Arthur", "888-9999", "king@roundtable.com", 10000,0,0);
         assertEquals("Camelot", spot.getAddress());
         assertEquals("King Arthur", spot.getName());
         assertEquals("888-9999", spot.getPhone());
@@ -55,27 +55,27 @@ public class ParkingSpotTest extends TestCase
         assertEquals("", spot.getEmail());
         assertEquals(-9.0, spot.getRate());
 
-        spot = new ParkingSpot(100,"Millenium Falcon", "Han Solo", "", "han@solo.com", 77);
+        spot = new ParkingSpot(100,"Millenium Falcon", "Han Solo", "", "han@solo.com", 77,0,0);
         assertEquals("Millenium Falcon", spot.getAddress());
         assertEquals("Millenium Falcon", spot.toString());
         assertEquals("Han Solo", spot.getName());
         assertEquals("", spot.getPhone());
         assertEquals("han@solo.com", spot.getEmail());
         assertEquals(77.0, spot.getRate());
-        assertFalse(spot.equals(new ParkingSpot(9001,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138)));
-        assertTrue(spot.equals(new ParkingSpot(100,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138)));
+        assertFalse(spot.equals(new ParkingSpot(9001,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138,0,0)));
+        assertTrue(spot.equals(new ParkingSpot(100,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138,0,0)));
         assertFalse(spot.equals(null));
         assertFalse(spot.equals(this));
 
-        spot = new ParkingSpot(9001,"Death Star", "Darth Vader", "", "vader@sith.com", 39);
+        spot = new ParkingSpot(9001,"Death Star", "Darth Vader", "", "vader@sith.com", 39,0,0);
         assertEquals("Death Star", spot.getAddress());
         assertEquals("Death Star", spot.toString());
         assertEquals("Darth Vader", spot.getName());
         assertEquals("", spot.getPhone());
         assertEquals("vader@sith.com", spot.getEmail());
         assertEquals(39.0, spot.getRate());
-        assertTrue(spot.equals(new ParkingSpot(9001,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138)));
-        assertFalse(spot.equals(new ParkingSpot(100,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138)));
+        assertTrue(spot.equals(new ParkingSpot(9001,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138,0,0)));
+        assertFalse(spot.equals(new ParkingSpot(100,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138,0,0)));
         assertFalse(spot.equals(null));
         assertFalse(spot.equals(this));
 
@@ -86,8 +86,8 @@ public class ParkingSpotTest extends TestCase
         assertEquals("555-5555", spot.getPhone());
         assertNull(spot.getEmail());
         assertEquals(1.0, spot.getRate());
-        assertTrue(spot.equals(new ParkingSpot(9001,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138)));
-        assertFalse(spot.equals(new ParkingSpot(100,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138)));
+        assertTrue(spot.equals(new ParkingSpot(9001,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138,0,0)));
+        assertFalse(spot.equals(new ParkingSpot(100,"Tattoine", "Luke Skywalker", "111-5555", "luke@sky.com", 1138,0,0)));
         assertFalse(spot.equals(null));
         assertFalse(spot.equals(this));
     }

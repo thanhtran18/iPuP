@@ -66,7 +66,7 @@ public class AccessParkingSpotsTest extends TestCase
         TimeSlot timeSlot = new TimeSlot(start, end);
         try
         {
-            parkSpotAccess.insertParkingSpot("testuser", timeSlot, null, "356 testing drive, Winnipeg, MB", "456-6789", "", 42);
+            parkSpotAccess.insertParkingSpot("testuser", timeSlot, null, "356 testing drive, Winnipeg, MB", "456-6789", "", 42,0,0);
         }
         catch (DAOException daoe)
         {
@@ -168,7 +168,7 @@ public class AccessParkingSpotsTest extends TestCase
         timeSlot = new TimeSlot(start,end);
         try
         {
-            parkSpotAccess.insertParkingSpot("testuser2", timeSlot, "Days 3 4", "whodunnit St.", "555-5555", "hans@hans.hans", 10);
+            parkSpotAccess.insertParkingSpot("testuser2", timeSlot, "Days 3 4", "whodunnit St.", "555-5555", "hans@hans.hans", 10,0,0);
         }
         catch (Exception e)
         {
@@ -287,7 +287,7 @@ public class AccessParkingSpotsTest extends TestCase
         timeSlot = new TimeSlot(start,end);
         try
         {
-            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 5 0100111", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02);
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 5 0100111", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02,0,0);
         }
         catch (Exception e)
         {
@@ -435,7 +435,7 @@ public class AccessParkingSpotsTest extends TestCase
         timeSlot = new TimeSlot(start,end);
         try
         {
-            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 1 0100111", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02);
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 1 0100111", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02,0,0);
             spot = parkSpotAccess.getAllParkingSpots().get(0);
             daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
             daySlotID = daySlots.get(0).getSlotID();
@@ -472,7 +472,7 @@ public class AccessParkingSpotsTest extends TestCase
         timeSlot = new TimeSlot(start,end);
         try
         {
-            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02);
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02,0,0);
             spot = parkSpotAccess.getAllParkingSpots().get(0);
             daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
             daySlotID = daySlots.get(0).getSlotID();
@@ -510,7 +510,7 @@ public class AccessParkingSpotsTest extends TestCase
         timeSlot = new TimeSlot(start,end);
         try
         {
-            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 1 0100001", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02);
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 1 0100001", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02,0,0);
             spot = parkSpotAccess.getAllParkingSpots().get(0);
             daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
             daySlotID = daySlots.get(0).getSlotID();
@@ -550,7 +550,7 @@ public class AccessParkingSpotsTest extends TestCase
         timeSlot = new TimeSlot(start, end);
         try
         {
-            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 1 0100001", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02);
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 1 0100001", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02,0,0);
             spot = parkSpotAccess.getAllParkingSpots().get(0);
             daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
             daySlotID = daySlots.get(0).getSlotID();

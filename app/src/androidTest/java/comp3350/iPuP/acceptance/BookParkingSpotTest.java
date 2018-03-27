@@ -1,5 +1,6 @@
 package comp3350.iPuP.acceptance;
 
+import android.os.Environment;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,10 +28,6 @@ import comp3350.iPuP.presentation.HomeActivity;
 import static comp3350.iPuP.application.Main.dbName;
 import static comp3350.iPuP.application.Main.getDBPathName;
 
-/**
- * Created by ThanhTran on 2018-03-26.
- */
-
 public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeActivity>
 {
     private Solo solo;
@@ -55,7 +52,8 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
     {
         try
         {
-            String dbFilePath = System.getProperty("user.dir") + "/" + getDBPathName() + ".script";
+
+            String dbFilePath = Environment.getDataDirectory() + "/" + getDBPathName() + ".script";
 //            String dbFileDirectory = System.getProperty("user.dir") + "\\" + dbPathName.substring(0,dbPathName.lastIndexOf("\\"));
             String defaultDbFilePath = System.getProperty("user.dir") + "/app/src/main/assets/db/" + dbName + ".script";
 
@@ -88,14 +86,14 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
 
     public void testExistingParker()
     {
-//        try
-//        {
-//            replaceDbWithDefault();
-//        }
-//        catch (Exception e)
-//        {
-//            System.out.println(e.getMessage());
-//        }
+        try
+        {
+            replaceDbWithDefault();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
         solo.waitForActivity("HomeActivity");
         solo.enterText((EditText) solo.getView(R.id.editTextName), "marker");
         solo.assertCurrentActivity("Expected activity Home Activity", "HomeActivity");

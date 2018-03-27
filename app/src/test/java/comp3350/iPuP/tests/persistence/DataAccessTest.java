@@ -76,8 +76,7 @@ public class DataAccessTest extends TestCase {
         dataAccessTest.testInsertAndGetBookings();
         dataAccessTest.testGettingAUserBookingsEmptyList();
         dataAccessTest.testDeleteAValidBooking();
-        dataAccessTest.testDeleteABookingOfAnotherUser();
-        dataAccessTest.testDeleteABookingOfEmptyList();
+        dataAccessTest.testDeleteANonExistingBooking();
     }
 
     private void replaceDbWithDefault() throws DAOException
@@ -537,10 +536,10 @@ public class DataAccessTest extends TestCase {
         closeDataAccess();
     }
 
-    public void testDeleteABookingOfAnotherUser()
+    public void testDeleteANonExistingBooking()
     {
         openDataAccess();
-        System.out.println("Starting testDataAccess: Delete a Booking of Another User");
+        System.out.println("Starting testDataAccess: Delete a Non-Existing Booking");
 
         String username = "Donald Trump";
         ArrayList<Booking> bookings;
@@ -574,32 +573,7 @@ public class DataAccessTest extends TestCase {
             fail("DAOException Caught with message: "+daoe.getMessage());
         }
 
-        System.out.println("Finished testDataAccess: Delete a Booking of Another User");
-        closeDataAccess();
-    }
-
-    public void testDeleteABookingOfEmptyList()
-    {
-        openDataAccess();
-        System.out.println("Starting testDataAccess: Delete a Booking of Empty List");
-
-        dataAccess.clearSpotList();
-
-        String username = "tester";
-        ArrayList<Booking> bookings;
-        long timeSlotId = 91;
-        try
-        {
-            dataAccess.deleteBooking(username, timeSlotId);
-            bookings = dataAccess.getBookedSpotsOfGivenUser(username);
-            assertEquals(0, bookings.size());
-        }
-        catch (DAOException daoe)
-        {
-            fail("DAOException Caught with message: "+daoe.getMessage());
-        }
-
-        System.out.println("Finished testDataAccess: Delete a Booking of Empty List");
+        System.out.println("Finished testDataAccess: Delete a Non-Existing Booking");
         closeDataAccess();
     }
 }

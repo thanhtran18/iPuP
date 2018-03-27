@@ -4,8 +4,11 @@ package comp3350.iPuP.acceptance;
  * Created by Victory on 2018-03-26.
  */
 import android.test.ActivityInstrumentationTestCase2;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
@@ -40,7 +43,7 @@ public class ModifyParkingSpotTest extends ActivityInstrumentationTestCase2<Home
             solo.finishOpenedActivities();
         }
 
-        public void testModifyParking()
+        public void testExistingUserModifyParking()
         {
             solo.waitForActivity("HomeActivity");
             solo.enterText((EditText) solo.getView(R.id.editTextName), "marker");
@@ -75,7 +78,7 @@ public class ModifyParkingSpotTest extends ActivityInstrumentationTestCase2<Home
             Assert.assertTrue(solo.searchText("Start: Mon, 11 Jun 2018, 10:30 AM"));
             Assert.assertTrue(solo.searchText("End: Tue, 12 Jun 2018, 4:30 PM"));
 
-            solo.clickOnText("End: Mon, 11 Jun 2018, 12:30 AM");
+            solo.clickOnText("End: Mon, 11 Jun 2018, 12:30 PM");
             Assert.assertTrue(solo.searchText("Address: 1000 Plaza Drive"));
             Assert.assertTrue(solo.searchText(Pattern.quote("Rate: $4.50")));
             Assert.assertTrue(solo.searchText("Start: Mon, 11 Jun 2018, 10:30 AM"));
@@ -85,7 +88,23 @@ public class ModifyParkingSpotTest extends ActivityInstrumentationTestCase2<Home
             Assert.assertTrue(solo.searchText("End: Mon, 11 Jun 2018, 11:30 AM"));
             Assert.assertTrue(solo.searchText("End: Mon, 11 Jun 2018, 12:00 PM"));
 
-            solo.clickOnText("Delete");
+            solo.clickOnButton("Delete");
+            Assert.assertFalse(solo.searchText("End: Mon, 11 Jun 2018, 11:00 AM"));
+
+            solo.clickOnButton("Delete");
+            Assert.assertFalse(solo.searchText("End: Mon, 11 Jun 2018, 11:30 AM"));
+            solo.clickOnButton("Delete");
+            Assert.assertFalse(solo.searchText("End: Mon, 11 Jun 2018, 12:00 PM"));
+            solo.clickOnButton("Delete");
+            Assert.assertFalse(solo.searchText("End: Mon, 11 Jun 2018, 12:30 PM"));
+            solo.clickOnButton("Delete");
+            Assert.assertTrue(solo.searchText("There are no available spots to display"));
+
+            solo.sleep(3000);
+            solo.goBackToActivity("HomeActivity");
+            solo.assertCurrentActivity("Expected activity HomeActivity", "HomeActivity");
 
         }
+
+        
 }

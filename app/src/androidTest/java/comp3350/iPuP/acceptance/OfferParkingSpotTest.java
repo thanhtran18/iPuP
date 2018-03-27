@@ -1,8 +1,6 @@
 package comp3350.iPuP.acceptance;
 
-/**
- * Created by Victory on 2018-03-26.
- */
+
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,7 +64,7 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
         solo.waitForText("2");
 
         solo.clickOnView((TextView) solo.getView(R.id.textViewToDate));
-        solo.setDatePicker(0, 2018, 2, 27);
+        solo.setDatePicker(0, 2018, 4, 27);
         solo.clickOnText("OK");
         solo.clickOnButton("Cancel");
 
@@ -92,7 +90,7 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
 
 
         solo.clickOnView((TextView) solo.getView(R.id.textViewToDate));
-        solo.setDatePicker(0, 2018, 2, 28);
+        solo.setDatePicker(0, 2018, 4, 28);
         solo.clickOnText("OK");
 
 
@@ -116,8 +114,8 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
         Assert.assertTrue(solo.searchText("Address: 325 Author V. Mauro"));
         solo.clickOnText("Address: 325 Author V. Mauro");
 
-
-
+        solo.goBackToActivity("HomeActivity");
+        solo.assertCurrentActivity("Expected activity HomeActivity", "HomeActivity");
 
     }
 
@@ -197,9 +195,96 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
         //todo warning colors
 
 
+        solo.goBackToActivity("HomeActivity");
+        solo.assertCurrentActivity("Expected activity HomeActivity", "HomeActivity");
+
+    }
+
+
+    public void testNewUserCreateParkingSpot()
+    {
+        solo.waitForActivity("HomeActivity");
+        solo.enterText((EditText) solo.getView(R.id.editTextName), "new_host_creates_spots");
+        solo.assertCurrentActivity("Expected activity Home Activity", "HomeActivity");
+
+        solo.clickOnButton("I have available parking to advertise");
+        solo.waitForActivity("HostMenuActivity");
+        solo.assertCurrentActivity("Expected activity HostMenuActivity", "HostMenuActivity");
+        solo.sleep(3000);
+
+        solo.clickOnButton("Create a new parking spot");
+        solo.waitForActivity("HostActivity");
+        solo.assertCurrentActivity("Expected activity Host  Activity", "HostActivity");
+
+        solo.clickOnButton("Create a new parking spot");
+        solo.waitForActivity("HostActivity");
+        solo.assertCurrentActivity("Expected activity Host  Activity", "HostActivity");
 
 
 
+        solo.enterText((EditText) solo.getView(R.id.editTextAddress), "325 Author V. Mauro");
+        solo.waitForText("325 Author V. Mauro");
+        solo.enterText((EditText) solo.getView(R.id.editTextPhone), "204-234-5678");
+        solo.waitForText("204-234-5678");
+        solo.enterText((EditText) solo.getView(R.id.editTextEmail), "manlikerodney@gmail.com");
+        solo.waitForText("manlikerodney@gmail.com");
+        solo.enterText((EditText) solo.getView(R.id.editTextRate), "2");
+        solo.waitForText("2");
+
+        solo.clickOnView((TextView) solo.getView(R.id.textViewToDate));
+        solo.setDatePicker(0, 2018, 4, 27);
+        solo.clickOnText("OK");
+        solo.clickOnButton("Cancel");
+
+
+        solo.clickOnButton("Create a new parking spot");
+        solo.waitForActivity("HostActivity");
+        solo.assertCurrentActivity("Expected activity Host  Activity", "HostActivity");
+
+        solo.clearEditText((EditText) solo.getView(R.id.editTextAddress));
+        solo.clearEditText((EditText) solo.getView(R.id.editTextPhone));
+        solo.clearEditText((EditText) solo.getView(R.id.editTextEmail));
+        solo.clearEditText((EditText) solo.getView(R.id.editTextRate));
+
+
+        solo.enterText((EditText) solo.getView(R.id.editTextAddress), "325 Author V. Mauro");
+        solo.waitForText("325 Author V. Mauro");
+        solo.enterText((EditText) solo.getView(R.id.editTextPhone), "204-234-5678");
+        solo.waitForText("204-234-5678");
+        solo.enterText((EditText) solo.getView(R.id.editTextEmail), "manlikerodney@gmail.com");
+        solo.waitForText("manlikerodney@gmail.com");
+        solo.enterText((EditText) solo.getView(R.id.editTextRate), "2");
+        solo.waitForText("2");
+
+
+        solo.clickOnView((TextView) solo.getView(R.id.textViewToDate));
+        solo.setDatePicker(0, 2018, 4, 28);
+        solo.clickOnText("OK");
+
+
+        solo.clickOnToggleButton("Does not repeat");
+        solo.waitForActivity("RepeatActivity");
+        solo.assertCurrentActivity("Expected activity Repeat  Activity", "RepeatActivity");
+
+        solo.clearEditText((EditText) solo.getView(R.id.editTextPeriod));
+        solo.enterText((EditText) solo.getView(R.id.editTextPeriod), "4");
+
+        solo.clickOnButton("Confirm");
+        solo.goBackToActivity("HostActivity");
+        solo.clickOnButton("Confirm");
+        solo.goBackToActivity("HostMenuActivity");
+
+        solo.clickOnButton("View your parking spots");
+        solo.waitForActivity("HostViewActivity");
+        solo.assertCurrentActivity("Expected activity Host View Activity", "HostViewActivity");
+
+        solo.waitForText("Address: 325 Author V. Mauro");
+        Assert.assertTrue(solo.searchText("Address: 325 Author V. Mauro"));
+        solo.clickOnText("Address: 325 Author V. Mauro");
+        solo.sleep(3000);
+
+        solo.goBackToActivity("HomeActivity");
+        solo.assertCurrentActivity("Expected activity HomeActivity", "HomeActivity");
     }
 }
 

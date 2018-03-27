@@ -1,8 +1,5 @@
 package comp3350.iPuP.acceptance;
 
-/**
- * Created by Victory on 2018-03-26.
- */
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 import android.view.ViewGroup;

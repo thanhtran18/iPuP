@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import comp3350.iPuP.application.Main;
 import comp3350.iPuP.application.Services;
@@ -124,6 +125,84 @@ public class BusinessPersistenceSeamTest extends TestCase
 
         System.out.println("Finished testBusinessPersistenceSeam: Access ParkingSpots To View");
     }
+    public void testCreateParkingSpot()
+    {
+        openDataAccess();
+        System.out.println("Starting testBusinessPersistenceSeam: Create A ParkingSpot");
+
+        AccessParkingSpots accessParkingSpots;
+        AccessUsers accessUsers;
+        ArrayList<ParkingSpot> parkingSpots;
+        ParkingSpot aparkingspot;
+        TimeSlot timeSlot;
+        //ArrayList<TimeSlot> daysSlots;
+        try
+        {
+            accessParkingSpots = new AccessParkingSpots();
+            accessUsers = new AccessUsers();
+
+            Date start = new Date();
+            Date end = new Date();
+            start.setMonth(6);
+            start.setYear(118);
+            start.setDate(20);
+
+            end.setMonth(7);
+            end.setYear(118);
+            end.setDate(20);
+            timeSlot = new TimeSlot(start,end);
+
+            assertFalse(accessUsers.createUser("marker"));
+
+            accessParkingSpots.insertParkingSpot("marker", timeSlot, "", "120 Dafoe Road", "204-123-1231","iAmMarker@gmail.com" ,5.0, 77.4, 88.8);
+            parkingSpots = accessParkingSpots.getDailySpots("120 Dafoe Road", start);
+
+            assertEquals(1,parkingSpots.size());
+
+            aparkingspot = parkingSpots.get(0);
+            assertEquals("120 Dafoe Road",aparkingspot.getAddress());
+            assertEquals("marker",aparkingspot.getName());
+            assertEquals("204-123-1231",aparkingspot.getPhone());
+            assertEquals("iAmMarker@gmail.com",aparkingspot.getEmail());
+            assertEquals(5.0,aparkingspot.getRate());
+            assertEquals(77.4,aparkingspot.getLatitude());
+            assertEquals(88.8,aparkingspot.getLongitude());
+
+
+            accessUsers.createUser("Metta World Peace");
+            start.setMonth(7);
+            start.setYear(118);
+            start.setDate(15);
+
+            end.setMonth(7);
+            end.setYear(118);
+            end.setDate(20);
+            timeSlot = new TimeSlot(start, end);
+
+            accessParkingSpots = new AccessParkingSpots();
+
+            accessParkingSpots.insertParkingSpot("Metta World Peace", timeSlot, "", "1999 St. Mary's Road", "204-902-1223","fight@gmail.com" ,10.0, 555.5, 66.66);
+            parkingSpots = accessParkingSpots.getDailySpots("1999 St. Mary's Road", start);
+
+            assertEquals(1,parkingSpots.size());
+
+            aparkingspot = parkingSpots.get(0);
+            assertEquals("1999 St. Mary's Road",aparkingspot.getAddress());
+            assertEquals("Metta World Peace",aparkingspot.getName());
+
+            assertEquals("204-902-1223",aparkingspot.getPhone());
+            assertEquals("fight@gmail.com" ,aparkingspot.getEmail());
+            assertEquals(10.0,aparkingspot.getRate());
+            assertEquals(555.5,aparkingspot.getLatitude());
+            assertEquals(66.66,aparkingspot.getLongitude());
+        } catch (DAOException daoe)
+        {
+            fail("DAOException Caught with message: "+daoe.getMessage());
+        }
+        System.out.println("Finished testBusinessPersistenceSeam: Create A ParkingSpot");
+
+    }
+
 
     public void testBookAParkingSpot()
     {

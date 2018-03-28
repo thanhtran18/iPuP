@@ -21,14 +21,21 @@ public class AccessParkingSpots
     private DataAccess dataAccess;
     private ArrayList<ParkingSpot> availableSpots;
 
-    public AccessParkingSpots()
+    private void getDataAccess()
     {
         dataAccess = Services.getDataAccess();
+    }
+
+    public AccessParkingSpots()
+    {
+        getDataAccess();
         availableSpots = new ArrayList<>();
     }
 
     public void insertParkingSpot(String name, TimeSlot timeSlot, String repetitionInfo, String address, String phone, String email, double rate, double latitude, double longitude) throws DAOException
     {
+        getDataAccess();
+
         Calendar start = new GregorianCalendar();
         Calendar end = new GregorianCalendar();
         start.setTime(timeSlot.getStart());
@@ -89,6 +96,8 @@ public class AccessParkingSpots
 
     private void insertDaySlot(Date start, Date end, long spotID, DataAccess dataAccess) throws DAOException
     {
+        getDataAccess();
+
         TimeSlot daySlot = new TimeSlot(start, end);
         daySlot.setSlotID( dataAccess.insertDaySlot(daySlot, spotID));
         insertTimeSlots(daySlot, spotID, dataAccess);
@@ -96,6 +105,8 @@ public class AccessParkingSpots
 
     private void insertTimeSlots(TimeSlot daySlot, long spotID, DataAccess dataAccess) throws DAOException
     {
+        getDataAccess();
+
         Calendar start = new GregorianCalendar();
         Calendar end = new GregorianCalendar();
         start.setTime(daySlot.getStart());
@@ -114,73 +125,104 @@ public class AccessParkingSpots
 
     private long insertParkingSpot(String user, ParkingSpot newParkingSpot) throws DAOException
     {
+        getDataAccess();
+
         return dataAccess.insertParkingSpot(user, newParkingSpot);
     }
 
     public ArrayList<ParkingSpot> getAllParkingSpots() throws DAOException
     {
+        getDataAccess();
+
         return dataAccess.getAllParkingSpots();
     }
 
     public ArrayList<ParkingSpot> getAvailableSpots()
     {
+        getDataAccess();
+
         availableSpots = new ArrayList<>();
         return availableSpots;
     }
 
     public void clearSpots()
     {
+        getDataAccess();
+
         dataAccess.clearSpotList();
     }
 
     public ArrayList<ParkingSpot> getMyHostedSpots(String name) throws DAOException
     {
+        getDataAccess();
+
         return dataAccess.getHostedSpotsOfGivenUser(name);
     }
 
     public ArrayList<Booking> getMyBookedSpots(String name) throws DAOException
     {
+        getDataAccess();
+
         return dataAccess.getBookedSpotsOfGivenUser(name);
     }
 
 
     public ArrayList<ParkingSpot> getDailySpots(String address, Date today) throws DAOException
     {
+        getDataAccess();
+
         return dataAccess.getParkingSpotsByAddressDate(address, today);
     }
 
-    public ArrayList<ParkingSpot> getParkingSpotsByTime(Date time) throws  DAOException
+    public ArrayList<GeoPoint> getGeoPointsByTime(Date time) throws  DAOException
     {
-        return dataAccess.getParkingSpotsByTime(time);
+        getDataAccess();
+
+        ArrayList<GeoPoint> points = new ArrayList<>();
+        for (ParkingSpot spot : dataAccess.getParkingSpotsByTime(time))
+            points.add(new GeoPoint(spot.getLatitude(),spot.getLongitude()));
+        return points;
     }
 
     public void cancelThisSpot(String username, long timeSlotId) throws DAOException
     {
+        getDataAccess();
+
         dataAccess.deleteBooking(username, timeSlotId);
     }
 
     public ParkingSpot getParkingSpot(long spotID) throws DAOException
     {
+        getDataAccess();
+
         return dataAccess.getParkingSpot(spotID);
     }
 
     public void modifyParkingSpot(long spotID, String address, String phone, String email, Double rate, double latitude, double longitude) throws DAOException
     {
+        getDataAccess();
+
         dataAccess.modifyParkingSpot(spotID,address,phone,email,rate, latitude, longitude);
     }
 
     public ArrayList<TimeSlot> getFreeTimeSlotsByID(long spotID) throws DAOException
     {
+        getDataAccess();
+
         return dataAccess.getUnbookedTimeSlotsForParkingSpot(spotID);
     }
 
     public ParkingSpot getSpotByID(long spotID) throws DAOException
     {
+        getDataAccess();
+
         return dataAccess.getParkingSpotByID(spotID);
     }
 
     public boolean bookTimeSlots(ArrayList<TimeSlot> timeSlots, String userBooking, long pSpotID) throws DAOException
     {
+        getDataAccess();
+
         boolean returnVal = false;
         int checkLoop=0;
 
@@ -202,21 +244,29 @@ public class AccessParkingSpots
 
     public ArrayList<TimeSlot> getDaySlots(long spotID) throws DAOException
     {
+        getDataAccess();
+
         return dataAccess.getDaySlots(spotID);
     }
 
     public ArrayList<TimeSlot> getTimeSlots(long daySlotID) throws DAOException
     {
+        getDataAccess();
+
         return dataAccess.getTimeSlots(daySlotID);
     }
 
     public boolean deleteTimeSlot(long timeSlotID) throws DAOException
     {
+        getDataAccess();
+
         return dataAccess.deleteTimeSlot(timeSlotID);
     }
 
     public boolean deleteDaySlot(long daySlotID) throws  DAOException
     {
+        getDataAccess();
+
         return dataAccess.deleteDaySlot(daySlotID);
     }
 }

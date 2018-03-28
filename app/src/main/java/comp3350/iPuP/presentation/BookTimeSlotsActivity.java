@@ -1,6 +1,11 @@
 package comp3350.iPuP.presentation;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -29,6 +34,9 @@ public class BookTimeSlotsActivity extends AppCompatActivity
     ArrayAdapter<TimeSlot> timeSlotAdapter;
     ListView timeSlotList;
     TextView emptyList;
+
+    NotificationCompat.Builder bookingNotification;
+    private static final int notificationID=45612;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -94,6 +102,9 @@ public class BookTimeSlotsActivity extends AppCompatActivity
                 currentPrice.setText(String.format(getString(R.string.info_current_price), currentSpot.getRate() * timesToBook.size()/2));
             }
         });
+
+        bookingNotification=new NotificationCompat.Builder(this);
+        bookingNotification.setAutoCancel(true);
     }
 
 
@@ -101,6 +112,27 @@ public class BookTimeSlotsActivity extends AppCompatActivity
     {
         bookSelectedSlotsInDB(timesToBook);
         timesToBook.clear();
+
+        Uri soundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        bookingNotification.setSound(soundUri);
+        bookingNotification.setSmallIcon(R.drawable.ic_icon_ipup);
+        bookingNotification.setTicker("Booking Notification");
+        bookingNotification.setWhen(System.currentTimeMillis());
+        bookingNotification.setContentTitle("New booking on one of your spots!");
+        bookingNotification.setContentText("New booking on your parking spot at: "+
+        currentSpot.getAddress()+" Login to view!");
+
+        bookingNotification.setPriority(NotificationCompat.BADGE_ICON_LARGE);
+
+        //Code below sends notification to the phone screen
+        Intent theIntent=new Intent(BookTimeSlotsActivity.this, HomeActivity.class);
+        PendingIntent pendingIntent=PendingIntent.getActivity(this, 0,
+                theIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        bookingNotification.setContentIntent(pendingIntent);
+
+        //Build intent and issue notification
+        NotificationManager nManager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        nManager.notify(notificationID, bookingNotification.build());
     }
 
 

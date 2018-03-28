@@ -3,8 +3,6 @@ package comp3350.iPuP.tests.business;
 import junit.framework.TestCase;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.io.CharArrayReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -581,18 +579,20 @@ public class AccessParkingSpotsTest extends TestCase
     public void testMyDailyParkingSpotsEmptyList()
     {
         Services.closeDataAccess();
-
         Services.createDataAccess(new DataAccessStub(dbName));
-
         parkSpotAccess = new AccessParkingSpots();
-        parkSpotAccess.clearSpots();
+        //parkSpotAccess.clearSpots();
 
         try
         {
             DateFormatter dateFormatter = new DateFormatter();
             Date date = dateFormatter.getSqlDateFormat().parse("2018-06-10");
             ParkingSpot newSpots;
+            parkingSpot = parkSpotAccess.getDailySpots(null,date );
+            assertEquals(0, parkingSpot.size());
             parkingSpot = parkSpotAccess.getDailySpots("",date );
+            assertEquals(0, parkingSpot.size());
+            parkingSpot = parkSpotAccess.getDailySpots("         ",date );
             assertEquals(0, parkingSpot.size());
             parkingSpot = parkSpotAccess.getDailySpots("pembina Hwy",date );
             assertEquals(0, parkingSpot.size());
@@ -612,9 +612,7 @@ public class AccessParkingSpotsTest extends TestCase
     public void testFullListOfDailyParkingSpots()
     {
         Services.closeDataAccess();
-
         Services.createDataAccess(new DataAccessStub(dbName));
-
         parkSpotAccess = new AccessParkingSpots();
 //        parkSpotAccess.clearSpots();
 
@@ -623,6 +621,15 @@ public class AccessParkingSpotsTest extends TestCase
             ParkingSpot newSpots;
             parkingSpot = parkSpotAccess.getDailySpots("",null );
             assertEquals(22, parkingSpot.size());
+
+            parkingSpot = parkSpotAccess.getDailySpots("          ",null );
+            assertEquals(22, parkingSpot.size());
+
+            parkingSpot = parkSpotAccess.getDailySpots(null,null );
+            assertEquals(22, parkingSpot.size());
+
+
+
             newSpots = parkingSpot.get(0);
             assertEquals("Jenifer Aniston",newSpots.getName());
             assertEquals("604-253-1111",newSpots.getPhone());
@@ -654,24 +661,46 @@ public class AccessParkingSpotsTest extends TestCase
     public void testGettingMyDailyParkingSpots()
     {
         Services.closeDataAccess();
-
         Services.createDataAccess(new DataAccessStub(dbName));
-
         parkSpotAccess = new AccessParkingSpots();
-       // parkSpotAccess.clearSpots();
+       //parkSpotAccess.clearSpots();
 
         try
         {
             DateFormatter dateFormatter = new DateFormatter();
             Date date = dateFormatter.getSqlDateFormat().parse("2018-06-12");
             ParkingSpot newSpots;
-            parkingSpot = parkSpotAccess.getDailySpots(null,date );
+            parkingSpot = parkSpotAccess.getDailySpots("",date );
+            assertEquals(2, parkingSpot.size());
+            parkingSpot = parkSpotAccess.getDailySpots(null,date);
+            assertEquals(2, parkingSpot.size());
+            parkingSpot = parkSpotAccess.getDailySpots("      ",date );
             assertEquals(2, parkingSpot.size());
             newSpots = parkingSpot.get(0);
+            assertEquals("Mary Watson", newSpots.getName());
             assertEquals("29 St. Mary's Rd", newSpots.getAddress());
+            assertEquals("204-242-2255",newSpots.getPhone());
+            assertEquals("sherlock101@gmail.com",newSpots.getEmail());
+            assertEquals(4.5,newSpots.getRate());
 
+            newSpots = parkingSpot.get(1);
+            assertEquals("marker", newSpots.getName());
+            assertEquals("88 Plaza Drive", newSpots.getAddress());
+            assertEquals("204-855-2342",newSpots.getPhone());
+            assertEquals("theBestMarker@gmail.com",newSpots.getEmail());
+            assertEquals(2.0,newSpots.getRate());
 
+            parkingSpot = parkSpotAccess.getDailySpots("S",date );
+            assertEquals(1, parkingSpot.size());
+            newSpots = parkingSpot.get(0);
+            assertEquals("Mary Watson", newSpots.getName());
+            assertEquals("29 St. Mary's Rd", newSpots.getAddress());
+            assertEquals("204-242-2255",newSpots.getPhone());
+            assertEquals("sherlock101@gmail.com",newSpots.getEmail());
+            assertEquals(4.5,newSpots.getRate());
 
+            parkingSpot = parkSpotAccess.getDailySpots("Pembina Hwy",date );
+            assertEquals(0, parkingSpot.size());
 
 
         }
@@ -694,7 +723,6 @@ public class AccessParkingSpotsTest extends TestCase
         Services.createDataAccess(new DataAccessStub(dbName));
 
         parkSpotAccess = new AccessParkingSpots();
-        //parkSpotAccess.clearSpots();
 
         String username = "marker";
         try
@@ -707,26 +735,26 @@ public class AccessParkingSpotsTest extends TestCase
             assertEquals("marker",abooking.getName());
             assertEquals((long)173,abooking.getTimeSlotId());
             assertEquals("1000 St. Mary's Rd",abooking.getAddress());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 18:30:00"),abooking.getStart());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 19:00:00"),abooking.getEnd());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-02-11 18:30:00"),abooking.getStart());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-02-11 19:00:00"),abooking.getEnd());
             abooking = bookings.get(1);
-            assertEquals("marker",abooking.getName());
-            assertEquals((long)91,abooking.getTimeSlotId());
-            assertEquals("1338 Chancellor Drive",abooking.getAddress());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 14:00:00"),abooking.getStart());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"),abooking.getEnd());
-            abooking = bookings.get(2);
             assertEquals("marker",abooking.getName());
             assertEquals((long)94,abooking.getTimeSlotId());
             assertEquals("91 Dalhousie Drive",abooking.getAddress());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"),abooking.getStart());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 11:00:00"),abooking.getEnd());
-            abooking = bookings.get(3);
+            abooking = bookings.get(2);
             assertEquals("marker",abooking.getName());
             assertEquals((long)145,abooking.getTimeSlotId());
             assertEquals("1 Pembina Hwy",abooking.getAddress());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 12:30:00"),abooking.getStart());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 13:00:00"),abooking.getEnd());
+            abooking = bookings.get(3);
+            assertEquals("marker",abooking.getName());
+            assertEquals((long)91,abooking.getTimeSlotId());
+            assertEquals("1338 Chancellor Drive",abooking.getAddress());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 14:00:00"),abooking.getStart());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"),abooking.getEnd());
         }
         catch (DAOException de)
         {
@@ -787,48 +815,42 @@ public class AccessParkingSpotsTest extends TestCase
         }
     }
 
-    public void testCancelABookingOfAnotherUser()
+    public void testCancelABookingThatDoesNotExit()
     {
         Services.closeDataAccess();
 
         Services.createDataAccess(new DataAccessStub(dbName));
         parkSpotAccess = new AccessParkingSpots();
-        parkSpotAccess.clearSpots();
+
         String username = "Donald Trump";
+        ArrayList<Booking> bookings;
         long timeSlotId = 91;
 
         try
         {
-            parkSpotAccess.cancelThisSpot(username, timeSlotId);
             bookings = parkSpotAccess.getMyBookedSpots(username);
-            assertEquals(0, bookings.size());
-        }
-        catch (DAOException de)
+            assertEquals(4, bookings.size());
+        } catch (DAOException daoe)
         {
-            System.out.print(de.getMessage());
-            fail();
+            fail("DAOException Caught with message: "+daoe.getMessage());
         }
-    }
 
-    public void testCancelABookingOfEmptyList()
-    {
-        Services.closeDataAccess();
-
-        Services.createDataAccess(new DataAccessStub(dbName));
-        parkSpotAccess = new AccessParkingSpots();
-        parkSpotAccess.clearSpots();
-
-        String username = "tester";
-        long timeSlotId = 91;
         try
         {
             parkSpotAccess.cancelThisSpot(username, timeSlotId);
-            bookings = parkSpotAccess.getMyBookedSpots(username);
-            assertEquals(0, bookings.size());
+            fail("Error: Deleted a booking that does not exist!");
         }
-        catch (DAOException de)
+        catch (DAOException daoe)
         {
-            System.out.print(de.getMessage());
+            assertEquals("Tuple not inserted correctly.",daoe.getMessage());
+        }
+
+        try
+        {
+            bookings = parkSpotAccess.getMyBookedSpots(username);
+            assertEquals(4, bookings.size());
+        } catch (DAOException daoe)
+        {
             fail();
         }
     }

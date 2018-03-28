@@ -264,8 +264,8 @@ public class DataAccessStub implements DataAccess
             phone = "204-124-2222";
             email = "iAmAlsoAsnake10@hotmail.ca";
             rate = 0.20;
-            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 17:30:00"));
-            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 19:00:00"));
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-02-11 17:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-02-11 19:00:00"));
             addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             bookTimeSlot("marker",173, 21);
@@ -380,8 +380,9 @@ public class DataAccessStub implements DataAccess
         }
         else
         {
-            throw new DAOException("Error in creating ParkingSpot object with SPOT_ID = "+currentParkingSpot.getSpotID()+" for Username: "+username+"!");
+            throw new DAOException("ParkingSpot object already exists with HostName = "+username+" and Address = "+currentParkingSpot.getAddress()+"!");
         }
+
         return spotID;
     }
 
@@ -441,7 +442,7 @@ public class DataAccessStub implements DataAccess
         {
             ParkingSpot parkingSpot = parkingSpots.get(i);
             boolean check = false;
-            if (address != null && !address.equals(""))
+            if (address != null && !address.equals("") && address.trim().length() != 0)
             {
                 if (parkingSpot.getAddress().contains(address))
                     check = true;
@@ -610,13 +611,27 @@ public class DataAccessStub implements DataAccess
     @Override
     public void deleteBooking(String username, long timeSlotId)
     {
+        boolean removed = false;
+
         for(int i = 0; i < bookings.size(); i++)
         {
             Booking booking = bookings.get(i);
             if ((booking.getName()).equals(username) && (booking.getTimeSlotId()) == timeSlotId)
             {
                 bookings.remove(i);
+                removed = true;
+                break;
             }
+        }
+
+        if (bookings.size() < 1)
+        {
+            throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = " + timeSlotID + "!");
+        }
+
+        if (!removed)
+        {
+            throw new DAOException("Tuple not inserted correctly.");
         }
     }
 

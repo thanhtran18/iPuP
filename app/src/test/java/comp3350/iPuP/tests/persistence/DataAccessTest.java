@@ -195,53 +195,52 @@ public class DataAccessTest extends TestCase {
             adayslot = daySlotsOfParkingSpot.get(0);
             assertEquals((long)21,adayslot.getSlotID());
             assertTrue(adayslot.getIsBooked());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 17:30:00"),adayslot.getStart());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 19:00:00"),adayslot.getEnd());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-02-11 17:30:00"),adayslot.getStart());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-02-11 19:00:00"),adayslot.getEnd());
             timeSlotsOfParkingSpot = dataAccess.getTimeSlots(parkingSpot.getSpotID());
             assertEquals(3,timeSlotsOfParkingSpot.size());
             atimeslot = timeSlotsOfParkingSpot.get(0);
             assertEquals((long)171,atimeslot.getSlotID());
             assertFalse(atimeslot.getIsBooked());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 17:30:00"),atimeslot.getStart());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 18:00:00"),atimeslot.getEnd());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-02-11 17:30:00"),atimeslot.getStart());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-02-11 18:00:00"),atimeslot.getEnd());
             atimeslot = timeSlotsOfParkingSpot.get(1);
             assertEquals((long)172,atimeslot.getSlotID());
             assertFalse(atimeslot.getIsBooked());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 18:00:00"),atimeslot.getStart());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 18:30:00"),atimeslot.getEnd());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-02-11 18:00:00"),atimeslot.getStart());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-02-11 18:30:00"),atimeslot.getEnd());
             atimeslot = timeSlotsOfParkingSpot.get(2);
             assertEquals((long)173,atimeslot.getSlotID());
             assertTrue(atimeslot.getIsBooked());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 18:30:00"),atimeslot.getStart());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 19:00:00"),atimeslot.getEnd());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-02-11 18:30:00"),atimeslot.getStart());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-02-11 19:00:00"),atimeslot.getEnd());
 
             bookings = dataAccess.getBookedSpotsOfGivenUser("marker");
             assertEquals(4,bookings.size());
             abooking = bookings.get(0);
             assertEquals("marker",abooking.getName());
+            assertEquals((long)173,abooking.getTimeSlotId());
+            assertEquals("1000 St. Mary's Rd",abooking.getAddress());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-02-11 18:30:00"),abooking.getStart());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-02-11 19:00:00"),abooking.getEnd());
+            abooking = bookings.get(1);
+            assertEquals("marker",abooking.getName());
             assertEquals((long)94,abooking.getTimeSlotId());
             assertEquals("91 Dalhousie Drive",abooking.getAddress());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"),abooking.getStart());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 11:00:00"),abooking.getEnd());
-            abooking = bookings.get(1);
+            abooking = bookings.get(2);
             assertEquals("marker",abooking.getName());
             assertEquals((long)145,abooking.getTimeSlotId());
             assertEquals("1 Pembina Hwy",abooking.getAddress());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 12:30:00"),abooking.getStart());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 13:00:00"),abooking.getEnd());
-            abooking = bookings.get(2);
+            abooking = bookings.get(3);
             assertEquals("marker",abooking.getName());
             assertEquals((long)91,abooking.getTimeSlotId());
             assertEquals("1338 Chancellor Drive",abooking.getAddress());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 14:00:00"),abooking.getStart());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"),abooking.getEnd());
-            abooking = bookings.get(3);
-            assertEquals("marker",abooking.getName());
-            assertEquals((long)173,abooking.getTimeSlotId());
-            assertEquals("1000 St. Mary's Rd",abooking.getAddress());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 18:30:00"),abooking.getStart());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 19:00:00"),abooking.getEnd());
-
         } catch (DAOException daoe)
         {
             fail("DAOException Caught with message: "+daoe.getMessage());
@@ -283,12 +282,12 @@ public class DataAccessTest extends TestCase {
         try
         {
             ArrayList<ParkingSpot> parkingSpots = dataAccess.getParkingSpotsByAddressDate("", dateFormatter.getSqlDateFormat().parse("2018-06-11"));
-            assertEquals(21,parkingSpots.size());
+            assertEquals(20,parkingSpots.size());
             assertTrue(parkingSpots.get(0).getAddress().toLowerCase().compareTo(parkingSpots.get(1).getAddress().toLowerCase()) < 0);
             assertTrue(parkingSpots.get(16).getAddress().toLowerCase().compareTo(parkingSpots.get(17).getAddress().toLowerCase()) < 0);
-            assertFalse(parkingSpots.get(20).getAddress().toLowerCase().compareTo(parkingSpots.get(12).getAddress().toLowerCase()) < 0);
-            assertTrue(parkingSpots.get(19).getAddress().toLowerCase().compareTo(parkingSpots.get(20).getAddress().toLowerCase()) < 0);
-            assertTrue(parkingSpots.get(0).getAddress().toLowerCase().compareTo(parkingSpots.get(20).getAddress().toLowerCase()) < 0);
+            assertFalse(parkingSpots.get(19).getAddress().toLowerCase().compareTo(parkingSpots.get(12).getAddress().toLowerCase()) < 0);
+            assertTrue(parkingSpots.get(18).getAddress().toLowerCase().compareTo(parkingSpots.get(19).getAddress().toLowerCase()) < 0);
+            assertTrue(parkingSpots.get(0).getAddress().toLowerCase().compareTo(parkingSpots.get(19).getAddress().toLowerCase()) < 0);
         }
         catch (ParseException pe)
         {
@@ -438,29 +437,28 @@ public class DataAccessTest extends TestCase {
             assertEquals(4, bookings.size());
             abooking = bookings.get(0);
             assertEquals("marker", abooking.getName());
+            assertEquals((long) 173, abooking.getTimeSlotId());
+            assertEquals("1000 St. Mary's Rd", abooking.getAddress());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-02-11 18:30:00"), abooking.getStart());
+            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-02-11 19:00:00"), abooking.getEnd());
+            abooking = bookings.get(1);
+            assertEquals("marker", abooking.getName());
             assertEquals((long) 94, abooking.getTimeSlotId());
             assertEquals("91 Dalhousie Drive", abooking.getAddress());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"), abooking.getStart());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 11:00:00"), abooking.getEnd());
-            abooking = bookings.get(1);
+            abooking = bookings.get(2);
             assertEquals("marker", abooking.getName());
             assertEquals((long) 145, abooking.getTimeSlotId());
             assertEquals("1 Pembina Hwy", abooking.getAddress());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 12:30:00"), abooking.getStart());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 13:00:00"), abooking.getEnd());
-            abooking = bookings.get(2);
+            abooking = bookings.get(3);
             assertEquals("marker", abooking.getName());
             assertEquals((long) 91, abooking.getTimeSlotId());
             assertEquals("1338 Chancellor Drive", abooking.getAddress());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 14:00:00"), abooking.getStart());
             assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"), abooking.getEnd());
-            abooking = bookings.get(3);
-            assertEquals("marker", abooking.getName());
-            assertEquals((long) 173, abooking.getTimeSlotId());
-            assertEquals("1000 St. Mary's Rd", abooking.getAddress());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 18:30:00"), abooking.getStart());
-            assertEquals(dateFormatter.getSqlDateTimeFormat().parse("2018-06-11 19:00:00"), abooking.getEnd());
-
         }
         catch (ParseException pe)
         {

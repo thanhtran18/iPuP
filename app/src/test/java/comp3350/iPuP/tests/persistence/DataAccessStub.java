@@ -264,8 +264,8 @@ public class DataAccessStub implements DataAccess
             phone = "204-124-2222";
             email = "iAmAlsoAsnake10@hotmail.ca";
             rate = 0.20;
-            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 17:30:00"));
-            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 19:00:00"));
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-02-11 17:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-02-11 19:00:00"));
             addDefaultData(name,address,phone,email,rate,calStart,calEnd);
 
             bookTimeSlot("marker",173, 21);

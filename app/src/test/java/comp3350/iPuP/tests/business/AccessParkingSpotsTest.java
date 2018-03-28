@@ -64,7 +64,7 @@ public class AccessParkingSpotsTest extends TestCase
         TimeSlot timeSlot = new TimeSlot(start, end);
         try
         {
-            parkSpotAccess.insertParkingSpot("testuser", timeSlot, null, "356 testing drive, Winnipeg, MB", "456-6789", "", 42,0,0);
+            parkSpotAccess.insertParkingSpot("testuser", timeSlot, null, "356 testing drive, Winnipeg, MB", "456-6789", "", 42, 0, 0);
         }
         catch (DAOException daoe)
         {
@@ -166,7 +166,7 @@ public class AccessParkingSpotsTest extends TestCase
         timeSlot = new TimeSlot(start,end);
         try
         {
-            parkSpotAccess.insertParkingSpot("testuser2", timeSlot, "Days 3 4", "whodunnit St.", "555-5555", "hans@hans.hans", 10,0,0);
+            parkSpotAccess.insertParkingSpot("testuser2", timeSlot, "Days 3 4", "whodunnit St.", "555-5555", "hans@hans.hans", 10, 0, 0);
         }
         catch (Exception e)
         {
@@ -285,7 +285,7 @@ public class AccessParkingSpotsTest extends TestCase
         timeSlot = new TimeSlot(start,end);
         try
         {
-            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 5 0100111", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02,0,0);
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 5 0100111", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02, 0, 0);
         }
         catch (Exception e)
         {
@@ -470,7 +470,7 @@ public class AccessParkingSpotsTest extends TestCase
         timeSlot = new TimeSlot(start,end);
         try
         {
-            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02,0,0);
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02, 0, 0);
             spot = parkSpotAccess.getAllParkingSpots().get(0);
             daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
             daySlotID = daySlots.get(0).getSlotID();
@@ -508,7 +508,7 @@ public class AccessParkingSpotsTest extends TestCase
         timeSlot = new TimeSlot(start,end);
         try
         {
-            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 1 0100001", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02,0,0);
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 1 0100001", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02, 0, 0);
             spot = parkSpotAccess.getAllParkingSpots().get(0);
             daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
             daySlotID = daySlots.get(0).getSlotID();
@@ -548,7 +548,7 @@ public class AccessParkingSpotsTest extends TestCase
         timeSlot = new TimeSlot(start, end);
         try
         {
-            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 1 0100001", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02,0,0);
+            parkSpotAccess.insertParkingSpot("Sir Galavant", timeSlot, "Weeks 2 1 0100001", "5 Smithy Lane, Camelot", "0909090", "galavant@roundtable.brit", 0.02, 0, 0);
             spot = parkSpotAccess.getAllParkingSpots().get(0);
             daySlots = parkSpotAccess.getDaySlots(spot.getSpotID());
             daySlotID = daySlots.get(0).getSlotID();
@@ -575,7 +575,6 @@ public class AccessParkingSpotsTest extends TestCase
         }
         catch (DAOException daoe) { fail(); }
     }
-
 
     public void testMyDailyParkingSpotsEmptyList()
     {
@@ -659,7 +658,6 @@ public class AccessParkingSpotsTest extends TestCase
         }
     }
 
-
     public void testGettingMyDailyParkingSpots()
     {
         Services.closeDataAccess();
@@ -717,9 +715,6 @@ public class AccessParkingSpotsTest extends TestCase
             fail();
         }
     }
-
-
-
 
     public void testGettingMyBookingsValid()
     {
@@ -860,8 +855,8 @@ public class AccessParkingSpotsTest extends TestCase
         }
     }
 
-
-    public void testFreeNoTimeSLots() throws Exception{
+    public void testFreeNoTimeSLots() throws Exception
+    {
         Services.closeDataAccess();
 
         Services.createDataAccess(new DataAccessStub(dbName));
@@ -873,7 +868,8 @@ public class AccessParkingSpotsTest extends TestCase
 
     }
 
-    public void testInvalidSlotIDs() throws Exception{
+    public void testInvalidSlotIDs() throws Exception
+    {
         Services.closeDataAccess();
 
         Services.createDataAccess(new DataAccessStub(dbName));
@@ -898,7 +894,8 @@ public class AccessParkingSpotsTest extends TestCase
 
     }
 
-    public void testRegularSlotIDs() throws Exception{
+    public void testRegularSlotIDs() throws Exception
+    {
         Services.closeDataAccess();
 
         Services.createDataAccess(new DataAccessStub(dbName));
@@ -932,7 +929,8 @@ public class AccessParkingSpotsTest extends TestCase
 
     }
 
-    public void testInvalidTimeSlotList() throws Exception{
+    public void testInvalidTimeSlotList() throws Exception
+    {
         Services.closeDataAccess();
 
         Services.createDataAccess(new DataAccessStub(dbName));
@@ -946,7 +944,8 @@ public class AccessParkingSpotsTest extends TestCase
                 0));
     }
 
-    public void testRegularTimeSlotList() throws Exception{
+    public void testRegularTimeSlotList() throws Exception
+    {
         Services.closeDataAccess();
 
         Services.createDataAccess(new DataAccessStub(dbName));
@@ -957,7 +956,8 @@ public class AccessParkingSpotsTest extends TestCase
                 0));
     }
 
-    public void testInvalidUsernames() throws Exception{
+    public void testInvalidUsernames() throws Exception
+    {
         Services.closeDataAccess();
 
         Services.createDataAccess(new DataAccessStub(dbName));
@@ -971,6 +971,34 @@ public class AccessParkingSpotsTest extends TestCase
                 0));
     }
 
+    public void testParkingSpotsInTimeSlot()
+    {
+        Calendar c = Calendar.getInstance();
+        try
+        {
+            Services.closeDataAccess();
 
+            Services.createDataAccess(new DataAccessStub(dbName));
+            parkSpotAccess = new AccessParkingSpots();
 
+            c.set(2018, 5, 11, 11,31);
+            assertEquals(13,parkSpotAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
+            c.set(2018, 5, 11, 12,31);
+            assertEquals(12,parkSpotAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
+            c.set(2018, 5, 11, 14,31);
+            assertEquals(7,parkSpotAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
+            c.set(2018, 5, 11, 18,31);
+            assertEquals(2,parkSpotAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
+            c.set(2018, 5, 11, 0,0);
+            assertEquals(0,parkSpotAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
+            c.set(0, 0, 0, 0,0);
+            assertEquals(0,parkSpotAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
+            c.set(1, 2, 3, 4,5);
+            assertEquals(0,parkSpotAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
+    }
 }

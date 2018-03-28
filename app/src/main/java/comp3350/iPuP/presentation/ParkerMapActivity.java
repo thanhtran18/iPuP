@@ -21,6 +21,7 @@ import org.osmdroid.tileprovider.util.SimpleRegisterReceiver;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Overlay;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,10 +38,13 @@ public class ParkerMapActivity extends AppCompatActivity implements DateFragment
 {
     MapView map = null;
     protected AccessParkingSpots accessParkingSpots;
-    ArrayList<GeoPoint> points;
 
     private DateFormatter df;
     Calendar current;
+
+    long currentSpotID = -1;
+
+    String name;
 
     @Override public void onCreate(Bundle savedInstanceState)
     {
@@ -62,14 +66,6 @@ public class ParkerMapActivity extends AppCompatActivity implements DateFragment
         tv = findViewById(R.id.textViewTime);
         tv.setText(df.getTimeFormat().format(current.getTime()));
 
-        try
-        {
-            points = accessParkingSpots.getGeoPointsByTime(current.getTime());
-        }
-        catch (Exception daoe)
-        {
-            Toast.makeText(this, daoe.getMessage(), Toast.LENGTH_LONG).show();
-        }
         map = findViewById(R.id.map);
         map.setUseDataConnection(false);
         try
@@ -83,7 +79,7 @@ public class ParkerMapActivity extends AppCompatActivity implements DateFragment
             OfflineTileProvider tileProvider = new OfflineTileProvider(new SimpleRegisterReceiver(this),files);
             map.setTileProvider(tileProvider);
 
-            String source = "";
+            String source;
             IArchiveFile[] archives = tileProvider.getArchives();
             if (archives.length > 0)
             {
@@ -114,9 +110,17 @@ public class ParkerMapActivity extends AppCompatActivity implements DateFragment
         }
         catch (Exception e)
         {
-            Toast.makeText(this,"Unable to load map data",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Unable to load map data", Toast.LENGTH_LONG).show();
         }
-
+        Bundle extras = getIntent().getExtras();
+        if(extras == null)
+        {
+            name = null;
+        }
+        else
+        {
+            name = extras.getString(getResources().getString(R.string.extra_name));
+        }
         updateMap();
     }
 
@@ -124,30 +128,39 @@ public class ParkerMapActivity extends AppCompatActivity implements DateFragment
     {
         try
         {
-            points = accessParkingSpots.getGeoPointsByTime(current.getTime());
+            ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getParkingSpotsByTime(current.getTime(), name);
+            for (Overlay o : map.getOverlays())
+            {
+                Marker m = (Marker)o;
+                m.closeInfoWindow();
+            }
+            currentSpotID = -1;
+            map.getOverlays().clear();
+            for (final ParkingSpot spot : parkingSpots)
+            {
+                SpotMarker marker = new SpotMarker(map, spot.getSpotID());
+                GeoPoint point = new GeoPoint(spot.getLatitude(), spot.getLongitude());
+                marker.setPosition(point);
+                marker.setTitle(spot.getAddress());
+                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                marker.setOnMarkerClickListener(new Marker.OnMarkerClickListener()
+                {
+                    @Override
+                    public boolean onMarkerClick(Marker marker, MapView mapView)
+                    {
+                        marker.showInfoWindow();
+                        currentSpotID = spot.getSpotID();
+                        return true;
+                    }
+                });
+                map.getOverlays().add(marker);
+            }
+            map.invalidate();
         }
         catch (Exception daoe)
         {
-
+            Toast.makeText(this,"Unable to load parking spot data",Toast.LENGTH_LONG).show();
         }
-        map.getOverlays().clear();
-        for (int i = 0; i < points.size(); i++)
-        {
-            SpotMarker marker = new SpotMarker(map, 1);
-            marker.setPosition(points.get(i));
-            marker.setTitle("Address");
-            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-            marker.setOnMarkerClickListener(new Marker.OnMarkerClickListener()
-            {
-                @Override
-                public boolean onMarkerClick(Marker marker, MapView mapView)
-                {
-                    return false;
-                }
-            });
-            map.getOverlays().add(marker);
-        }
-        map.invalidate();
     }
 
     public void onDateClick(View v)
@@ -185,7 +198,10 @@ public class ParkerMapActivity extends AppCompatActivity implements DateFragment
     {
         TextView tv = findViewById(R.id.textViewDate);
         tv.setText(df.getDateFormat().format(date));
-        current.setTime(date);
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        current.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH),c.get(Calendar.DATE),
+                current.get(Calendar.HOUR), current.get(Calendar.MINUTE));
         updateMap();
     }
 
@@ -223,5 +239,13 @@ public class ParkerMapActivity extends AppCompatActivity implements DateFragment
         tv = findViewById(R.id.textViewTime);
         tv.setText(df.getTimeFormat().format(current.getTime()));
         updateMap();
+    }
+
+    public void onBookClick(View view)
+    {
+        Intent intent = new Intent(getApplicationContext(), BookTimeSlotsActivity.class);
+        intent.putExtra(getResources().getString(R.string.extra_spotID), currentSpotID);
+        intent.putExtra(getResources().getString(R.string.extra_name), name);
+        startActivity(intent);
     }
 }

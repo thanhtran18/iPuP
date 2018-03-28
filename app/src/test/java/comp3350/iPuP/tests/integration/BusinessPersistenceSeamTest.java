@@ -24,12 +24,12 @@ import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
 import comp3350.iPuP.persistence.DataAccess;
 import comp3350.iPuP.persistence.DataAccessObject;
-import comp3350.iPuP.tests.persistence.DataAccessStub;
 
 public class BusinessPersistenceSeamTest extends TestCase
 {
     private static String dbName = Main.dbName;
     private static String dbPathName = Main.getDBPathName();
+    private static String systemSeparator = System.getProperty("file.separator");
     private DataAccess dataAccess;
     private DateFormatter dateFormatter = new DateFormatter();
 
@@ -426,8 +426,8 @@ public class BusinessPersistenceSeamTest extends TestCase
 
         try
         {
-            String dbFilePath = System.getProperty("user.dir") + "/" + dbPathName + ".script";
-            String defaultDbFilePath = System.getProperty("user.dir") + "/app/src/main/assets/db/" + dbName + ".script";
+            String dbFilePath = System.getProperty("user.dir") + systemSeparator + dbPathName + ".script";
+            String defaultDbFilePath = System.getProperty("user.dir") + "/app/src/main/assets/db/".replace("/",systemSeparator) + dbName + ".script";
 
             File dbFile = new File(dbFilePath);
             File defaultDbFile = new File(defaultDbFilePath);

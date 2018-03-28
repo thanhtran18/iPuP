@@ -128,10 +128,13 @@ public class HostMapActivity extends AppCompatActivity implements MapObserver
 
     public void buttonConfirmOnClick(View view)
     {
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra(getResources().getString(R.string.extra_lat), markerLoc.getLatitude());
-        resultIntent.putExtra(getResources().getString(R.string.extra_long), markerLoc.getLongitude());
-        setResult(Activity.RESULT_OK, resultIntent);
-        finish();
+        if (markerLoc != null)
+        {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra(getResources().getString(R.string.extra_lat), markerLoc.getLatitude());
+            resultIntent.putExtra(getResources().getString(R.string.extra_long), markerLoc.getLongitude());
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
+        }
     }
 }

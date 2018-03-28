@@ -77,7 +77,7 @@ public class DataAccessStub implements DataAccess
             rate = 2;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 12:30:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "2 Chancellor Drive";
             name = "Scott Gordon";
@@ -86,7 +86,7 @@ public class DataAccessStub implements DataAccess
             rate = 4.50;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "30 Chancellor Drive";
             name = "Roberto Nesta Marley";
@@ -95,7 +95,7 @@ public class DataAccessStub implements DataAccess
             rate = 0.10;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:30:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "60 Main Street";
             name = "Avocado Stevenson";
@@ -104,7 +104,7 @@ public class DataAccessStub implements DataAccess
             rate = 5.25;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:00:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "566 Pasedina avenue";
             name = "Brian Cambell";
@@ -113,7 +113,7 @@ public class DataAccessStub implements DataAccess
             rate = 4;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 16:30:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "1 Kings Drive";
             name = "Jenifer Aniston";
@@ -122,7 +122,7 @@ public class DataAccessStub implements DataAccess
             rate = 7;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 20:00:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "20 Silverston Avenue";
             name = "Christopher Turk";
@@ -131,7 +131,7 @@ public class DataAccessStub implements DataAccess
             rate = 5;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 13:30:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "20 Kings Drive";
             name = "Tom Brady";
@@ -140,7 +140,7 @@ public class DataAccessStub implements DataAccess
             rate = 10;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 15:00:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "1 Pembina Hwy";
             name = "George H. Bush";
@@ -149,7 +149,7 @@ public class DataAccessStub implements DataAccess
             rate = 10;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "100 St. Mary's Rd";
             name = "Watson k. Smith";
@@ -158,7 +158,7 @@ public class DataAccessStub implements DataAccess
             rate = 7;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 16:00:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "1691 Pembina Hwy";
             name = "Victory Iyakoregha";
@@ -167,7 +167,7 @@ public class DataAccessStub implements DataAccess
             rate = 5;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 12:30:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "1338 Chancellor Drive";
             name = "Micheal Douglas";
@@ -176,7 +176,7 @@ public class DataAccessStub implements DataAccess
             rate = 4.50;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "1122 Chancellor Drive";
             name = "Kelly Cook";
@@ -185,7 +185,7 @@ public class DataAccessStub implements DataAccess
             rate = 4;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:30:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "91 Dalhousie Drive";
             name = "Madison Fishburne";
@@ -194,7 +194,7 @@ public class DataAccessStub implements DataAccess
             rate = 5.25;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:00:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "565 Pasedina Avenue";
             name = "Ronald Regan";
@@ -203,7 +203,7 @@ public class DataAccessStub implements DataAccess
             rate = 100;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 16:30:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "1334 Pembina Hwy";
             name = "Marilyn Monroe";
@@ -212,7 +212,7 @@ public class DataAccessStub implements DataAccess
             rate = 7;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 20:00:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "200 Pasedina Avenue";
             name = "Nelson Mandela";
@@ -221,7 +221,7 @@ public class DataAccessStub implements DataAccess
             rate = 5;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 13:30:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "Brady Road Landfill";
             name = "Donald Trump";
@@ -230,7 +230,7 @@ public class DataAccessStub implements DataAccess
             rate = 100;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 15:00:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "1 Pembina Hwy";
             name = "George W. Bush";
@@ -239,7 +239,7 @@ public class DataAccessStub implements DataAccess
             rate = 10;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "29 St. Mary's Rd";
             name = "Mary Watson";
@@ -248,7 +248,7 @@ public class DataAccessStub implements DataAccess
             rate = 4.50;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 20:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-12 02:00:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "1000 St. Mary's Rd";
             name = "Philipe Coutinho";
@@ -257,7 +257,7 @@ public class DataAccessStub implements DataAccess
             rate = 0.10;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 16:00:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             address = "1000 St. Mary's Rd";
             name = "Anne Coutinho";
@@ -266,7 +266,7 @@ public class DataAccessStub implements DataAccess
             rate = 0.20;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-02-11 17:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-02-11 19:00:00"));
-            addDefaultData(name,address,phone,email,rate,calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
 
             bookTimeSlot("marker",173, 21);
             bookTimeSlot("marker",91, 11);
@@ -376,8 +376,7 @@ public class DataAccessStub implements DataAccess
             spotID = parkingspotCounter++;
             parkingSpots.add(new ParkingSpot(spotID,currentParkingSpot.getAddress(),
                     currentParkingSpot.getName(),currentParkingSpot.getPhone(),
-                    currentParkingSpot.getEmail(),currentParkingSpot.getRate(),0,0));
-            //TODO: GET LONGITUDE AND LATUTUDE VALUES
+                    currentParkingSpot.getEmail(),currentParkingSpot.getRate(), currentParkingSpot.getLatitude(), currentParkingSpot.getLongitude()));
         }
         else
         {
@@ -477,10 +476,7 @@ public class DataAccessStub implements DataAccess
                 }
                 else
                 {
-                    if (daySlotsParkingSpotID.contains(parkingSpot.getSpotID()))
-                    {
-                        found = true;
-                    }
+                    found = true;
                 }
 
                 try
@@ -489,8 +485,7 @@ public class DataAccessStub implements DataAccess
                     {
                         parkingSpotsByAddrDate.add(new ParkingSpot(parkingSpot.getSpotID(),
                                 parkingSpot.getAddress(), parkingSpot.getName(), parkingSpot.getPhone(),
-                                parkingSpot.getEmail(), parkingSpot.getRate(),0,0));
-                        //TODO: GET LONGITUDE AND LATUTUDE VALUES
+                                parkingSpot.getEmail(), parkingSpot.getRate(), parkingSpot.getLatitude(), parkingSpot.getLongitude()));
                     }
                 }
                 catch (Exception e)
@@ -513,8 +508,26 @@ public class DataAccessStub implements DataAccess
     }
 
     @Override
-    public ArrayList<ParkingSpot> getParkingSpotsByTime(Date time) throws DAOException {
-        return null;
+    public ArrayList<ParkingSpot> getParkingSpotsByTime(Date time) throws DAOException
+    {
+        ArrayList<ParkingSpot> spots = new ArrayList<>();
+        for (ParkingSpot spot : parkingSpots)
+        {
+            boolean found = false;
+            for (int i = 0; i < timeSlots.size() && !found; i++)
+            {
+                long j = timeSlots.get(i).getStart().getTime() - time.getTime();
+                long k = timeSlots.get(i).getEnd().getTime() - time.getTime();
+                if (timeSlotsParkingSpotID.get(i) == spot.getSpotID()
+                        && j <= 0
+                        && k >= 0)
+                {
+                    spots.add(spot);
+                    found = true;
+                }
+            }
+        }
+        return spots;
     }
 
     @Override
@@ -524,8 +537,7 @@ public class DataAccessStub implements DataAccess
 
         return new ParkingSpot(aparkingspot.getSpotID(), aparkingspot.getAddress(),
                 aparkingspot.getName(), aparkingspot.getPhone(), aparkingspot.getEmail(),
-                aparkingspot.getRate(),0,0);
-        //TODO: GET LONGITUDE AND LATUTUDE VALUES
+                aparkingspot.getRate(), aparkingspot.getLatitude(), aparkingspot.getLongitude());
     }
 
     @Override
@@ -542,8 +554,7 @@ public class DataAccessStub implements DataAccess
                 {
                     hostedParkingSpotsOfGivenUser.add(new ParkingSpot(parkingSpot.getSpotID(),
                             parkingSpot.getAddress(), parkingSpot.getName(), parkingSpot.getPhone(),
-                            parkingSpot.getEmail(), parkingSpot.getRate(),0,0));
-                    //TODO: GET LONGITUDE AND LATUTUDE VALUES
+                            parkingSpot.getEmail(), parkingSpot.getRate(), parkingSpot.getLatitude(), parkingSpot.getLongitude()));
                 }
                 catch (Exception e)
                 {
@@ -594,24 +605,18 @@ public class DataAccessStub implements DataAccess
             }
         }
 
-        Collections.sort( bookedSpotsOfGivenUser, new Comparator<Booking>() {
-            public int compare (Booking b1, Booking b2) {
-                return b1.getStart().compareTo(b2.getStart());
-            }
-        });
-
         return bookedSpotsOfGivenUser;
     }
 
     @Override
-    public void deleteBooking(String username, long timeSlotID) throws DAOException
+    public void deleteBooking(String username, long timeSlotId) throws DAOException
     {
         boolean removed = false;
 
         for(int i = 0; i < bookings.size(); i++)
         {
             Booking booking = bookings.get(i);
-            if ((booking.getName()).equals(username) && (booking.getTimeSlotId()) == timeSlotID)
+            if ((booking.getName()).equals(username) && (booking.getTimeSlotId()) == timeSlotId)
             {
                 bookings.remove(i);
                 removed = true;
@@ -621,7 +626,7 @@ public class DataAccessStub implements DataAccess
 
         if (bookings.size() < 1)
         {
-            throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = " + timeSlotID + "!");
+            throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = " + timeSlotId + "!");
         }
 
         if (!removed)
@@ -633,7 +638,7 @@ public class DataAccessStub implements DataAccess
     @Override
     public void modifyParkingSpot(long spotID, String address, String phone, String email, Double rate, double latitude, double longitude) throws DAOException
     {
-       (parkingSpots.get((int)spotID)).modifySpot(address, phone, email, rate);
+       (parkingSpots.get((int)spotID)).modifySpot(address, phone, email, rate, latitude, longitude);
     }
 
     @Override
@@ -665,8 +670,7 @@ public class DataAccessStub implements DataAccess
         ParkingSpot aparkingspot = parkingSpots.get((int)spotID);
 	    return new ParkingSpot(aparkingspot.getSpotID(), aparkingspot.getAddress(),
                 aparkingspot.getName(), aparkingspot.getPhone(), aparkingspot.getEmail(),
-                aparkingspot.getRate(),0,0);
-        //TODO: GET LONGITUDE AND LATUTUDE VALUES
+                aparkingspot.getRate(), aparkingspot.getLatitude(), aparkingspot.getLongitude());
     }
 
     @Override
@@ -723,32 +727,6 @@ public class DataAccessStub implements DataAccess
                 TimeSlot adayslot = daySlots.get(i);
                 daySlotsList.add(new TimeSlot(adayslot.getStart(), adayslot.getEnd(),
                         adayslot.getSlotID()));
-            }
-        }
-
-        boolean foundBooking;
-
-        for (TimeSlot dayslot : daySlotsList)
-        {
-            foundBooking = false;
-            ArrayList<TimeSlot> timeslots = getTimeSlots(dayslot.getSlotID());
-
-            for (TimeSlot timeslot : timeslots)
-            {
-                for (Booking booking : bookings)
-                {
-                    if (booking.getTimeSlotId() == timeslot.getSlotID())
-                    {
-                        dayslot.setIsBooked(true);
-                        foundBooking = true;
-                        break;
-                    }
-                }
-
-                if (foundBooking)
-                {
-                    break;
-                }
             }
         }
 
@@ -863,12 +841,11 @@ public class DataAccessStub implements DataAccess
     }
 
     private void addDefaultData(String name, String address, String phone, String email,
-                                double rate, Calendar calStart, Calendar calEnd)
+                                double rate, double latitude, double longitude, Calendar calStart, Calendar calEnd)
     {
         users.add(name);
 
-        parkingSpots.add(new ParkingSpot(parkingspotCounter, address, name, phone, email, rate,0,0));
-        //TODO: SET LONGITUDE AND LATUTUDE VALUES
+        parkingSpots.add(new ParkingSpot(parkingspotCounter, address, name, phone, email, rate, latitude, longitude));
 
         daySlots.add(new TimeSlot(calStart.getTime(), calEnd.getTime(), dayslotCounter));
         daySlotsParkingSpotID.add(parkingspotCounter);

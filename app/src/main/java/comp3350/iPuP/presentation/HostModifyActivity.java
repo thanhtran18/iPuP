@@ -1,12 +1,15 @@
 package comp3350.iPuP.presentation;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import comp3350.iPuP.R;
 import comp3350.iPuP.business.AccessParkingSpots;
@@ -18,6 +21,7 @@ public class HostModifyActivity extends AppCompatActivity
     protected AccessParkingSpots accessParkingSpots;
     private long spotID;
     ParkingSpot ps;
+    double latitude, longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -116,6 +120,34 @@ public class HostModifyActivity extends AppCompatActivity
             text.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         }
 
+        if (!ParkingSpot.validateEmail(email))
+        {
+            valid = false;
+            EditText text = findViewById(R.id.editTextEmail);
+            text.setText("Invalid Email address");
+            text.setTextColor(getResources().getColor(R.color.colorWarning));
+        }
+        else
+        {
+            EditText text = findViewById(R.id.editTextEmail);
+            text.setHint(getResources().getString(R.string.host_email));
+            text.setTextColor(getResources().getColor(R.color.colorBlack));
+        }
+
+        if (!ParkingSpot.validatePhone(phone))
+        {
+            valid = false;
+            EditText text = findViewById(R.id.editTextPhone);
+            text.setText("Invalid phone number");
+            text.setTextColor(getResources().getColor(R.color.colorWarning));
+        }
+        else
+        {
+            EditText text = findViewById(R.id.editTextPhone);
+            text.setHint(getResources().getString(R.string.host_phone));
+            text.setTextColor(getResources().getColor(R.color.colorBlack));
+        }
+
         if (valid)
         {
             try
@@ -131,5 +163,34 @@ public class HostModifyActivity extends AppCompatActivity
 
             finish();
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode)
+        {
+            case (3):
+                if (resultCode == Activity.RESULT_OK)
+                {
+                    longitude = data.getDoubleExtra(getResources().getString(R.string.extra_long), 0);
+                    latitude = data.getDoubleExtra(getResources().getString(R.string.extra_lat), 0);
+                }
+                break;
+        }
+    }
+
+    public void onMapClick(View view)
+    {
+        Intent mapIntent = new Intent(HostModifyActivity.this, HostMapActivity.class);
+        HostModifyActivity.this.startActivityForResult(mapIntent, 3);
+    }
+
+    public void onMapCancelClick(View view)
+    {
+        latitude = 0;
+        longitude = 0;
     }
 }

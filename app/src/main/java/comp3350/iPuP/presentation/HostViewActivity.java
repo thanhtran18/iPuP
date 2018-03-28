@@ -35,10 +35,10 @@ public class HostViewActivity extends ListActivity
     }
 
     @Override
-    protected void onResume()
+    public void onResume()
     {
         super.onResume();
-            populateList();
+        populateList();
     }
 
     private void populateList()

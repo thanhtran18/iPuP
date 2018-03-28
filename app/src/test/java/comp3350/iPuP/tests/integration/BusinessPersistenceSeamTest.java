@@ -16,6 +16,7 @@ import comp3350.iPuP.application.Main;
 import comp3350.iPuP.application.Services;
 import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.business.AccessUsers;
+import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.objects.ParkingSpot;
@@ -58,6 +59,7 @@ public class BusinessPersistenceSeamTest extends TestCase
             fail("DAOException Caught with message: "+daoe.getMessage());
         }
 
+        closeDataAccess();
         System.out.println("Finished testBusinessPersistenceSeam: Access Users");
     }
 
@@ -122,6 +124,7 @@ public class BusinessPersistenceSeamTest extends TestCase
             fail("DAOException Caught with message: "+daoe.getMessage());
         }
 
+        closeDataAccess();
         System.out.println("Finished testBusinessPersistenceSeam: Access ParkingSpots To View");
     }
 
@@ -134,7 +137,11 @@ public class BusinessPersistenceSeamTest extends TestCase
         AccessUsers accessUsers;
         ArrayList<ParkingSpot> parkingSpots;
         ParkingSpot aparkingspot;
-        ArrayList<TimeSlot> daysSlots;
+        ArrayList<TimeSlot> timeSlots;
+        TimeSlot timeSlot;
+        boolean booked;
+        ArrayList<Booking> bookings;
+        Booking abooking;
 
         try
         {
@@ -156,6 +163,33 @@ public class BusinessPersistenceSeamTest extends TestCase
             assertEquals("avocadoisgood@gmail.com",aparkingspot.getEmail());
             assertEquals(5.25,aparkingspot.getRate());
 
+            timeSlots = accessParkingSpots.getFreeTimeSlotsByID(aparkingspot.getSpotID());
+            assertEquals(1,timeSlots.size());
+
+            bookings = accessParkingSpots.getMyBookedSpots("marker");
+            assertEquals(4,bookings.size());
+            assertEquals("\n1000 St. Mary's Rd\nSun, 11 Feb 2018, 6:30 PM - Sun, 11 Feb 2018, 7:00 PM\n",bookings.get(0).toString());
+            assertEquals("\n91 Dalhousie Drive (hold to cancel this booking) \nMon, 11 Jun 2018, 10:30 AM - Mon, 11 Jun 2018, 11:00 AM\n",bookings.get(1).toString());
+            assertEquals("\n1 Pembina Hwy (hold to cancel this booking) \nMon, 11 Jun 2018, 12:30 PM - Mon, 11 Jun 2018, 1:00 PM\n",bookings.get(2).toString());
+            assertEquals("\n1338 Chancellor Drive (hold to cancel this booking) \nMon, 11 Jun 2018, 2:00 PM - Mon, 11 Jun 2018, 2:30 PM\n",bookings.get(3).toString());
+
+            timeSlot = timeSlots.get(0);
+            assertEquals("Mon, 11 Jun 2018, 10:30 AM - Mon, 11 Jun 2018, 11:00 AM",timeSlot.toString());
+
+            booked = accessParkingSpots.bookTimeSlots(timeSlots,"marker",aparkingspot.getSpotID());
+            assertTrue(booked);
+
+            timeSlots = accessParkingSpots.getFreeTimeSlotsByID(aparkingspot.getSpotID());
+            assertEquals(0,timeSlots.size());
+
+            bookings = accessParkingSpots.getMyBookedSpots("marker");
+            assertEquals(5,bookings.size());
+            assertEquals("\n1000 St. Mary's Rd\nSun, 11 Feb 2018, 6:30 PM - Sun, 11 Feb 2018, 7:00 PM\n",bookings.get(0).toString());
+            assertEquals("\n91 Dalhousie Drive (hold to cancel this booking) \nMon, 11 Jun 2018, 10:30 AM - Mon, 11 Jun 2018, 11:00 AM\n",bookings.get(1).toString());
+            assertEquals("\n60 Main Street (hold to cancel this booking) \nMon, 11 Jun 2018, 10:30 AM - Mon, 11 Jun 2018, 11:00 AM\n",bookings.get(1).toString());
+            assertEquals("\n1 Pembina Hwy (hold to cancel this booking) \nMon, 11 Jun 2018, 12:30 PM - Mon, 11 Jun 2018, 1:00 PM\n",bookings.get(2).toString());
+            assertEquals("\n1338 Chancellor Drive (hold to cancel this booking) \nMon, 11 Jun 2018, 2:00 PM - Mon, 11 Jun 2018, 2:30 PM\n",bookings.get(3).toString());
+
         }
         catch (ParseException pe)
         {
@@ -166,6 +200,7 @@ public class BusinessPersistenceSeamTest extends TestCase
             fail("DAOException Caught with message: "+daoe.getMessage());
         }
 
+        closeDataAccess();
         System.out.println("Finished testBusinessPersistenceSeam: Book A ParkingSpot");
     }
 

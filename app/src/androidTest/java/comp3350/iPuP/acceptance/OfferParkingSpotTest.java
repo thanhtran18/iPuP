@@ -4,9 +4,7 @@ package comp3350.iPuP.acceptance;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.AssetManager;
-/**
- * Created by Victory on 2018-03-26.
- */
+
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.test.ActivityInstrumentationTestCase2;
@@ -14,11 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.robotium.solo.Solo;
-
 import junit.framework.Assert;
-
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -41,7 +36,8 @@ import comp3350.iPuP.presentation.HomeActivity;
 
 import static comp3350.iPuP.application.Main.dbName;
 
-public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeActivity> {
+public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeActivity>
+{
 
     private final String DB_PATH = "db";
     private final String DB_FILE_NAME = "SC.script";
@@ -56,7 +52,8 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
     }
 
     @Override
-    protected void setUp() throws Exception {
+    protected void setUp() throws Exception
+    {
         solo = new Solo(getInstrumentation(), getActivity());
 
         c = getActivity().getHomeContext();
@@ -96,22 +93,28 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
     {
         Services.closeDataAccess();
 
-        try {
+        try
+        {
             File dataDirectory = c.getDir(DB_PATH, Context.MODE_PRIVATE);
             String[] components = dbAsset.split("/");
             String copyPath = dataDirectory + "/" + components[components.length - 1];
 
             File outFile = new File(copyPath);
 
-            if (outFile.exists()) {
+            if (outFile.exists())
+            {
                 InputStream in = assetManager.open(dbAsset);
                 FileUtils.copyInputStreamToFile(in, outFile);
                 in.close();
-            } else {
+            }
+            else
+            {
                 throw new DAOException("Error in locating database file in assets!");
             }
 
-        } catch (IOException ioe) {
+        }
+        catch (IOException ioe)
+        {
             throw new DAOException("Unable to access database: ", ioe);
         }
 
@@ -143,7 +146,6 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
         solo.assertCurrentActivity("Expected activity Host  Activity", "HostActivity");
 
 
-
         solo.enterText((EditText) solo.getView(R.id.editTextAddress), "325 Author V. Mauro");
         solo.waitForText("325 Author V. Mauro");
         solo.enterText((EditText) solo.getView(R.id.editTextPhone), "204-234-5678");
@@ -172,20 +174,19 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
         solo.enterText((EditText) solo.getView(R.id.editTextAddress), "325 Author V. Mauro");
         solo.waitForText("325 Author V. Mauro");
 
-        //todo tings dem here:
         solo.clickOnButton("Map");
         solo.waitForActivity("HostMapActivity");
         solo.clickOnButton("Cancel");
         solo.waitForActivity("HostActivity");
         solo.clickOnButton("Map");
         solo.waitForActivity("HostMapActivity");
-        float clickPointX=600;
-        float clickPointY=990;
-        solo.clickOnScreen(clickPointX,clickPointY);
+        float clickPointX = 600;
+        float clickPointY = 990;
+        solo.clickOnScreen(clickPointX, clickPointY);
         solo.sleep(2000);
         solo.clickOnButton("Confirm");
         solo.waitForActivity("HostActivity");
-        //check the geopoint
+
 
         solo.enterText((EditText) solo.getView(R.id.editTextPhone), "204-234-5678");
         solo.waitForText("204-234-5678");
@@ -227,24 +228,25 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
         solo.clickOnButton("Search for available parking spots");
         solo.waitForActivity("ParkerSearchActivity");
         solo.clickOnButton("Map");
-        MapView thisMap=(MapView)solo.getView(R.id.map);
+        MapView thisMap = (MapView) solo.getView(R.id.map);
 
         float pisteX;
         float pisteY;
         Projection projection = thisMap.getProjection();
 
-        //TODO: Remove this later on:
         boolean foundClickPos=false;
-        List<Overlay> OverlayList=thisMap.getOverlays();
-        for(Overlay current: OverlayList){
-            if(current instanceof Marker){
+        List<Overlay> OverlayList = thisMap.getOverlays();
+        for(Overlay current: OverlayList)
+        {
+            if(current instanceof Marker)
+            {
                 Marker theMarker= (Marker) current;
                 Point pt = new Point();
                 GeoPoint position=theMarker.getPosition();
                 projection.toPixels(position, pt);
-                pisteX = clickPointX-2;//pt.x-rec.left; // car X screen coord
-                pisteY = clickPointY-218;//pt.y-rec.top; // car Y screen coord
-                if(pisteX==pt.x && pisteY==pt.y){
+                pisteX = clickPointX-2;
+                pisteY = clickPointY-218;
+                if(pisteX == pt.x && pisteY == pt.y){
                     foundClickPos=true;
                 }
             }
@@ -338,7 +340,6 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
         Assert.assertTrue(solo.searchText("Invalid phone number"));
         Assert.assertTrue(solo.searchText("Email Address"));
         Assert.assertTrue(solo.searchText("2"));
-        //todo warning colors
 
 
         solo.goBackToActivity("HomeActivity");

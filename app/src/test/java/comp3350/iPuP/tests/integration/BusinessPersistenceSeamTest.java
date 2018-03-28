@@ -16,6 +16,7 @@ import comp3350.iPuP.application.Main;
 import comp3350.iPuP.application.Services;
 import comp3350.iPuP.business.AccessParkingSpots;
 import comp3350.iPuP.business.AccessUsers;
+import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.DateFormatter;
 import comp3350.iPuP.objects.ParkingSpot;
@@ -169,6 +170,82 @@ public class BusinessPersistenceSeamTest extends TestCase
         System.out.println("Finished testBusinessPersistenceSeam: Book A ParkingSpot");
     }
 
+    //added by kev
+    public void testDeleteBookedSpotsInHistory()
+    {
+        openDataAccess();
+        System.out.println("Starting testBusinessPersistenceSeam: Delete A Booked ParkingSpot");
+
+        AccessParkingSpots accessParkingSpots;
+        AccessUsers accessUsers;
+        ArrayList<ParkingSpot> parkingSpots;
+        ArrayList<Booking> bookings;
+        ParkingSpot aparkingspot;
+        ArrayList<TimeSlot> daysSlots;
+        Booking aBooking;
+
+        try
+        {
+            accessParkingSpots = new AccessParkingSpots();
+            accessUsers = new AccessUsers();
+
+            assertFalse(accessUsers.createUser("marker"));
+
+            bookings = accessParkingSpots.getMyBookedSpots("marker");
+            assertEquals(4, bookings.size());
+
+            aBooking = bookings.get(0);
+            assertEquals("\n1000 St. Mary's Rd\nSun, 11 Feb 2018, 6:30 PM - Sun, 11 Feb 2018, 7:00 PM\n", aBooking.toString());
+
+            aBooking = bookings.get(1);
+            assertEquals("\n91 Dalhousie Drive (hold to cancel this booking) \nMon, 11 Jun 2018, 10:30 AM - Mon, 11 Jun 2018, 11:00 AM\n", aBooking.toString());
+
+            aBooking = bookings.get(2);
+            assertEquals("\n1 Pembina Hwy (hold to cancel this booking) \nMon, 11 Jun 2018, 12:30 PM - Mon, 11 Jun 2018, 1:00 PM\n", aBooking.toString());
+
+            aBooking = bookings.get(3);
+            assertEquals("\n1338 Chancellor Drive (hold to cancel this booking) \nMon, 11 Jun 2018, 2:00 PM - Mon, 11 Jun 2018, 2:30 PM\n", aBooking.toString());
+
+            aBooking = bookings.get(2);
+            accessParkingSpots.cancelThisSpot("marker", aBooking.getTimeSlotId());
+
+            bookings = accessParkingSpots.getMyBookedSpots("marker");
+            assertEquals(3, bookings.size());
+            aBooking = bookings.get(0);
+            assertEquals("\n1000 St. Mary's Rd\nSun, 11 Feb 2018, 6:30 PM - Sun, 11 Feb 2018, 7:00 PM\n", aBooking.toString());
+
+            aBooking = bookings.get(1);
+            assertEquals("\n91 Dalhousie Drive (hold to cancel this booking) \nMon, 11 Jun 2018, 10:30 AM - Mon, 11 Jun 2018, 11:00 AM\n", aBooking.toString());
+
+            aBooking = bookings.get(2);
+            assertEquals("\n1338 Chancellor Drive (hold to cancel this booking) \nMon, 11 Jun 2018, 2:00 PM - Mon, 11 Jun 2018, 2:30 PM\n", aBooking.toString());
+
+            aBooking = bookings.get(2);
+            accessParkingSpots.cancelThisSpot("marker", aBooking.getTimeSlotId());
+
+            bookings = accessParkingSpots.getMyBookedSpots("marker");
+            assertEquals(2, bookings.size());
+            aBooking = bookings.get(0);
+            assertEquals("\n1000 St. Mary's Rd\nSun, 11 Feb 2018, 6:30 PM - Sun, 11 Feb 2018, 7:00 PM\n", aBooking.toString());
+
+            aBooking = bookings.get(1);
+            assertEquals("\n91 Dalhousie Drive (hold to cancel this booking) \nMon, 11 Jun 2018, 10:30 AM - Mon, 11 Jun 2018, 11:00 AM\n", aBooking.toString());
+
+            aBooking = bookings.get(1);
+            accessParkingSpots.cancelThisSpot("marker", aBooking.getTimeSlotId());
+
+            bookings = accessParkingSpots.getMyBookedSpots("marker");
+            assertEquals(1, bookings.size());
+            aBooking = bookings.get(0);
+            assertEquals("\n1000 St. Mary's Rd\nSun, 11 Feb 2018, 6:30 PM - Sun, 11 Feb 2018, 7:00 PM\n", aBooking.toString());
+
+        }
+        catch (DAOException daoe)
+        {
+            fail("DAOException Caught with message: " + daoe.getMessage());
+        }
+    }
+
     private void replaceDbWithDefault() throws DAOException
     {
         Services.closeDataAccess();
@@ -186,7 +263,8 @@ public class BusinessPersistenceSeamTest extends TestCase
                 InputStream in = new FileInputStream(defaultDbFile);
                 FileUtils.copyInputStreamToFile(in, dbFile);
                 in.close();
-            } else
+            }
+            else
             {
                 throw new DAOException("Error in locating default database files!");
             }
@@ -211,7 +289,8 @@ public class BusinessPersistenceSeamTest extends TestCase
             replaceDbWithDefault();
             dataAccess = new DataAccessObject(dbName);
             dataAccess.open(dbPathName);
-        } catch (DAOException daoe)
+        }
+        catch (DAOException daoe)
         {
             System.err.println(daoe.getMessage());
             System.exit(1);

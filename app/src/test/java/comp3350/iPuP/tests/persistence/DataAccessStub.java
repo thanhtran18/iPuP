@@ -381,8 +381,9 @@ public class DataAccessStub implements DataAccess
         }
         else
         {
-            throw new DAOException("Error in creating ParkingSpot object with SPOT_ID = "+currentParkingSpot.getSpotID()+" for Username: "+username+"!");
+            throw new DAOException("ParkingSpot object already exists with HostName = "+username+" and Address = "+currentParkingSpot.getAddress()+"!");
         }
+
         return spotID;
     }
 
@@ -605,18 +606,27 @@ public class DataAccessStub implements DataAccess
     @Override
     public void deleteBooking(String username, long timeSlotID) throws DAOException
     {
+        boolean removed = false;
+
         for(int i = 0; i < bookings.size(); i++)
         {
             Booking booking = bookings.get(i);
             if ((booking.getName()).equals(username) && (booking.getTimeSlotId()) == timeSlotID)
             {
                 bookings.remove(i);
+                removed = true;
+                break;
             }
         }
 
         if (bookings.size() < 1)
         {
             throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = " + timeSlotID + "!");
+        }
+
+        if (!removed)
+        {
+            throw new DAOException("Tuple not inserted correctly.");
         }
     }
 

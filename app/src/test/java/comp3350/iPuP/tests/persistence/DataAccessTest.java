@@ -1,8 +1,5 @@
 package comp3350.iPuP.tests.persistence;
 
-import android.content.Context;
-import android.content.res.AssetManager;
-
 import junit.framework.TestCase;
 
 import org.apache.commons.io.FileUtils;
@@ -10,14 +7,11 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-import comp3350.iPuP.application.Main;
 import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.objects.DateFormatter;
@@ -25,13 +19,11 @@ import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
 import comp3350.iPuP.persistence.DataAccess;
 import comp3350.iPuP.persistence.DataAccessObject;
-import comp3350.iPuP.presentation.Messages;
 
 public class DataAccessTest extends TestCase {
 
     private static String dbName;
     private static String dbPathName;
-    private static DataAccess origHSQLDB;
     private DataAccess dataAccess;
     private DateFormatter dateFormatter;
 
@@ -84,14 +76,10 @@ public class DataAccessTest extends TestCase {
         try
         {
             String dbFilePath = System.getProperty("user.dir") + "/" + dbPathName + ".script";
-//            String dbFileDirectory = System.getProperty("user.dir") + "\\" + dbPathName.substring(0,dbPathName.lastIndexOf("\\"));
             String defaultDbFilePath = System.getProperty("user.dir") + "/app/src/main/assets/db/" + dbName + ".script";
 
             File dbFile = new File(dbFilePath);
-//            File dbFileDir = new File(dbFileDirectory);
             File defaultDbFile = new File(defaultDbFilePath);
-
-//            FileUtils.cleanDirectory(dbFileDir);
 
             if (defaultDbFile.exists())
             {

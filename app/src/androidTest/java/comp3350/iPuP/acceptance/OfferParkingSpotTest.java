@@ -1,25 +1,39 @@
 package comp3350.iPuP.acceptance;
 
 
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.content.res.AssetManager;
 import android.test.ActivityInstrumentationTestCase2;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextSwitcher;
 import android.widget.TextView;
-
-import junit.framework.Assert;
 
 import com.robotium.solo.Solo;
 
-import java.util.Date;
+import junit.framework.Assert;
+
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.regex.Pattern;
 
 import comp3350.iPuP.R;
+import comp3350.iPuP.application.Services;
+import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.presentation.HomeActivity;
+
+import static comp3350.iPuP.application.Main.dbName;
 
 public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeActivity> {
 
+    private final String DB_PATH = "db";
+    private final String DB_FILE_NAME = "SC.script";
+    private AssetManager assetManager;
+    private ContextWrapper c;
     private Solo solo;
+    private String dbAsset = null;
 
     public OfferParkingSpotTest()
     {
@@ -29,16 +43,77 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
     @Override
     protected void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
+
+        c = getActivity().getHomeContext();
+        assetManager = c.getAssets();
+        String[] assetNames = assetManager.list(DB_PATH);
+
+        for(int i = 0; i < assetNames.length; i++)
+        {
+            if (assetNames[i].equals(DB_FILE_NAME))
+            {
+                dbAsset = DB_PATH + "/" + assetNames[i];
+                break;
+            }
+        }
+
+        if (dbAsset == null)
+        {
+            System.err.println("HSQL Database (SC.script) does not exist in assets!");
+            System.exit(1);
+        }
+
+        System.out.println("\nStarting Acceptance test BookParkingSpot (using default DB)");
     }
 
     @Override
     protected void tearDown() throws Exception
     {
         solo.finishOpenedActivities();
+
+        replaceDbWithDefault();
+
+        System.out.println("\nFinished Acceptance test OfferParkingSpot (using default DB)");
+
+    }
+
+    private void replaceDbWithDefault() throws DAOException
+    {
+        Services.closeDataAccess();
+
+        try {
+            File dataDirectory = c.getDir(DB_PATH, Context.MODE_PRIVATE);
+            String[] components = dbAsset.split("/");
+            String copyPath = dataDirectory + "/" + components[components.length - 1];
+
+            File outFile = new File(copyPath);
+
+            if (outFile.exists()) {
+                InputStream in = assetManager.open(dbAsset);
+                FileUtils.copyInputStreamToFile(in, outFile);
+                in.close();
+            } else {
+                throw new DAOException("Error in locating database file in assets!");
+            }
+
+        } catch (IOException ioe) {
+            throw new DAOException("Unable to access database: ", ioe);
+        }
+
+        Services.createDataAccess(dbName);
     }
 
     public void testValidCreateParkingSpot()
     {
+        try
+        {
+            replaceDbWithDefault();
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
 
         solo.waitForActivity("HomeActivity");
         solo.enterText((EditText) solo.getView(R.id.editTextName), "marker");
@@ -121,6 +196,16 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
 
     public void testInvalidCreateParkingSpot()
     {
+        try
+        {
+            replaceDbWithDefault();
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+
         solo.waitForActivity("HomeActivity");
         solo.enterText((EditText) solo.getView(R.id.editTextName), "marker");
         solo.assertCurrentActivity("Expected activity Home Activity", "HomeActivity");
@@ -203,6 +288,16 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
 
     public void testNewUserCreateParkingSpot()
     {
+        try
+        {
+            replaceDbWithDefault();
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+
         solo.waitForActivity("HomeActivity");
         solo.enterText((EditText) solo.getView(R.id.editTextName), "new_host_creates_spots");
         solo.assertCurrentActivity("Expected activity Home Activity", "HomeActivity");

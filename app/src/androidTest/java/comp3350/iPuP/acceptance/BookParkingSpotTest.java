@@ -1,39 +1,39 @@
 package comp3350.iPuP.acceptance;
 
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.content.res.AssetManager;
 import android.test.ActivityInstrumentationTestCase2;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextSwitcher;
 import android.widget.TextView;
 
-import junit.framework.Assert;
-
 import com.robotium.solo.Solo;
+
+import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.regex.Pattern;
 
 import comp3350.iPuP.R;
+import comp3350.iPuP.application.Services;
 import comp3350.iPuP.objects.DAOException;
 import comp3350.iPuP.presentation.HomeActivity;
 
 import static comp3350.iPuP.application.Main.dbName;
-import static comp3350.iPuP.application.Main.getDBPathName;
-
-/**
- * Created by ThanhTran on 2018-03-26.
- */
 
 public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeActivity>
 {
+    private final String DB_PATH = "db";
+    private final String DB_FILE_NAME = "SC.script";
+    private AssetManager assetManager;
+    private ContextWrapper c;
     private Solo solo;
+    private String dbAsset = null;
 
     public BookParkingSpotTest()
     {
@@ -43,59 +43,77 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
     @Override
     protected void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
+
+        c = getActivity().getHomeContext();
+        assetManager = c.getAssets();
+        String[] assetNames = assetManager.list(DB_PATH);
+
+        for(int i = 0; i < assetNames.length; i++)
+        {
+            if (assetNames[i].equals(DB_FILE_NAME))
+            {
+                dbAsset = DB_PATH + "/" + assetNames[i];
+                break;
+            }
+        }
+
+        if (dbAsset == null)
+        {
+            System.err.println("HSQL Database (SC.script) does not exist in assets!");
+            System.exit(1);
+        }
+
+        System.out.println("\nStarting Acceptance test BookParkingSpot (using default DB)");
     }
 
     @Override
     protected void tearDown() throws Exception
     {
         solo.finishOpenedActivities();
+
+        replaceDbWithDefault();
+
+        System.out.println("\nFinished Acceptance test BookParkingSpot (using default DB)");
     }
 
     private void replaceDbWithDefault() throws DAOException
     {
-        try
-        {
-            String dbFilePath = System.getProperty("user.dir") + "/" + getDBPathName() + ".script";
-//            String dbFileDirectory = System.getProperty("user.dir") + "\\" + dbPathName.substring(0,dbPathName.lastIndexOf("\\"));
-            String defaultDbFilePath = System.getProperty("user.dir") + "/app/src/main/assets/db/" + dbName + ".script";
+        Services.closeDataAccess();
 
-            File dbFile = new File(dbFilePath);
-//            File dbFileDir = new File(dbFileDirectory);
-            File defaultDbFile = new File(defaultDbFilePath);
+        try {
+            File dataDirectory = c.getDir(DB_PATH, Context.MODE_PRIVATE);
+            String[] components = dbAsset.split("/");
+            String copyPath = dataDirectory + "/" + components[components.length - 1];
 
-//            FileUtils.cleanDirectory(dbFileDir);
+            File outFile = new File(copyPath);
 
-            if (defaultDbFile.exists())
-            {
-                InputStream in = new FileInputStream(defaultDbFile);
-                FileUtils.copyInputStreamToFile(in, dbFile);
+            if (outFile.exists()) {
+                InputStream in = assetManager.open(dbAsset);
+                FileUtils.copyInputStreamToFile(in, outFile);
                 in.close();
-            } else
-            {
-                throw new DAOException("Error in locating default database files!");
+            } else {
+                throw new DAOException("Error in locating database file in assets!");
             }
 
-        }
-        catch (FileNotFoundException fnfe)
-        {
-            throw new DAOException("Unable to open default database file!", fnfe);
-        }
-        catch (IOException ioe)
-        {
+        } catch (IOException ioe) {
             throw new DAOException("Unable to access database: ", ioe);
         }
+
+        Services.createDataAccess(dbName);
     }
 
     public void testExistingParker()
     {
-//        try
-//        {
-//            replaceDbWithDefault();
-//        }
-//        catch (Exception e)
-//        {
-//            System.out.println(e.getMessage());
-//        }
+        try
+        {
+            replaceDbWithDefault();
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+
         solo.waitForActivity("HomeActivity");
         solo.enterText((EditText) solo.getView(R.id.editTextName), "marker");
         solo.assertCurrentActivity("Expected activity Home Activity", "HomeActivity");
@@ -196,6 +214,16 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
 
     public void testNewParker()
     {
+        try
+        {
+            replaceDbWithDefault();
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+
         solo.waitForActivity("HomeActivity");
         solo.enterText((EditText) solo.getView(R.id.editTextName), "new_user");
         solo.assertCurrentActivity("Expected activity Home Activity", "HomeActivity");
@@ -316,6 +344,16 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
 
     public void testEmptyUsername()
     {
+        try
+        {
+            replaceDbWithDefault();
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+
         solo.waitForActivity("HomeActivity");
         solo.enterText((EditText) solo.getView(R.id.editTextName), "");
         solo.assertCurrentActivity("Expected activity Home Activity", "HomeActivity");

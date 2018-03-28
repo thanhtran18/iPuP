@@ -7,6 +7,7 @@ import comp3350.iPuP.objects.DAOException;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
@@ -207,5 +208,10 @@ public class HomeActivity extends Activity
     public void toastMessage(String message)
     {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    public ContextWrapper getHomeContext()
+    {
+        return new ContextWrapper(this);
     }
 }

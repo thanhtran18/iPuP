@@ -3,22 +3,17 @@ package comp3350.iPuP.acceptance;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.AssetManager;
-import android.os.Environment;
 import android.test.ActivityInstrumentationTestCase2;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextSwitcher;
 import android.widget.TextView;
 
-import junit.framework.Assert;
-
 import com.robotium.solo.Solo;
+
+import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
@@ -27,12 +22,9 @@ import java.util.regex.Pattern;
 import comp3350.iPuP.R;
 import comp3350.iPuP.application.Services;
 import comp3350.iPuP.objects.DAOException;
-import comp3350.iPuP.persistence.DataAccess;
-import comp3350.iPuP.persistence.DataAccessObject;
 import comp3350.iPuP.presentation.HomeActivity;
 
 import static comp3350.iPuP.application.Main.dbName;
-import static comp3350.iPuP.application.Main.getDBPathName;
 
 public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeActivity>
 {
@@ -40,7 +32,6 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
     private final String DB_FILE_NAME = "SC.script";
     private AssetManager assetManager;
     private ContextWrapper c;
-    private DataAccess newDataAccess;
     private Solo solo;
     private String dbAsset = null;
 
@@ -52,6 +43,7 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
     @Override
     protected void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
+
         c = getActivity().getHomeContext();
         assetManager = c.getAssets();
         String[] assetNames = assetManager.list(DB_PATH);
@@ -108,9 +100,6 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
         }
 
         Services.createDataAccess(dbName);
-
-//        newDataAccess = new DataAccessObject(dbName);
-//        Services.createDataAccess(newDataAccess);
     }
 
     public void testExistingParker()
@@ -121,9 +110,10 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
         }
         catch (Exception e)
         {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             System.exit(1);
         }
+
         solo.waitForActivity("HomeActivity");
         solo.enterText((EditText) solo.getView(R.id.editTextName), "marker");
         solo.assertCurrentActivity("Expected activity Home Activity", "HomeActivity");
@@ -224,6 +214,16 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
 
     public void testNewParker()
     {
+        try
+        {
+            replaceDbWithDefault();
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+
         solo.waitForActivity("HomeActivity");
         solo.enterText((EditText) solo.getView(R.id.editTextName), "new_user");
         solo.assertCurrentActivity("Expected activity Home Activity", "HomeActivity");
@@ -344,6 +344,16 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
 
     public void testEmptyUsername()
     {
+        try
+        {
+            replaceDbWithDefault();
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+
         solo.waitForActivity("HomeActivity");
         solo.enterText((EditText) solo.getView(R.id.editTextName), "");
         solo.assertCurrentActivity("Expected activity Home Activity", "HomeActivity");

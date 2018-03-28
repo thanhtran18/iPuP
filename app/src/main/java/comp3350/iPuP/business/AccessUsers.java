@@ -9,13 +9,20 @@ public class AccessUsers
 
     private DataAccess dataAccess;
 
-    public AccessUsers()
+    private void getDataAccess()
     {
         dataAccess = Services.getDataAccess();
     }
 
+    public AccessUsers()
+    {
+        getDataAccess();
+    }
+
     public boolean createUser(String username) throws DAOException
     {
+        getDataAccess();
+
         return dataAccess.insertUser(username);
     }
 }

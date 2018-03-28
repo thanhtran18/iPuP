@@ -25,7 +25,10 @@ import java.util.Date;
 import java.util.regex.Pattern;
 
 import comp3350.iPuP.R;
+import comp3350.iPuP.application.Services;
 import comp3350.iPuP.objects.DAOException;
+import comp3350.iPuP.persistence.DataAccess;
+import comp3350.iPuP.persistence.DataAccessObject;
 import comp3350.iPuP.presentation.HomeActivity;
 
 import static comp3350.iPuP.application.Main.dbName;
@@ -36,8 +39,9 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
     private final String DB_PATH = "db";
     private final String DB_FILE_NAME = "SC.script";
     private AssetManager assetManager;
-    private Solo solo;
     private ContextWrapper c;
+    private DataAccess newDataAccess;
+    private Solo solo;
     private String dbAsset = null;
 
     public BookParkingSpotTest()
@@ -66,16 +70,24 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
             System.err.println("HSQL Database (SC.script) does not exist in assets!");
             System.exit(1);
         }
+
+        System.out.println("\nStarting Acceptance test BookParkingSpot (using default DB)");
     }
 
     @Override
     protected void tearDown() throws Exception
     {
         solo.finishOpenedActivities();
+
+        replaceDbWithDefault();
+
+        System.out.println("\nFinished Acceptance test BookParkingSpot (using default DB)");
     }
 
     private void replaceDbWithDefault() throws DAOException
     {
+        Services.closeDataAccess();
+
         try {
             File dataDirectory = c.getDir(DB_PATH, Context.MODE_PRIVATE);
             String[] components = dbAsset.split("/");
@@ -83,7 +95,7 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
 
             File outFile = new File(copyPath);
 
-            if (!outFile.exists()) {
+            if (outFile.exists()) {
                 InputStream in = assetManager.open(dbAsset);
                 FileUtils.copyInputStreamToFile(in, outFile);
                 in.close();
@@ -91,9 +103,14 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
                 throw new DAOException("Error in locating database file in assets!");
             }
 
-        }catch (IOException ioe) {
+        } catch (IOException ioe) {
             throw new DAOException("Unable to access database: ", ioe);
         }
+
+        Services.createDataAccess(dbName);
+
+//        newDataAccess = new DataAccessObject(dbName);
+//        Services.createDataAccess(newDataAccess);
     }
 
     public void testExistingParker()
@@ -105,6 +122,7 @@ public class BookParkingSpotTest extends ActivityInstrumentationTestCase2<HomeAc
         catch (Exception e)
         {
             System.out.println(e.getMessage());
+            System.exit(1);
         }
         solo.waitForActivity("HomeActivity");
         solo.enterText((EditText) solo.getView(R.id.editTextName), "marker");

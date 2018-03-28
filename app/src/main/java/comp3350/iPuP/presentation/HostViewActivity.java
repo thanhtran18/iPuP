@@ -33,6 +33,7 @@ public class HostViewActivity extends ListActivity
 
         populateList();
     }
+    
     @Override
     public void onResume()
     {

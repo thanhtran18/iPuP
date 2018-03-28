@@ -7,7 +7,7 @@ import comp3350.iPuP.tests.integration.IntegrationTests;
 
 public class RunIntegrationTests
 {
-    public static TestSuite suite;
+    private static TestSuite suite;
 
     public static Test suite()
     {

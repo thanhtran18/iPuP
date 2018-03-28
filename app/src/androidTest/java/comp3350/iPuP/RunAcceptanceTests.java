@@ -7,7 +7,7 @@ import comp3350.iPuP.acceptance.AcceptanceTests;
 
 public class RunAcceptanceTests
 {
-    public static TestSuite suite;
+    private static TestSuite suite;
 
     public static Test suite()
     {

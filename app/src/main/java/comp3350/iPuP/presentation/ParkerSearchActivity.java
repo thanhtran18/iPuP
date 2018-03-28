@@ -162,7 +162,18 @@ public class ParkerSearchActivity extends ListActivity implements DateFragmentOb
 
     public void onMapClick(View view)
     {
+        String name;
+        Bundle extras = getIntent().getExtras();
+        if(extras == null)
+        {
+            name = null;
+        }
+        else
+        {
+            name = extras.getString(getResources().getString(R.string.extra_name));
+        }
         Intent mapIntent = new Intent(ParkerSearchActivity.this, ParkerMapActivity.class);
+        mapIntent.putExtra("name", name);
         ParkerSearchActivity.this.startActivity(mapIntent);
     }
 }

@@ -5,7 +5,7 @@ import junit.framework.TestSuite;
 
 public class ObjectTests
 {
-    public static TestSuite suite;
+    private static TestSuite suite;
 
     public static Test suite()
     {

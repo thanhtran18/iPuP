@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import comp3350.iPuP.objects.Booking;
 import comp3350.iPuP.objects.DAOException;
@@ -258,8 +259,6 @@ public class DataAccessTest extends TestCase {
             fail("ParseException Caught with message: "+pe.getMessage());
         }
 
-        System.out.println("Finished testDataAccess: Default Data");
-        closeDataAccess();
     }
 
     public void testInsertAndGetUsers()
@@ -278,9 +277,6 @@ public class DataAccessTest extends TestCase {
         {
             fail("DAOException Caught with message: "+daoe.getMessage());
         }
-
-        System.out.println("Finished testDataAccess: Insert and Get Users");
-        closeDataAccess();
     }
 
     public void testGetParkingSpotsWithoutNewInsertion()
@@ -306,9 +302,6 @@ public class DataAccessTest extends TestCase {
         {
             fail("DAOException Caught with message: "+daoe.getMessage());
         }
-
-        System.out.println("Finished testDataAccess: Get ParkingSpots Without New Insertion");
-        closeDataAccess();
     }
 
     public void testInsertThenGetParkingSpots()
@@ -316,8 +309,7 @@ public class DataAccessTest extends TestCase {
         openDataAccess();
         System.out.println("Starting testDataAccess: Insert Then Get ParkingSpots");
 
-        ParkingSpot parkingSpot = new ParkingSpot(-1, "1 Tester Street", "tester", "2042222222", "testing@tester.ca", 101,0,0);
-        //TODO: GET LONGITUDE AND LATUTUDE VALUES
+        ParkingSpot parkingSpot = new ParkingSpot(-1, "1 Tester Street", "tester", "2042222222", "testing@tester.ca", 101, 0, 0);
 
         try
         {
@@ -343,8 +335,7 @@ public class DataAccessTest extends TestCase {
             assertEquals("ParkingSpot object already exists with HostName = tester and Address = 1 Tester Street!",daoe.getMessage());
         }
 
-        parkingSpot = new ParkingSpot(-1, "2 Tester Street", "tester", "2042222222", "testing@tester.ca", 101,0,0);
-        //TODO: GET LONGITUDE AND LATUTUDE VALUES
+        parkingSpot = new ParkingSpot(-1, "2 Tester Street", "tester", "2042222222", "testing@tester.ca", 101, 0, 0);
 
         try
         {
@@ -570,5 +561,39 @@ public class DataAccessTest extends TestCase {
 
         System.out.println("Finished testDataAccess: Delete a Non-Existing Booking");
         closeDataAccess();
+    }
+
+    public void testParkingSpotsInTimeSlot()
+    {
+        try
+        {
+            dataAccess = new DataAccessStub();
+            dataAccess.open("Stub");
+        }
+        catch (DAOException daoe)
+        {
+            System.err.println(daoe.getMessage());
+        }
+
+        Calendar c = Calendar.getInstance();
+        try
+        {
+            c.set(2018, 5, 11, 11,31);
+            assertEquals(16,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+            c.set(2018, 5, 11, 12,31);
+            assertEquals(14,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+            c.set(2018, 5, 11, 18,31);
+            assertEquals(3,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+            c.set(2018, 5, 11, 0,0);
+            assertEquals(0,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+            c.set(0, 0, 0, 0,0);
+            assertEquals(0,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+            c.set(1, 2, 3, 4,5);
+            assertEquals(0,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
     }
 }

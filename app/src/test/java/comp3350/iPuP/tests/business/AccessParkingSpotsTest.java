@@ -986,7 +986,7 @@ public class AccessParkingSpotsTest extends TestCase
             c.set(2018, 5, 11, 12,31);
             assertEquals(14,parkSpotAccess.getParkingSpotsByTime(c.getTime()).size());
             c.set(2018, 5, 11, 18,31);
-            assertEquals(3,parkSpotAccess.getParkingSpotsByTime(c.getTime()).size());
+            assertEquals(2,parkSpotAccess.getParkingSpotsByTime(c.getTime()).size());
             c.set(2018, 5, 11, 0,0);
             assertEquals(0,parkSpotAccess.getParkingSpotsByTime(c.getTime()).size());
             c.set(0, 0, 0, 0,0);

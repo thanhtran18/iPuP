@@ -609,7 +609,7 @@ public class DataAccessStub implements DataAccess
     }
 
     @Override
-    public void deleteBooking(String username, long timeSlotId)
+    public void deleteBooking(String username, long timeSlotId) throws DAOException
     {
         boolean removed = false;
 
@@ -626,7 +626,7 @@ public class DataAccessStub implements DataAccess
 
         if (bookings.size() < 1)
         {
-            throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = " + timeSlotID + "!");
+            throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = " + timeSlotId + "!");
         }
 
         if (!removed)

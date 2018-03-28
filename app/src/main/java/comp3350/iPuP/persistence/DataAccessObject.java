@@ -348,7 +348,8 @@ public class DataAccessObject implements DataAccess
     }
 
     @Override
-    public ArrayList<ParkingSpot> getParkingSpotsByAddressDate(String address, Date date) throws DAOException
+    public ArrayList<ParkingSpot>
+    getParkingSpotsByAddressDate(String address, Date date) throws DAOException
     {
         parkingSpots = new ArrayList<>();
 
@@ -360,7 +361,7 @@ public class DataAccessObject implements DataAccess
                         "ORDER BY LCASE(P.ADDRESS)";
             pstmt = con.prepareStatement(cmdString);
 
-            if (address == null)
+            if (address == null || address.trim().length() == 0 )
             {
                 pstmt.setString(1,"%");
             }

@@ -582,18 +582,20 @@ public class AccessParkingSpotsTest extends TestCase
     public void testMyDailyParkingSpotsEmptyList()
     {
         Services.closeDataAccess();
-
         Services.createDataAccess(new DataAccessStub(dbName));
-
         parkSpotAccess = new AccessParkingSpots();
-        parkSpotAccess.clearSpots();
+        //parkSpotAccess.clearSpots();
 
         try
         {
             DateFormatter dateFormatter = new DateFormatter();
             Date date = dateFormatter.getSqlDateFormat().parse("2018-06-10");
             ParkingSpot newSpots;
+            parkingSpot = parkSpotAccess.getDailySpots(null,date );
+            assertEquals(0, parkingSpot.size());
             parkingSpot = parkSpotAccess.getDailySpots("",date );
+            assertEquals(0, parkingSpot.size());
+            parkingSpot = parkSpotAccess.getDailySpots("         ",date );
             assertEquals(0, parkingSpot.size());
             parkingSpot = parkSpotAccess.getDailySpots("pembina Hwy",date );
             assertEquals(0, parkingSpot.size());
@@ -613,9 +615,7 @@ public class AccessParkingSpotsTest extends TestCase
     public void testFullListOfDailyParkingSpots()
     {
         Services.closeDataAccess();
-
         Services.createDataAccess(new DataAccessStub(dbName));
-
         parkSpotAccess = new AccessParkingSpots();
 //        parkSpotAccess.clearSpots();
 
@@ -624,6 +624,15 @@ public class AccessParkingSpotsTest extends TestCase
             ParkingSpot newSpots;
             parkingSpot = parkSpotAccess.getDailySpots("",null );
             assertEquals(22, parkingSpot.size());
+
+            parkingSpot = parkSpotAccess.getDailySpots("          ",null );
+            assertEquals(22, parkingSpot.size());
+
+            parkingSpot = parkSpotAccess.getDailySpots(null,null );
+            assertEquals(22, parkingSpot.size());
+
+
+
             newSpots = parkingSpot.get(0);
             assertEquals("Jenifer Aniston",newSpots.getName());
             assertEquals("604-253-1111",newSpots.getPhone());
@@ -656,24 +665,46 @@ public class AccessParkingSpotsTest extends TestCase
     public void testGettingMyDailyParkingSpots()
     {
         Services.closeDataAccess();
-
         Services.createDataAccess(new DataAccessStub(dbName));
-
         parkSpotAccess = new AccessParkingSpots();
-       // parkSpotAccess.clearSpots();
+       //parkSpotAccess.clearSpots();
 
         try
         {
             DateFormatter dateFormatter = new DateFormatter();
             Date date = dateFormatter.getSqlDateFormat().parse("2018-06-12");
             ParkingSpot newSpots;
-            parkingSpot = parkSpotAccess.getDailySpots(null,date );
+            parkingSpot = parkSpotAccess.getDailySpots("",date );
+            assertEquals(2, parkingSpot.size());
+            parkingSpot = parkSpotAccess.getDailySpots(null,date);
+            assertEquals(2, parkingSpot.size());
+            parkingSpot = parkSpotAccess.getDailySpots("      ",date );
             assertEquals(2, parkingSpot.size());
             newSpots = parkingSpot.get(0);
+            assertEquals("Mary Watson", newSpots.getName());
             assertEquals("29 St. Mary's Rd", newSpots.getAddress());
+            assertEquals("204-242-2255",newSpots.getPhone());
+            assertEquals("sherlock101@gmail.com",newSpots.getEmail());
+            assertEquals(4.5,newSpots.getRate());
 
+            newSpots = parkingSpot.get(1);
+            assertEquals("marker", newSpots.getName());
+            assertEquals("88 Plaza Drive", newSpots.getAddress());
+            assertEquals("204-855-2342",newSpots.getPhone());
+            assertEquals("theBestMarker@gmail.com",newSpots.getEmail());
+            assertEquals(2.0,newSpots.getRate());
 
+            parkingSpot = parkSpotAccess.getDailySpots("S",date );
+            assertEquals(1, parkingSpot.size());
+            newSpots = parkingSpot.get(0);
+            assertEquals("Mary Watson", newSpots.getName());
+            assertEquals("29 St. Mary's Rd", newSpots.getAddress());
+            assertEquals("204-242-2255",newSpots.getPhone());
+            assertEquals("sherlock101@gmail.com",newSpots.getEmail());
+            assertEquals(4.5,newSpots.getRate());
 
+            parkingSpot = parkSpotAccess.getDailySpots("Pembina Hwy",date );
+            assertEquals(0, parkingSpot.size());
 
 
         }

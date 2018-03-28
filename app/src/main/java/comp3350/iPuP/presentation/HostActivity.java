@@ -189,7 +189,7 @@ public class HostActivity extends Activity implements DateFragmentObserver
             valid = false;
             EditText text = findViewById(R.id.editTextEmail);
             text.setText("Invalid Email address");
-            text.setTextColor(getResources().getColor(R.color.colorWarning));
+            text.setTextColor(getResources().getColor(R.color.colorBlack));
         }
         else
         {
@@ -203,7 +203,7 @@ public class HostActivity extends Activity implements DateFragmentObserver
             valid = false;
             EditText text = findViewById(R.id.editTextPhone);
             text.setText("Invalid phone number");
-            text.setTextColor(getResources().getColor(R.color.colorWarning));
+            text.setTextColor(getResources().getColor(R.color.colorBlack));
         }
         else
         {

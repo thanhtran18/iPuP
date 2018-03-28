@@ -30,7 +30,7 @@ public class BusinessPersistenceSeamTest extends TestCase
         openDataAccess();
         System.out.println("Starting testAccessUsers: Default Data");
 
-        
+
 
     }
 

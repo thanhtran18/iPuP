@@ -20,7 +20,7 @@ public class Services
 		}
 		catch (DAOException daoe)
 		{
-            System.out.println(daoe.getMessage());
+            System.err.println(daoe.getMessage());
             System.exit(1);
 		}
 		return dataAccessService;

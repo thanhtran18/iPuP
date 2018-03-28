@@ -5,7 +5,7 @@ import junit.framework.TestSuite;
 
 public class PersistenceTests
 {
-    private static TestSuite suite;
+    public static TestSuite suite;
 
     public static Test suite()
     {

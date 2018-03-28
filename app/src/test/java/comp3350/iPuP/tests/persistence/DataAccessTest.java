@@ -259,6 +259,8 @@ public class DataAccessTest extends TestCase {
             fail("ParseException Caught with message: "+pe.getMessage());
         }
 
+        System.out.println("Finished testDataAccess: Default Data");
+        closeDataAccess();
     }
 
     public void testInsertAndGetUsers()
@@ -277,6 +279,9 @@ public class DataAccessTest extends TestCase {
         {
             fail("DAOException Caught with message: "+daoe.getMessage());
         }
+
+        System.out.println("Finished testDataAccess: Insert and Get Users");
+        closeDataAccess();
     }
 
     public void testGetParkingSpotsWithoutNewInsertion()
@@ -302,6 +307,9 @@ public class DataAccessTest extends TestCase {
         {
             fail("DAOException Caught with message: "+daoe.getMessage());
         }
+
+        System.out.println("Finished testDataAccess: Get ParkingSpots Without New Insertion");
+        closeDataAccess();
     }
 
     public void testInsertThenGetParkingSpots()
@@ -583,7 +591,7 @@ public class DataAccessTest extends TestCase {
             c.set(2018, 5, 11, 12,31);
             assertEquals(14,dataAccess.getParkingSpotsByTime(c.getTime()).size());
             c.set(2018, 5, 11, 18,31);
-            assertEquals(3,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+            assertEquals(2,dataAccess.getParkingSpotsByTime(c.getTime()).size());
             c.set(2018, 5, 11, 0,0);
             assertEquals(0,dataAccess.getParkingSpotsByTime(c.getTime()).size());
             c.set(0, 0, 0, 0,0);

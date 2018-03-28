@@ -23,7 +23,6 @@ import comp3350.iPuP.objects.ParkingSpot;
 import comp3350.iPuP.objects.TimeSlot;
 import comp3350.iPuP.persistence.DataAccess;
 import comp3350.iPuP.persistence.DataAccessObject;
-import comp3350.iPuP.tests.persistence.DataAccessStub;
 
 public class BusinessPersistenceSeamTest extends TestCase
 {

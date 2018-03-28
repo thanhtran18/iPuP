@@ -476,7 +476,10 @@ public class DataAccessStub implements DataAccess
                 }
                 else
                 {
-                    found = true;
+                    if (daySlotsParkingSpotID.contains(parkingSpot.getSpotID()))
+                    {
+                        found = true;
+                    }
                 }
 
                 try
@@ -605,18 +608,24 @@ public class DataAccessStub implements DataAccess
             }
         }
 
+        Collections.sort( bookedSpotsOfGivenUser, new Comparator<Booking>() {
+            public int compare (Booking b1, Booking b2) {
+                return b1.getStart().compareTo(b2.getStart());
+            }
+        });
+
         return bookedSpotsOfGivenUser;
     }
 
     @Override
-    public void deleteBooking(String username, long timeSlotId) throws DAOException
+    public void deleteBooking(String username, long timeSlotID) throws DAOException
     {
         boolean removed = false;
 
         for(int i = 0; i < bookings.size(); i++)
         {
             Booking booking = bookings.get(i);
-            if ((booking.getName()).equals(username) && (booking.getTimeSlotId()) == timeSlotId)
+            if ((booking.getName()).equals(username) && (booking.getTimeSlotId()) == timeSlotID)
             {
                 bookings.remove(i);
                 removed = true;
@@ -626,7 +635,7 @@ public class DataAccessStub implements DataAccess
 
         if (bookings.size() < 1)
         {
-            throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = " + timeSlotId + "!");
+            throw new DAOException("Error in cancelling booking slot with TIMESLOT_ID = " + timeSlotID + "!");
         }
 
         if (!removed)
@@ -727,6 +736,32 @@ public class DataAccessStub implements DataAccess
                 TimeSlot adayslot = daySlots.get(i);
                 daySlotsList.add(new TimeSlot(adayslot.getStart(), adayslot.getEnd(),
                         adayslot.getSlotID()));
+            }
+        }
+
+        boolean foundBooking;
+
+        for (TimeSlot dayslot : daySlotsList)
+        {
+            foundBooking = false;
+            ArrayList<TimeSlot> timeslots = getTimeSlots(dayslot.getSlotID());
+
+            for (TimeSlot timeslot : timeslots)
+            {
+                for (Booking booking : bookings)
+                {
+                    if (booking.getTimeSlotId() == timeslot.getSlotID())
+                    {
+                        dayslot.setIsBooked(true);
+                        foundBooking = true;
+                        break;
+                    }
+                }
+
+                if (foundBooking)
+                {
+                    break;
+                }
             }
         }
 

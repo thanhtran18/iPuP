@@ -635,7 +635,8 @@ public class DataAccessObject implements DataAccess
     }
 
     @Override
-    public void modifyParkingSpot(long spotID, String address, String phone, String email, Double rate, double latitude, double longitude) throws DAOException
+    public void modifyParkingSpot(long spotID, String address, String phone, String email,
+                                  Double rate, double latitude, double longitude) throws DAOException
     {
         try
         {
@@ -645,9 +646,9 @@ public class DataAccessObject implements DataAccess
             pstmt.setString(2, phone);
             pstmt.setString(3, email);
             pstmt.setDouble(4, rate);
-            pstmt.setLong(5, spotID);
-            pstmt.setDouble(6, latitude);
-            pstmt.setDouble(7, longitude);
+            pstmt.setDouble(5, latitude);
+            pstmt.setDouble(6, longitude);
+            pstmt.setLong(7, spotID);
             updateCount = pstmt.executeUpdate();
             checkWarning(pstmt, updateCount);
         }

@@ -223,6 +223,8 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
 
         solo.goBackToActivity("HomeActivity");
         solo.waitForActivity("HomeActivity");
+        solo.clearEditText((EditText) solo.getView(R.id.editTextName));
+        solo.enterText((EditText)solo.getView(R.id.editTextName), "newGuy");
         solo.clickOnButton("I am looking for parking");
         solo.waitForActivity("ParkerMenuActivity");
         solo.clickOnButton("Search for available parking spots");

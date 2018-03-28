@@ -46,6 +46,8 @@ public class HostModifyActivity extends AppCompatActivity
                 editText.setText(ps.getEmail());
                 editText = findViewById(R.id.editTextPhone);
                 editText.setText(ps.getPhone());
+                latitude = ps.getLatitude();
+                longitude = ps.getLongitude();
             }
             catch (DAOException daoe)
             {
@@ -152,7 +154,7 @@ public class HostModifyActivity extends AppCompatActivity
         {
             try
             {
-                accessParkingSpots.modifyParkingSpot(spotID, address, phone, email, rate, ps.getLatitude(), ps.getLongitude());
+                accessParkingSpots.modifyParkingSpot(spotID, address, phone, email, rate, latitude, longitude);
 
                 Toast.makeText(this, "Advertisement updated!", Toast.LENGTH_LONG).show();
             }

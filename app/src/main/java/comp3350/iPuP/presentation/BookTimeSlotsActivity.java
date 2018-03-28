@@ -122,6 +122,8 @@ public class BookTimeSlotsActivity extends AppCompatActivity
         bookingNotification.setContentText("New booking on your parking spot at: "+
         currentSpot.getAddress()+" Login to view!");
 
+        bookingNotification.setPriority(NotificationCompat.BADGE_ICON_LARGE);
+
         //Code below sends notification to the phone screen
         Intent theIntent=new Intent(BookTimeSlotsActivity.this, HomeActivity.class);
         PendingIntent pendingIntent=PendingIntent.getActivity(this, 0,

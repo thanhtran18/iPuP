@@ -11,6 +11,7 @@ public class AcceptanceTests
     {
         suite = new TestSuite("Acceptance tests");
         suite.addTestSuite(BookParkingSpotTest.class);
+        suite.addTestSuite(OfferParkingSpotTest.class);
         return suite;
     }
 }

@@ -4,7 +4,14 @@ package comp3350.iPuP.acceptance;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.AssetManager;
+/**
+ * Created by Victory on 2018-03-26.
+ */
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.test.ActivityInstrumentationTestCase2;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -17,6 +24,14 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.Projection;
+import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Overlay;
+
+import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import comp3350.iPuP.R;
@@ -156,6 +171,22 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
 
         solo.enterText((EditText) solo.getView(R.id.editTextAddress), "325 Author V. Mauro");
         solo.waitForText("325 Author V. Mauro");
+
+        //todo tings dem here:
+        solo.clickOnButton("Map");
+        solo.waitForActivity("HostMapActivity");
+        solo.clickOnButton("Cancel");
+        solo.waitForActivity("HostActivity");
+        solo.clickOnButton("Map");
+        solo.waitForActivity("HostMapActivity");
+        float clickPointX=600;
+        float clickPointY=990;
+        solo.clickOnScreen(clickPointX,clickPointY);
+        solo.sleep(2000);
+        solo.clickOnButton("Confirm");
+        solo.waitForActivity("HostActivity");
+        //check the geopoint
+
         solo.enterText((EditText) solo.getView(R.id.editTextPhone), "204-234-5678");
         solo.waitForText("204-234-5678");
         solo.enterText((EditText) solo.getView(R.id.editTextEmail), "manlikerodney@gmail.com");
@@ -189,6 +220,36 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
         Assert.assertTrue(solo.searchText("Address: 325 Author V. Mauro"));
         solo.clickOnText("Address: 325 Author V. Mauro");
 
+        solo.goBackToActivity("HomeActivity");
+        solo.waitForActivity("HomeActivity");
+        solo.clickOnButton("I am looking for parking");
+        solo.waitForActivity("ParkerMenuActivity");
+        solo.clickOnButton("Search for available parking spots");
+        solo.waitForActivity("ParkerSearchActivity");
+        solo.clickOnButton("Map");
+        MapView thisMap=(MapView)solo.getView(R.id.map);
+
+        float pisteX;
+        float pisteY;
+        Projection projection = thisMap.getProjection();
+
+        //TODO: Remove this later on:
+        boolean foundClickPos=false;
+        List<Overlay> OverlayList=thisMap.getOverlays();
+        for(Overlay current: OverlayList){
+            if(current instanceof Marker){
+                Marker theMarker= (Marker) current;
+                Point pt = new Point();
+                GeoPoint position=theMarker.getPosition();
+                projection.toPixels(position, pt);
+                pisteX = clickPointX-2;//pt.x-rec.left; // car X screen coord
+                pisteY = clickPointY-218;//pt.y-rec.top; // car Y screen coord
+                if(pisteX==pt.x && pisteY==pt.y){
+                    foundClickPos=true;
+                }
+            }
+        }
+        assertTrue(foundClickPos);
         solo.goBackToActivity("HomeActivity");
         solo.assertCurrentActivity("Expected activity HomeActivity", "HomeActivity");
 

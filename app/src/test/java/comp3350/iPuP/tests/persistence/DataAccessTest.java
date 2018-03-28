@@ -49,6 +49,15 @@ public class DataAccessTest extends TestCase {
 
     public void tearDown()
     {
+        if (this.getName().equals("IntegrationTest"))
+        {
+            try {
+                replaceDbWithDefault();
+            } catch (DAOException daoe) {
+                System.err.println(daoe.getMessage());
+                System.exit(1);
+            }
+        }
         System.out.println("Finished Persistence test DataAccess (using stub)");
     }
 

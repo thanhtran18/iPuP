@@ -282,8 +282,7 @@ public class BusinessPersistenceSeamTest extends TestCase
         closeDataAccess();
         System.out.println("Finished testBusinessPersistenceSeam: Book A ParkingSpot");
     }
-
-    //added by kev
+    
     public void testDeleteBookedSpotsInHistory()
     {
         openDataAccess();

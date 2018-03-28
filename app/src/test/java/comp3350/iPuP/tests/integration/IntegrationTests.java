@@ -11,7 +11,7 @@ public class IntegrationTests
     {
         suite = new TestSuite("Integration Tests");
         suite.addTestSuite(BusinessPersistenceSeamTest.class);
-        suite.addTestSuite(DataAccessHSQLDBTest.class);
+//        suite.addTestSuite(DataAccessHSQLDBTest.class);
         return suite;
     }
 }

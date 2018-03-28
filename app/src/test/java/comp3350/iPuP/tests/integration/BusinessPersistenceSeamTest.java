@@ -278,9 +278,12 @@ public class BusinessPersistenceSeamTest extends TestCase
         {
             fail("DAOException Caught with message: " + daoe.getMessage());
         }
+        closeDataAccess();
+        System.out.println("Finished testBusinessPersistenceSeam: Delete A Booked ParkingSpot");
     }
 
-    public void testModiifyBooking(){
+    public void testModiifyBooking()
+    {
         openDataAccess();
         System.out.println("Starting testBusinessPersistenceSeam: Book A ParkingSpot");
 
@@ -289,7 +292,8 @@ public class BusinessPersistenceSeamTest extends TestCase
         ArrayList<ParkingSpot> parkingSpotsToModify;
         ParkingSpot currParkingSpot;
         ParkingSpot modifiedSpot;
-        try {
+        try
+        {
             accessParkingSpots = new AccessParkingSpots();
             accessUsers = new AccessUsers();
 
@@ -329,9 +333,13 @@ public class BusinessPersistenceSeamTest extends TestCase
             assertEquals("15 thatPlace Avenue",
                     modifiedSpot.getAddress());
             assertEquals("254-441-8879", modifiedSpot.getPhone());
-        }catch (DAOException daoe){
+        }
+        catch (DAOException daoe)
+        {
             fail("ParseException Caught with message: "+daoe.getMessage());
         }
+        closeDataAccess();
+        System.out.println("Finished testBusinessPersistenceSeam: Delete A Booked ParkingSpot");
     }
 
     private void replaceDbWithDefault() throws DAOException
@@ -391,7 +399,8 @@ public class BusinessPersistenceSeamTest extends TestCase
         {
             replaceDbWithDefault();
             System.out.println("Closed HSQL database " + dbName);
-        } catch (DAOException daoe)
+        }
+        catch (DAOException daoe)
         {
             System.err.println(daoe.getMessage());
             System.exit(1);

@@ -77,7 +77,7 @@ public class DataAccessStub implements DataAccess
             rate = 2;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 12:30:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.824105, -97.149002, calStart,calEnd);
 
             address = "2 Chancellor Drive";
             name = "Scott Gordon";
@@ -86,7 +86,7 @@ public class DataAccessStub implements DataAccess
             rate = 4.50;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.815812, -97.153357, calStart,calEnd);
 
             address = "30 Chancellor Drive";
             name = "Roberto Nesta Marley";
@@ -95,7 +95,7 @@ public class DataAccessStub implements DataAccess
             rate = 0.10;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:30:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.809349, -97.162592, calStart,calEnd);
 
             address = "60 Main Street";
             name = "Avocado Stevenson";
@@ -104,16 +104,16 @@ public class DataAccessStub implements DataAccess
             rate = 5.25;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:00:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.886207, -97.133743, calStart,calEnd);
 
-            address = "566 Pasedina avenue";
+            address = "566 Pasadina avenue";
             name = "Brian Cambell";
             phone = "204-419-8819";
             email = "Brian1989@gmail.com";
             rate = 4;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 16:30:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.801219, -97.138934, calStart,calEnd);
 
             address = "1 Kings Drive";
             name = "Jenifer Aniston";
@@ -122,7 +122,7 @@ public class DataAccessStub implements DataAccess
             rate = 7;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 20:00:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.804777, -97.133454, calStart,calEnd);
 
             address = "20 Silverston Avenue";
             name = "Christopher Turk";
@@ -131,7 +131,7 @@ public class DataAccessStub implements DataAccess
             rate = 5;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 13:30:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.798786, -97.139511, calStart,calEnd);
 
             address = "20 Kings Drive";
             name = "Tom Brady";
@@ -140,7 +140,7 @@ public class DataAccessStub implements DataAccess
             rate = 10;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 15:00:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.804667, -97.131787, calStart,calEnd);
 
             address = "1 Pembina Hwy";
             name = "George H. Bush";
@@ -149,7 +149,7 @@ public class DataAccessStub implements DataAccess
             rate = 10;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.874413, -97.142426, calStart,calEnd);
 
             address = "100 St. Mary's Rd";
             name = "Watson k. Smith";
@@ -158,7 +158,7 @@ public class DataAccessStub implements DataAccess
             rate = 7;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 16:00:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.877579, -97.123922, calStart,calEnd);
 
             address = "1691 Pembina Hwy";
             name = "Victory Iyakoregha";
@@ -167,7 +167,7 @@ public class DataAccessStub implements DataAccess
             rate = 5;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 12:30:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.828044, -97.152988, calStart,calEnd);
 
             address = "1338 Chancellor Drive";
             name = "Micheal Douglas";
@@ -176,7 +176,7 @@ public class DataAccessStub implements DataAccess
             rate = 4.50;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.807184, -97.171069, calStart,calEnd);
 
             address = "1122 Chancellor Drive";
             name = "Kelly Cook";
@@ -185,7 +185,7 @@ public class DataAccessStub implements DataAccess
             rate = 4;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:30:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.812780, -97.163604, calStart,calEnd);
 
             address = "91 Dalhousie Drive";
             name = "Madison Fishburne";
@@ -194,16 +194,16 @@ public class DataAccessStub implements DataAccess
             rate = 5.25;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:00:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.796972, -97.153059, calStart,calEnd);
 
-            address = "565 Pasedina Avenue";
+            address = "565 Pasadena Avenue";
             name = "Ronald Regan";
             phone = "204-419-1419";
             email = "theDevil666@gmail.com";
             rate = 100;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 16:30:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.803280, -97.133301, calStart,calEnd);
 
             address = "1334 Pembina Hwy";
             name = "Marilyn Monroe";
@@ -212,16 +212,16 @@ public class DataAccessStub implements DataAccess
             rate = 7;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 20:00:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.840374, -97.152507, calStart,calEnd);
 
-            address = "200 Pasedina Avenue";
+            address = "200 Pasadena Avenue";
             name = "Nelson Mandela";
             phone = "204-234-2555";
             email = "Nelson27@gmail.com";
             rate = 5;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 13:30:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.801206, -97.138912, calStart,calEnd);
 
             address = "Brady Road Landfill";
             name = "Donald Trump";
@@ -230,7 +230,7 @@ public class DataAccessStub implements DataAccess
             rate = 100;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 15:00:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.755454, -97.212426, calStart,calEnd);
 
             address = "1 Pembina Hwy";
             name = "George W. Bush";
@@ -239,7 +239,7 @@ public class DataAccessStub implements DataAccess
             rate = 10;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 14:30:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.874413, -97.142490, calStart,calEnd);
 
             address = "29 St. Mary's Rd";
             name = "Mary Watson";
@@ -248,7 +248,7 @@ public class DataAccessStub implements DataAccess
             rate = 4.50;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 20:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-12 02:00:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.880089, -97.126674, calStart,calEnd);
 
             address = "1000 St. Mary's Rd";
             name = "Philipe Coutinho";
@@ -257,7 +257,7 @@ public class DataAccessStub implements DataAccess
             rate = 0.10;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 16:00:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.840468, -97.112631, calStart,calEnd);
 
             address = "1000 St. Mary's Rd";
             name = "Anne Coutinho";
@@ -266,7 +266,7 @@ public class DataAccessStub implements DataAccess
             rate = 0.20;
             calStart.setTime(df.getSqlDateTimeFormat().parse("2018-02-11 17:30:00"));
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-02-11 19:00:00"));
-            addDefaultData(name,address,phone,email,rate, 0, 0, calStart,calEnd);
+            addDefaultData(name,address,phone,email,rate, 49.840468, -97.112631, calStart,calEnd);
 
             bookTimeSlot("marker",173, 21);
             bookTimeSlot("marker",91, 11);

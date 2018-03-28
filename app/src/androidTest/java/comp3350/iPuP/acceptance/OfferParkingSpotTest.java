@@ -245,7 +245,7 @@ public class OfferParkingSpotTest extends ActivityInstrumentationTestCase2<HomeA
                 GeoPoint position=theMarker.getPosition();
                 projection.toPixels(position, pt);
                 pisteX = clickPointX-2;
-                pisteY = clickPointY-218;
+                pisteY = clickPointY-266;
                 if(pisteX == pt.x && pisteY == pt.y){
                     foundClickPos=true;
                 }

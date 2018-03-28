@@ -181,7 +181,10 @@ public class ParkerMapActivity extends AppCompatActivity implements DateFragment
     {
         TextView tv = findViewById(R.id.textViewDate);
         tv.setText(df.getDateFormat().format(date));
-        current.setTime(date);
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        current.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH),c.get(Calendar.DATE),
+                current.get(Calendar.HOUR), current.get(Calendar.MINUTE));
         updateMap();
     }
 

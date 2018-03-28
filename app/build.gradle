@@ -28,10 +28,10 @@ repositories {
 dependencies {
     compile 'commons-io:commons-io:2.6'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.android.support:design:27.0.2'
+    implementation 'com.android.support:design:27.1.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:appcompat-v7:27.1.0'
     implementation files('libs/hsqldb.jar')
     compile 'org.osmdroid:osmdroid-android:6.0.1'
     compile 'com.github.MKergall:osmbonuspack:6.5.1'

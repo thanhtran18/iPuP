@@ -27,6 +27,7 @@ public class DataAccessTest extends TestCase {
     private static String dbPathName;
     private DataAccess dataAccess;
     private DateFormatter dateFormatter;
+    private static String systemSeparator = System.getProperty("file.separator");
 
     public DataAccessTest(String arg0)
     {
@@ -67,7 +68,7 @@ public class DataAccessTest extends TestCase {
         DataAccessTest dataAccessTest = new DataAccessTest("IntegrationTest");
 
         dbName = dbname;
-        dbPathName = dbpathname.replace('/', '\\');
+        dbPathName = dbpathname.replace("/", systemSeparator);
 
         dataAccessTest.testDefaultData();
         dataAccessTest.testInsertAndGetUsers();
@@ -85,8 +86,8 @@ public class DataAccessTest extends TestCase {
     {
         try
         {
-            String dbFilePath = System.getProperty("user.dir") + "/" + dbPathName + ".script";
-            String defaultDbFilePath = System.getProperty("user.dir") + "/app/src/main/assets/db/" + dbName + ".script";
+            String dbFilePath = System.getProperty("user.dir") + systemSeparator + dbPathName + ".script";
+            String defaultDbFilePath = System.getProperty("user.dir") + "/app/src/main/assets/db/".replace("/",systemSeparator) + dbName + ".script";
 
             File dbFile = new File(dbFilePath);
             File defaultDbFile = new File(defaultDbFilePath);
@@ -292,12 +293,12 @@ public class DataAccessTest extends TestCase {
         try
         {
             ArrayList<ParkingSpot> parkingSpots = dataAccess.getParkingSpotsByAddressDate("", dateFormatter.getSqlDateFormat().parse("2018-06-11"));
-            assertEquals(20,parkingSpots.size());
+            assertEquals(19,parkingSpots.size());
             assertTrue(parkingSpots.get(0).getAddress().toLowerCase().compareTo(parkingSpots.get(1).getAddress().toLowerCase()) < 0);
             assertTrue(parkingSpots.get(16).getAddress().toLowerCase().compareTo(parkingSpots.get(17).getAddress().toLowerCase()) < 0);
-            assertFalse(parkingSpots.get(19).getAddress().toLowerCase().compareTo(parkingSpots.get(12).getAddress().toLowerCase()) < 0);
-            assertTrue(parkingSpots.get(18).getAddress().toLowerCase().compareTo(parkingSpots.get(19).getAddress().toLowerCase()) < 0);
-            assertTrue(parkingSpots.get(0).getAddress().toLowerCase().compareTo(parkingSpots.get(19).getAddress().toLowerCase()) < 0);
+            assertFalse(parkingSpots.get(18).getAddress().toLowerCase().compareTo(parkingSpots.get(12).getAddress().toLowerCase()) < 0);
+            assertTrue(parkingSpots.get(17).getAddress().toLowerCase().compareTo(parkingSpots.get(18).getAddress().toLowerCase()) < 0);
+            assertTrue(parkingSpots.get(0).getAddress().toLowerCase().compareTo(parkingSpots.get(18).getAddress().toLowerCase()) < 0);
         }
         catch (ParseException pe)
         {
@@ -587,17 +588,19 @@ public class DataAccessTest extends TestCase {
         try
         {
             c.set(2018, 5, 11, 11,31);
-            assertEquals(16,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+            assertEquals(13,dataAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
             c.set(2018, 5, 11, 12,31);
-            assertEquals(14,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+            assertEquals(12,dataAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
+            c.set(2018, 5, 11, 14,31);
+            assertEquals(7,dataAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
             c.set(2018, 5, 11, 18,31);
-            assertEquals(2,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+            assertEquals(2,dataAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
             c.set(2018, 5, 11, 0,0);
-            assertEquals(0,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+            assertEquals(0,dataAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
             c.set(0, 0, 0, 0,0);
-            assertEquals(0,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+            assertEquals(0,dataAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
             c.set(1, 2, 3, 4,5);
-            assertEquals(0,dataAccess.getParkingSpotsByTime(c.getTime()).size());
+            assertEquals(0,dataAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
         }
         catch (Exception e)
         {

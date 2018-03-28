@@ -982,17 +982,19 @@ public class AccessParkingSpotsTest extends TestCase
             parkSpotAccess = new AccessParkingSpots();
 
             c.set(2018, 5, 11, 11,31);
-            assertEquals(16,parkSpotAccess.getParkingSpotsByTime(c.getTime()).size());
+            assertEquals(13,parkSpotAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
             c.set(2018, 5, 11, 12,31);
-            assertEquals(14,parkSpotAccess.getParkingSpotsByTime(c.getTime()).size());
+            assertEquals(12,parkSpotAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
+            c.set(2018, 5, 11, 14,31);
+            assertEquals(7,parkSpotAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
             c.set(2018, 5, 11, 18,31);
-            assertEquals(2,parkSpotAccess.getParkingSpotsByTime(c.getTime()).size());
+            assertEquals(2,parkSpotAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
             c.set(2018, 5, 11, 0,0);
-            assertEquals(0,parkSpotAccess.getParkingSpotsByTime(c.getTime()).size());
+            assertEquals(0,parkSpotAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
             c.set(0, 0, 0, 0,0);
-            assertEquals(0,parkSpotAccess.getParkingSpotsByTime(c.getTime()).size());
+            assertEquals(0,parkSpotAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
             c.set(1, 2, 3, 4,5);
-            assertEquals(0,parkSpotAccess.getParkingSpotsByTime(c.getTime()).size());
+            assertEquals(0,parkSpotAccess.getParkingSpotsByTime(c.getTime(), "marker").size());
         }
         catch (Exception e)
         {

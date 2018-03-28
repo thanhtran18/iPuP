@@ -26,7 +26,7 @@ public interface DataAccess
 
 	ArrayList<ParkingSpot> getParkingSpotsByAddressDate(String address, Date date) throws DAOException;
 
-	ArrayList<ParkingSpot> getParkingSpotsByTime(Date time) throws  DAOException;
+	ArrayList<ParkingSpot> getParkingSpotsByTime(Date time, String name) throws  DAOException;
 
 	ParkingSpot getParkingSpot(long spotID) throws DAOException;
 

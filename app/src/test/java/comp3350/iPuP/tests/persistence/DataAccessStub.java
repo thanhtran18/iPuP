@@ -106,7 +106,7 @@ public class DataAccessStub implements DataAccess
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 11:00:00"));
             addDefaultData(name,address,phone,email,rate, 49.886207, -97.133743, calStart,calEnd);
 
-            address = "566 Pasadina avenue";
+            address = "566 Pasadena avenue";
             name = "Brian Cambell";
             phone = "204-419-8819";
             email = "Brian1989@gmail.com";
@@ -124,7 +124,7 @@ public class DataAccessStub implements DataAccess
             calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 20:00:00"));
             addDefaultData(name,address,phone,email,rate, 49.804777, -97.133454, calStart,calEnd);
 
-            address = "20 Silverston Avenue";
+            address = "20 Silverstone Avenue";
             name = "Christopher Turk";
             phone = "204-236-2322";
             email = "chrisTurk27@gmail.com";
@@ -138,8 +138,8 @@ public class DataAccessStub implements DataAccess
             phone = "877-377-4234";
             email = "theGoat@gmail.com";
             rate = 10;
-            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 10:30:00"));
-            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-06-11 15:00:00"));
+            calStart.setTime(df.getSqlDateTimeFormat().parse("2018-03-10 10:30:00"));
+            calEnd.setTime(df.getSqlDateTimeFormat().parse("2018-03-10 15:00:00"));
             addDefaultData(name,address,phone,email,rate, 49.804667, -97.131787, calStart,calEnd);
 
             address = "1 Pembina Hwy";
@@ -511,22 +511,34 @@ public class DataAccessStub implements DataAccess
     }
 
     @Override
-    public ArrayList<ParkingSpot> getParkingSpotsByTime(Date time) throws DAOException
+    public ArrayList<ParkingSpot> getParkingSpotsByTime(Date time, String name) throws DAOException
     {
         ArrayList<ParkingSpot> spots = new ArrayList<>();
         for (ParkingSpot spot : parkingSpots)
         {
-            boolean found = false;
-            for (int i = 0; i < timeSlots.size() && !found; i++)
+            if (!spot.getName().equals(name))
             {
-                long j = timeSlots.get(i).getStart().getTime() - time.getTime();
-                long k = timeSlots.get(i).getEnd().getTime() - time.getTime();
-                if (timeSlotsParkingSpotID.get(i) == spot.getSpotID()
-                        && j <= 0
-                        && k >= 0)
+                boolean found = false;
+                for (int i = 0; i < timeSlots.size() && !found; i++)
                 {
-                    spots.add(spot);
-                    found = true;
+                    long j = timeSlots.get(i).getStart().getTime() - time.getTime();
+                    long k = timeSlots.get(i).getEnd().getTime() - time.getTime();
+                    if (timeSlotsParkingSpotID.get(i) == spot.getSpotID()
+                            && j <= 0
+                            && k >= 0)
+                    {
+                        boolean booked = false;
+                        for (Booking b : bookings)
+                        {
+                            if (b.getTimeSlotId() == timeSlots.get(i).getSlotID())
+                                booked = true;
+                        }
+                        if (!booked)
+                        {
+                            spots.add(spot);
+                            found = true;
+                        }
+                    }
                 }
             }
         }

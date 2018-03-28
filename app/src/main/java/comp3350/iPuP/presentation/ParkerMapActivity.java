@@ -21,6 +21,7 @@ import org.osmdroid.tileprovider.util.SimpleRegisterReceiver;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Overlay;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,6 +43,8 @@ public class ParkerMapActivity extends AppCompatActivity implements DateFragment
     Calendar current;
 
     long currentSpotID = -1;
+
+    String name;
 
     @Override public void onCreate(Bundle savedInstanceState)
     {
@@ -107,9 +110,17 @@ public class ParkerMapActivity extends AppCompatActivity implements DateFragment
         }
         catch (Exception e)
         {
-            Toast.makeText(this,"Unable to load map data",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Unable to load map data", Toast.LENGTH_LONG).show();
         }
-
+        Bundle extras = getIntent().getExtras();
+        if(extras == null)
+        {
+            name = null;
+        }
+        else
+        {
+            name = extras.getString(getResources().getString(R.string.extra_name));
+        }
         updateMap();
     }
 
@@ -117,7 +128,13 @@ public class ParkerMapActivity extends AppCompatActivity implements DateFragment
     {
         try
         {
-            ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getParkingSpotsByTime(current.getTime());
+            ArrayList<ParkingSpot> parkingSpots = accessParkingSpots.getParkingSpotsByTime(current.getTime(), name);
+            for (Overlay o : map.getOverlays())
+            {
+                Marker m = (Marker)o;
+                m.closeInfoWindow();
+            }
+            currentSpotID = -1;
             map.getOverlays().clear();
             for (final ParkingSpot spot : parkingSpots)
             {
@@ -226,22 +243,9 @@ public class ParkerMapActivity extends AppCompatActivity implements DateFragment
 
     public void onBookClick(View view)
     {
-        if (currentSpotID != -1)
-        {
-            String name;
-            Bundle extras = getIntent().getExtras();
-            if(extras == null)
-            {
-                name = null;
-            }
-            else
-            {
-                name = extras.getString(getResources().getString(R.string.extra_name));
-            }
-            Intent intent = new Intent(getApplicationContext(), BookTimeSlotsActivity.class);
-            intent.putExtra(getResources().getString(R.string.extra_spotID), currentSpotID);
-            intent.putExtra(getResources().getString(R.string.extra_name), name);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(getApplicationContext(), BookTimeSlotsActivity.class);
+        intent.putExtra(getResources().getString(R.string.extra_spotID), currentSpotID);
+        intent.putExtra(getResources().getString(R.string.extra_name), name);
+        startActivity(intent);
     }
 }

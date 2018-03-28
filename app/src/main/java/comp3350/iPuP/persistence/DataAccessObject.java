@@ -400,7 +400,7 @@ public class DataAccessObject implements DataAccess
     }
 
     @Override
-    public ArrayList<ParkingSpot> getParkingSpotsByTime(Date time) throws DAOException
+    public ArrayList<ParkingSpot> getParkingSpotsByTime(Date time, String name) throws DAOException
     {
         parkingSpots = new ArrayList<>();
 
@@ -411,12 +411,13 @@ public class DataAccessObject implements DataAccess
             c.add(Calendar.MINUTE, 15);
             cmdString = "SELECT * FROM PARKINGSPOTS P WHERE " +
                     "EXISTS (SELECT * FROM TIMESLOTS T WHERE T.SPOT_ID = P.SPOT_ID " +
-                    "AND ? BETWEEN T.STARTDATETIME AND T.ENDDATETIME )" /*+
-                    "AND EXISTS (SELECT * FROM BOOKINGS B WHERE B.TIMESLOT_ID=T.TIMESLOT_ID)) " +
-                    "AND P.LATITUDE!=0E0 AND P.LONGITUDE!=0E0"*/;
+                    "AND ? BETWEEN T.STARTDATETIME AND T.ENDDATETIME " +
+                    "AND NOT EXISTS (SELECT * FROM BOOKINGS B WHERE B.TIMESLOT_ID=T.TIMESLOT_ID)) " +
+                    "AND P.LATITUDE!=0E0 AND P.LONGITUDE!=0E0 AND P.NAME!=?";
             pstmt = con.prepareStatement(cmdString);
 
             pstmt.setString(1, df.getSqlDateTimeFormat().format(c.getTime()));
+            pstmt.setString(2, name);
 
             rss = pstmt.executeQuery();
 

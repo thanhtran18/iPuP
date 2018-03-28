@@ -169,6 +169,60 @@ public class BusinessPersistenceSeamTest extends TestCase
         System.out.println("Finished testBusinessPersistenceSeam: Book A ParkingSpot");
     }
 
+    public void testModiifyBooking(){
+        openDataAccess();
+        System.out.println("Starting testBusinessPersistenceSeam: Book A ParkingSpot");
+
+        AccessParkingSpots accessParkingSpots;
+        AccessUsers accessUsers;
+        ArrayList<ParkingSpot> parkingSpotsToModify;
+        ParkingSpot currParkingSpot;
+        ParkingSpot modifiedSpot;
+        try {
+            accessParkingSpots = new AccessParkingSpots();
+            accessUsers = new AccessUsers();
+
+            assertFalse(accessUsers.createUser("marker"));
+            parkingSpotsToModify=accessParkingSpots.getMyHostedSpots("marker");
+            assertEquals(1,parkingSpotsToModify.size());
+            currParkingSpot=accessParkingSpots.getParkingSpot(parkingSpotsToModify.get(0).
+                    getSpotID());
+            assertEquals("88 Plaza Drive", currParkingSpot.getAddress());
+            assertEquals("204-855-2342", currParkingSpot.getPhone());
+            assertEquals("theBestMarker@gmail.com", currParkingSpot.getEmail());
+            assertEquals(2.0,currParkingSpot.getRate());
+
+            accessParkingSpots.modifyParkingSpot(currParkingSpot.getSpotID(),
+                    currParkingSpot.getAddress(),
+                    currParkingSpot.getPhone(),
+                    "changedEmail@fmail.com",
+                    10.5,
+                    currParkingSpot.getLatitude(),
+                    currParkingSpot.getLongitude());
+            parkingSpotsToModify=accessParkingSpots.getMyHostedSpots("marker");
+            assertEquals(1, parkingSpotsToModify.size());
+            modifiedSpot=accessParkingSpots.getParkingSpot(currParkingSpot.getSpotID());
+            assertEquals("changedEmail@fmail.com",
+                    modifiedSpot.getEmail());
+            assertEquals(10.5, modifiedSpot.getRate());
+            accessParkingSpots.modifyParkingSpot(currParkingSpot.getSpotID(),
+                    "15 thatPlace Avenue",
+                    "254-441-8879",
+                    currParkingSpot.getEmail(),
+                    currParkingSpot.getRate(),
+                    currParkingSpot.getLatitude(),
+                    currParkingSpot.getLongitude());
+            parkingSpotsToModify=accessParkingSpots.getMyHostedSpots("marker");
+            assertEquals(1, parkingSpotsToModify.size());
+            modifiedSpot=accessParkingSpots.getParkingSpot(currParkingSpot.getSpotID());
+            assertEquals("15 thatPlace Avenue",
+                    modifiedSpot.getAddress());
+            assertEquals("254-441-8879", modifiedSpot.getPhone());
+        }catch (DAOException daoe){
+            fail("ParseException Caught with message: "+daoe.getMessage());
+        }
+    }
+
     private void replaceDbWithDefault() throws DAOException
     {
         Services.closeDataAccess();
@@ -230,4 +284,5 @@ public class BusinessPersistenceSeamTest extends TestCase
             System.exit(1);
         }
     }
+
 }

@@ -1,159 +1,165 @@
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="comp3350.iPuP.presentation.HostActivity">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <EditText
+        android:id="@+id/editTextAddress"
+        style="@style/AppTheme.EditTextStyle"
+        android:ems="12"
+        android:enabled="true"
+        android:hint="@string/host_address"
+        android:inputType="textPostalAddress" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/buttonMap"
+            style="@style/AppTheme.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Map"
+            android:onClick="onMapClick"/>
+        <Button
+            android:id="@+id/buttonCancelMap"
+            style="@style/AppTheme.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cancel Location"
+            android:onClick="onMapCancelClick"/>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/editTextPhone"
+        style="@style/AppTheme.EditTextStyleAlt"
+        android:ems="12"
+        android:enabled="true"
+        android:hint="@string/host_phone"
+        android:inputType="phone" />
+
+    <EditText
+        android:id="@+id/editTextEmail"
+        style="@style/AppTheme.EditTextStyle"
+        android:ems="12"
+        android:enabled="true"
+        android:hint="@string/host_email"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/editTextRate"
+        style="@style/AppTheme.EditTextStyleAlt"
+        android:ems="12"
+        android:enabled="true"
+        android:hint="@string/host_rate"
+        android:inputType="numberDecimal"/>
+
+
+    <LinearLayout
+        android:id="@+id/layoutFrom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="comp3350.iPuP.presentation.HostActivity">
-
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:rowCount="4">
-
-            <TextView
-                android:id="@+id/textName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="60dp"
-                android:layout_marginRight="60dp"
-                android:text="@string/host_name"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <EditText
-                android:id="@+id/editName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="12"
-                android:enabled="true"
-                android:inputType="textPersonName" />
-
-            <TextView
-                android:id="@+id/textAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="60dp"
-                android:layout_marginRight="60dp"
-                android:text="@string/host_address"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <EditText
-                android:id="@+id/editAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="12"
-                android:enabled="true"
-                android:inputType="textPostalAddress" />
-
-            <TextView
-                android:id="@+id/textPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="60dp"
-                android:layout_marginRight="60dp"
-                android:text="@string/host_phone"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <EditText
-                android:id="@+id/editPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="12"
-                android:enabled="true"
-                android:inputType="phone" />
-
-            <TextView
-                android:id="@+id/textEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="60dp"
-                android:layout_marginRight="60dp"
-                android:text="@string/host_email"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <EditText
-                android:id="@+id/editEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="12"
-                android:enabled="true"
-                android:inputType="textEmailAddress" />
-
-            <TextView
-                android:id="@+id/textRate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="60dp"
-                android:layout_marginRight="60dp"
-                android:text="@string/host_rate"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <EditText
-                android:id="@+id/editRate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="12"
-                android:enabled="true"
-                android:inputType="numberDecimal"/>
-
-        </GridLayout>
+        android:orientation="horizontal"
+        android:weightSum="3">
 
         <TextView
-            android:id="@+id/textDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:layout_marginRight="60dp"
-            android:text="@string/host_date"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <DatePicker
-            android:id="@+id/datePickerDate"
+            android:id="@+id/textViewFrom"
+            style="@style/AppTheme.EntryTextStyle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"></DatePicker>
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/host_from"/>
 
         <TextView
-            android:id="@+id/textTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:layout_marginRight="60dp"
-            android:text="@string/host_time"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-        <LinearLayout
+            android:id="@+id/textViewFromDate"
+            style="@style/AppTheme.EntryTextStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:ems="10"
+            android:onClick="onFromDateClick"
+            android:textSize="20sp"/>
 
+        <TextView
+            android:id="@+id/textViewFromTime"
+            style="@style/AppTheme.EntryTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:onClick="onFromTimeClick"
+            android:textSize="20sp"/>
 
-            <TimePicker
-                android:id="@+id/timePickerStart"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"></TimePicker>
-            <TimePicker
-                android:id="@+id/timePickerEnd"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"></TimePicker>
-
-        </LinearLayout>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="buttonConfirmOnClick"
-            android:text="@string/confirm" />
     </LinearLayout>
-</ScrollView>
+
+    <LinearLayout
+        android:id="@+id/layoutTo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/textViewTo"
+            style="@style/AppTheme.EntryTextStyleAlt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/host_to" />
+
+        <TextView
+            android:id="@+id/textViewToDate"
+            style="@style/AppTheme.EntryTextStyleAlt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:onClick="onToDateClick"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/textViewToTime"
+            style="@style/AppTheme.EntryTextStyleAlt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:onClick="onToTimeClick"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+    <ToggleButton
+    android:id="@+id/toggleButtonRepeat"
+    style="@style/AppTheme.ToggleButton"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textOff="@string/host_dnrepeat"
+    android:textOn="@string/host_repeat"
+    android:onClick="onRepeatClick"/>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/buttonCancel"
+        style="@style/AppTheme.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="buttonCancelOnClick"
+        android:text="@string/cancel" />
+
+    <Button
+        android:id="@+id/buttonOk"
+        style="@style/AppTheme.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="buttonConfirmOnClick"
+        android:text="@string/confirm"/>
+    </LinearLayout>
+</LinearLayout>

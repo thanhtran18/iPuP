@@ -1,61 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="comp3350.iPuP"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="comp3350.iPuP">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".presentation.HomeActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.StudentsActivity"
-            android:label="@string/title_activity_students">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="comp3350.iPuP.presentation.HomeActivity"/>
-        </activity>
-        <activity
-            android:name=".presentation.StudentCoursesActivity"
-            android:label="@string/title_activity_student_courses">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="comp3350.iPuP.presentation.StudentsActivity"/>
-        </activity>
-        <activity
             android:name=".presentation.HostActivity"
-            android:label="@string/title_activity_courses">
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.Dialog">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="comp3350.iPuP.presentation.HomeActivity"/>
+                android:value="comp3350.iPuP.presentation.HomeActivity" />
         </activity>
         <activity
-            android:name=".presentation.CourseStudentsActivity"
-            android:label="@string/title_activity_course_students">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="comp3350.iPuP.presentation.HostActivity"/>
-        </activity>
-        <activity android:name=".presentation.AvailableParkingSpots">
-        </activity>
+            android:name=".presentation.HostMenuActivity"
+            android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".presentation.ParkingSpotInfoActivity"
-            android:label="@string/title_activity_parking_spot_info"
-            android:parentActivityName=".presentation.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="comp3350.iPuP.presentation.AvailableParkingSpots"/>
-        </activity>
+            android:name=".presentation.HostViewActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".presentation.RepeatActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".presentation.TimePickerActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".presentation.ParkerMenuActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".presentation.ParkerSearchActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".presentation.ParkerLogViewActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".presentation.BookTimeSlotsActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".presentation.HostViewDayActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".presentation.HostModifyActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".presentation.HostViewTimeActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".presentation.HostMapActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".presentation.ParkerMapActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

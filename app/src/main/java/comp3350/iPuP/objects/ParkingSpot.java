@@ -1,40 +1,60 @@
 package comp3350.iPuP.objects;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-/**
- * Created by Mark Van Egmond on 1/23/2018.
- */
 
 public class ParkingSpot
 {
-    public Date getStartTime() {
-        return reservation.getStart();
+    private String name;
+    private String address;
+    private String phone;
+    private String email;
+    private long spotID;
+    private double rate;
+    private double longitude, latitude;
+
+    public ParkingSpot(String address, String name, String phone, String email, double rate, double latitude, double longitude)
+    {
+        this.address = address;
+        this.name = name;
+
+        this.phone = phone;
+        this.email = email;
+
+        this.rate = rate;
+
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-    public Date getEndTime() {
-        return reservation.getEnd();
+    public ParkingSpot(long id, String address, String name, String phone, String email, double rate, double latitude, double longitude)
+    {
+        this(address, name, phone, email, rate, latitude, longitude);
+        this.spotID = id;
     }
-    /*public String getStartTime() {
-        return reservation.getStart();
-    }
-    public String getEndTime() {
-        return reservation.getEnd();
-    }*/
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public String getPhone() {
+    public String getPhone()
+    {
         return phone;
     }
 
-    public String getAddress() {
+    public String getAddress()
+    {
         return address;
     }
 
-    public String getEmail() {
+    public String getEmail()
+    {
         return email;
     }
 
@@ -43,47 +63,65 @@ public class ParkingSpot
         return rate;
     }
 
-    private ReservationTime reservation;
-    private String address;
-    private String name;
-    private String phone;
-    private String email;
-    private String id;
-    private double rate;
-    //Rodney added
-    private boolean isBooked;
-
-    public boolean isBooked() {
-        return isBooked;
-    }
-
-    public void setBooked(boolean booked) {
-        isBooked = booked;
-    }
-
-    public ParkingSpot(ReservationTime reservation, String address, String name, String phone, String email, double rate)
+    public long getSpotID()
     {
-        this.reservation = reservation; //required
-        this.address = address;// required
-        this.name = name;// required
+        return spotID;
+    }
 
-        // either phone or email required
+    public void setSpotID(long spotID)
+    {
+        this.spotID = spotID;
+    }
+
+    public void modifySpot(String address, String phone, String email, double rate, double latitude, double longitude)
+    {
+        this.address = address;
         this.phone = phone;
         this.email = email;
-
-        this.rate = rate;// required
-        //Rodney added.
-        id=address+name+phone+email;
-        isBooked =false;
-
-    }
-
-    public String getId() {
-        return id;
+        this.rate = rate;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     @Override
-    public String toString() {
-        return this.address + "\n" + this.reservation.toString();
+    public String toString()
+    {
+        return this.address;
+    }
+
+    @Override
+    public boolean equals(Object other)
+    {
+        if (other != null && other.getClass() == ParkingSpot.class)
+        {
+            ParkingSpot otherSpot = (ParkingSpot) other;
+            if (this.spotID == otherSpot.spotID)
+                return true;
+        }
+        return false;
+    }
+
+    public double getLatitude()
+    {
+        return latitude;
+    }
+
+    public double getLongitude()
+    {
+        return longitude;
+    }
+
+    public static boolean validateEmail(String email)
+    {
+        Pattern p = Pattern.compile("^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$");//pattern from https://stackoverflow.com/questions/42266148/email-validation-regex-java
+        Matcher m = p.matcher(email);
+        return m.matches();
+    }
+
+    public static boolean validatePhone(String phone)
+    {
+        Pattern p = Pattern.compile("^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");//pattern from https://stackoverflow.com/questions/16699007/regular-expression-to-match-standard-10-digit-phone-number
+        Matcher m = p.matcher(phone);
+        return m.matches();
     }
 }

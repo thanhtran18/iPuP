@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="270dp"
+    android:layout_height="wrap_content"
+    tools:context="comp3350.iPuP.presentation.TimePickerActivity">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp">
+
+        <Spinner
+            android:id="@+id/spinnerHour"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:entries="@array/reapeat_hours"
+            tools:layout_editor_absoluteX="72dp"
+            tools:layout_editor_absoluteY="27dp"
+            android:dropDownWidth="100dp"/>
+
+        <TextView
+            android:id="@+id/textViewColon"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/spinnerHour"
+            android:layout_alignBottom="@+id/spinnerHour"
+            android:layout_toEndOf="@+id/spinnerHour"
+            android:layout_toRightOf="@+id/spinnerHour"
+            android:text="@string/colon"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@android:color/background_dark"/>
+
+        <Spinner
+            android:id="@+id/spinnerMinute"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/textViewColon"
+            android:layout_toRightOf="@+id/textViewColon"
+            android:dropDownWidth="100dp"
+            android:entries="@array/repeat_minutes"
+            tools:layout_editor_absoluteX="72dp"
+            tools:layout_editor_absoluteY="27dp" />
+
+        <Spinner
+            android:id="@+id/spinnerAMPM"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/spinnerMinute"
+            android:layout_toRightOf="@+id/spinnerMinute"
+            android:dropDownWidth="100dp"
+            android:entries="@array/repeat_am_pm"
+            tools:layout_editor_absoluteX="72dp"
+            tools:layout_editor_absoluteY="27dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/spinnerAMPM">
+
+            <Button
+                android:id="@+id/buttonCancel"
+                style="@style/AppTheme.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="buttonCancelOnClick"
+                android:text="@string/cancel" />
+
+            <Button
+                android:id="@+id/buttonOk"
+                style="@style/AppTheme.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="buttonOkOnClick"
+                android:text="@string/ok" />
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>

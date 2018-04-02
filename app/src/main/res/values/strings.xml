@@ -1,45 +1,116 @@
 <resources>
     <string name="app_name">iPuP</string>
 
+    <!-- General strings -->
+    <string name="next">Next</string>
+    <string name="prev">Prev</string>
+    <string name="confirm">Confirm</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="title">iPuP - I Park U Park</string>
+    <string name="modify">Modify</string>
+    <string name="letter_sun">S</string>
+    <string name="letter_mon">M</string>
+    <string name="letter_tue">T</string>
+    <string name="letter_wed">W</string>
+    <string name="letter_thu">T</string>
+    <string name="letter_fri">F</string>
+    <string name="letter_sat">S</string>
+    <string name="action_settings">Settings</string>
+    <string name="create">Create</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+    <string name="fatalError">Fatal error</string>
+    <string name="warning">Warning</string>
+    <string name="search">Search</string>
+    <string name="colon">:</string>
+
+    <!-- Strings for the HomeActivity -->
     <string name="home_parker">I am looking for parking</string>
     <string name="home_host">I have available parking to advertise</string>
+    <string name="home_enter_name">Enter a name</string>
+
+    <!-- Strings for the HostActivity -->
     <string name="host_address">Address</string>
     <string name="host_phone">Phone Number</string>
     <string name="host_email">Email Address</string>
     <string name="host_name">Name</string>
     <string name="host_rate">Rate ($/h)</string>
-    <string name="host_date">Select the date</string>
-    <string name="host_time">Select the time that you would like the parking to be available</string>
-    <string name="next">Next</string>
-    <string name="confirm">Confirm</string>
+    <string name="host_from">From</string>
+    <string name="host_to">To</string>
+    <string name="host_repeat">Repeats</string>
+    <string name="host_repeat_default">None</string>
+    <string name="host_dnrepeat">Does not repeat</string>
 
+    <!-- Strings for the ParkerMenuActivity -->
+    <string name="parker_menu_search">Search for available parking spots</string>
+    <string name="parker_menu_view">View your booked spots</string>
 
-    <string name="action_settings">Settings</string>
-    <string name="student_records_system">Student Records System</string>
-    <string name="title_activity_students">SRSYS: Students</string>
-    <string name="title_activity_courses">SRSYS: Courses</string>
-    <string name="title_activity_student_courses">SRSYS: Student Course History</string>
-    <string name="title_activity_course_students">SRSYS: Course Registrations</string>
-    <string name="students">Students</string>
-    <string name="courses">Courses</string>
-    <string name="registrations">Registrations</string>
-    <string name="create">Create</string>
-    <string name="update">Update</string>
-    <string name="delete">Delete</string>
-    <string name="address">Address</string>
-    <string name="name">Name</string>
-    <string name="student_id">Student ID</string>
-    <string name="course_id">Course ID</string>
-    <string name="gpa">GPA</string>
-    <string name="fatalError">Fatal error</string>
-    <string name="warning">Warning</string>
-    <string name="no_available_parking_spots">There are no available spots to display</string>
-    <string name="title_activity_available_parking_spots">AvailableParkingSpots</string>
-    <string name="title_activity_parking_spot_info">ParkingSpotInfoActivity</string>
-    <string name="large_text">
+    <!-- Strings for the HostMenuActivity -->
+    <string name="host_menu_create">Create a new parking spot</string>
+    <string name="host_menu_view">View your parking spots</string>
 
+    <!-- Strings for the RepeatActivity -->
+    <string name="repeat_week_title">Repeats on</string>
+    <string name="repeat_period_text">Repeats every</string>
+    <string name="repeat_period_default">1</string>
+    <string name="repeat_reps_default">2</string>
+    <string name="repeat_repeats">Repeats</string>
+    <string name="repeat_times">times</string>
+    <string name="repeat_month_date">Every month on the </string>
+    <string name="repeat_onthe">On the %d%s of the month</string>
+    <string-array name="repeats_periods">
+        <item>Days</item>
+        <item>Weeks</item>
+    </string-array>
+    <string-array name="reapeat_hours">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+    <string-array name="repeat_minutes">
+        <item>00</item>
+        <item>30</item>
+    </string-array>
+    <string-array name="repeat_am_pm">
+        <item>AM</item>
+        <item>PM</item>
+    </string-array>
 
-        "We're gonna put the list of parking spots here.\n\n"
-    </string>
+    <!-- Strings for the ParkerSearchActivity -->
+    <string name="search_no_spots">There are no available spots to display</string>
+
+    <!-- Strings for the BookTimeSlotsActivity -->
+    <string name="book_no_times">There are no available times to display</string>
     <string name="book_this_spot">Book this spot</string>
+    <string name="book_confirm">Confirm booking</string>
+
+    <!-- Strings for keys the passing extra data between activities -->
+    <string name="extra_spotID">spotID</string>
+    <string name="extra_name">name</string>
+    <string name="extra_slotID">slotID</string>
+    <string name="extra_repetitionInfo">repetitionInfo</string>
+    <string name="extra_time">time</string>
+    <string name="extra_date">date</string>
+    <string name="extra_lat">latitude</string>
+    <string name="extra_long">longitude</string>
+
+    <!-- Strings for displaying info-->
+    <string name="info_current_price">Current price: $%.2f</string>
+    <string name="info_name">Name: %s</string>
+    <string name="info_address">Address: %s</string>
+    <string name="info_phone">Phone number: %s</string>
+    <string name="info_email">Email: %s</string>
+    <string name="info_rate">Rate: $%.2f</string>
+    <string name="info_start">Start: %s</string>
+    <string name="info_end">End: %s</string>
 </resources>
